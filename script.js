@@ -15,6 +15,32 @@ function getPres(alt){
   return P0;
 }
 function getDens(alt){ return getPres(alt)/(R*getTemp(alt)); }
+
+document.getElementById('home-calc-btn').addEventListener('click', () => {
+  const alt = parseFloat(document.getElementById('home-altitude').value);
+  const errEl = document.getElementById('home-error');
+  // Range validation
+  if (isNaN(alt)) {
+    errEl.textContent = 'Please enter a number.';
+    return;
+  }
+  if (alt < 0 || alt > 47000) {
+    errEl.textContent = 'Enter altitude between 0 m and 47 000 m.';
+    return;
+  }
+  errEl.textContent = ''; // clear any previous error
+
+  // compute
+  const t = getTemp(alt);
+  const p = getPres(alt);
+  const d = getDens(alt);
+
+  // update
+  document.getElementById('home-temp').textContent = `Temp: ${t.toFixed(2)} K`;
+  document.getElementById('home-pres').textContent = `Pres: ${p.toFixed(2)} Pa`;
+  document.getElementById('home-dens').textContent = `Dens: ${d.toExponential(5)} kg/m³`;
+});
+
 // --- end Atmosphere functions ---
 
 

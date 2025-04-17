@@ -202,3 +202,44 @@ body {
     padding: 0 1rem;
   }
 }
+
+/* Atmosphere widget — shared by both pages */
+.atmo-widget {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+}
+.atmo-widget label,
+.atmo-widget p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+.atmo-widget input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.atmo-widget button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+.atmo-widget button:hover {
+  opacity: 0.9;
+}
+/* New: error message styling */
+.atmo-widget .error {
+  color: #c00;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

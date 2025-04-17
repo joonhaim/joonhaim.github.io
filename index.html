@@ -17,7 +17,7 @@
       <nav class="main-nav">
         <ul>
           <li><a href="index.html" class="active">Home</a></li>
-      +   <li><a href="atmosphere.html">Atmosphere</a></li>
+          <li><a href="atmosphere.html">Atmosphere</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#cv">CV</a></li>
         </ul>
@@ -26,7 +26,7 @@
 
     <main class="content">
       <section class="intro">
-        <h1>Hi, I’m Adrien Joon‑Ha</h1>
+        <h1>Hi, I’m Adrien Joon‑Ha Im</h1>
         <p>Welcome! I’m a Data Science & AI student at Leiden University.</p>
       </section>
 
@@ -49,12 +49,14 @@
         <div class="atmo-widget">
           <label for="home-altitude">Altitude (m):</label>
           <input id="home-altitude" type="number" placeholder="Meters">
-          <button id="home-calc-btn">Calc</button>
+          <button id="home-calc-btn">Calculate</button>
+          <p id="home-error" class="error"></p>            <!-- error text -->
           <p id="home-temp">Temp: —</p>
           <p id="home-pres">Pres: —</p>
           <p id="home-dens">Dens: —</p>
         </div>
       </section>
+      
       <script>
         // reuse the same getTemp, getPres, getDens functions
         document.getElementById('home-calc-btn').addEventListener('click', () => {
@@ -94,7 +96,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; 2025 Adrien Joon‑Ha</p>
+      <p>&copy; 2025 Adrien Joon‑Ha Im</p>
     </footer>
   </div>
 </body>

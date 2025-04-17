@@ -1,22 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Joon‑Ha’s Homepage</title>
+  <title>Homepage</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header><h1>Hi, I’m Joon‑Ha</h1></header>
-  <nav>
-    <a href="/">Home</a> |
-    <a href="about.html">About</a> |
-    <a href="projects.html">Projects</a>
-  </nav>
-  <main>
-    <p>Index Page</p>
-  </main>
-  <footer>&copy; 2025 Joon‑Ha</footer>
-  <script src="script.js"></script>
+  <div class="container">
+    <header class="site-header">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#cv">CV</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="content">
+      <section class="intro">
+        <h1>Hi, I’m Adrien Joon‑Ha</h1>
+        <p>Welcome! I’m a Data Science & AI student at Leiden University.</p>
+      </section>
+
+      <section id="about">
+        <h2>About Me</h2>
+        <p>I’m a French‑Korean student currently studying Data Science and Artificial Intelligence at Leiden University. I’m particularly interested in the applications of AI in healthcare, such as in minimally invasive and robotic surgery.</p>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+        <article class="project">
+          <h3>Atmosphere Calculator</h3>
+          <p>A web‑based tool to compute atmospheric properties based on altitude and temperature.</p>
+          <a href="https://joonhaim.github.io/AtmosphereCalculatorWeb/" target="_blank">View Project →</a>
+        </article>
+      </section>
+
+      <section id="cv">
+        <h2>CV / Resume</h2>
+        <p>Download my full resume <a href="Adrien‑JoonHa‑CV.pdf">here</a>, or visit my <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn profile</a>.</p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>Have a question or want to collaborate? Reach out!</p>
+        <form action="#" method="POST" class="contact-form">
+          <label>
+            Name
+            <input type="text" name="name" required>
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" required>
+          </label>
+          <label class="full-width">
+            Message
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2025 Adrien Joon‑Ha</p>
+    </footer>
+  </div>
 </body>
 </html>

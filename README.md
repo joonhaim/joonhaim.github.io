@@ -14,6 +14,6 @@ This site was built using **HTML**, **CSS**, and vanilla **JavaScript**. It is f
 
 - **Intro Section**: A brief welcome message and personal summary.
 - **About Section**: More context about my background and academic interests.
-- **Projects Section**: Highlighted work, such as the [Atmosphere Calculator](https://joonhaim.github.io/atmosphere.html), originally built for TU Delft coursework.
+- **Projects Section**: Highlighted work
 - **Live Demo Widget**: Try the calculator directly on the site.
 - **External Links**: CV on LinkedIn, code on GitHub.

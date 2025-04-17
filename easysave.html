@@ -1,0 +1,126 @@
+<!-- easysave.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EasySave</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+  <script src="includes.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div id="site-header"></div>
+
+    <main class="content">
+      <section class="project-intro">
+        <h1>EasySave: AI-Powered Student Financial Planner</h1>
+        <p>EasySave is a web-based app that helps students create personalized savings plans by analyzing past spending behavior and delivering actionable insights.</p>
+      </section>
+
+      <section id="features">
+        <h2>Features</h2>
+        <ul>
+          <li><strong>Personalized Savings Plans</strong>: Tailored recommendations based on your income and spending habits.</li>
+          <li><strong>Daily Spending Limit</strong>: Automatically calculated to help you stay within your savings goals.</li>
+          <li><strong>Real-Time Updates</strong>: Graphics and data update as you log new spending.</li>
+          <li><strong>Peer Comparison</strong>: Compare your spending habits with peers in the same demographic.</li>
+          <li><strong>Goal Tracking</strong>: Set and monitor savings goals with interactive progress indicators.</li>
+          <li><strong>Spending Predictions</strong>: Forecast next month’s spending based on historical data.</li>
+        </ul>
+      </section>
+
+      <section id="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#usage">Usage</a></li>
+          <li><a href="#demo">Demo</a></li>
+          <li><a href="#testing">Testing</a></li>
+          <li><a href="#license">License</a></li>
+          <li><a href="#authors">Authors & Acknowledgment</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#support">Support</a></li>
+        </ol>
+      </section>
+
+      <section id="installation">
+        <h2>Installation and Update</h2>
+        <ol>
+          <li>Clone the repo:<pre><code>git clone https://github.com/joonhaim/EasySave.git
+cd EasySave</code></pre></li>
+          <li>Install dependencies:<pre><code>python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt</code></pre></li>
+          <li>Run the app:<pre><code>python main.py</code></pre></li>
+          <li>Open <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> in your browser.</li>
+        </ol>
+        <p>For updates, see <a href="update.md">Update Guide</a>.</p>
+      </section>
+
+      <section id="usage">
+        <h2>Usage</h2>
+        <h3>Home Page</h3>
+        <p>Overview of spending and savings progress with interactive visualizations.</p>
+        <h3>Saving Goal Page</h3>
+        <p>Create and track savings goals with visual progress bars.</p>
+        <h3>Detailed Data Page</h3>
+        <p>Analyze spending trends with categorized graphs and filters.</p>
+        <h3>Predictions Page</h3>
+        <p>View next month’s spending forecast based on historical data.</p>
+        <h3>User Profile</h3>
+        <p>Manage your personal information and preferences.</p>
+      </section>
+
+      <section id="demo">
+        <h2>Demo</h2>
+        <p><a href="https://leidenuniv1-my.sharepoint.com/:v:/g/personal/s3990788_vuw_leidenuniv_nl/EWQqtigp00xGjRqCbi2F1q8B63BJgNNwN9CLoWdJs7FKsg?e=0y7rta" target="_blank">Watch the demo video</a>.</p>
+      </section>
+
+      <section id="testing">
+        <h2>Testing</h2>
+        <h3>Path_test_combined.py</h3>
+        <p>Delete <code>data.db</code> in <code>instance/</code>, activate venv, then run:<pre><code>pytest Test/Path_Test_combined.py</code></pre>Delete <code>data.db</code> again afterwards.</p>
+        <h3>Coverage_test.py</h3>
+        <p>Start the app, then run:<pre><code>pytest Test/Coverage_test.py</code></pre></p>
+      </section>
+
+      <section id="license">
+        <h2>License</h2>
+        <p>Academic use only; not licensed for public distribution.</p>
+      </section>
+
+      <section id="authors">
+        <h2>Authors &amp; Acknowledgment</h2>
+        <ul>
+          <li>Hao Chen (3990788)</li>
+          <li>Adrien Im (3984389)</li>
+          <li>Yihui Peng (3985571)</li>
+          <li>Tony Tian (3795888)</li>
+          <li>Zhemin Xie (3808440)</li>
+          <li>Jiajia Xu (3845567)</li>
+        </ul>
+        <p>Course: 4032SWDEV at Leiden University. Thanks to Dr. A. Saxena and TA Aart.</p>
+      </section>
+
+      <section id="roadmap">
+        <h2>Roadmap</h2>
+        <ul>
+          <li>Cross-device compatibility</li>
+          <li>Multi-currency support</li>
+          <li>Advanced analytics</li>
+          <li>Community features</li>
+        </ul>
+      </section>
+
+      <section id="support">
+        <h2>Support</h2>
+        <p>For issues, open an issue on <a href="https://github.com/joonhaim/EasySave" target="_blank">GitHub</a>.</p>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+</body>
+</html>

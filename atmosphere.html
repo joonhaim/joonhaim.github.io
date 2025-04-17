@@ -6,45 +6,27 @@
   <title>Atmosphere Calculator</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
-  <style>
-    /* widget overrides (or you can keep in styles.css) */
-    .atmo-widget { /* …same styles as before… */ }
-    .atmo-widget .error { /* … */ }
-  </style>
+  <script src="includes.js" defer></script>
 </head>
 <body>
   <div class="container">
-
-    <header class="site-header">
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
-        <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
-      </div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="atmosphere.html" class="active">Atmosphere</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#cv">CV</a></li>
-        </ul>
-      </nav>
-    </header>
+    <div id="site-header"></div>
 
     <main class="content">
       <h1>Atmosphere Calculator</h1>
-      <p>Developed in 2019, AtmosphereCalculator is a simple Java-based application that calculates key atmospheric properties—temperature, pressure, and density—based on altitude. It follows standard models up to 47,000 m.</p>
+      <p>Developed in 2019, AtmosphereCalculator is … up to 47,000 m.</p>
 
       <section>
         <h2>Context</h2>
-        <p>Created for first-year BSc Aerospace Engineering students at TU Delft to assist with atmospheric modeling in assignments and projects.</p>
+        <p>Created for first-year BSc Aerospace Engineering students at TU Delft…</p>
       </section>
 
       <section>
         <h2>Features</h2>
         <ul>
-          <li>Temperature in K &amp; °C</li>
-          <li>Pressure in Pa</li>
-          <li>Density in kg/m³</li>
+          <li>Calculate temperature in K & °C</li>
+          <li>Calculate pressure in Pa</li>
+          <li>Determine density in kg/m³</li>
           <li>Java Swing GUI</li>
         </ul>
       </section>
@@ -52,9 +34,9 @@
       <section>
         <h2>How to Use (Java)</h2>
         <ol>
-          <li><strong>Clone:</strong> <code>git clone https://github.com/joonhaim/AtmosphereCalculator.git</code></li>
-          <li><strong>Build &amp; Run:</strong> open in IDE → compile → run <code>Main.java</code></li>
-          <li><strong>Use:</strong> enter altitude, click Calculate, read off T, P, ρ</li>
+          <li>git clone https://github.com/joonhaim/AtmosphereCalculator.git</li>
+          <li>Open in IDE → compile → run <code>Main.java</code></li>
+          <li>Enter altitude, click Calculate, read T/P/ρ</li>
         </ol>
       </section>
 
@@ -62,7 +44,7 @@
         <h2>Try It Online</h2>
         <div class="atmo-widget">
           <label for="altitude-input">Altitude (m):</label>
-          <input type="number" id="altitude-input" placeholder="Enter meters">
+          <input type="number" id="altitude-input" placeholder="Meters">
           <button id="calc-btn">Calculate</button>
           <p id="error-msg" class="error"></p>
           <p id="temp-output">Temperature: —</p>
@@ -72,30 +54,7 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <p>&copy; 2025 Adrien Joon‑Ha Im</p>
-    </footer>
+    <div id="site-footer"></div>
   </div>
-
-  <script>
-    // same getTemp/getPres/getDens + validation + result logic as before
-    document.getElementById('calc-btn').addEventListener('click', () => {
-      const alt = parseFloat(document.getElementById('altitude-input').value);
-      const err = document.getElementById('error-msg');
-      if (isNaN(alt)) {
-        err.textContent = 'Please enter a number.';
-        return;
-      }
-      if (alt < 0 || alt > 47000) {
-        err.textContent = 'Enter altitude between 0 m and 47 000 m.';
-        return;
-      }
-      err.textContent = '';
-      const tempK = getTemp(alt), pres = getPres(alt), dens = getDens(alt);
-      document.getElementById('temp-output').textContent = `Temperature: ${tempK.toFixed(2)} K (${(tempK-273.15).toFixed(2)} °C)`;
-      document.getElementById('pres-output').textContent = `Pressure: ${pres.toFixed(2)} Pa`;
-      document.getElementById('dens-output').textContent = `Density: ${dens.toExponential(5)} kg/m³`;
-    });
-  </script>
 </body>
 </html>

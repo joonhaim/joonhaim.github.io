@@ -6,25 +6,12 @@
   <title>Homepage</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
+  <script src="includes.js" defer></script>
 </head>
 <body>
   <div class="container">
-
-    <!-- static header -->
-    <header class="site-header">
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
-        <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
-      </div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="atmosphere.html">Atmosphere</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#cv">CV</a></li>
-        </ul>
-      </nav>
-    </header>
+    <!-- placeholder for header -->
+    <div id="site-header"></div>
 
     <main class="content">
       <section class="intro">
@@ -79,11 +66,10 @@
       </section>
     </main>
 
-    <!-- static footer -->
-    <footer class="site-footer">
-      <p>&copy; 2025 Adrien Joon‑Ha Im</p>
-    </footer>
+    <div id="site-footer"></div>
   </div>
+  <script src="includes.js"></script>
+</body>
 
   <script>
     // widget logic (uses getTemp/getPres/getDens from script.js)

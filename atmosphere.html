@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atmosphere Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Widget-specific styling */
+    .atmo-widget {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .atmo-widget label,
+    .atmo-widget p {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+    .atmo-widget input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .atmo-widget button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+    .atmo-widget button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="atmosphere.html" class="active">Atmosphere</a></li>
+          <!-- other links if any -->
+        </ul>
+      </nav>
+    </header>
+
+    <main class="content">
+      <section class="intro">
+        <h1>Atmosphere Calculator</h1>
+        <p>Compute temperature, pressure, and density at a given altitude.</p>
+      </section>
+
+      <div class="atmo-widget">
+        <label for="altitude-input">Altitude (m):</label>
+        <input type="number" id="altitude-input" placeholder="Enter altitude in meters">
+        <button id="calc-btn">Calculate</button>
+
+        <p id="temp-output">Temperature: —</p>
+        <p id="pres-output">Pressure: —</p>
+        <p id="dens-output">Density: —</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2025 Adrien Joon‑Ha</p>
+    </footer>
+  </div>
+
+  <script>
+    // JavaScript port of AtmosphereCalculator
+    const T0 = 288.15;
+    const P0 = 101325;
+    const g = 9.80665;
+    const a0_a1 = -0.0065;
+    const a2_a3 = 0.001;
+    const a3_a4 = 0.0028;
+    const R = 287.00;
+
+    function getTemp(alt) {
+      if (alt <= 11000) {
+        return T0 + a0_a1 * alt;
+      } else if (alt <= 20000) {
+        return T0 + a0_a1 * 11000;
+      } else if (alt <= 32000) {
+        return T0 + a0_a1 * 11000 + a2_a3 * (alt - 20000);
+      } else if (alt <= 47000) {
+        return T0 + a0_a1 * 11000 + a2_a3 * (32000 - 20000) + a3_a4 * (alt - 32000);
+      }
+      return T0;
+    }
+
+    function getPres(alt) {
+      if (alt <= 11000) {
+        return P0 * Math.pow(getTemp(alt) / T0, -g / (a0_a1 * R));
+      } else if (alt <= 20000) {
+        return getPres(11000) * Math.exp(-g * (alt - 11000) / (R * getTemp(alt)));
+      } else if (alt <= 32000) {
+        return getPres(20000) * Math.pow(getTemp(alt) / getTemp(20000), -g / (a2_a3 * R));
+      } else if (alt <= 47000) {
+        return getPres(32000) * Math.pow(getTemp(alt) / getTemp(32000), -g / (a3_a4 * R));
+      }
+      return P0;
+    }
+
+    function getDens(alt) {
+      return getPres(alt) / (R * getTemp(alt));
+    }
+
+    document.getElementById('calc-btn').addEventListener('click', () => {
+      const alt = parseFloat(document.getElementById('altitude-input').value) || 0;
+      const tempK = getTemp(alt);
+      const pres = getPres(alt);
+      const dens = getDens(alt);
+
+      document.getElementById('temp-output').textContent =
+        `Temperature: ${tempK.toFixed(2)} K (${(tempK - 273.15).toFixed(2)} °C)`;
+      document.getElementById('pres-output').textContent =
+        `Pressure: ${pres.toFixed(2)} Pa`;
+      document.getElementById('dens-output').textContent =
+        `Density: ${dens.toExponential(5)} kg/m³`;
+    });
+  </script>
+</body>
+</html>

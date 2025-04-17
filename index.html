@@ -16,7 +16,8 @@
       </div>
       <nav class="main-nav">
         <ul>
-          <li><a href="#" class="active">Home</a></li>
+          <li><a href="index.html" class="active">Home</a></li>
+      +   <li><a href="atmosphere.html">Atmosphere</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#cv">CV</a></li>
         </ul>
@@ -42,6 +43,29 @@
           <a href="https://joonhaim.github.io/AtmosphereCalculatorWeb/" target="_blank">View Project →</a>
         </article>
       </section>
+
+      <section id="atmo-widget-home">
+        <h2>Atmosphere Calculator</h2>
+        <div class="atmo-widget">
+          <label for="home-altitude">Altitude (m):</label>
+          <input id="home-altitude" type="number" placeholder="Meters">
+          <button id="home-calc-btn">Calc</button>
+          <p id="home-temp">Temp: —</p>
+          <p id="home-pres">Pres: —</p>
+          <p id="home-dens">Dens: —</p>
+        </div>
+      </section>
+      <script>
+        // reuse the same getTemp, getPres, getDens functions
+        document.getElementById('home-calc-btn').addEventListener('click', () => {
+          const alt = parseFloat(document.getElementById('home-altitude').value) || 0;
+          const t = getTemp(alt), p = getPres(alt), d = getDens(alt);
+          document.getElementById('home-temp').textContent  = `Temp: ${t.toFixed(1)}K`;
+          document.getElementById('home-pres').textContent  = `Pres: ${p.toFixed(0)}Pa`;
+          document.getElementById('home-dens').textContent  = `Dens: ${d.toExponential(2)}kg/m³`;
+        });
+      </script>
+      
 
       <section id="cv">
         <h2>CV / Resume</h2>

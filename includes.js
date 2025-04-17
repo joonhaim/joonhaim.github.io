@@ -1,4 +1,3 @@
-// includes.js
 document.addEventListener('DOMContentLoaded', () => {
     const load = (sel, url) =>
       fetch(url)

@@ -10,7 +10,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- placeholder for header -->
     <div id="site-header"></div>
 
     <main class="content">
@@ -28,7 +27,7 @@
         <h2>Projects</h2>
         <article class="project">
           <h3>Atmosphere Calculator</h3>
-          <p>Originally developed for Aerospace Engineering assignments at TU Delft, this tool computes atmospheric temperature, pressure, and density up to 47,000 m. Try the mini version below or visit the full version for more details.</p>
+          <p>Originally developed for Aerospace Engineering assignments at TU Delft, this tool computes atmospheric temperature, pressure, and density up to 47,000 m. Try the mini version below or visit the full version for more details.</p>
           <a href="atmosphere.html">Explore Full Calculator →</a>
         </article>
       </section>
@@ -51,43 +50,12 @@
 
       <section id="cv">
         <h2>CV / Resume</h2>
-        <p>Download my full resume <a href="Adrien‑JoonHa‑CV.pdf">here</a>, or visit my <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn profile</a>.</p>
-      </section>
-
-      <section id="contact">
-        <h2>Contact</h2>
-        <p>Have a question or want to collaborate? Reach out!</p>
-        <form action="#" method="POST" class="contact-form">
-          <label>Name<input type="text" name="name" required></label>
-          <label>Email<input type="email" name="email" required></label>
-          <label class="full-width">Message<textarea name="message" rows="4" required></textarea></label>
-          <button type="submit">Send</button>
-        </form>
+        <p>View my full resume on <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a></p>
+        
       </section>
     </main>
 
     <div id="site-footer"></div>
   </div>
-  <script src="includes.js"></script>
 </body>
-
-  <script>
-    // widget logic (uses getTemp/getPres/getDens from script.js)
-    document.getElementById('home-calc-btn').addEventListener('click', () => {
-      const alt = parseFloat(document.getElementById('home-altitude').value);
-      const err = document.getElementById('home-error');
-      if (isNaN(alt)) {
-        err.textContent = 'Please enter a number.';
-        return;
-      }
-      if (alt < 0 || alt > 47000) {
-        err.textContent = 'Enter altitude between 0 m and 47 000 m.';
-        return;
-      }
-      err.textContent = '';
-      const t = getTemp(alt), p = getPres(alt), d = getDens(alt);
-      document.getElementById('home-temp').textContent = `Temp: ${t.toFixed(2)} K`;
-      document.getElementById('home-pres').textContent = `Pres: ${p.toFixed(2)} Pa`;
-      document.getElementById('home-dens').textContent = `Dens: ${d.toExponential(5)} kg/m³`;
-    });
- 
+</html>

@@ -6,7 +6,6 @@
   <title>Atmosphere Calculator</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Widget-specific styling */
     .atmo-widget {
       max-width: 400px;
       margin: 2rem auto;
@@ -40,35 +39,80 @@
     .atmo-widget button:hover {
       opacity: 0.9;
     }
+    .atmo-widget .error {
+      color: #c00;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header class="site-header">
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="atmosphere.html" class="active">Atmosphere</a></li>
-          <!-- other links if any -->
-        </ul>
-      </nav>
+        <nav class="main-nav">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="atmosphere.html" class="active">Atmosphere</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#cv">CV</a></li>
+            </ul>
+          </nav>
     </header>
 
     <main class="content">
-      <section class="intro">
-        <h1>Atmosphere Calculator</h1>
-        <p>Compute temperature, pressure, and density at a given altitude.</p>
+      <h1>Atmosphere Calculator</h1>
+      <p>Developed in 2019, AtmosphereCalculator is a simple Java-based application that calculates key atmospheric properties—temperature, pressure, and density—based on altitude. It follows standard atmospheric models and supports calculations from sea level up to 47,000 meters.</p>
+
+      <section>
+        <h2>Context</h2>
+        <p>This tool was created for first-year BSc Aerospace Engineering students at TU Delft to assist with atmospheric modeling. It enables fast and reliable computations of atmospheric parameters commonly used in academic assignments and engineering projects.</p>
       </section>
 
-      <div class="atmo-widget">
-        <label for="altitude-input">Altitude (m):</label>
-        <input type="number" id="altitude-input" placeholder="Enter altitude in meters">
-        <button id="calc-btn">Calculate</button>
+      <section>
+        <h2>Features</h2>
+        <ul>
+          <li>Calculate temperature in Kelvin and Celsius</li>
+          <li>Calculate pressure in Pascals at any valid altitude</li>
+          <li>Determine air density in kg/m³</li>
+          <li>Simple and intuitive GUI interface (Java Swing version)</li>
+        </ul>
+      </section>
 
-        <p id="temp-output">Temperature: —</p>
-        <p id="pres-output">Pressure: —</p>
-        <p id="dens-output">Density: —</p>
-      </div>
+      <section>
+        <h2>How to Use (Java Version)</h2>
+        <ol>
+          <li><strong>Clone the repository:</strong>
+            <pre><code>git clone https://github.com/joonhaim/AtmosphereCalculator.git</code></pre>
+          </li>
+          <li><strong>Build and Run:</strong>
+            <ul>
+              <li>Open the project in your Java IDE</li>
+              <li>Compile the source code</li>
+              <li>Run <code>Main.java</code> to launch the GUI</li>
+            </ul>
+          </li>
+          <li><strong>Using the App:</strong>
+            <ul>
+              <li>Input altitude in meters</li>
+              <li>Click <em>Calculate</em></li>
+              <li>View results for temperature (K and °C), pressure (Pa), and density (kg/m³)</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Try It Online</h2>
+        <div class="atmo-widget">
+          <label for="altitude-input">Altitude (m):</label>
+          <input type="number" id="altitude-input" placeholder="Enter altitude in meters">
+          <button id="calc-btn">Calculate</button>
+          <p id="error-msg" class="error"></p>
+          <p id="temp-output">Temperature: —</p>
+          <p id="pres-output">Pressure: —</p>
+          <p id="dens-output">Density: —</p>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -77,7 +121,6 @@
   </div>
 
   <script>
-    // JavaScript port of AtmosphereCalculator
     const T0 = 288.15;
     const P0 = 101325;
     const g = 9.80665;
@@ -87,28 +130,18 @@
     const R = 287.00;
 
     function getTemp(alt) {
-      if (alt <= 11000) {
-        return T0 + a0_a1 * alt;
-      } else if (alt <= 20000) {
-        return T0 + a0_a1 * 11000;
-      } else if (alt <= 32000) {
-        return T0 + a0_a1 * 11000 + a2_a3 * (alt - 20000);
-      } else if (alt <= 47000) {
-        return T0 + a0_a1 * 11000 + a2_a3 * (32000 - 20000) + a3_a4 * (alt - 32000);
-      }
+      if (alt <= 11000) return T0 + a0_a1 * alt;
+      if (alt <= 20000) return T0 + a0_a1 * 11000;
+      if (alt <= 32000) return T0 + a0_a1 * 11000 + a2_a3 * (alt - 20000);
+      if (alt <= 47000) return T0 + a0_a1 * 11000 + a2_a3 * 12000 + a3_a4 * (alt - 32000);
       return T0;
     }
 
     function getPres(alt) {
-      if (alt <= 11000) {
-        return P0 * Math.pow(getTemp(alt) / T0, -g / (a0_a1 * R));
-      } else if (alt <= 20000) {
-        return getPres(11000) * Math.exp(-g * (alt - 11000) / (R * getTemp(alt)));
-      } else if (alt <= 32000) {
-        return getPres(20000) * Math.pow(getTemp(alt) / getTemp(20000), -g / (a2_a3 * R));
-      } else if (alt <= 47000) {
-        return getPres(32000) * Math.pow(getTemp(alt) / getTemp(32000), -g / (a3_a4 * R));
-      }
+      if (alt <= 11000) return P0 * Math.pow(getTemp(alt) / T0, -g / (a0_a1 * R));
+      if (alt <= 20000) return getPres(11000) * Math.exp(-g * (alt - 11000) / (R * getTemp(alt)));
+      if (alt <= 32000) return getPres(20000) * Math.pow(getTemp(alt) / getTemp(20000), -g / (a2_a3 * R));
+      if (alt <= 47000) return getPres(32000) * Math.pow(getTemp(alt) / getTemp(32000), -g / (a3_a4 * R));
       return P0;
     }
 
@@ -117,7 +150,19 @@
     }
 
     document.getElementById('calc-btn').addEventListener('click', () => {
-      const alt = parseFloat(document.getElementById('altitude-input').value) || 0;
+      const alt = parseFloat(document.getElementById('altitude-input').value);
+      const err = document.getElementById('error-msg');
+
+      if (isNaN(alt)) {
+        err.textContent = 'Please enter a number.';
+        return;
+      }
+      if (alt < 0 || alt > 47000) {
+        err.textContent = 'Enter altitude between 0 m and 47,000 m.';
+        return;
+      }
+
+      err.textContent = '';
       const tempK = getTemp(alt);
       const pres = getPres(alt);
       const dens = getDens(alt);

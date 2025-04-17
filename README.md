@@ -1,10 +1,10 @@
 # 🌐 Personal Website
 
-Welcome to the source code of my personal website, [joonhaim.github.io](https://joonhaim.github.io), a minimalist portfolio showcasing who I am, what I do, and some of my main projects.
+Welcome to the source code of my personal website, [joonhaim.github.io](https://joonhaim.github.io), a minimalist portfolio showcasing some of my main projects.
 
 ## 👋 About Me
 
-I’m Adrien Joon‑Ha Im (임준하), a French-Korean student currently pursuing a BSc in **Data Science & Artificial Intelligence** at **Leiden University**. I’m passionate about the intersection of AI and healthcare, especially in applications like **robotic and minimally invasive surgery**, medical imaging, and decision support systems.
+I’m Adrien Joon‑Ha Im (임준하), a French-Korean student currently studying Data Science & Artificial Intelligence at Leiden University. I’m passionate about the intersection of AI and healthcare, especially in applications like robotic and minimally invasive surgery, medical imaging, and wearable devices such as AR platforms.
 
 ## 📂 Website Overview
 
@@ -12,8 +12,6 @@ This site was built using **HTML**, **CSS**, and vanilla **JavaScript**. It is f
 
 ### 🔧 Features
 
-- **Intro Section**: A brief welcome message and personal summary.
-- **About Section**: More context about my background and academic interests.
-- **Projects Section**: Highlighted work
-- **Live Demo Widget**: Try the calculator directly on the site.
+- **Home Page**
+- **Projects Section**: Highlighted work, with more upcoming soon.
 - **External Links**: CV on LinkedIn, code on GitHub.

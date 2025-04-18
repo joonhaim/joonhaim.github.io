@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond The Röstigraben</title>
+  <style>
+    :root { --bg-color: #DA291C; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      transition: background-color 0.6s ease;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #000;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* Language switcher */
+    .language-switcher {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .language-switcher.visible {
+      opacity: 1;
+    }
+    .language-switcher a {
+      margin: 0 0.5rem;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+    /* Swiss cross in corner */
+    .swiss-cross {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 2rem;
+      height: 2rem;
+      background: white;
+      clip-path: polygon(
+        40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
+        60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
+      );
+      z-index: 10;
+    }
+    h1, h2 { margin: 0; line-height: 1.1; }
+    h1 {
+      font-size: clamp(3rem, 15vw, 10rem);
+      font-weight: 800;
+      text-align: left;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: clamp(1.5rem, 6vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    p {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 1.6;
+      max-width: 600px;
+      text-align: left;
+      margin: 0;
+    }
+    .construction-message {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-style: italic;
+      margin-top: 3rem;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .construction-message.visible {
+      opacity: 1;
+    }
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+    }
+    .section--full { flex-direction: column; text-align: left; padding-left: 4rem; }
+    .arrow-down {
+      margin-top: 2rem;
+      width: 2rem;
+      height: 2rem;
+      border-right: 0.3rem solid #000;
+      border-bottom: 0.3rem solid #000;
+      transform: rotate(45deg);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(10px); }
+    }
+    .section--split {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 4rem;
+    }
+    /* Extra gap for sections 1 and 3 */
+    #insight1.section--split,
+    #insight3.section--split {
+      gap: 4rem;
+    }
+    .section--split:nth-of-type(even) { flex-direction: row-reverse; }
+    .text, .map-container { flex: 1; }
+    .map-container img {
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+  </style>
+</head>
+<body>
+  <div class="language-switcher">
+    <a href="/de/">DE</a> | <a href="/fr/">FR</a> | <a href="/it/">IT</a> | <a href="/en/">EN</a>
+  </div>
+  <div class="swiss-cross"></div>
+
+  <section class="section section--full" id="hero" data-bg="#DA291C">
+    <h1 class="fade-element">Beyond<br>the<br>Röstigraben</h1>
+    <div class="arrow-down fade-element"></div>
+    <p class="construction-message">This page is under construction. Stay tuned for updates!</p>
+  </section>
+
+  <!-- Four insight/map sections -->
+  <section class="section section--split" id="insight1" data-bg="#FFFFFF">
+    <div class="text fade-element">
+      <h2>Language Diversity Across Municipalities</h2>
+      <p>From single-language strongholds to multilingual communities, this section explores how language use varies across Switzerland and where linguistic diversity is most visible.</p>
+    </div>
+    <div class="map-container">
+      <img src="switzerland.svg" alt="Social Trends Map" class="map">
+    </div>
+  </section>
+
+  <section class="section section--split" id="insight2" data-bg="#F5F5F0">
+    <div class="text fade-element">
+      <h2>Surnames and Language: Do They Align?</h2>
+      <p>What do common last names tell us about a place? We compare the origins of surnames in each municipality with the languages spoken there to see how closely they match.</p>
+    </div>
+    <div class="map-container">
+      <img src="switzerland.svg" alt="Cultural Map" class="map">
+    </div>
+  </section>
+
+  <section class="section section--split" id="insight3" data-bg="#FFFFFF">
+    <div class="text fade-element">
+      <h2>How Language Has Changed Over Time</h2>
+      <p>Switzerland’s language landscape has shifted over the years. Here, we look at how the balance between German, French, Italian, and other languages has evolved in recent decades.</p>
+    </div>
+    <div class="map-container">
+      <img src="switzerland.svg" alt="Economic Map" class="map">
+    </div>
+  </section>
+
+  <section class="section section--split" id="insight4" data-bg="#F5F5F0">
+    <div class="text fade-element">
+      <h2>Language and the Local Economy</h2>
+      <p>Is there a connection between language diversity and economic conditions? This section explores how multilingualism relates to income levels, employment, and housing across different regions.</p>
+    </div>
+    <div class="map-container">
+      <img src="switzerland.svg" alt="Political Map" class="map">
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.fade-element').forEach(el => el.classList.add('visible'));
+            entry.target.querySelectorAll('img.map').forEach(img => img.classList.add('visible'));
+            const bg = entry.target.getAttribute('data-bg');
+            document.documentElement.style.setProperty('--bg-color', bg);
+          }
+        });
+      }, { threshold: 0.4 });
+      sections.forEach(sec => observer.observe(sec));
+
+      let scrolled = false;
+      window.addEventListener('scroll', () => {
+        if (!scrolled) {
+          const msg = document.querySelector('.construction-message');
+          if (msg) msg.classList.add('visible');
+          const langs = document.querySelector('.language-switcher');
+          if (langs) langs.classList.add('visible');
+          scrolled = true;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

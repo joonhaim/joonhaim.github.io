@@ -17,8 +17,10 @@
       <section class="project-intro">
         <h1>Cognition &amp; Computation</h1>
         <p>
-          Assignments from the Cognition &amp; Computation course at Leiden University,
-          demonstrating computational models in cognitive science.
+          This page is a collection of all four assignments completed for the Cognition and Computation course
+          at Leiden University. The course explores key concepts in cognitive science through computational modeling.
+          This course was taught by Dr. Steven Miletić and Dr. ir. Roy de Kleijn (Leiden University, 2024–2025).
+          You can find the more detailed implementations of these small projects by visiting the link below.
         </p>
         <p class="repo-link">
           <a href="https://github.com/joonhaim/cognition-and-computation"
@@ -43,9 +45,16 @@
       <section id="assignment1" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 1: Memory Models (Group)</h2>
-          <p><strong>Topic:</strong> Modeling recognition memory with DPSD and UVSD</p>
-          <p><strong>Tools:</strong> Python, ROC curves</p>
-          <p>We compared the Dual‑Process Signal Detection (DPSD) and Unequal Variance Signal Detection (UVSD) models against a random baseline.</p>
+          <p><strong>Modeling recognition memory with DPSD and UVSD</strong></p>
+          <p>In this group project, we examined the mechanics of recognition memory by implementing
+          and comparing two classic signal-detection models. First, we built a random-guessing baseline to
+          establish chance performance. Then we implemented the Unequal Variance Signal Detection (UVSD) model, where
+          "old" and "new" items are drawn from Gaussians with different variances. We also implemented the
+          Dual-Process Signal Detection (DPSD) model, where recollection which is a high threshold, all-or-none process
+          is used alongside a continuous familiarity signal. By generating Receiver-Operating Characteristic (ROC) curves
+          for each of the models, we could see how UVSD's curve differs from DPSD's more symmetric shape. Our results
+          that both models outperform random guessing by a large margin.</p>
+          <p><strong>Grade:</strong> 9.0/10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -62,9 +71,17 @@
       <section id="assignment2" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 2: Language Segmentation (Group)</h2>
-          <p><strong>Topic:</strong> Word segmentation using transitional probabilities</p>
-          <p><strong>Tools:</strong> Python, histogram analysis</p>
-          <p>Computed syllable transitions to identify word boundaries, inspired by infant language learning.</p>
+          <p><strong>Statistical Word Segmentation via Transitional Probabilities</strong></p>
+          <p>This project tackled the problem of how infants carve continuous speech into discrete words.
+            Using an artificial “syllable stream,” we first plotted syllable frequencies and then computed bigram
+            transitional probabilities. A clear bimodal distribution emerged—within‑word transitions clustering near
+            1.0 and boundary transitions near 0.0—allowing us to set a data‑driven threshold (≈0.4) for segmentation.
+            Our Python implementation (O(n) time) identified six unique words (e.g., lukibora, daropife) and
+            successfully segmented the first 30 items in the corpus. Finally, we reflected on differences between
+            this purely statistical approach and infant learners, who also exploit prosody, semantics, and adaptive
+            thresholding. This assignment highlighted the power—and limitations—of simple distributional cues in
+            language acquisition.</p>
+          <p><strong>Grade:</strong> 10.0/10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -81,9 +98,17 @@
       <section id="assignment3" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 3: Decision Making &amp; DDM (Group)</h2>
-          <p><strong>Topic:</strong> Simulating the Drift Diffusion Model (DDM)</p>
-          <p><strong>Tools:</strong> Python, statistical plots</p>
-          <p>Simulated evidence accumulation and analyzed speed‑accuracy trade‑offs based on thresholds and drift rates.</p>
+          <p><strong>Simulating Evidence Accumulation with the Drift‑Diffusion Model</strong></p>
+          <p>In this assignment we moved from random walks to full drift‑diffusion dynamics to model
+            two‑choice decisions. Starting with a zero‑drift random walk (σ‐scaled Gaussian steps) and binary
+            thresholds, we showed how decision times form a right‑skewed distribution. Introducing drift rate v
+            v (bias) shifted the mean decision time and sharply reduced error rates, mirroring analytic predictions.
+            We then systematically varied both drift (v = 1 → 2 v=1→2) and boundary separation ( a = 1 → 1.5 a=1→1.5),
+            demonstrating that higher v v accelerates and improves accuracy, whereas larger a enforces caution at the
+            cost of speed. Histograms of reaction times under each condition closely match human data in speed‑accuracy
+            trade‑off tasks. This exercise not only solidified our understanding of sequential sampling models but also
+            sharpened our skills in stochastic simulation and parameter exploration.</p>
+          <p><strong>Grade:</strong> 10.0/10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -100,9 +125,16 @@
       <section id="assignment4" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 4: Connectionism (Individual)</h2>
-          <p><strong>Topic:</strong> Implementing McClelland’s IAC Model</p>
-          <p><strong>Focus:</strong> Associative memory dynamics</p>
-          <p>Built an IAC network simulating retrieval and compared to McClelland's 1981 findings.</p>
+          <p><strong>Implementing McClelland’s Interactive Activation & Competition (IAC) Model</strong></p>
+          <p>I recreated the classic 1981 IAC network of instance and property nodes. I parsed the provided CSV
+            adjacency matrix into excitatory and inhibitory weight matrices, set resting activations,decay rates,
+            and clipping bounds exactly as McClelland specified, then coded the core update loop (decay + net input +
+            input effect). Through targeted probes (“Jets” gang, the individual “George”, and the feature pair
+            “20s + JH”), the network reliably retrieved cohort attributes and identified individuals sharing
+            multiple traits. A side‑by‑side comparison with McClelland’s published activation profiles showed
+            remarkably similar patterns (minor numeric differences traced to time‑step choices and clipping
+            implementation). This assignment deepened my understanding of how simple interactive equations give
+            rise to rich associative memory behavior.</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">

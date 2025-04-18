@@ -239,7 +239,7 @@ body {
 }
 .pdf-container iframe {
   width: 100%;
-  height: 80vh;
+  height: 56vh;
   border: none;
   display: block;
 }

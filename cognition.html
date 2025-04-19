@@ -72,14 +72,14 @@
         <div class="assignment-text">
           <h2>Assignment 2: Language Segmentation (Group)</h2>
           <p><strong>Statistical Word Segmentation via Transitional Probabilities</strong></p>
-          <p>This project tackled the problem of how infants carve continuous speech into discrete words.
+          <p>This project tackled the problem of how infants segment continuous speech into discrete words.
             Using an artificial “syllable stream,” we first plotted syllable frequencies and then computed bigram
-            transitional probabilities. A clear bimodal distribution emerged—within‑word transitions clustering near
-            1.0 and boundary transitions near 0.0—allowing us to set a data‑driven threshold (≈0.4) for segmentation.
-            Our Python implementation (O(n) time) identified six unique words (e.g., lukibora, daropife) and
+            transitional probabilities. A clear bimodal distribution emerged within word transitions near
+            1.0 and boundary transitions near 0.0 allowing us to set a data‑driven threshold (≈ 0.4) for segmentation.
+            Our Python implementation identified six unique words (e.g., lukibora, daropife) and
             successfully segmented the first 30 items in the corpus. Finally, we reflected on differences between
             this purely statistical approach and infant learners, who also exploit prosody, semantics, and adaptive
-            thresholding. This assignment highlighted the power—and limitations—of simple distributional cues in
+            thresholding. This assignment highlighted the power and limitations of simple distributional cues in
             language acquisition.</p>
           <p><strong>Grade:</strong> 10.0/10.0</p>
         </div>
@@ -99,15 +99,7 @@
         <div class="assignment-text">
           <h2>Assignment 3: Decision Making &amp; DDM (Group)</h2>
           <p><strong>Simulating Evidence Accumulation with the Drift‑Diffusion Model</strong></p>
-          <p>In this assignment we moved from random walks to full drift‑diffusion dynamics to model
-            two‑choice decisions. Starting with a zero‑drift random walk (σ‐scaled Gaussian steps) and binary
-            thresholds, we showed how decision times form a right‑skewed distribution. Introducing drift rate v
-            v (bias) shifted the mean decision time and sharply reduced error rates, mirroring analytic predictions.
-            We then systematically varied both drift (v = 1 → 2 v=1→2) and boundary separation ( a = 1 → 1.5 a=1→1.5),
-            demonstrating that higher v v accelerates and improves accuracy, whereas larger a enforces caution at the
-            cost of speed. Histograms of reaction times under each condition closely match human data in speed‑accuracy
-            trade‑off tasks. This exercise not only solidified our understanding of sequential sampling models but also
-            sharpened our skills in stochastic simulation and parameter exploration.</p>
+          <p>In this assignment, we explored decision-making by moving from basic random walks to the full Drift Diffusion Model (DDM). We began with a zero-drift random walk using Gaussian noise and binary thresholds, which produced right-skewed distributions of decision times. Introducing a drift rate (v), which simulates bias or evidence strength, led to faster and more accurate decisions—just as theory predicts. We then systematically varied the drift rate (from v = 1 to v = 2) and the decision threshold (from a = 1 to a = 1.5). Higher drift rates resulted in quicker, more accurate decisions, while larger thresholds made decisions slower but more cautious. The resulting histograms closely mirrored human reaction time data from speed–accuracy trade-off tasks. This assignment deepened our understanding of sequential sampling models and gave us hands-on experience with stochastic simulation and parameter tuning.</p>
           <p><strong>Grade:</strong> 10.0/10.0</p>
         </div>
         <div class="assignment-pdf">
@@ -126,15 +118,7 @@
         <div class="assignment-text">
           <h2>Assignment 4: Connectionism (Individual)</h2>
           <p><strong>Implementing McClelland’s Interactive Activation & Competition (IAC) Model</strong></p>
-          <p>I recreated the classic 1981 IAC network of instance and property nodes. I parsed the provided CSV
-            adjacency matrix into excitatory and inhibitory weight matrices, set resting activations,decay rates,
-            and clipping bounds exactly as McClelland specified, then coded the core update loop (decay + net input +
-            input effect). Through targeted probes (“Jets” gang, the individual “George”, and the feature pair
-            “20s + JH”), the network reliably retrieved cohort attributes and identified individuals sharing
-            multiple traits. A side‑by‑side comparison with McClelland’s published activation profiles showed
-            remarkably similar patterns (minor numeric differences traced to time‑step choices and clipping
-            implementation). This assignment deepened my understanding of how simple interactive equations give
-            rise to rich associative memory behavior.</p>
+          <p>In this assignment, I implemented McClelland’s classic 1981 Interactive Activation and Competition (IAC) model. Using the provided CSV matrix, I built excitatory and inhibitory connection matrices and set key parameters like resting activation, decay rate, and activation limits according to the original paper. I then programmed the model’s core update mechanism, which combines decay, net input, and input effects to update node activations over time. By probing specific nodes, such as the "Jets" gang, the individual "George," and the traits "20s" and "JH", the network was able to retrieve relevant attributes and identify individuals with shared characteristics. When comparing my results to McClelland’s original outputs, the activation patterns closely matched, with only minor differences due to time steps and clipping methods. This assignment gave me a deeper understanding of how simple network dynamics can model associative memory in a powerful and interpretable way.</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">

@@ -5,6 +5,57 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Atmosphere Calculator</title>
   <link rel="stylesheet" href="static/css/styles.css">
+  <!-- Widget-specific styles -->
+  <style>
+    .atmo-widget {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 0.25rem;
+      padding: var(--space-lg);
+      max-width: 400px;
+      margin: var(--space-md) auto;
+    }
+    .atmo-widget .field {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .atmo-widget input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 0.25rem;
+      background: var(--color-bg);
+    }
+    .atmo-widget button {
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--color-text);
+      background: transparent;
+      color: var(--color-text);
+      font-weight: 500;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .atmo-widget button:hover {
+      background: var(--color-border);
+    }
+    .results {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .results li {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-xs) 0;
+    }
+    .error {
+      color: #c93030;
+      margin-bottom: var(--space-sm);
+    }
+  </style>
   <script src="static/js/script.js" defer></script>
   <script src="static/js/includes.js" defer></script>
 </head>
@@ -14,11 +65,11 @@
 
     <main class="content">
       <h1>Atmosphere Calculator</h1>
-      <p>Developed in 2019, AtmosphereCalculator is a simple Java-based application that calculates key atmospheric properties—temperature, pressure, and density—based on altitude. It is bassed on the International Standard Atmosphere (ISA) model, and works up to 47,000 m.</p>
+      <p>My first Java program for calculating atmospheric properties.</p>
 
       <section>
-        <h2>Context</h2>
-        <p>Created for first-year BSc Aerospace Engineering students at TU Delft…</p>
+        <h2>About</h2>
+        <p>Atmosphere Calculator is a simple tool I built in 2019 as my first programming project. It's a basic Java-based app that calculates temperature, pressure, and density from a given altitude using the International Standard Atmosphere (ISA) model. It supports altitudes up to 47,000 m. This tool was developed for first-year BSc Aerospace Engineering students at TU Delft to facilitate the calculation of the standard atmosphere. It provides a quick, accurate, and intuitive way to determine important atmospheric parameters for homework and academic projects.</p>
       </section>
 
       <section>
@@ -27,29 +78,41 @@
           <li>Calculate temperature in K & °C</li>
           <li>Calculate pressure in Pa</li>
           <li>Determine density in kg/m³</li>
-          <li>Java Swing GUI</li>
+          <li>Simple Java Swing GUI</li>
         </ul>
       </section>
 
       <section>
-        <h2>How to Use (Java)</h2>
+        <h2>How to Use It</h2>
         <ol>
-          <li>git clone https://github.com/joonhaim/AtmosphereCalculator.git</li>
-          <li>Open in IDE → compile → run <code>Main.java</code></li>
-          <li>Enter altitude, click Calculate, read T/P/ρ</li>
+          <li>Enter any altitude between 0 and 47,000 meters.</li>
+          <li>Click the Calculate button.</li>
+          <li>See the temperature, pressure, and density update instantly.</li>
         </ol>
       </section>
 
       <section>
+        <h2>What I Learned</h2>
+        <ul>
+          <li>Basic Java programming</li>
+          <li>GUI development with Swing</li>
+        </ul>
+      </section>
+
+
+      <section>
         <h2>Try It Online</h2>
         <div class="atmo-widget">
-          <label for="altitude-input">Altitude (m):</label>
-          <input type="number" id="altitude-input" placeholder="Meters">
-          <button id="calc-btn">Calculate</button>
-          <p id="error-msg" class="error"></p>
-          <p id="temp-output">Temperature: —</p>
-          <p id="pres-output">Pressure: —</p>
-          <p id="dens-output">Density: —</p>
+          <div class="field">
+            <input type="number" id="altitude-input" placeholder="Altitude (m)" min="0" max="47000" step="1">
+            <button id="calc-btn">Calculate</button>
+          </div>
+          <p id="error-msg" class="error" aria-live="polite"></p>
+          <ul class="results">
+            <li id="temp-output">Temperature: —</li>
+            <li id="pres-output">Pressure: —</li>
+            <li id="dens-output">Density: —</li>
+          </ul>
         </div>
       </section>
     </main>

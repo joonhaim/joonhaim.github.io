@@ -41,11 +41,11 @@
         </ol>
       </section>
 
-      <!-- Assignment 1 -->
+            <!-- Assignment 1 -->
       <section id="assignment1" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 1: Memory Models (Group)</h2>
-          <p><strong>Modeling recognition memory with DPSD and UVSD</strong></p>
+          <p class="subtitle"><strong>Modeling recognition memory with DPSD and UVSD</strong></p>
           <p>In this group project, we examined the mechanics of recognition memory by implementing
           and comparing two classic signal-detection models. First, we built a random-guessing baseline to
           establish chance performance. Then we implemented the Unequal Variance Signal Detection (UVSD) model, where
@@ -54,7 +54,7 @@
           is used alongside a continuous familiarity signal. By generating Receiver-Operating Characteristic (ROC) curves
           for each of the models, we could see how UVSD's curve differs from DPSD's more symmetric shape. Our results
           that both models outperform random guessing by a large margin.</p>
-          <p><strong>Grade:</strong> 9.0/10.0</p>
+          <p class="grade"><strong>Grade:</strong> 9.0 / 10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -71,17 +71,17 @@
       <section id="assignment2" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 2: Language Segmentation (Group)</h2>
-          <p><strong>Statistical Word Segmentation via Transitional Probabilities</strong></p>
+          <p class="subtitle"><strong>Statistical Word Segmentation via Transitional Probabilities</strong></p>
           <p>This project tackled the problem of how infants segment continuous speech into discrete words.
             Using an artificial “syllable stream,” we first plotted syllable frequencies and then computed bigram
             transitional probabilities. A clear bimodal distribution emerged within word transitions near
-            1.0 and boundary transitions near 0.0 allowing us to set a data‑driven threshold (≈ 0.4) for segmentation.
+            1.0 and boundary transitions near 0.0 allowing us to set a data‑driven threshold (≈ 0.4) for segmentation.
             Our Python implementation identified six unique words (e.g., lukibora, daropife) and
             successfully segmented the first 30 items in the corpus. Finally, we reflected on differences between
             this purely statistical approach and infant learners, who also exploit prosody, semantics, and adaptive
             thresholding. This assignment highlighted the power and limitations of simple distributional cues in
             language acquisition.</p>
-          <p><strong>Grade:</strong> 10.0/10.0</p>
+          <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -98,9 +98,9 @@
       <section id="assignment3" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 3: Decision Making &amp; DDM (Group)</h2>
-          <p><strong>Simulating Evidence Accumulation with the Drift‑Diffusion Model</strong></p>
-          <p>In this assignment, we explored decision-making by moving from basic random walks to the full Drift Diffusion Model (DDM). We began with a zero-drift random walk using Gaussian noise and binary thresholds, which produced right-skewed distributions of decision times. Introducing a drift rate (v), which simulates bias or evidence strength, led to faster and more accurate decisions—just as theory predicts. We then systematically varied the drift rate (from v = 1 to v = 2) and the decision threshold (from a = 1 to a = 1.5). Higher drift rates resulted in quicker, more accurate decisions, while larger thresholds made decisions slower but more cautious. The resulting histograms closely mirrored human reaction time data from speed–accuracy trade-off tasks. This assignment deepened our understanding of sequential sampling models and gave us hands-on experience with stochastic simulation and parameter tuning.</p>
-          <p><strong>Grade:</strong> 10.0/10.0</p>
+          <p class="subtitle"><strong>Simulating Evidence Accumulation with the Drift‑Diffusion Model</strong></p>
+          <p>In this assignment, we explored decision-making by moving from basic random walks to the full Drift Diffusion Model (DDM). We began with a zero-drift random walk using Gaussian noise and binary thresholds, which produced right-skewed distributions of decision times. Introducing a drift rate (v), which simulates bias or evidence strength, led to faster and more accurate decisions—just as theory predicts. We then systematically varied the drift rate (from v = 1 to v = 2) and the decision threshold (from a = 1 to a = 1.5). Higher drift rates resulted in quicker, more accurate decisions, while larger thresholds made decisions slower but more cautious. The resulting histograms closely mirrored human reaction time data from speed–accuracy trade-off tasks. This assignment deepened our understanding of sequential sampling models and gave us hands-on experience with stochastic simulation and parameter tuning.</p>
+          <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -117,8 +117,9 @@
       <section id="assignment4" class="assignment-layout">
         <div class="assignment-text">
           <h2>Assignment 4: Connectionism (Individual)</h2>
-          <p><strong>Implementing McClelland’s Interactive Activation & Competition (IAC) Model</strong></p>
+          <p class="subtitle"><strong>Implementing McClelland’s Interactive Activation & Competition (IAC) Model</strong></p>
           <p>In this assignment, I implemented McClelland’s classic 1981 Interactive Activation and Competition (IAC) model. Using the provided CSV matrix, I built excitatory and inhibitory connection matrices and set key parameters like resting activation, decay rate, and activation limits according to the original paper. I then programmed the model’s core update mechanism, which combines decay, net input, and input effects to update node activations over time. By probing specific nodes, such as the "Jets" gang, the individual "George," and the traits "20s" and "JH", the network was able to retrieve relevant attributes and identify individuals with shared characteristics. When comparing my results to McClelland’s original outputs, the activation patterns closely matched, with only minor differences due to time steps and clipping methods. This assignment gave me a deeper understanding of how simple network dynamics can model associative memory in a powerful and interpretable way.</p>
+          <p class="grade"><strong>Grade:</strong> TBA</p>
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
@@ -130,6 +131,7 @@
           </div>
         </div>
       </section>
+
     </main>
 
     <div id="site-footer"></div>

@@ -25,35 +25,48 @@ function getDens(alt) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Home‐page mini‐widget
-  const homeBtn = document.getElementById('home-calc-btn');
-  if (homeBtn) {
-    homeBtn.addEventListener('click', () => {
-      const alt = parseFloat(document.getElementById('home-altitude').value);
-      const err = document.getElementById('home-error');
-      if (isNaN(alt)) return err.textContent = 'Please enter a number.';
-      if (alt < 0 || alt > 47000) return err.textContent = 'Enter altitude between 0 m and 47 000 m.';
-      err.textContent = '';
-      document.getElementById('home-temp').textContent = `Temp: ${getTemp(alt).toFixed(2)} K`;
-      document.getElementById('home-pres').textContent = `Pres: ${getPres(alt).toFixed(2)} Pa`;
-      document.getElementById('home-dens').textContent = `Dens: ${getDens(alt).toExponential(5)} kg/m³`;
+  const input = document.getElementById('altitude-input');
+  const button = document.getElementById('calc-btn');
+  const err = document.getElementById('error-msg');
+  const tempOut = document.getElementById('temp-output');
+  const presOut = document.getElementById('pres-output');
+  const densOut = document.getElementById('dens-output');
+
+  function calculateAtmosphere() {
+    const alt = parseFloat(input.value);
+    if (isNaN(alt)) {
+      err.textContent = 'Please enter a number.';
+      return;
+    }
+    if (alt < 0 || alt > 47000) {
+      err.textContent = 'Enter altitude between 0 m and 47 000 m.';
+      return;
+    }
+    err.textContent = '';
+    const t = getTemp(alt),
+          p = getPres(alt),
+          d = getDens(alt);
+    tempOut.textContent = `Temperature: ${t.toFixed(2)} K (${(t - 273.15).toFixed(2)} °C)`;
+    const pFormatted = p.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
+    presOut.textContent = `Pressure: ${pFormatted} Pa`;
+    densOut.textContent = `Density: ${d.toFixed(5)} kg/m³`;
   }
 
-  // Full‐page widget
-  const fullBtn = document.getElementById('calc-btn');
-  if (fullBtn) {
-    fullBtn.addEventListener('click', () => {
-      const alt = parseFloat(document.getElementById('altitude-input').value);
-      const err = document.getElementById('error-msg');
-      if (isNaN(alt)) return err.textContent = 'Please enter a number.';
-      if (alt < 0 || alt > 47000) return err.textContent = 'Enter altitude between 0 m and 47 000 m.';
-      err.textContent = '';
-      const t = getTemp(alt), p = getPres(alt), d = getDens(alt);
-      document.getElementById('temp-output').textContent =
-        `Temperature: ${t.toFixed(2)} K (${(t - 273.15).toFixed(2)} °C)`;
-      document.getElementById('pres-output').textContent = `Pressure: ${p.toFixed(2)} Pa`;
-      document.getElementById('dens-output').textContent = `Density: ${d.toExponential(5)} kg/m³`;
+  // click handler
+  if (button) {
+    button.addEventListener('click', calculateAtmosphere);
+  }
+
+  // enter‐key handler
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        calculateAtmosphere();
+      }
     });
   }
 });

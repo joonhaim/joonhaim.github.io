@@ -1,4 +1,3 @@
-<!-- easysave.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,119 +7,123 @@
   <link rel="stylesheet" href="static/css/styles.css">
   <script src="static/js/script.js" defer></script>
   <script src="static/js/includes.js" defer></script>
+  <style>
+    :root { --bg-color: var(--color-bg); }
+    body {
+      background-color: var(--bg-color);
+      transition: background-color 0.6s ease;
+      overflow-x: hidden;
+    }
+    .fade-element { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .fade-element.visible { opacity: 1 !important; transform: translateY(0) !important; }
+    .section--full { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-md); text-align: center; }
+    .section--split { display: flex; flex-wrap: wrap; align-items: center; padding: var(--space-lg); gap: var(--space-lg); }
+    .section--split:nth-of-type(even) { flex-direction: row-reverse; }
+    .section--split .text { flex: 1 1 300px; max-width: 600px; }
+    .section--split .image { flex: 1 1 300px; }
+    .section--split .image img { width: 100%; height: auto; }
+    .arrow-down { margin-top: var(--space-sm); width: 2rem; height: 2rem; border-right: 0.3rem solid #000; border-bottom: 0.3rem solid #000; transform: rotate(45deg); animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0);}50%{transform:rotate(45deg) translateY(10px);} }
+    .logo-container img { max-width: 350px; width: 100%; height: auto; }
+    .hero-features ul { list-style: none; padding: 0; margin: var(--space-sm) 0; }
+    .hero-features li { display: inline-block; margin: 0 var(--space-xs); font-size: 0.9rem; }
+  </style>
 </head>
 <body>
   <div class="container">
-    <div id="site-header"></div>
+    <header id="site-header"></header>
 
     <main class="content">
-      <section class="project-intro">
-        <h1>EasySave: AI-Powered Student Financial Planner</h1>
-        <p>EasySave is a web-based app that helps students create personalized savings plans by analyzing past spending behavior and delivering actionable insights.</p>
+      <!-- Hero -->
+      <section id="hero" class="section section--full" data-bg="#f3ede6">
+        <div class="fade-element logo-container">
+          <img src="static/images/easysave/logo.png" alt="EasySave Logo" />
+        </div>
+        <p class="fade-element subtitle">AI-Powered Student Financial Planner</p>
+        <p class="repo-link fade-element"><a href="https://github.com/joonhaim/EasySave" target="_blank" rel="noopener">View on GitHub →</a></p>
+        <div class="hero-features fade-element"><ul><li><strong>Personalized Savings</strong></li><li><strong>Daily Budgets</strong></li><li><strong>Live Updates</strong></li><li><strong>Goal Tracking</strong></li></ul></div>
+        <div class="arrow-down fade-element"></div>
       </section>
 
-      <section id="features">
-        <h2>Features</h2>
-        <ul>
-          <li><strong>Personalized Savings Plans</strong>: Tailored recommendations based on your income and spending habits.</li>
-          <li><strong>Daily Spending Limit</strong>: Automatically calculated to help you stay within your savings goals.</li>
-          <li><strong>Real-Time Updates</strong>: Graphics and data update as you log new spending.</li>
-          <li><strong>Peer Comparison</strong>: Compare your spending habits with peers in the same demographic.</li>
-          <li><strong>Goal Tracking</strong>: Set and monitor savings goals with interactive progress indicators.</li>
-          <li><strong>Spending Predictions</strong>: Forecast next month’s spending based on historical data.</li>
-        </ul>
+      <!-- Showcase Sections -->
+      <section id="daily-budget" class="section section--split" data-bg="#ffffff">
+        <div class="text fade-element">
+          <h2>Personalized Savings Plans & Daily Budget Generator</h2>
+          <p>EasySave analyzes your income and past spending to craft a custom savings roadmap. Rather than one‑size‑fits‑all advice, you get recommendations that adapt to exactly how and when you spend. Every morning, you’ll see a precise ‘spend‑up‑to’ amount for the day, calculated from your goals and historic habits. Think of it as your pocket‑sized spending coach.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/easysave/homepage_screenshot.png" alt="Daily Budget screenshot">
+        </div>
       </section>
 
-      <section id="toc">
-        <h2>Table of Contents</h2>
-        <ol>
-          <li><a href="#installation">Installation</a></li>
-          <li><a href="#usage">Usage</a></li>
-          <li><a href="#demo">Demo</a></li>
-          <li><a href="#testing">Testing</a></li>
-          <li><a href="#license">License</a></li>
-          <li><a href="#authors">Authors & Acknowledgment</a></li>
-          <li><a href="#roadmap">Roadmap</a></li>
-          <li><a href="#support">Support</a></li>
-        </ol>
+      <section id="dashboard" class="section section--split" data-bg="#f5f0f0">
+        <div class="text fade-element">
+          <h2>Interactive Dashboard</h2>
+          <p>Log expenses on the fly and watch your dashboard update in real time—charts, progress bars, and peer‑benchmark markers all refresh as soon as you hit ‘Save’.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/easysave/interactive.png" alt="Dashboard screenshot">
+        </div>
       </section>
 
-      <section id="installation">
-        <h2>Installation and Update</h2>
-        <ol>
-          <li>Clone the repo:<pre><code>git clone https://github.com/joonhaim/EasySave.git
-cd EasySave</code></pre></li>
-          <li>Install dependencies:<pre><code>python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt</code></pre></li>
-          <li>Run the app:<pre><code>python main.py</code></pre></li>
-          <li>Open <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> in your browser.</li>
-        </ol>
-        <p>For updates, see <a href="update.md">Update Guide</a>.</p>
+      <section id="goal-tracking" class="section section--split" data-bg="#ffffff">
+        <div class="text fade-element">
+          <h2>Goal Tracking & Visual Progress</h2>
+          <p>Set weekly or monthly milestones and see exactly how close you are to hitting each target. Our visual trackers turn abstract numbers into tangible steps.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/easysave/saving_goals_screenshot.png" alt="Goal Tracking screenshot">
+        </div>
       </section>
 
-      <section id="usage">
-        <h2>Usage</h2>
-        <h3>Home Page</h3>
-        <p>Overview of spending and savings progress with interactive visualizations.</p>
-        <h3>Saving Goal Page</h3>
-        <p>Create and track savings goals with visual progress bars.</p>
-        <h3>Detailed Data Page</h3>
-        <p>Analyze spending trends with categorized graphs and filters.</p>
-        <h3>Predictions Page</h3>
-        <p>View next month’s spending forecast based on historical data.</p>
-        <h3>User Profile</h3>
-        <p>Manage your personal information and preferences.</p>
+      <section id="analysis" class="section section--split" data-bg="#f5f5f0">
+        <div class="text fade-element">
+          <h2>Spending Analysis</h2>
+          <p>Dive deep into your habits with categorized bar and line charts. Filter by date range or category to uncover where and how you might be able to trim.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/easysave/detailed_data_page_screenshot.png" alt="Analysis screenshot">
+        </div>
       </section>
 
-      <section id="demo">
-        <h2>Demo</h2>
-        <p><a href="https://leidenuniv1-my.sharepoint.com/:v:/g/personal/s3990788_vuw_leidenuniv_nl/EWQqtigp00xGjRqCbi2F1q8B63BJgNNwN9CLoWdJs7FKsg?e=0y7rta" target="_blank">Watch the demo video</a>.</p>
+      <section id="predictions" class="section section--split" data-bg="#ffffff">
+        <div class="text fade-element">
+          <h2>AI-Powered Predictions</h2>
+          <p>Let our ARIMA‑based engine forecast your next month’s spending so you can adjust today. It’ll even flag categories where you’re off track to meet your goals.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/placeholder.png" alt="Placeholder for Predictions screenshot">
+        </div>
       </section>
 
-      <section id="testing">
-        <h2>Testing</h2>
-        <h3>Path_test_combined.py</h3>
-        <p>Delete <code>data.db</code> in <code>instance/</code>, activate venv, then run:<pre><code>pytest Test/Path_Test_combined.py</code></pre>Delete <code>data.db</code> again afterwards.</p>
-        <h3>Coverage_test.py</h3>
-        <p>Start the app, then run:<pre><code>pytest Test/Coverage_test.py</code></pre></p>
+      <section id="profile-settings" class="section section--split" data-bg="#f5f0f0">
+        <div class="text fade-element">
+          <h2>Profile & Settings</h2>
+          <p>Manage your account details, switch themes or languages, and customize notification preferences, all from one tidy settings pane.</p>
+        </div>
+        <div class="image fade-element">
+          <img src="static/images/easysave/user_profile_screenshot.png" alt="Profile Settings screenshot">
+        </div>
       </section>
 
-      <section id="license">
-        <h2>License</h2>
-        <p>Academic use only; not licensed for public distribution.</p>
-      </section>
-
-      <section id="authors">
-        <h2>Authors &amp; Acknowledgment</h2>
-        <ul>
-          <li>Hao Chen (3990788)</li>
-          <li>Adrien Im (3984389)</li>
-          <li>Yihui Peng (3985571)</li>
-          <li>Tony Tian (3795888)</li>
-          <li>Zhemin Xie (3808440)</li>
-          <li>Jiajia Xu (3845567)</li>
-        </ul>
-        <p>Course: 4032SWDEV at Leiden University. Thanks to Dr. A. Saxena and TA Aart.</p>
-      </section>
-
-      <section id="roadmap">
-        <h2>Roadmap</h2>
-        <ul>
-          <li>Cross-device compatibility</li>
-          <li>Multi-currency support</li>
-          <li>Advanced analytics</li>
-          <li>Community features</li>
-        </ul>
-      </section>
-
-      <section id="support">
-        <h2>Support</h2>
-        <p>For issues, open an issue on <a href="https://github.com/joonhaim/EasySave" target="_blank">GitHub</a>.</p>
-      </section>
     </main>
 
-    <div id="site-footer"></div>
+    <footer id="site-footer"></footer>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.fade-element').forEach(el => el.classList.add('visible'));
+            const bg = entry.target.getAttribute('data-bg');
+            document.documentElement.style.setProperty('--bg-color', bg);
+          }
+        });
+      }, { threshold: 0.4 });
+      sections.forEach(sec => observer.observe(sec));
+    });
+  </script>
 </body>
 </html>

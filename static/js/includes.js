@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error(`Error loading ${url}:`, err));
   
     // inject header & footer
-    load('#site-header', 'partials/header.html');
+    const headerLoaded = load('#site-header', 'partials/header.html');
     load('#site-footer', 'partials/footer.html');
-  
+
     // once header is in place, highlight active link
-    load('#site-header', 'partials/header.html').then(() => {
+    headerLoaded.then(() => {
       const path = location.pathname.split('/').pop() || 'index.html';
       document.querySelectorAll('.main-nav a').forEach(a => {
         if (a.getAttribute('href') === path) a.classList.add('active');

@@ -9,11 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerLoaded = load('#site-header', 'partials/header.html');
     load('#site-footer', 'partials/footer.html');
 
-    // once header is in place, highlight active link
-    headerLoaded.then(() => {
-      const path = location.pathname.split('/').pop() || 'index.html';
-      document.querySelectorAll('.main-nav a').forEach(a => {
-        if (a.getAttribute('href') === path) a.classList.add('active');
-      });
+  // once header is in place, highlight active link and enable mobile nav
+  headerLoaded.then(() => {
+    const path = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.main-nav a').forEach(a => {
+      if (a.getAttribute('href') === path) a.classList.add('active');
     });
+
+    const navToggle = document.getElementById('nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', () => {
+        mainNav.classList.toggle('open');
+        const expanded = mainNav.classList.contains('open');
+        navToggle.setAttribute('aria-expanded', expanded);
+      });
+    }
+  });
   });

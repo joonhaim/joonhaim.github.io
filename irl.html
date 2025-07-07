@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Introduction to Reinforcement Learning</title>
+  <link rel="stylesheet" href="static/css/styles.css">
+  <script src="static/js/script.js" defer></script>
+  <script src="static/js/includes.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div id="site-header"></div>
+
+    <main class="content">
+      <!-- Intro + single GitHub link -->
+      <section class="project-intro">
+        <h1>Introduction to Reinforcement Learning</h1>
+        <p>Welcome to the repository for the <em>Introduction to Reinforcement Learning</em> course at <strong>Leiden University</strong>. This repository contains all assignments, each exploring a different aspect of reinforcement learning: from bandit problems and dynamic programming to model-free and model-based learning.</p>
+      </section>
+      <section>
+        <h2>Authors</h2>
+        <ul>
+          <li><strong>Adrien Joon-Ha Im</strong></li>
+          <li><strong>Bence Válint</strong></li>
+        </ul>
+      </section>
+
+      <!-- Table of Contents -->
+      <section id="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><a href="#assignment1a">Assignment 1A – Exploration Strategies in Bandits</a></li>
+          <li><a href="#assignment1b">Assignment 1B – Dynamic Programming</a></li>
+          <li><a href="#assignment2">Assignment 2 – Model-Free Reinforcement Learning</a></li>
+          <li><a href="#assignment3">Assignment 3 – Model-Based Reinforcement Learning</a></li>
+        </ol>
+      </section>
+
+            <!-- Assignment 1 -->
+      <section id="assignment1a" class="assignment-layout">
+        <div class="assignment-text">
+          <h2>Assignment 1A – Exploration Strategies in Bandits</h2>
+          <p class="subtitle"><strong>Action-value estimation and exploration in multi-armed bandits</strong></p>
+          <p><strong>Methods:</strong> ε-Greedy, Optimistic Initialization, Upper Confidence Bound (UCB)</p>
+          <p><strong>Includes:</strong> Strategy comparison and average reward plots</p>
+        </div>
+        <div class="assignment-pdf">
+          <div class="pdf-container">
+            <iframe src="IRL_A1/Assignment_1A_Report[FINAL].pdf#navpanes=0" title="Assignment 1A Report" loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assignment 2 -->
+      <section id="assignment1b" class="assignment-layout">
+        <div class="assignment-text">
+          <h2>Assignment 1B – Dynamic Programming</h2>
+          <p class="subtitle"><strong>Solving Gridworld using dynamic programming</strong></p>
+          <p><strong>Methods:</strong> Value Iteration, Policy Iteration</p>
+        </div>
+        <div class="assignment-pdf">
+          <div class="pdf-container">
+            <iframe src="IRL_A1/Assignment_1B_Report[FINAL].pdf#navpanes=0" title="Assignment 1B Report" loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assignment 3 -->
+      <section id="assignment2" class="assignment-layout">
+        <div class="assignment-text">
+          <h2>Assignment 2 – Model-Free Reinforcement Learning</h2>
+          <p class="subtitle"><strong>Learning through interaction without a model of the environment</strong></p>
+          <p><strong>Algorithms:</strong> Q-Learning, SARSA, Expected SARSA, n-step SARSA</p>
+          <p><strong>Environment:</strong> Custom GridWorld + Windy variant</p>
+          <p><strong>Includes:</strong> Learning curves, Greedy policies, Parameter sensitivity analysis</p>
+        </div>
+        <div class="assignment-pdf">
+          <div class="pdf-container">
+            <iframe src="IRL_A2/report.pdf#navpanes=0" title="Assignment 2 Report" loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assignment 4 -->
+      <section id="assignment3" class="assignment-layout">
+        <div class="assignment-text">
+          <h2>Assignment 3 – Model-Based Reinforcement Learning</h2>
+          <p class="subtitle"><strong>Planning with an explicit environment model</strong></p>
+          <p><strong>Algorithms:</strong> Dyna-Q (tabular model plus simulated planning), Prioritized Sweeping (focused planning via priority queue)</p>
+          <p><strong>Environment:</strong> Windy Gridworld (stochastic wind proportion 0.9 &amp; 1.0)</p>
+          <p><strong>Includes:</strong> Learning curves for varying planning depths (n = 0, 1, 3, 5), Pure Q-learning baseline (n = 0), Smooth vs. unsmoothed performance comparison, Runtime benchmarking, Comparison plots: Dyna vs. Prioritized Sweeping vs. Q-learning</p>
+        </div>
+        <div class="assignment-pdf">
+          <div class="pdf-container">
+            <iframe src="IRL_A3/report.pdf#navpanes=0" title="Assignment 3 Report" loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+</body>
+</html>

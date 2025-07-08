@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact</title>
+  <link rel="stylesheet" href="static/css/styles.css">
+  <script src="static/js/script.js" defer></script>
+  <script src="static/js/includes.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div id="site-header"></div>
+    <main class="content">
+      <section id="contact">
+        <h1>Contact</h1>
+        <p class="contact-intro">I am always open to new opportunities, feel free to contact me.</p>
+
+        <div class="contact-links">
+          <a href="mailto:a.j.im@umail.leidenuniv.nl">Email</a>
+          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
+        </div>
+
+        <form class="contact-form" action="https://formsubmit.co/a.j.im@umail.leidenuniv.nl" method="POST">
+          <input type="hidden" name="_subject" value="New contact form submission">
+          <label class="full-width">Name
+            <input type="text" name="name" required>
+          </label>
+          <label class="full-width">Email
+            <input type="email" name="email" required>
+          </label>
+          <label class="full-width">Message
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+    <div id="site-footer"></div>
+  </div>
+</body>
+</html>

@@ -13,14 +13,17 @@
     <div id="site-header"></div>
     <main class="content">
       <section id="contact">
-        <h1>Contact Me</h1>
-        <p>I am always open to new opportunities, feel free to contact me.</p>
-        <p>
-          <strong>Email:</strong> <a href="mailto:a.j.im@umail.leidenuniv.nl">a.j.im@umail.leidenuniv.nl</a><br>
-          <strong>GitHub:</strong> <a href="https://github.com/joonhaim" target="_blank">github.com/joonhaim</a><br>
-          <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/aj-im/" target="_blank">linkedin.com/in/aj-im</a>
-        </p>
-        <form class="contact-form" action="#" method="post">
+        <h1>Contact</h1>
+        <p class="contact-intro">I am always open to new opportunities, feel free to contact me.</p>
+
+        <div class="contact-links">
+          <a href="mailto:a.j.im@umail.leidenuniv.nl">Email</a>
+          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
+        </div>
+
+        <form class="contact-form" action="https://formsubmit.co/a.j.im@umail.leidenuniv.nl" method="POST">
+          <input type="hidden" name="_subject" value="New contact form submission">
           <label class="full-width">Name
             <input type="text" name="name" required>
           </label>

@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error(`Error loading ${url}:`, err));
   
     // inject header & footer
-    const headerLoaded = load('#site-header', 'partials/header.html');
-    load('#site-footer', 'partials/footer.html');
+    // use absolute paths so includes load even when the page URL is nested
+    const headerLoaded = load('#site-header', '/partials/header.html');
+    load('#site-footer', '/partials/footer.html');
 
   // once header is in place, highlight active link and enable mobile nav
   headerLoaded.then(() => {

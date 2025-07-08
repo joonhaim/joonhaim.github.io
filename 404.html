@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>404 – Page Not Found</title>
-  <link rel="stylesheet" href="static/css/styles.css">
-  <script src="static/js/script.js" defer></script>
-  <script src="static/js/includes.js" defer></script>
+  <!-- use root-relative paths so this page works from any URL -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script src="/static/js/script.js" defer></script>
+  <script src="/static/js/includes.js" defer></script>
   <style>
     .error-container { text-align:center; padding: var(--space-xl) 0; }
     .error-container h1 { font-size: 4rem; margin-bottom: var(--space-md); }

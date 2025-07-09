@@ -10,6 +10,8 @@
   <link rel='stylesheet' href='static/css/styles.css'>
   <script src='static/js/script.js' defer></script>
   <script src='static/js/includes.js' defer></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'></script>
+  <script src='static/js/generateCV.js' defer></script>
 
   <!-- page‑specific tweaks -->
   <style>
@@ -19,8 +21,8 @@
     .profile-summary{flex:1;min-width:260px;}
 
     /* shared cv section styles */
-    .cv-section{margin-bottom:var(--space-lg);}
-    .cv-section h2{font-size:1.6rem;margin-bottom:var(--space-sm);}
+    .cv-section{margin-bottom:var(--space-lg);page-break-inside:avoid;break-inside:avoid;}
+    .cv-section h2{font-size:1.6rem;margin-bottom:var(--space-sm);white-space:normal;}
 
     /* universal vertical timeline */
     .timeline{list-style:none;border-left:2px solid var(--color-border);padding-left:calc(var(--space-md) + 2px);}/* +2px so text clears the rule */
@@ -40,10 +42,28 @@
       .profile-summary{text-align:left;}
     }
 
-    .profile-summary h1{
+  .profile-summary h1{
     text-align:left;
     margin:0;
   }
+  .contact-line{display:flex;flex-wrap:wrap;margin:0;}
+  .cv-download-wrap{text-align:right;margin-bottom:var(--space-md);}
+  #download-cv{
+    display:inline-block;
+    padding:0.35rem 0.7rem;
+    font-size:1rem;
+    font:inherit;
+    font-weight:500;
+    border:none;
+    background:#000;
+    color:#fff;
+    cursor:pointer;
+    border-radius:0;
+  }
+  #download-cv:hover{opacity:0.85;}
+  main.pdf-export{font-size:0.85rem;}
+  main.pdf-export #download-cv{display:none;}
+
   </style>
 </head>
 
@@ -53,6 +73,10 @@
 
     <main class='content'>
 
+      <div class='cv-download-wrap'>
+        <button id="download-cv">Download PDF CV</button>
+      </div>
+
       <!-- Hero -->
       <section class='profile-header'>
         <img src='static/images/profile/profile.png' alt='Photo of Adrien Joon‑Ha Im' class='profile-pic' loading='lazy'>
@@ -60,9 +84,10 @@
           <h1>Adrien Joon‑Ha Im</h1>
           <p>BSc Data Science &amp; Artificial Intelligence — <strong>Leiden University</strong><br>Minor Biomedical Engineering — <strong>TU Delft</strong></p>
           <p></p>
-          <p><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a></p>
+          <p class='contact-line'><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a></p>
         </div>
       </section>
+
 
       <!-- Education -->
       <section id='education' class='cv-section'>
@@ -91,7 +116,7 @@
 
       <!-- Professional Experience -->
       <section id='experience' class='cv-section'>
-        <h2>Professional Experience</h2>
+        <h2>Professional Experience</h2>
         <ul class='timeline'>
           <li>
             <div class='title'>Assistant Sales Manager — MediThinQ</div>
@@ -121,7 +146,7 @@
 
       <!-- Other Experience & Service -->
       <section id='other-experience' class='cv-section'>
-        <h2>Other Service</h2>
+        <h2>Other Service</h2>
         <ul class='timeline'>
           <li>
             <div class='title'>Social Service Agent — Seoul Metropolitan Government</div>
@@ -166,7 +191,7 @@
 
       <!-- Technical Skills -->
       <section id='skills' class='cv-section'>
-        <h2>Technical Skills</h2>
+        <h2>Technical Skills</h2>
         <ul class='timeline'>
           <li><div class='title'>Programming Languages</div><p class='dot-sep'><span>Python</span><span>Java</span><span>SQL</span><span>R</span></p></li>
           <li><div class='title'>Frameworks &amp; Libraries</div><p class='dot-sep'><span>PyTorch</span><span>NumPy</span><span>Scikit‑learn</span><span>Flask</span></p></li>

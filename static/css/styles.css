@@ -189,6 +189,13 @@ body {
   margin: 0 auto var(--space-md);
 }
 
+/* 4b2. Lists */
+.content ul,
+.content ol {
+  padding-left: var(--space-md);
+  margin: var(--space-sm) 0;
+}
+
 /* 4c. Projects */
 .project {
   padding: var(--space-sm) 0;

@@ -470,3 +470,38 @@ body {
     justify-content: center;
   }
 }
+
+/* Placeholder project cards on projects page */
+.project-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.project-card {
+  flex: 1 1 calc(50% - var(--space-md));
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: var(--space-md);
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.project-card .project-logo {
+  margin-bottom: var(--space-sm);
+}
+
+.project-card h3 {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .project-card {
+    flex-basis: 100%;
+  }
+}

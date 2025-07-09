@@ -242,7 +242,7 @@ body {
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   margin-top: var(--space-sm);
 }
 

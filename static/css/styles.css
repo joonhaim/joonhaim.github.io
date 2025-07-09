@@ -242,8 +242,13 @@ body {
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   margin-top: var(--space-sm);
+}
+
+/* reduce whitespace after the About section */
+#about {
+  margin-bottom: var(--space-md);
 }
 
 

@@ -421,11 +421,13 @@ body {
 }
 
 .project-logo {
-  width: 100px;
-  height: 100px;
+  max-width: 150px;
+  max-height: 80px;
+  width: auto;
+  height: auto;
   flex-shrink: 0;
   object-fit: contain;
-  border-radius: 0%;
+  border-radius: 0;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.06);
 }

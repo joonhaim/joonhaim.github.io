@@ -1,0 +1,49 @@
+/* hero */
+.profile-header{display:flex;flex-wrap:wrap;gap:var(--space-lg);align-items:center;margin-bottom:var(--space-lg);}
+.profile-pic{width:200px;height:200px;object-fit:cover;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.profile-summary{flex:1;min-width:260px;}
+
+/* shared cv section styles */
+.cv-section{margin-bottom:var(--space-lg);page-break-inside:avoid;break-inside:avoid;}
+.cv-section h2{font-size:1.6rem;margin-bottom:var(--space-sm);white-space:normal;}
+
+/* universal vertical timeline */
+.timeline{list-style:none;border-left:2px solid var(--color-border);padding-left:calc(var(--space-md) + 2px);}/* +2px so text clears the rule */
+.timeline li{position:relative;margin-bottom:var(--space-lg);padding-left:var(--space-sm);}/* extra padding fixes dot–title crowding */
+.timeline li::before{content:'';position:absolute;left:-0.9rem;top:0.45rem;width:0.55rem;height:0.55rem;background:#000;border-radius:50%;}
+.timeline .title{font-weight:600;}
+.timeline .meta{font-size:.9rem;color:#444;margin:0.15rem 0 0.4rem;}
+
+/* languages / skills finer dot list inside timeline item */
+.dot-sep span+span::before{content:" • ";color:#555;}
+
+/* small details */
+.lang-list{list-style:none;padding-left:0;margin:0;}
+
+@media(max-width:600px){
+.profile-header{flex-direction:column;text-align:center;}
+.profile-summary{text-align:left;}
+}
+
+.profile-summary h1{
+text-align:left;
+margin:0;
+}
+.contact-line{display:flex;flex-wrap:wrap;margin:0;}
+.cv-download-wrap{text-align:right;margin-bottom:var(--space-md);}
+#download-cv{
+display:inline-block;
+padding:0.35rem 0.7rem;
+font-size:1rem;
+font:inherit;
+font-weight:500;
+border:none;
+background:#000;
+color:#fff;
+cursor:pointer;
+border-radius:0;
+}
+#download-cv:hover{opacity:0.85;}
+main.pdf-export{font-size:0.85rem;}
+main.pdf-export #download-cv{display:none;}
+

@@ -1,0 +1,3 @@
+.error-container { text-align:center; padding: var(--space-xl) 0; }
+.error-container h1 { font-size: 4rem; margin-bottom: var(--space-md); }
+.error-container p { font-size: 1.2rem; margin-bottom: var(--space-md); }

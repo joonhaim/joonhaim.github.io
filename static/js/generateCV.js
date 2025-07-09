@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btn.addEventListener('click', () => {
     const element = document.querySelector('main');
     if (!element) return;
+    element.classList.add('pdf-export');
     const opt = {
       margin:       0.4,
       filename:     'Adrien_Joon-Ha_Im_CV.pdf',
@@ -12,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
       pagebreak:    { mode: ['avoid-all'] }
     };
-    html2pdf().set(opt).from(element).save();
+    html2pdf().set(opt).from(element).save().then(() => {
+      element.classList.remove('pdf-export');
+    });
   });
 });

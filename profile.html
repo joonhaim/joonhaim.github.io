@@ -9,6 +9,8 @@
   <link rel='stylesheet' href='static/css/styles.css'>
   <script src='static/js/script.js' defer></script>
   <script src='static/js/includes.js' defer></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'></script>
+  <script src='static/js/generateCV.js' defer></script>
 
   <!-- page‑specific tweaks -->
   <style>
@@ -43,6 +45,9 @@
     text-align:left;
     margin:0;
   }
+  #download-cv{padding:0.75rem 1.5rem;font:inherit;font-weight:500;border:none;background:#000;color:#fff;cursor:pointer;margin-bottom:var(--space-lg);}
+  #download-cv:hover{opacity:0.85;}
+
   </style>
 </head>
 
@@ -62,6 +67,8 @@
           <p><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a></p>
         </div>
       </section>
+      <button id="download-cv">Download PDF CV</button>
+
 
       <!-- Education -->
       <section id='education' class='cv-section'>

@@ -41,14 +41,15 @@
       .profile-summary{text-align:left;}
     }
 
-    .profile-summary h1{
+  .profile-summary h1{
     text-align:left;
     margin:0;
   }
+  .contact-line{display:flex;align-items:center;flex-wrap:wrap;margin:0;}
   #download-cv{
-    display:block;
-    margin:0 0 var(--space-lg) auto;
-    padding:0.5rem 1rem;
+    display:inline-block;
+    margin-left:var(--space-md);
+    padding:0.4rem 0.8rem;
     font-size:1rem;
     font:inherit;
     font-weight:500;
@@ -56,10 +57,11 @@
     background:#000;
     color:#fff;
     cursor:pointer;
-    border-radius:4px;
+    border-radius:0;
   }
   #download-cv:hover{opacity:0.85;}
   main.pdf-export{font-size:0.85rem;}
+  main.pdf-export #download-cv{display:none;}
 
   </style>
 </head>
@@ -77,10 +79,9 @@
           <h1>Adrien Joon‑Ha Im</h1>
           <p>BSc Data Science &amp; Artificial Intelligence — <strong>Leiden University</strong><br>Minor Biomedical Engineering — <strong>TU Delft</strong></p>
           <p></p>
-          <p><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a></p>
+          <p class='contact-line'><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a><button id="download-cv">Download PDF CV</button></p>
         </div>
       </section>
-      <button id="download-cv">Download PDF CV</button>
 
 
       <!-- Education -->

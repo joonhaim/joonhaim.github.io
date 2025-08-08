@@ -13,10 +13,11 @@
 </head>
 <body>
   <div class="language-switcher">
-    <span class="active">DE</span> |
-    <a href="roestigraben_fr.html">FR</a> |
-    <a href="roestigraben_it.html">IT</a> |
-    <a href="roestigraben.html">EN</a>
+    <div class="lang-slider"></div>
+    <span class="lang-btn active">DE</span>
+    <a href="roestigraben_fr.html" class="lang-btn">FR</a>
+    <a href="roestigraben_it.html" class="lang-btn">IT</a>
+    <a href="roestigraben.html" class="lang-btn">EN</a>
   </div>
   <div class="swiss-cross"></div>
 
@@ -81,6 +82,29 @@
         });
       }, { threshold: 0.4 });
       sections.forEach(sec => observer.observe(sec));
+
+      const switcher = document.querySelector('.language-switcher');
+      const slider = switcher.querySelector('.lang-slider');
+      const buttons = switcher.querySelectorAll('.lang-btn');
+      const activeBtn = switcher.querySelector('.active');
+      const padding = parseFloat(getComputedStyle(switcher).paddingLeft);
+
+      function moveSlider(btn) {
+        slider.style.width = btn.offsetWidth + 'px';
+        slider.style.transform = `translateX(${btn.offsetLeft - padding}px)`;
+      }
+
+      moveSlider(activeBtn);
+
+      buttons.forEach(btn => {
+        if (btn.tagName === 'A') {
+          btn.addEventListener('click', e => {
+            e.preventDefault();
+            moveSlider(btn);
+            setTimeout(() => { window.location.href = btn.href; }, 300);
+          });
+        }
+      });
     });
   </script>
 </body>

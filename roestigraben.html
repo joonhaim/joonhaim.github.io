@@ -67,21 +67,7 @@
     </div>
   </section>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('.section');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.fade-element').forEach(el => el.classList.add('visible'));
-            entry.target.querySelectorAll('img.map').forEach(img => img.classList.add('visible'));
-            const bg = entry.target.getAttribute('data-bg');
-            document.documentElement.style.setProperty('--bg-color', bg);
-          }
-        });
-      }, { threshold: 0.4 });
-      sections.forEach(sec => observer.observe(sec));
-    });
-  </script>
+  <script src="static/js/roestigraben.js"></script>
 </body>
 </html>
+

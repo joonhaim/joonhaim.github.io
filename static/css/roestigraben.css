@@ -17,16 +17,27 @@ body {
   top: 1rem;
   left: 1rem;
   z-index: 10;
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-.language-switcher a,
-.language-switcher span {
-  margin: 0 0.5rem;
+.language-switcher .lang-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
   text-decoration: none;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.language-switcher .lang-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .language-switcher .active {
-  text-decoration: underline;
+  background-color: #000;
+  color: #fff;
 }
 /* Swiss cross in corner */
 .swiss-cross {

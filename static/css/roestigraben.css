@@ -46,6 +46,7 @@ body {
   right: 1rem;
   width: 2rem;
   height: 2rem;
+  display: block;
   background: white;
   clip-path: polygon(
     40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
@@ -53,6 +54,13 @@ body {
   );
   box-shadow: 0 0 0 2px #000;
   z-index: 10;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.swiss-cross:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px #000, 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 h1, h2 { margin: 0; line-height: 1.1; }
 h1 {

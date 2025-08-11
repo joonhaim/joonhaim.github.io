@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('download-cv');
+  const btn = document.getElementById('download-page-pdf');
   if (!btn) return;
   btn.addEventListener('click', () => {
     const element = document.querySelector('main');

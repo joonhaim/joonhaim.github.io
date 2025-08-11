@@ -31,7 +31,7 @@ margin:0;
 }
 .contact-line{display:flex;flex-wrap:wrap;margin:0;}
 .cv-download-wrap{text-align:right;margin-bottom:var(--space-md);}
-#download-cv{
+.cv-download-btn{
 display:inline-block;
 padding:0.35rem 0.7rem;
 font-size:1rem;
@@ -42,8 +42,9 @@ background:#000;
 color:#fff;
 cursor:pointer;
 border-radius:0;
+text-decoration:none;
 }
-#download-cv:hover{opacity:0.85;}
+.cv-download-btn:hover{opacity:0.85;}
 main.pdf-export{font-size:0.85rem;}
-main.pdf-export #download-cv{display:none;}
+main.pdf-export .cv-download-btn{display:none;}
 

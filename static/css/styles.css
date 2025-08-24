@@ -201,8 +201,10 @@ body {
   font-size: 1.25rem;
   margin-bottom: 0.25rem;
 }
-.project p {
+.project p,
+.project-card p {
   color: #555;
+  font-size: 0.9rem;
 }
 .project a {
   display: inline-block;

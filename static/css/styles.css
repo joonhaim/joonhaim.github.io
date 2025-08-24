@@ -369,6 +369,12 @@ body {
   justify-content: center;
 }
 
+/* HAI report: expand PDF and reduce spacing */
+#report .pdf-container {
+  margin: var(--space-md) 0;
+  max-width: none;
+}
+
 /* 8. RESPONSIVE */
 @media (max-width: 600px) {
   .social-links {

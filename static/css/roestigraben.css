@@ -75,7 +75,7 @@ body {
   height: 1.5rem;
 }
 .home-icon svg path {
-  fill: #fff;
+  fill: #000;
   transition: fill 0.3s;
 }
 .home-icon:hover {

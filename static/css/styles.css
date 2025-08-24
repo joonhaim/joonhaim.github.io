@@ -376,14 +376,19 @@ body {
   justify-content: center;
 }
 
-/* Vertical layout variant for centered reports */
-.assignment-layout.vertical {
-  flex-direction: column;
-  align-items: center;
-}
-
-.assignment-layout.vertical .assignment-text {
+/* HAI page layout */
+body.hai-page .content section {
   max-width: 700px;
+  margin: 0 auto var(--space-lg);
+}
+body.hai-page .content section:last-child {
+  margin-bottom: 0;
+}
+body.hai-page #report .grade {
+  margin-top: var(--space-lg);
+}
+body.hai-page .pdf-container {
+  margin: var(--space-lg) auto;
 }
 
 /* 8. RESPONSIVE */

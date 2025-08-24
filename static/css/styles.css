@@ -369,6 +369,19 @@ body {
   justify-content: center;
 }
 
+/* HAI report: stack content and allow full-width PDF */
+#report.assignment-layout {
+  flex-direction: column;
+}
+
+#report .assignment-pdf {
+  width: 100%;
+}
+
+#report .pdf-container {
+  max-width: none;
+}
+
 /* 8. RESPONSIVE */
 @media (max-width: 600px) {
   .social-links {

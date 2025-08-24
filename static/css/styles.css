@@ -371,8 +371,15 @@ body {
 
 /* HAI report: expand PDF and reduce spacing */
 #report .pdf-container {
-  margin: var(--space-md) 0;
-  max-width: none;
+  margin: var(--space-sm) auto;  /* auto left/right centers block elements */
+  max-width: 900px;              /* narrower width */
+}
+
+#report .pdf-container iframe {
+  display: block;   /* makes centering cleaner */
+  width: 100%;      /* fill container */
+  height: 900px;    /* taller PDF frame */
+  border: none;
 }
 
 /* 8. RESPONSIVE */

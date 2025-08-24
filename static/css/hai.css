@@ -1,0 +1,17 @@
+.project-intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+.project-intro .intro-text,
+.project-intro .highlights {
+  flex: 1 1 300px;
+  max-width: 600px;
+}
+
+.project-intro .highlights ul {
+  padding-left: 1.2rem;
+}
+

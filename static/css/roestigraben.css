@@ -11,12 +11,19 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-/* Language switcher */
-.language-switcher {
+/* Navigation container */
+.nav-container {
   position: fixed;
   top: 1rem;
   left: 1rem;
   z-index: 10;
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Language switcher */
+.language-switcher {
+  position: relative;
   display: flex;
   gap: 0.25rem;
   background: rgba(255, 255, 255, 0.85);
@@ -50,23 +57,26 @@ body {
   z-index: 0;
   transition: transform 0.3s ease, width 0.3s ease;
 }
-/* Home link next to Swiss cross */
-.home-link {
-  position: fixed;
-  top: 1rem;
-  right: 4rem;
-  z-index: 10;
+
+/* Home icon */
+.home-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(255, 255, 255, 0.85);
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   text-decoration: none;
   color: #000;
-  font-weight: 600;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s;
 }
-.home-link:hover {
+.home-icon:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+.home-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 /* Swiss cross in corner */
 .swiss-cross {

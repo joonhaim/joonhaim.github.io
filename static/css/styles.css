@@ -376,6 +376,16 @@ body {
   justify-content: center;
 }
 
+/* Vertical layout variant for centered reports */
+.assignment-layout.vertical {
+  flex-direction: column;
+  align-items: center;
+}
+
+.assignment-layout.vertical .assignment-text {
+  max-width: 700px;
+}
+
 /* 8. RESPONSIVE */
 @media (max-width: 600px) {
   .social-links {

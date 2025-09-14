@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schweizer Spitalanalyse (CH-IQI)</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="static/css/ch_hospital.css">
+</head>
+<body>
+  <div class="language-switcher">
+    <span class="lang-btn active">DE</span>
+    <a href="ch_hospital_fr.html" class="lang-btn">FR</a>
+    <a href="ch_hospital_it.html" class="lang-btn">IT</a>
+    <a href="ch_hospital.html" class="lang-btn">EN</a>
+  </div>
+  <a href="index.html" class="swiss-cross" aria-label="Zur Startseite"></a>
+
+  <section class="hero">
+    <h1>Schweizer Spitalanalyse (CH-IQI)</h1>
+    <p class="tagline">
+      Die Datenbank der Schweizer Qualitätsindikatoren (CH-IQI) bietet Einblick in die Leistung der grossen Universitätsspitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
+    </p>
+    <p class="hero-links">
+      <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
+      <span>Methodik: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub-Repo</a></span>
+    </p>
+  </section>
+
+  <section class="dashboard">
+    <div class="controls">
+      <p>Verfahren auswählen:</p>
+      <div id="procedure-buttons" class="procedure-buttons">
+        <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
+        <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
+        <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
+        <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
+        <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="casesChart"></canvas>
+    </div>
+    <div id="procedure-description" class="procedure-description"></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="static/js/ch_hospital.js"></script>
+</body>
+</html>

@@ -56,26 +56,40 @@ body {
   transform: scale(1.1);
 }
 
+.hero {
+  background: linear-gradient(135deg, #DA291C 0%, #A70000 100%);
+  color: #fff;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
 .dashboard {
   max-width: 1200px;
-  margin: 4rem auto 2rem;
+  margin: 2rem auto;
   padding: 2rem;
 }
-.dashboard h1 {
+.controls {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
-.cases-table {
-  width: 100%;
-  border-collapse: collapse;
+.controls select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
-.cases-table th,
-.cases-table td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-  text-align: center;
-}
-.cases-table th {
-  background-color: #DA291C;
-  color: #fff;
+
+.chart-container {
+  max-width: 900px;
+  margin: 0 auto;
 }

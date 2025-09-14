@@ -32,21 +32,53 @@
     </p>
   </section>
 
-  <section class="dashboard">
-    <div class="controls">
-      <p>Choose procedure:</p>
-      <div id="procedure-buttons" class="procedure-buttons">
-        <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
-        <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
-        <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
-        <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
-        <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
+  <section class="comparison">
+    <h2>Case Volume Comparison of University Hospitals</h2>
+    <p class="dataset-info">
+      This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
+      I retrieved and reshaped the original tables using R scripts available in the linked repository.
+    </p>
+    <div class="chart-controls">
+      <div class="chart-container">
+        <canvas id="casesChart"></canvas>
+      </div>
+      <div class="controls">
+        <p>Choose procedure:</p>
+        <div id="procedure-groups">
+          <div class="procedure-group">
+            <p class="group-title">Cardiology</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
+              <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
+              <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Neurology</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Oncology</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="chart-container">
-      <canvas id="casesChart"></canvas>
-    </div>
     <div id="procedure-description" class="procedure-description"></div>
+  </section>
+
+  <section class="placeholder">
+    <h2>Hospital Performance Comparison</h2>
+    <p>Under construction</p>
+  </section>
+
+  <section class="placeholder">
+    <h2>Comparison of Large, Medium and Small Hospitals</h2>
+    <p>Under construction</p>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -58,12 +58,29 @@ const yAxisLabel = {
 const ctx = document.getElementById('casesChart').getContext('2d');
 let casesChart;
 
-function updateChart(code) {
-  const values = cases[code];
-  const label = procedureLabels[code][lang];
-  const hospitalLabels = hospitals[lang];
+const palette = [
+  ['rgba(230, 57, 70, 0.7)', 'rgba(230, 57, 70, 1)'],
+  ['rgba(69, 123, 157, 0.7)', 'rgba(69, 123, 157, 1)'],
+  ['rgba(42, 157, 143, 0.7)', 'rgba(42, 157, 143, 1)'],
+  ['rgba(233, 196, 106, 0.7)', 'rgba(233, 196, 106, 1)'],
+  ['rgba(141, 59, 114, 0.7)', 'rgba(141, 59, 114, 1)']
+];
 
-  document.getElementById('procedure-description').textContent = `${code} – ${label}`;
+function updateChart(codes) {
+  const hospitalLabels = hospitals[lang];
+  const descriptionEl = document.getElementById('procedure-description');
+
+  const datasets = codes.map((code, idx) => ({
+    label: procedureLabels[code][lang],
+    data: cases[code],
+    backgroundColor: palette[idx % palette.length][0],
+    borderColor: palette[idx % palette.length][1],
+    borderWidth: 1
+  }));
+
+  descriptionEl.innerHTML = codes
+    .map(code => `${code} – ${procedureLabels[code][lang]}`)
+    .join('<br>');
 
   if (casesChart) {
     casesChart.destroy();
@@ -73,13 +90,7 @@ function updateChart(code) {
     type: 'bar',
     data: {
       labels: hospitalLabels,
-      datasets: [{
-        label,
-        data: values,
-        backgroundColor: 'rgba(218, 41, 28, 0.6)',
-        borderColor: 'rgba(218, 41, 28, 1)',
-        borderWidth: 1
-      }]
+      datasets
     },
     options: {
       responsive: true,
@@ -98,13 +109,22 @@ function updateChart(code) {
 }
 
 const buttons = document.querySelectorAll('.procedure-btn');
+const selectedCodes = new Set(
+  Array.from(document.querySelectorAll('.procedure-btn.active')).map(b => b.dataset.code)
+);
+
 buttons.forEach(btn => {
   btn.addEventListener('click', () => {
-    buttons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    updateChart(btn.dataset.code);
+    const code = btn.dataset.code;
+    if (selectedCodes.has(code)) {
+      selectedCodes.delete(code);
+      btn.classList.remove('active');
+    } else {
+      selectedCodes.add(code);
+      btn.classList.add('active');
+    }
+    updateChart(Array.from(selectedCodes));
   });
 });
 
-const firstCode = document.querySelector('.procedure-btn.active').dataset.code;
-updateChart(firstCode);
+updateChart(Array.from(selectedCodes));

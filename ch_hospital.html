@@ -20,50 +20,33 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
-  <div class="dashboard">
+  <section class="hero">
     <h1>Swiss Hospital Analysis (CH-IQI)</h1>
-    <table class="cases-table">
-      <thead>
-        <tr>
-          <th>Hospital</th>
-          <th>Surgery A</th>
-          <th>Surgery B</th>
-          <th>Surgery C</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>USZ</td>
-          <td>TBD</td>
-          <td>TBD</td>
-          <td>TBD</td>
-        </tr>
-        <tr>
-          <td>HUG</td>
-          <td>TBD</td>
-          <td>TBD</td>
-          <td>TBD</td>
-        </tr>
-        <tr>
-          <td>CHUV</td>
-          <td>TBD</td>
-          <td>TBD</td>
-          <td>TBD</td>
-        </tr>
-        <tr>
-          <td>USB</td>
-          <td>TBD</td>
-          <td>TBD</td>
-          <td>TBD</td>
-        </tr>
-        <tr>
-          <td>Inselspital</td>
-          <td>TBD</td>
-          <td>TBD</td>
-          <td>TBD</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <p>
+      The Swiss Inpatient Quality Indicators (CH-IQI) database provides a view into the
+      performance of major hospitals. Select a procedure below to explore the
+      number of cases reported by each institution. Data are compiled using the
+      methodology published by the Federal Office of Public Health.
+    </p>
+  </section>
+
+  <section class="dashboard">
+    <div class="controls">
+      <label for="procedure-select">Choose procedure:</label>
+      <select id="procedure-select">
+        <option value="A.3.1.F">Coronary catheterizations</option>
+        <option value="A.7.1.F">Cardiac surgery</option>
+        <option value="B.1.18.F">Thrombectomies</option>
+        <option value="E.4.1.F">Colorectal resections</option>
+        <option value="I.3.1.F">Hip fracture surgery</option>
+      </select>
+    </div>
+    <div class="chart-container">
+      <canvas id="casesChart" height="400"></canvas>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

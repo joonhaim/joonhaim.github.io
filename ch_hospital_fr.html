@@ -21,27 +21,30 @@
   <a href="index.html" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
-    <h1>Analyse des hôpitaux suisses (CH-IQI)</h1>
-    <p class="tagline">
+    <h1 class="fade-element">Analyse des hôpitaux suisses (CH-IQI)</h1>
+    <p class="tagline fade-element">
       La base de données des Indicateurs de qualité hospitaliers (CH-IQI) offre un aperçu des performances des principaux hôpitaux universitaires. Sélectionnez une intervention pour explorer les volumes de cas 2023.
     </p>
-    <p class="hero-links">
+    <p class="hero-links fade-element">
       <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
       <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
     </p>
   </section>
 
   <section class="comparison">
-    <h2>Comparaison du volume des cas des hôpitaux universitaires</h2>
-    <p class="dataset-info">
+    <h2 class="fade-element">Comparaison du volume des cas des hôpitaux universitaires</h2>
+    <p class="dataset-info fade-element">
       Cet ensemble de données réunit les nombres de cas des hôpitaux universitaires suisses à partir des indicateurs CH‑IQI.
       J'ai extrait et restructuré les tableaux originaux à l'aide de scripts R disponibles dans le dépôt lié.
     </p>
+    <p class="dataset-details fade-element">
+      Les indicateurs de qualité des hôpitaux suisses de soins aigus contiennent des données relatives aux traitements appliqués dans les hôpitaux suisses depuis 2008. Les nombres de cas, divers pourcentages (p. ex., taux de césarienne), les taux de mortalité pour certaines pathologies et interventions ainsi que des durées de séjour sélectionnées, des transferts et des traitements avec nombre minimal de cas y sont notamment présentés. Ces indicateurs permettent tout d'abord au grand public d'avoir un aperçu de l'activité des établissements hospitaliers, les prestations desquels sont financées en grande partie par les primes et les impôts. Il est donc possible de choisir son hôpital en toute connaissance de cause. Par ailleurs, les comparaisons entre hôpitaux devraient alimenter les discussions sur la qualité menées par les spécialistes au sein des organisations professionnelles.
+    </p>
     <div class="chart-controls">
-      <div class="chart-container">
+      <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
-      <div class="controls">
+      <div class="controls fade-element">
         <p>Choisir une intervention :</p>
         <div id="procedure-groups">
           <div class="procedure-group">
@@ -56,26 +59,41 @@
             <p class="group-title">Neurologie</p>
             <div class="procedure-buttons">
               <button class="procedure-btn" data-code="B.2.3.F">Unité AVC – traitement complexe</button>
+              <button class="procedure-btn" data-code="B.4.1.F">Traitements de l'épilepsie</button>
             </div>
           </div>
           <div class="procedure-group">
             <p class="group-title">Oncologie</p>
             <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="D.3.1.F">Traitements du cancer du poumon</button>
+              <button class="procedure-btn" data-code="E.4.11.F">Traitements du cancer colorectal</button>
               <button class="procedure-btn" data-code="G.4.1.F">Traitements du cancer du sein</button>
             </div>
           </div>
+          <div class="procedure-group">
+            <p class="group-title">Transplantation</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="L.5.1.F">Transplantation rénale</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Orthopédie</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="Z.4.37.F">Prothèse totale de hanche</button>
+            </div>
+          </div>
         </div>
+        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
-    <div id="procedure-description" class="procedure-description"></div>
   </section>
 
-  <section class="placeholder">
+  <section class="placeholder fade-element">
     <h2>Comparaison des performances des hôpitaux</h2>
     <p>En construction</p>
   </section>
 
-  <section class="placeholder">
+  <section class="placeholder fade-element">
     <h2>Comparaison des grands, moyens et petits hôpitaux</h2>
     <p>En construction</p>
   </section>

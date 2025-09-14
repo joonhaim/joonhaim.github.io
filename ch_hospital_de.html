@@ -21,27 +21,30 @@
   <a href="index.html" class="swiss-cross" aria-label="Zur Startseite"></a>
 
   <section class="hero">
-    <h1>Schweizer Spitalanalyse (CH-IQI)</h1>
-    <p class="tagline">
+    <h1 class="fade-element">Schweizer Spitalanalyse (CH-IQI)</h1>
+    <p class="tagline fade-element">
       Die Datenbank der Schweizer Qualitätsindikatoren (CH-IQI) bietet Einblick in die Leistung der grossen Universitätsspitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
     </p>
-    <p class="hero-links">
+    <p class="hero-links fade-element">
       <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
       <span>Methodik: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub-Repo</a></span>
     </p>
   </section>
 
   <section class="comparison">
-    <h2>Fallzahlvergleich der Universitätsspitäler</h2>
-    <p class="dataset-info">
+    <h2 class="fade-element">Fallzahlvergleich der Universitätsspitäler</h2>
+    <p class="dataset-info fade-element">
       Dieser Datensatz enthält Fallzahlen der Schweizer Universitätsspitäler aus den CH‑IQI-Indikatoren.
       Die ursprünglichen Tabellen habe ich mit R-Skripten aus dem verlinkten Repository abgerufen und aufbereitet.
     </p>
+    <p class="dataset-details fade-element">
+      Die Qualitätsindikatoren der Schweizer Akutspitäler enthalten seit 2008 Daten zu Behandlungen in Schweizer Spitälern. Sie zeigen Fallzahlen, verschiedene Prozentsätze (z. B. Kaiserschnittrate), Mortalitätsraten für bestimmte Pathologien und Eingriffe sowie ausgewählte Aufenthaltsdauern, Transfers und Behandlungen mit Mindestfallzahlen. Diese Indikatoren geben der Öffentlichkeit einen Überblick über die Aktivitäten der Spitäler, deren Leistungen zu einem grossen Teil durch Prämien und Steuern finanziert werden. So kann man sein Spital fundiert wählen. Vergleiche zwischen Spitälern sollen zudem die Qualitätsdiskussionen unter Fachleuten in ihren Organisationen fördern.
+    </p>
     <div class="chart-controls">
-      <div class="chart-container">
+      <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
-      <div class="controls">
+      <div class="controls fade-element">
         <p>Verfahren auswählen:</p>
         <div id="procedure-groups">
           <div class="procedure-group">
@@ -56,26 +59,41 @@
             <p class="group-title">Neurologie</p>
             <div class="procedure-buttons">
               <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
+              <button class="procedure-btn" data-code="B.4.1.F">Epilepsiebehandlungen</button>
             </div>
           </div>
           <div class="procedure-group">
             <p class="group-title">Onkologie</p>
             <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="D.3.1.F">Behandlungen bei Lungenkrebs</button>
+              <button class="procedure-btn" data-code="E.4.11.F">Behandlungen bei kolorektalem Karzinom</button>
               <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
             </div>
           </div>
+          <div class="procedure-group">
+            <p class="group-title">Transplantation</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="L.5.1.F">Nierentransplantation</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Orthopädie</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="Z.4.37.F">Hüftprothese (primär)</button>
+            </div>
+          </div>
         </div>
+        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
-    <div id="procedure-description" class="procedure-description"></div>
   </section>
 
-  <section class="placeholder">
+  <section class="placeholder fade-element">
     <h2>Vergleich der Krankenhausleistung</h2>
     <p>Im Aufbau</p>
   </section>
 
-  <section class="placeholder">
+  <section class="placeholder fade-element">
     <h2>Vergleich großer, mittlerer und kleiner Spitäler</h2>
     <p>Im Aufbau</p>
   </section>

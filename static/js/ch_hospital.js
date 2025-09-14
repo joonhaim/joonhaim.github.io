@@ -59,11 +59,11 @@ const ctx = document.getElementById('casesChart').getContext('2d');
 let casesChart;
 
 const palette = [
-  ['rgba(218, 41, 28, 0.6)', 'rgba(218, 41, 28, 1)'],
-  ['rgba(0, 122, 51, 0.6)', 'rgba(0, 122, 51, 1)'],
-  ['rgba(0, 45, 149, 0.6)', 'rgba(0, 45, 149, 1)'],
-  ['rgba(255, 195, 0, 0.6)', 'rgba(255, 195, 0, 1)'],
-  ['rgba(128, 0, 128, 0.6)', 'rgba(128, 0, 128, 1)']
+  ['rgba(230, 57, 70, 0.7)', 'rgba(230, 57, 70, 1)'],
+  ['rgba(69, 123, 157, 0.7)', 'rgba(69, 123, 157, 1)'],
+  ['rgba(42, 157, 143, 0.7)', 'rgba(42, 157, 143, 1)'],
+  ['rgba(233, 196, 106, 0.7)', 'rgba(233, 196, 106, 1)'],
+  ['rgba(141, 59, 114, 0.7)', 'rgba(141, 59, 114, 1)']
 ];
 
 function updateChart(codes) {

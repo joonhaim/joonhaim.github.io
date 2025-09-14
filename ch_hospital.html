@@ -21,7 +21,7 @@
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
   <section class="hero">
-    <h1>Case Volume Comparison of University Hospitals</h1>
+    <h1>Swiss Hospital Analysis (CH-IQI)</h1>
     <p class="tagline">
       The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
       performance of major hospitals. Select a procedure to explore 2023 case volumes.
@@ -30,13 +30,14 @@
       <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
       <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
     </p>
+  </section>
+
+  <section class="comparison">
+    <h2>Case Volume Comparison of University Hospitals</h2>
     <p class="dataset-info">
       This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
       I retrieved and reshaped the original tables using R scripts available in the linked repository.
     </p>
-  </section>
-
-  <section class="dashboard">
     <div class="chart-controls">
       <div class="chart-container">
         <canvas id="casesChart"></canvas>

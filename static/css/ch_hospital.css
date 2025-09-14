@@ -85,23 +85,32 @@ body {
   text-decoration: underline;
 }
 
-.dataset-info {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  line-height: 1.4;
+.comparison {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
 }
 
-.dashboard {
-  max-width: 1200px;
-  margin: 3rem auto;
-  padding: 3rem;
+.comparison h2 {
+  text-align: center;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.dataset-info {
+  max-width: 800px;
+  margin: 0.5rem auto 2rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .chart-controls {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 3rem;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .chart-container {
@@ -111,6 +120,7 @@ body {
 
 .controls {
   text-align: left;
+  min-width: 220px;
 }
 
 .procedure-buttons {

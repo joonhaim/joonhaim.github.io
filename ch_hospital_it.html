@@ -21,7 +21,7 @@
   <a href="index.html" class="swiss-cross" aria-label="Torna alla homepage"></a>
 
   <section class="hero">
-    <h1>Confronto del volume dei casi degli ospedali universitari</h1>
+    <h1>Analisi degli ospedali svizzeri (CH-IQI)</h1>
     <p class="tagline">
       Il database degli Indicatori di qualità ospedaliera (CH-IQI) offre una panoramica delle prestazioni dei principali ospedali universitari. Seleziona una procedura per esplorare i volumi di casi 2023.
     </p>
@@ -29,45 +29,46 @@
       <span>Fonte: <a href="https://www.bag.admin.ch/it/indicatori-di-qualita-degli-ospedali-per-cure-acute-svizzeri" target="_blank" rel="noopener">UFSP CH-IQI</a></span>
       <span>Metodologia: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repository GitHub</a></span>
     </p>
+  </section>
+
+  <section class="comparison">
+    <h2>Confronto del volume dei casi degli ospedali universitari</h2>
     <p class="dataset-info">
       Questo set di dati raccoglie il numero di casi degli ospedali universitari svizzeri dagli indicatori CH‑IQI.
       Ho estratto e rielaborato le tabelle originali con script R disponibili nel repository collegato.
     </p>
-  </section>
-
-    <section class="dashboard">
-      <div class="chart-controls">
-        <div class="chart-container">
-          <canvas id="casesChart"></canvas>
-        </div>
-        <div class="controls">
-          <p>Scegli la procedura:</p>
-          <div id="procedure-groups">
-            <div class="procedure-group">
-              <p class="group-title">Cardiologia</p>
-              <div class="procedure-buttons">
-                <button class="procedure-btn active" data-code="A.3.1.F">Cateterismo coronarico</button>
-                <button class="procedure-btn" data-code="A.4.1.F">Disturbi del ritmo cardiaco</button>
-                <button class="procedure-btn" data-code="A.5.1.F">Impianto di pacemaker/ICD</button>
-              </div>
+    <div class="chart-controls">
+      <div class="chart-container">
+        <canvas id="casesChart"></canvas>
+      </div>
+      <div class="controls">
+        <p>Scegli la procedura:</p>
+        <div id="procedure-groups">
+          <div class="procedure-group">
+            <p class="group-title">Cardiologia</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn active" data-code="A.3.1.F">Cateterismo coronarico</button>
+              <button class="procedure-btn" data-code="A.4.1.F">Disturbi del ritmo cardiaco</button>
+              <button class="procedure-btn" data-code="A.5.1.F">Impianto di pacemaker/ICD</button>
             </div>
-            <div class="procedure-group">
-              <p class="group-title">Neurologia</p>
-              <div class="procedure-buttons">
-                <button class="procedure-btn" data-code="B.2.3.F">Unità ictus – trattamento complesso</button>
-              </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Neurologia</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="B.2.3.F">Unità ictus – trattamento complesso</button>
             </div>
-            <div class="procedure-group">
-              <p class="group-title">Oncologia</p>
-              <div class="procedure-buttons">
-                <button class="procedure-btn" data-code="G.4.1.F">Trattamenti per il cancro al seno</button>
-              </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Oncologia</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="G.4.1.F">Trattamenti per il cancro al seno</button>
             </div>
           </div>
         </div>
       </div>
-      <div id="procedure-description" class="procedure-description"></div>
-    </section>
+    </div>
+    <div id="procedure-description" class="procedure-description"></div>
+  </section>
 
   <section class="placeholder">
     <h2>Confronto delle prestazioni degli ospedali</h2>

@@ -22,28 +22,31 @@
 
   <section class="hero">
     <h1>Swiss Hospital Analysis (CH-IQI)</h1>
-    <p>
-      The Swiss Inpatient Quality Indicators (CH-IQI) database provides a view into the
-      performance of major hospitals. Select a procedure below to explore the
-      number of cases reported by each institution. Data are compiled using the
-      methodology published by the Federal Office of Public Health.
+    <p class="tagline">
+      The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
+      performance of major hospitals. Select a procedure to explore 2023 case volumes.
+    </p>
+    <p class="hero-links">
+      <span>Source: <a href="https://www.bag.admin.ch" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
+      <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
     </p>
   </section>
 
   <section class="dashboard">
     <div class="controls">
-      <label for="procedure-select">Choose procedure:</label>
-      <select id="procedure-select">
-        <option value="A.3.1.F">Coronary catheterizations</option>
-        <option value="A.7.1.F">Cardiac surgery</option>
-        <option value="B.1.18.F">Thrombectomies</option>
-        <option value="E.4.1.F">Colorectal resections</option>
-        <option value="I.3.1.F">Hip fracture surgery</option>
-      </select>
+      <p>Choose procedure:</p>
+      <div id="procedure-buttons" class="procedure-buttons">
+        <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
+        <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
+        <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
+        <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
+        <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
+      </div>
     </div>
     <div class="chart-container">
-      <canvas id="casesChart" height="400"></canvas>
+      <canvas id="casesChart"></canvas>
     </div>
+    <div id="procedure-description" class="procedure-description"></div>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

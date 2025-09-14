@@ -1,23 +1,23 @@
 const procedureData = {
   "A.3.1.F": {
-    label: "Coronary catheterizations",
-    cases: { USZ: 120, HUG: 110, CHUV: 95, USB: 80, Inselspital: 100 }
+    label: "Coronary catheterization (age >19)",
+    cases: { CHUV: 1299, HUG: 1188, Inselspital: 3057, USB: 1960, USZ: 2099 }
   },
-  "A.7.1.F": {
-    label: "Cardiac surgery",
-    cases: { USZ: 75, HUG: 90, CHUV: 85, USB: 60, Inselspital: 70 }
+  "A.4.1.F": {
+    label: "Cardiac rhythm disorders (hospitalizations)",
+    cases: { CHUV: 703, HUG: 615, Inselspital: 1974, USB: 1539, USZ: 764 }
   },
-  "B.1.18.F": {
-    label: "Thrombectomies",
-    cases: { USZ: 30, HUG: 25, CHUV: 20, USB: 18, Inselspital: 22 }
+  "A.5.1.F": {
+    label: "Pacemaker/ICD implantation or replacement",
+    cases: { CHUV: 265, HUG: 264, Inselspital: 714, USB: 540, USZ: 486 }
   },
-  "E.4.1.F": {
-    label: "Colorectal resections",
-    cases: { USZ: 55, HUG: 60, CHUV: 50, USB: 45, Inselspital: 48 }
+  "B.2.3.F": {
+    label: "Stroke unit – complex treatment",
+    cases: { CHUV: 751, HUG: 958, Inselspital: 1907, USB: 1206, USZ: 909 }
   },
-  "I.3.1.F": {
-    label: "Hip fracture surgery",
-    cases: { USZ: 65, HUG: 70, CHUV: 60, USB: 58, Inselspital: 62 }
+  "G.4.1.F": {
+    label: "Breast cancer (inpatient treatments)",
+    cases: { CHUV: 341, HUG: 349, Inselspital: 278, USB: 339, USZ: 199 }
   }
 };
 
@@ -28,6 +28,8 @@ function updateChart(code) {
   const proc = procedureData[code];
   const hospitals = Object.keys(proc.cases);
   const values = Object.values(proc.cases);
+
+  document.getElementById('procedure-description').textContent = `${code} – ${proc.label}`;
 
   if (casesChart) {
     casesChart.destroy();
@@ -47,6 +49,7 @@ function updateChart(code) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true,
@@ -60,8 +63,14 @@ function updateChart(code) {
   });
 }
 
-const select = document.getElementById('procedure-select');
-select.addEventListener('change', (e) => updateChart(e.target.value));
+const buttons = document.querySelectorAll('.procedure-btn');
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateChart(btn.dataset.code);
+  });
+});
 
-// initialize with first procedure
-updateChart(select.value);
+// initialize with first button
+updateChart(document.querySelector('.procedure-btn.active').dataset.code);

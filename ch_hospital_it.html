@@ -37,10 +37,8 @@
       Questo set di dati raccoglie il numero di casi degli ospedali universitari svizzeri dagli indicatori CH‑IQI.
       Ho estratto e rielaborato le tabelle originali con script R disponibili nel repository collegato.
     </p>
-    <p class="dataset-details fade-element">
-      Gli indicatori di qualità degli ospedali svizzeri di cure acute contengono dati sui trattamenti effettuati negli ospedali svizzeri dal 2008. Vi si trovano numeri di casi, varie percentuali (p.es. tasso di taglio cesareo), tassi di mortalità per determinate patologie e interventi, nonché durate di degenza selezionate, trasferimenti e trattamenti con un numero minimo di casi. Questi indicatori offrono innanzitutto al grande pubblico una panoramica dell'attività degli ospedali, le cui prestazioni sono finanziate in gran parte da premi e imposte. Ciò permette di scegliere consapevolmente il proprio ospedale. Inoltre, i confronti tra ospedali alimentano le discussioni sulla qualità tra gli specialisti all'interno delle organizzazioni professionali.
-    </p>
     <div class="chart-controls">
+      <div id="procedure-description" class="procedure-description fade-element"></div>
       <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
@@ -83,7 +81,6 @@
             </div>
           </div>
         </div>
-        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
   </section>

@@ -111,7 +111,7 @@ function updateChart(codes) {
   const descriptionEl = document.getElementById('procedure-description');
 
   const datasets = codes.map((code, idx) => ({
-    label: code,
+    label: procedureLabels[code][lang],
     data: cases[code],
     backgroundColor: palette[idx % palette.length][0],
     borderColor: palette[idx % palette.length][1],

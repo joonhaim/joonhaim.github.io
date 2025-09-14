@@ -97,8 +97,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.dataset-info,
-.dataset-details {
+.dataset-info {
   max-width: 800px;
   margin: 0.5rem auto 1rem;
   font-size: 0.95rem;
@@ -173,7 +172,7 @@ body {
 }
 
 .procedure-description {
-  margin-top: 1rem;
+  margin: 0 0 1rem;
   text-align: center;
   font-size: 0.95rem;
 }

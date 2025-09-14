@@ -37,10 +37,8 @@
       Dieser Datensatz enthält Fallzahlen der Schweizer Universitätsspitäler aus den CH‑IQI-Indikatoren.
       Die ursprünglichen Tabellen habe ich mit R-Skripten aus dem verlinkten Repository abgerufen und aufbereitet.
     </p>
-    <p class="dataset-details fade-element">
-      Die Qualitätsindikatoren der Schweizer Akutspitäler enthalten seit 2008 Daten zu Behandlungen in Schweizer Spitälern. Sie zeigen Fallzahlen, verschiedene Prozentsätze (z. B. Kaiserschnittrate), Mortalitätsraten für bestimmte Pathologien und Eingriffe sowie ausgewählte Aufenthaltsdauern, Transfers und Behandlungen mit Mindestfallzahlen. Diese Indikatoren geben der Öffentlichkeit einen Überblick über die Aktivitäten der Spitäler, deren Leistungen zu einem grossen Teil durch Prämien und Steuern finanziert werden. So kann man sein Spital fundiert wählen. Vergleiche zwischen Spitälern sollen zudem die Qualitätsdiskussionen unter Fachleuten in ihren Organisationen fördern.
-    </p>
     <div class="chart-controls">
+      <div id="procedure-description" class="procedure-description fade-element"></div>
       <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
@@ -83,7 +81,6 @@
             </div>
           </div>
         </div>
-        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
   </section>

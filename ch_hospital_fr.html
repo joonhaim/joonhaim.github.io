@@ -37,10 +37,8 @@
       Cet ensemble de données réunit les nombres de cas des hôpitaux universitaires suisses à partir des indicateurs CH‑IQI.
       J'ai extrait et restructuré les tableaux originaux à l'aide de scripts R disponibles dans le dépôt lié.
     </p>
-    <p class="dataset-details fade-element">
-      Les indicateurs de qualité des hôpitaux suisses de soins aigus contiennent des données relatives aux traitements appliqués dans les hôpitaux suisses depuis 2008. Les nombres de cas, divers pourcentages (p. ex., taux de césarienne), les taux de mortalité pour certaines pathologies et interventions ainsi que des durées de séjour sélectionnées, des transferts et des traitements avec nombre minimal de cas y sont notamment présentés. Ces indicateurs permettent tout d'abord au grand public d'avoir un aperçu de l'activité des établissements hospitaliers, les prestations desquels sont financées en grande partie par les primes et les impôts. Il est donc possible de choisir son hôpital en toute connaissance de cause. Par ailleurs, les comparaisons entre hôpitaux devraient alimenter les discussions sur la qualité menées par les spécialistes au sein des organisations professionnelles.
-    </p>
     <div class="chart-controls">
+      <div id="procedure-description" class="procedure-description fade-element"></div>
       <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
@@ -83,7 +81,6 @@
             </div>
           </div>
         </div>
-        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
   </section>

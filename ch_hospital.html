@@ -38,10 +38,8 @@
       This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
       I retrieved and reshaped the original tables using R scripts available in the linked repository.
     </p>
-    <p class="dataset-details fade-element">
-      The quality indicators for Swiss acute care hospitals contain data on treatments carried out since 2008. They show case numbers, various percentages (e.g., Caesarean rate), mortality rates for certain pathologies and interventions as well as selected lengths of stay, transfers and treatments with minimum case numbers. These indicators offer the public an overview of hospital activity, whose services are largely financed by premiums and taxes. This makes it possible to choose a hospital in full knowledge of the facts. Comparisons between hospitals also feed quality discussions among specialists in professional organisations.
-    </p>
     <div class="chart-controls">
+      <div id="procedure-description" class="procedure-description fade-element"></div>
       <div class="chart-container fade-element">
         <canvas id="casesChart"></canvas>
       </div>
@@ -84,7 +82,6 @@
             </div>
           </div>
         </div>
-        <div id="procedure-description" class="procedure-description"></div>
       </div>
     </div>
   </section>

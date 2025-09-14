@@ -10,7 +10,7 @@ body {
 .language-switcher {
   position: fixed;
   top: 1rem;
-  left: 1rem;
+  left: 4rem;
   z-index: 10;
   display: flex;
   gap: 0.25rem;
@@ -34,25 +34,28 @@ body {
   background-color: #DA291C;
 }
 
-.swiss-cross {
+.back-arrow {
   position: fixed;
   top: 1rem;
-  right: 1rem;
+  left: 1rem;
   width: 2rem;
   height: 2rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #DA291C;
-  clip-path: polygon(
-    40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
-    60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
-  );
+  border-radius: 50%;
   box-shadow: 0 0 0 2px #fff;
   z-index: 10;
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease;
 }
-.swiss-cross:hover {
+.back-arrow .arrow-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.back-arrow:hover {
   transform: scale(1.1);
 }
 

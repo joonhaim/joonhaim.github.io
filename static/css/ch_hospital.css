@@ -7,11 +7,16 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.language-switcher {
+.header-left {
   position: fixed;
   top: 1rem;
-  left: 4rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   z-index: 10;
+}
+.language-switcher {
   display: flex;
   gap: 0.25rem;
   background: rgba(255, 255, 255, 0.85);
@@ -35,9 +40,6 @@ body {
 }
 
 .back-arrow {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -46,7 +48,6 @@ body {
   background: #DA291C;
   border-radius: 50%;
   box-shadow: 0 0 0 2px #fff;
-  z-index: 10;
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease;
@@ -56,6 +57,28 @@ body {
   height: 1rem;
 }
 .back-arrow:hover {
+  transform: scale(1.1);
+}
+
+.swiss-cross {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  background: #DA291C;
+  clip-path: polygon(
+    40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
+    60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
+  );
+  box-shadow: 0 0 0 2px #fff;
+  z-index: 10;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.swiss-cross:hover {
   transform: scale(1.1);
 }
 

@@ -21,13 +21,17 @@
   <a href="index.html" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
-    <h1>Analyse des hôpitaux suisses (CH-IQI)</h1>
+    <h1>Comparaison du volume des cas des hôpitaux universitaires</h1>
     <p class="tagline">
       La base de données des Indicateurs de qualité hospitaliers (CH-IQI) offre un aperçu des performances des principaux hôpitaux universitaires. Sélectionnez une intervention pour explorer les volumes de cas 2023.
     </p>
     <p class="hero-links">
       <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
       <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
+    </p>
+    <p class="dataset-info">
+      Cet ensemble de données réunit les nombres de cas des hôpitaux universitaires suisses à partir des indicateurs CH‑IQI.
+      J'ai extrait et restructuré les tableaux originaux à l'aide de scripts R disponibles dans le dépôt lié.
     </p>
   </section>
 
@@ -38,17 +42,42 @@
         </div>
         <div class="controls">
           <p>Choisir une intervention :</p>
-          <div id="procedure-buttons" class="procedure-buttons">
-            <button class="procedure-btn active" data-code="A.3.1.F">Cathétérisme coronarien</button>
-            <button class="procedure-btn" data-code="A.4.1.F">Troubles du rythme cardiaque</button>
-            <button class="procedure-btn" data-code="A.5.1.F">Implantation de pacemaker/DIC</button>
-            <button class="procedure-btn" data-code="B.2.3.F">Unité AVC – traitement complexe</button>
-            <button class="procedure-btn" data-code="G.4.1.F">Traitements du cancer du sein</button>
+          <div id="procedure-groups">
+            <div class="procedure-group">
+              <p class="group-title">Cardiologie</p>
+              <div class="procedure-buttons">
+                <button class="procedure-btn active" data-code="A.3.1.F">Cathétérisme coronarien</button>
+                <button class="procedure-btn" data-code="A.4.1.F">Troubles du rythme cardiaque</button>
+                <button class="procedure-btn" data-code="A.5.1.F">Implantation de pacemaker/DIC</button>
+              </div>
+            </div>
+            <div class="procedure-group">
+              <p class="group-title">Neurologie</p>
+              <div class="procedure-buttons">
+                <button class="procedure-btn" data-code="B.2.3.F">Unité AVC – traitement complexe</button>
+              </div>
+            </div>
+            <div class="procedure-group">
+              <p class="group-title">Oncologie</p>
+              <div class="procedure-buttons">
+                <button class="procedure-btn" data-code="G.4.1.F">Traitements du cancer du sein</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div id="procedure-description" class="procedure-description"></div>
     </section>
+
+  <section class="placeholder">
+    <h2>Comparaison des performances des hôpitaux</h2>
+    <p>En construction</p>
+  </section>
+
+  <section class="placeholder">
+    <h2>Comparaison des grands, moyens et petits hôpitaux</h2>
+    <p>En construction</p>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="static/js/ch_hospital.js"></script>

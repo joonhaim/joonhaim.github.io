@@ -21,13 +21,17 @@
   <a href="index.html" class="swiss-cross" aria-label="Zur Startseite"></a>
 
   <section class="hero">
-    <h1>Schweizer Spitalanalyse (CH-IQI)</h1>
+    <h1>Fallzahlvergleich der Universitätsspitäler</h1>
     <p class="tagline">
       Die Datenbank der Schweizer Qualitätsindikatoren (CH-IQI) bietet Einblick in die Leistung der grossen Universitätsspitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
     </p>
     <p class="hero-links">
       <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
       <span>Methodik: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub-Repo</a></span>
+    </p>
+    <p class="dataset-info">
+      Dieser Datensatz enthält Fallzahlen der Schweizer Universitätsspitäler aus den CH‑IQI-Indikatoren.
+      Die ursprünglichen Tabellen habe ich mit R-Skripten aus dem verlinkten Repository abgerufen und aufbereitet.
     </p>
   </section>
 
@@ -38,16 +42,41 @@
       </div>
       <div class="controls">
         <p>Verfahren auswählen:</p>
-        <div id="procedure-buttons" class="procedure-buttons">
-          <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
-          <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
-          <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
-          <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
-          <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
+        <div id="procedure-groups">
+          <div class="procedure-group">
+            <p class="group-title">Kardiologie</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
+              <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
+              <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Neurologie</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
+            </div>
+          </div>
+          <div class="procedure-group">
+            <p class="group-title">Onkologie</p>
+            <div class="procedure-buttons">
+              <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div id="procedure-description" class="procedure-description"></div>
+  </section>
+
+  <section class="placeholder">
+    <h2>Vergleich der Krankenhausleistung</h2>
+    <p>Im Aufbau</p>
+  </section>
+
+  <section class="placeholder">
+    <h2>Vergleich großer, mittlerer und kleiner Spitäler</h2>
+    <p>Im Aufbau</p>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

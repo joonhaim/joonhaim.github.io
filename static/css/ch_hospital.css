@@ -85,17 +85,23 @@ body {
   text-decoration: underline;
 }
 
+.dataset-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .dashboard {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 3rem auto;
+  padding: 3rem;
 }
 
 .chart-controls {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .chart-container {
@@ -110,7 +116,16 @@ body {
 .procedure-buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+}
+
+.procedure-group {
+  margin-bottom: 2rem;
+}
+
+.group-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .procedure-btn {
@@ -153,4 +168,10 @@ body {
   margin-top: 1rem;
   text-align: center;
   font-size: 1rem;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 3rem 0;
+  font-style: italic;
 }

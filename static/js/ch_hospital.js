@@ -135,6 +135,10 @@ function updateChart(codes) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 800,
+        easing: 'easeInOutQuart'
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -166,5 +170,16 @@ buttons.forEach(btn => {
     updateChart(Array.from(selectedCodes));
   });
 });
+
+const fadeObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+});
+
+document.querySelectorAll('.fade-element').forEach(el => fadeObserver.observe(el));
 
 updateChart(Array.from(selectedCodes));

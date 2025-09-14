@@ -12,7 +12,12 @@ const cases = {
   'A.4.1.F': [703, 615, 1974, 1539, 764],
   'A.5.1.F': [265, 264, 714, 540, 486],
   'B.2.3.F': [751, 958, 1907, 1206, 909],
-  'G.4.1.F': [341, 349, 278, 339, 199]
+  'B.4.1.F': [301, 296, 379, 526, 235],
+  'D.3.1.F': [460, 377, 298, 509, 417],
+  'E.4.11.F': [228, 295, 162, 158, 220],
+  'G.4.1.F': [341, 349, 278, 339, 199],
+  'L.5.1.F': [61, 46, 78, 71, 109],
+  'Z.4.37.F': [308, 531, 133, 284, 67]
 };
 
 const procedureLabels = {
@@ -40,11 +45,41 @@ const procedureLabels = {
     fr: 'Unité AVC – traitement complexe',
     it: 'Unità ictus – trattamento complesso'
   },
+  'B.4.1.F': {
+    en: 'Epilepsy (inpatient, age >19)',
+    de: 'Epilepsie (stationär, Alter >19)',
+    fr: 'Épilepsie (hospitalisations, âge >19)',
+    it: 'Epilessia (ricoveri, età >19)'
+  },
+  'D.3.1.F': {
+    en: 'Lung cancer (inpatient treatments)',
+    de: 'Lungenkrebs (stationäre Behandlungen)',
+    fr: 'Cancer du poumon (traitements stationnaires)',
+    it: 'Cancro ai polmoni (trattamenti ospedalieri)'
+  },
+  'E.4.11.F': {
+    en: 'Colorectal cancer (inpatient treatments)',
+    de: 'Kolorektales Karzinom (stationäre Behandlungen)',
+    fr: 'Cancer colorectal (traitements stationnaires)',
+    it: 'Cancro colorettale (trattamenti ospedalieri)'
+  },
   'G.4.1.F': {
     en: 'Breast cancer (inpatient treatments)',
     de: 'Brustkrebs (stationäre Behandlungen)',
     fr: 'Cancer du sein (traitements stationnaires)',
     it: 'Cancro al seno (trattamenti ospedalieri)'
+  },
+  'L.5.1.F': {
+    en: 'Kidney transplant',
+    de: 'Nierentransplantation',
+    fr: 'Transplantation rénale',
+    it: 'Trapianto di rene'
+  },
+  'Z.4.37.F': {
+    en: 'Primary hip prosthesis',
+    de: 'Erstprothese Hüfte',
+    fr: 'Prothèse totale de hanche',
+    it: "Protesi d'anca primaria"
   }
 };
 
@@ -59,11 +94,16 @@ const ctx = document.getElementById('casesChart').getContext('2d');
 let casesChart;
 
 const palette = [
-  ['rgba(230, 57, 70, 0.7)', 'rgba(230, 57, 70, 1)'],
+  ['rgba(218, 41, 28, 0.7)', 'rgba(218, 41, 28, 1)'],
+  ['rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 1)'],
+  ['rgba(128, 128, 128, 0.7)', 'rgba(128, 128, 128, 1)'],
   ['rgba(69, 123, 157, 0.7)', 'rgba(69, 123, 157, 1)'],
   ['rgba(42, 157, 143, 0.7)', 'rgba(42, 157, 143, 1)'],
   ['rgba(233, 196, 106, 0.7)', 'rgba(233, 196, 106, 1)'],
-  ['rgba(141, 59, 114, 0.7)', 'rgba(141, 59, 114, 1)']
+  ['rgba(141, 59, 114, 0.7)', 'rgba(141, 59, 114, 1)'],
+  ['rgba(90, 90, 90, 0.7)', 'rgba(90, 90, 90, 1)'],
+  ['rgba(200, 200, 200, 0.7)', 'rgba(200, 200, 200, 1)'],
+  ['rgba(120, 0, 0, 0.7)', 'rgba(120, 0, 0, 1)']
 ];
 
 function updateChart(codes) {
@@ -71,7 +111,7 @@ function updateChart(codes) {
   const descriptionEl = document.getElementById('procedure-description');
 
   const datasets = codes.map((code, idx) => ({
-    label: procedureLabels[code][lang],
+    label: code,
     data: cases[code],
     backgroundColor: palette[idx % palette.length][0],
     borderColor: palette[idx % palette.length][1],

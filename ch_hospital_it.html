@@ -31,22 +31,24 @@
     </p>
   </section>
 
-  <section class="dashboard">
-    <div class="controls">
-      <p>Scegli la procedura:</p>
-      <div id="procedure-buttons" class="procedure-buttons">
-        <button class="procedure-btn active" data-code="A.3.1.F">Cateterismo coronarico</button>
-        <button class="procedure-btn" data-code="A.4.1.F">Disturbi del ritmo cardiaco</button>
-        <button class="procedure-btn" data-code="A.5.1.F">Impianto di pacemaker/ICD</button>
-        <button class="procedure-btn" data-code="B.2.3.F">Unità ictus – trattamento complesso</button>
-        <button class="procedure-btn" data-code="G.4.1.F">Trattamenti per il cancro al seno</button>
+    <section class="dashboard">
+      <div class="chart-controls">
+        <div class="chart-container">
+          <canvas id="casesChart"></canvas>
+        </div>
+        <div class="controls">
+          <p>Scegli la procedura:</p>
+          <div id="procedure-buttons" class="procedure-buttons">
+            <button class="procedure-btn active" data-code="A.3.1.F">Cateterismo coronarico</button>
+            <button class="procedure-btn" data-code="A.4.1.F">Disturbi del ritmo cardiaco</button>
+            <button class="procedure-btn" data-code="A.5.1.F">Impianto di pacemaker/ICD</button>
+            <button class="procedure-btn" data-code="B.2.3.F">Unità ictus – trattamento complesso</button>
+            <button class="procedure-btn" data-code="G.4.1.F">Trattamenti per il cancro al seno</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="chart-container">
-      <canvas id="casesChart"></canvas>
-    </div>
-    <div id="procedure-description" class="procedure-description"></div>
-  </section>
+      <div id="procedure-description" class="procedure-description"></div>
+    </section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="static/js/ch_hospital.js"></script>

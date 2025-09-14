@@ -32,18 +32,20 @@
   </section>
 
   <section class="dashboard">
-    <div class="controls">
-      <p>Verfahren auswählen:</p>
-      <div id="procedure-buttons" class="procedure-buttons">
-        <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
-        <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
-        <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
-        <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
-        <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
+    <div class="chart-controls">
+      <div class="chart-container">
+        <canvas id="casesChart"></canvas>
       </div>
-    </div>
-    <div class="chart-container">
-      <canvas id="casesChart"></canvas>
+      <div class="controls">
+        <p>Verfahren auswählen:</p>
+        <div id="procedure-buttons" class="procedure-buttons">
+          <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
+          <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
+          <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
+          <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
+          <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
+        </div>
+      </div>
     </div>
     <div id="procedure-description" class="procedure-description"></div>
   </section>

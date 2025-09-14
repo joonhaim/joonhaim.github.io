@@ -90,33 +90,59 @@ body {
   margin: 2rem auto;
   padding: 2rem;
 }
-.controls {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.procedure-buttons {
+
+.chart-controls {
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: center;
-  gap: 0.5rem;
-}
-.procedure-btn {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  background: #fff;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-.procedure-btn.active {
-  background: #DA291C;
-  color: #fff;
-  border-color: #DA291C;
+  gap: 2rem;
 }
 
 .chart-container {
+  flex: 1;
   max-width: 900px;
-  margin: 0 auto;
+}
+
+.controls {
+  text-align: left;
+}
+
+.procedure-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.procedure-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #DA291C;
+  border-radius: 9999px;
+  background: #fff;
+  color: #DA291C;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.procedure-btn.active,
+.procedure-btn:hover {
+  background: #DA291C;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .chart-controls {
+    flex-direction: column;
+  }
+  .controls {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .procedure-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 #casesChart {
   width: 100%;

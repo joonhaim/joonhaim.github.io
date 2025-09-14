@@ -1,0 +1,227 @@
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: #000;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.header-left {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+}
+.language-switcher {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.language-switcher .lang-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+.language-switcher .lang-btn:not(.active):hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.language-switcher .active {
+  color: #fff;
+  background-color: #DA291C;
+}
+
+.back-arrow {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #DA291C;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.back-arrow .arrow-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.back-arrow:hover {
+  transform: scale(1.1);
+}
+
+.swiss-cross {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  background: #DA291C;
+  clip-path: polygon(
+    40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
+    60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
+  );
+  box-shadow: 0 0 0 2px #fff;
+  z-index: 10;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.swiss-cross:hover {
+  transform: scale(1.1);
+}
+
+.hero {
+  background: linear-gradient(135deg, #DA291C 0%, #A70000 100%);
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+.hero .tagline {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.hero .hero-links {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  align-items: center;
+}
+.hero .hero-links a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.comparison {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem 1rem;
+}
+
+.comparison h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.dataset-info {
+  max-width: 800px;
+  margin: 0.5rem auto 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.chart-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 800px;
+  height: 320px;
+}
+
+.controls {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+#procedure-groups {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.procedure-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.procedure-group {
+  margin-bottom: 0;
+}
+
+.group-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.procedure-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #DA291C;
+  border-radius: 9999px;
+  background: #fff;
+  color: #DA291C;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.procedure-btn.active,
+.procedure-btn:hover {
+  background: #DA291C;
+  color: #fff;
+}
+
+#casesChart {
+  width: 100%;
+  height: 100%;
+}
+
+.procedure-description {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 3rem 0;
+  font-style: italic;
+}
+
+.fade-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-element.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+@media (max-width: 768px) {
+  #procedure-groups {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}

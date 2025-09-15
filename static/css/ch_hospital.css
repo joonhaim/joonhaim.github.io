@@ -188,10 +188,14 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.procedure-btn.active,
-.procedure-btn:hover {
+.procedure-btn.active {
   background: #DA291C;
   color: #fff;
+}
+
+.procedure-btn:hover:not(.active) {
+  background: #fff;
+  color: #DA291C;
 }
 
 #casesChart {

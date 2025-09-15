@@ -164,9 +164,11 @@ buttons.forEach(btn => {
     if (selectedCodes.has(code)) {
       selectedCodes.delete(code);
       btn.classList.remove('active');
+      btn.classList.add('no-hover');
     } else {
       selectedCodes.add(code);
       btn.classList.add('active');
+      btn.classList.remove('no-hover');
     }
     updateChart(Array.from(selectedCodes));
   };
@@ -178,6 +180,7 @@ buttons.forEach(btn => {
       toggle();
     }
   });
+  btn.addEventListener('mouseleave', () => btn.classList.remove('no-hover'));
 });
 
 const fadeObserver = new IntersectionObserver((entries, observer) => {

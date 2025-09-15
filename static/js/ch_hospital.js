@@ -122,34 +122,35 @@ function updateChart(codes) {
     .map(code => `${code} – ${procedureLabels[code][lang]}`)
     .join('<br>');
 
-  if (casesChart) {
-    casesChart.destroy();
-  }
-
-  casesChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: hospitalLabels,
-      datasets
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 800,
-        easing: 'easeInOutQuart'
+  if (!casesChart) {
+    casesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: hospitalLabels,
+        datasets
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: yAxisLabel[lang]
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 800,
+          easing: 'easeInOutQuart'
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: yAxisLabel[lang]
+            }
           }
         }
       }
-    }
-  });
+    });
+  } else {
+    casesChart.data.datasets = datasets;
+    casesChart.update();
+  }
 }
 
 const buttons = document.querySelectorAll('.procedure-btn');
@@ -170,7 +171,7 @@ buttons.forEach(btn => {
     updateChart(Array.from(selectedCodes));
   };
 
-  btn.addEventListener('pointerdown', toggle);
+  btn.addEventListener('click', toggle);
   btn.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();

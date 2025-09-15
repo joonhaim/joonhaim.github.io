@@ -203,6 +203,8 @@ body {
   margin: 0 0 1rem;
   text-align: center;
   font-size: 0.95rem;
+  height: 4.5rem;
+  overflow-y: auto;
 }
 
 .placeholder {

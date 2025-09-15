@@ -11,12 +11,38 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-/* Language switcher */
-.language-switcher {
+/* Back arrow and language switcher */
+.header-left {
   position: fixed;
   top: 1rem;
   left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   z-index: 10;
+}
+.back-arrow {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #DA291C;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.back-arrow .arrow-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.back-arrow:hover {
+  transform: scale(1.1);
+}
+.language-switcher {
+  position: relative;
   display: flex;
   gap: 0.25rem;
   background: rgba(255, 255, 255, 0.85);

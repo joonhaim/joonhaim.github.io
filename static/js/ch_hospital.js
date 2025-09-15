@@ -158,7 +158,7 @@ const selectedCodes = new Set(
 );
 
 buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
+  const toggle = () => {
     const code = btn.dataset.code;
     if (selectedCodes.has(code)) {
       selectedCodes.delete(code);
@@ -168,6 +168,14 @@ buttons.forEach(btn => {
       btn.classList.add('active');
     }
     updateChart(Array.from(selectedCodes));
+  };
+
+  btn.addEventListener('pointerdown', toggle);
+  btn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
   });
 });
 

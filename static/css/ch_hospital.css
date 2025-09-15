@@ -193,7 +193,12 @@ body {
   color: #fff;
 }
 
-.procedure-btn:hover:not(.active) {
+.procedure-btn:not(.active):hover {
+  background: #DA291C;
+  color: #fff;
+}
+
+.procedure-btn.no-hover:hover {
   background: #fff;
   color: #DA291C;
 }

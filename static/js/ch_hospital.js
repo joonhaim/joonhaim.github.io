@@ -3,6 +3,8 @@ const normalizeString = (value) =>
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
     .toLowerCase();
+
+const normalizeAlphanumeric = (value) => normalizeString(value).replace(/[^a-z0-9]/g, '');
 const fadeObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -1077,12 +1079,24 @@ if (finderRoot) {
       if (!query) {
         return true;
       }
-      const normalized = query.trim().toLowerCase();
-      if (!normalized) {
+
+      const normalizedQuery = normalizeString(query.trim());
+      if (!normalizedQuery) {
         return true;
       }
-      const haystack = `${procedure.name} ${procedure.code}`.toLowerCase();
-      return haystack.includes(normalized);
+
+      const haystack = `${procedure.name} ${procedure.code}`;
+      if (normalizeString(haystack).includes(normalizedQuery)) {
+        return true;
+      }
+
+      const condensedQuery = normalizedQuery.replace(/[^a-z0-9]/g, '');
+      if (!condensedQuery) {
+        return false;
+      }
+
+      const condensedCode = normalizeAlphanumeric(procedure.code);
+      return condensedCode.includes(condensedQuery);
     }
 
     function renderProcedureControls() {

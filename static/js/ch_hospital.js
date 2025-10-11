@@ -43,6 +43,63 @@ const cantonCentroids = {
   ZH: { lat: 47.37, lon: 8.54 }
 };
 
+const SWITZERLAND_BOUNDS = {
+  latMin: 45.8,
+  latMax: 47.8,
+  lonMin: 5.9,
+  lonMax: 10.5
+};
+
+const MAP_WIDTH = 1000;
+const MAP_HEIGHT = 600;
+
+// Approximate lat/lon span (in degrees) for each canton to derive custom bounds.
+const cantonSpan = {
+  AG: { lat: 0.8, lon: 1.1 },
+  AI: { lat: 0.35, lon: 0.35 },
+  AR: { lat: 0.45, lon: 0.55 },
+  BE: { lat: 1.6, lon: 1.7 },
+  BL: { lat: 0.4, lon: 0.45 },
+  BS: { lat: 0.28, lon: 0.28 },
+  FR: { lat: 0.9, lon: 1.1 },
+  GE: { lat: 0.4, lon: 0.45 },
+  GL: { lat: 0.65, lon: 0.75 },
+  GR: { lat: 1.8, lon: 2.1 },
+  JU: { lat: 0.7, lon: 0.85 },
+  LU: { lat: 0.9, lon: 1.05 },
+  NE: { lat: 0.75, lon: 0.85 },
+  NW: { lat: 0.45, lon: 0.5 },
+  OW: { lat: 0.5, lon: 0.55 },
+  SG: { lat: 1.2, lon: 1.6 },
+  SH: { lat: 0.55, lon: 0.7 },
+  SO: { lat: 0.85, lon: 1.0 },
+  SZ: { lat: 0.7, lon: 0.85 },
+  TG: { lat: 0.9, lon: 1.2 },
+  TI: { lat: 1.2, lon: 1.3 },
+  UR: { lat: 1.1, lon: 0.75 },
+  VD: { lat: 1.2, lon: 1.3 },
+  VS: { lat: 1.6, lon: 1.1 },
+  ZG: { lat: 0.45, lon: 0.55 },
+  ZH: { lat: 0.9, lon: 1.1 }
+};
+
+const cantonBounds = Object.fromEntries(
+  Object.entries(cantonCentroids).map(([code, centroid]) => {
+    const span = cantonSpan[code] ?? { lat: 0.8, lon: 0.8 };
+    const latHalf = span.lat / 2;
+    const lonHalf = span.lon / 2;
+    return [
+      code,
+      {
+        latMin: Math.max(SWITZERLAND_BOUNDS.latMin, centroid.lat - latHalf),
+        latMax: Math.min(SWITZERLAND_BOUNDS.latMax, centroid.lat + latHalf),
+        lonMin: Math.max(SWITZERLAND_BOUNDS.lonMin, centroid.lon - lonHalf),
+        lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, centroid.lon + lonHalf)
+      }
+    ];
+  })
+);
+
 const hospitalMetadataOverrides = {
   "AMEOS Spital Einsiedeln AG": { type: "private", canton: "SZ" },
   "Andreas Klinik": { type: "private", canton: "ZG" },
@@ -1293,15 +1350,56 @@ if (finderRoot) {
     }
 
     const maxCases = hospitals[0]?.cases || 1;
-    const latMin = 45.8;
-    const latMax = 47.8;
-    const lonMin = 5.9;
-    const lonMax = 10.5;
+
+    const targetBounds =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? SWITZERLAND_BOUNDS
+        : cantonBounds[state.selectedCanton] ?? SWITZERLAND_BOUNDS;
+
+    const latExtent = Math.max(0, targetBounds.latMax - targetBounds.latMin);
+    const lonExtent = Math.max(0, targetBounds.lonMax - targetBounds.lonMin);
+    const latPadding = Math.max(0.02, latExtent * 0.05);
+    const lonPadding = Math.max(0.02, lonExtent * 0.05);
+    const bounds = {
+      latMin: Math.max(SWITZERLAND_BOUNDS.latMin, targetBounds.latMin - latPadding),
+      latMax: Math.min(SWITZERLAND_BOUNDS.latMax, targetBounds.latMax + latPadding),
+      lonMin: Math.max(SWITZERLAND_BOUNDS.lonMin, targetBounds.lonMin - lonPadding),
+      lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, targetBounds.lonMax + lonPadding)
+    };
+
+    const lonSpan = Math.max(0.05, bounds.lonMax - bounds.lonMin);
+    const latSpan = Math.max(0.05, bounds.latMax - bounds.latMin);
+
+    const project = (lat, lon) => {
+      const x = ((lon - bounds.lonMin) / lonSpan) * MAP_WIDTH;
+      const y = (1 - (lat - bounds.latMin) / latSpan) * MAP_HEIGHT;
+      return { x, y };
+    };
+
+    const baseLonSpan = SWITZERLAND_BOUNDS.lonMax - SWITZERLAND_BOUNDS.lonMin;
+    const baseLatSpan = SWITZERLAND_BOUNDS.latMax - SWITZERLAND_BOUNDS.latMin;
+
+    const baseTopLeftX = ((bounds.lonMin - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
+    const baseBottomRightX = ((bounds.lonMax - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
+    const baseTopLeftY = ((SWITZERLAND_BOUNDS.latMax - bounds.latMax) / baseLatSpan) * MAP_HEIGHT;
+    const baseBottomRightY = ((SWITZERLAND_BOUNDS.latMax - bounds.latMin) / baseLatSpan) * MAP_HEIGHT;
+
+    const baseWidth = Math.max(1, baseBottomRightX - baseTopLeftX);
+    const baseHeight = Math.max(1, baseBottomRightY - baseTopLeftY);
+    const scaleX = MAP_WIDTH / baseWidth;
+    const scaleY = MAP_HEIGHT / baseHeight;
+    const translateX = -baseTopLeftX;
+    const translateY = -baseTopLeftY;
+    const translateXFormatted = translateX.toFixed(2);
+    const translateYFormatted = translateY.toFixed(2);
+    const backgroundTransform = [
+      `scale(${scaleX.toFixed(4)} ${scaleY.toFixed(4)})`,
+      `translate(${translateXFormatted} ${translateYFormatted})`
+    ].join(' ');
 
     const circles = hospitals
       .map((h) => {
-        const x = ((h.lon - lonMin) / (lonMax - lonMin)) * 1000;
-        const y = (1 - (h.lat - latMin) / (latMax - latMin)) * 600;
+        const { x, y } = project(h.lat, h.lon);
         const radius = 4 + (h.cases / maxCases) * 10;
         const color =
           h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
@@ -1316,20 +1414,22 @@ if (finderRoot) {
 
     finderMap.innerHTML = `
       <h3>${msg('mapTitle')}</h3>
-      <svg viewBox="0 0 1000 600" role="img" aria-label="${msg('mapAriaLabel')}">
-        <rect x="0" y="0" width="1000" height="600" fill="#f8fafc"></rect>
-        <image
-          href="static/images/roestigraben/switzerland.svg"
-          x="0"
-          y="0"
-          width="1000"
-          height="600"
-          preserveAspectRatio="none"
-          opacity="0.35"
-          aria-hidden="true"
-          class="finder-map-background"
-          pointer-events="none"
-        ></image>
+      <svg viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}" role="img" aria-label="${msg('mapAriaLabel')}">
+        <rect x="0" y="0" width="${MAP_WIDTH}" height="${MAP_HEIGHT}" fill="#f8fafc"></rect>
+        <g transform="${backgroundTransform}">
+          <image
+            href="static/images/roestigraben/switzerland.svg"
+            x="0"
+            y="0"
+            width="${MAP_WIDTH}"
+            height="${MAP_HEIGHT}"
+            preserveAspectRatio="none"
+            opacity="0.35"
+            aria-hidden="true"
+            class="finder-map-background"
+            pointer-events="none"
+          ></image>
+        </g>
         ${circles}
       </svg>
       <div class="finder-map-legend">

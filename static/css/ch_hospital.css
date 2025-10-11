@@ -252,18 +252,19 @@ body {
   border-radius: 0.85rem;
   border: 1px solid rgba(15, 23, 42, 0.05);
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
-  padding: 1.35rem 1.45rem 1.25rem;
-  margin-bottom: 1.25rem;
+  padding: 1.1rem 1.25rem 1.05rem;
+  margin: 0 auto 1.25rem;
+  width: min(100%, 760px);
   display: grid;
-  grid-template-columns: minmax(170px, 0.75fr) minmax(0, 2.25fr);
+  grid-template-columns: minmax(150px, 0.95fr) minmax(0, 1.4fr);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     'search search'
     'categories list';
-  column-gap: 1.4rem;
-  row-gap: 0.95rem;
+  column-gap: 1.1rem;
+  row-gap: 0.85rem;
   align-items: start;
-  min-height: 19.5rem;
+  min-height: 0;
   min-width: 0;
 }
 
@@ -319,7 +320,7 @@ body {
   scrollbar-width: thin;
   min-height: 0;
   flex: 1 1 auto;
-  max-height: 100%;
+  max-height: clamp(10rem, 32vh, 13.75rem);
 }
 
 .finder-category-tabs::-webkit-scrollbar {
@@ -354,6 +355,7 @@ body {
   border: 1px solid rgba(15, 23, 42, 0.06);
   grid-area: list;
   min-height: 0;
+  max-height: clamp(10.5rem, 36vh, 15rem);
 }
 
 .finder-procedure-list::-webkit-scrollbar {
@@ -927,6 +929,8 @@ body {
   }
 
   .finder-procedure-selector {
+    width: 100%;
+    margin: 0 0 1.1rem;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       'search'
@@ -950,6 +954,7 @@ body {
     box-shadow: none;
     overflow: visible;
     gap: 0.5rem;
+    max-height: none;
   }
 
   .finder-chip {
@@ -988,6 +993,7 @@ body {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
     gap: 0.55rem;
     overflow-y: auto;
+    max-height: 60vh;
   }
 
   .finder-chip {

@@ -3,6 +3,14 @@ const normalizeString = (value) =>
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
     .toLowerCase();
+
+const escapeHtml = (value) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 const fadeObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -230,7 +238,7 @@ function inferHospitalMeta(name) {
 function parseHospitalCsv(text) {
   const lines = text.split(/\r?\n/);
   if (!lines.length) {
-    return { byProcedure: new Map(), meta: new Map(), types: new Set() };
+    return { byProcedure: new Map(), meta: new Map(), types: new Set(), procedureLabels: new Map() };
   }
   if (lines[0] && lines[0].charCodeAt(0) === 0xfeff) {
     lines[0] = lines[0].slice(1);
@@ -239,6 +247,32 @@ function parseHospitalCsv(text) {
 
   const byProcedure = new Map();
   const meta = new Map();
+  const procedureLabels = new Map();
+
+  const labelPriority = (institution) => {
+    if (institution === 'CH') {
+      return 0;
+    }
+    if (/\bCH\b/i.test(institution)) {
+      return 1;
+    }
+    return 2;
+  };
+
+  const registerProcedureLabel = (code, label, institution) => {
+    if (!code || !label) {
+      return;
+    }
+    const trimmed = label.trim();
+    if (!trimmed) {
+      return;
+    }
+    const priority = labelPriority(institution);
+    const existing = procedureLabels.get(code);
+    if (!existing || priority < existing.priority || (priority === existing.priority && trimmed.length < existing.label.length)) {
+      procedureLabels.set(code, { label: trimmed, priority });
+    }
+  };
 
   lines.forEach(line => {
     if (!line.trim()) {
@@ -249,7 +283,7 @@ function parseHospitalCsv(text) {
       return;
     }
     const institution = cols[0].trim();
-    if (!institution || excludedInstitutions.has(institution)) {
+    if (!institution) {
       return;
     }
     const indicator = cols[1].trim();
@@ -258,6 +292,11 @@ function parseHospitalCsv(text) {
     }
     const code = indicator.split(' ', 1)[0].trim();
     if (!code) {
+      return;
+    }
+    const label = indicator.slice(code.length).trim();
+    registerProcedureLabel(code, label, institution);
+    if (excludedInstitutions.has(institution)) {
       return;
     }
     const cases = parseInteger(cols[9]);
@@ -279,7 +318,12 @@ function parseHospitalCsv(text) {
   const types = new Set();
   meta.forEach(details => types.add(details.type));
 
-  return { byProcedure, meta, types };
+  const cleanedLabels = new Map();
+  procedureLabels.forEach((entry, code) => {
+    cleanedLabels.set(code, entry.label);
+  });
+
+  return { byProcedure, meta, types, procedureLabels: cleanedLabels };
 }
 
 function loadHospitalDataset() {
@@ -311,71 +355,29 @@ function loadHospitalDataset() {
 const finderRoot = document.getElementById('procedure-finder');
 
 if (finderRoot) {
-  const procedureCatalog = [
-    {
-      id: 'cardiology',
-      label: 'Cardiology',
-      procedures: [
-        { code: 'A.3.1.F', name: 'Coronary catheterization' },
-        { code: 'A.4.1.F', name: 'Cardiac rhythm disorders' },
-        { code: 'A.5.1.F', name: 'Pacemaker/ICD implantation' },
-        { code: 'A.7.2.F', name: 'Valve surgery' },
-        { code: 'A.7.3.F', name: 'Coronary bypass surgery' }
-      ]
-    },
-    {
-      id: 'neurosciences',
-      label: 'Neurosciences',
-      procedures: [
-        { code: 'B.2.3.F', name: 'Stroke unit – complex treatment' },
-        { code: 'B.3.1.F', name: 'Brain tumour treatments' },
-        { code: 'B.4.1.F', name: 'Epilepsy treatments' },
-        { code: 'Z.4.5.F', name: 'CNS vascular interventions' }
-      ]
-    },
-    {
-      id: 'oncology',
-      label: 'Oncology',
-      procedures: [
-        { code: 'D.3.1.F', name: 'Lung cancer treatments' },
-        { code: 'E.4.11.F', name: 'Colorectal cancer treatments' },
-        { code: 'G.4.1.F', name: 'Breast cancer treatments' },
-        { code: 'K.1.1.F', name: 'Melanoma inpatient treatments' },
-        { code: 'Z.4.42.F', name: 'Gynecologic tumour treatments' }
-      ]
-    },
-    {
-      id: 'urology',
-      label: 'Urology',
-      procedures: [
-        { code: 'H.2.1.F', name: 'Kidney stone treatments' },
-        { code: 'H.3.1.F', name: 'Bladder cancer treatments' },
-        { code: 'H.3.2.F', name: 'Transurethral bladder resections' },
-        { code: 'H.5.1.F', name: 'Prostate cancer treatments' }
-      ]
-    },
-    {
-      id: 'transplantation',
-      label: 'Transplantation',
-      procedures: [
-        { code: 'L.5.1.F', name: 'Kidney transplant' },
-        { code: 'Z.4.33.F', name: 'Lung transplant (CIMHS)' },
-        { code: 'Z.4.34.F', name: 'Liver transplant (CIMHS)' },
-        { code: 'Z.4.35.F', name: 'Pancreas transplant (CIMHS)' },
-        { code: 'Z.4.36.F', name: 'Kidney transplant (CIMHS)' }
-      ]
-    },
-    {
-      id: 'musculoskeletal',
-      label: 'Musculoskeletal',
-      procedures: [
-        { code: 'Z.4.37.F', name: 'Primary hip prosthesis' },
-        { code: 'Z.4.38.F', name: 'Primary knee prosthesis' },
-        { code: 'Z.4.39.F', name: 'Specialized spine surgery' },
-        { code: 'Z.4.40.F', name: 'Bone tumour treatments' }
-      ]
-    }
+  const procedureCategoryDefinitions = [
+    { key: 'A', label: 'Cardiac diseases' },
+    { key: 'B', label: 'Neurology & stroke' },
+    { key: 'C', label: 'Geriatric medicine' },
+    { key: 'D', label: 'Pulmonary diseases' },
+    { key: 'E', label: 'Abdominal organs' },
+    { key: 'F', label: 'Vascular conditions' },
+    { key: 'G', label: 'Gynaecology & obstetrics' },
+    { key: 'H', label: 'Urology & male reproductive health' },
+    { key: 'I', label: 'Musculoskeletal & connective tissue' },
+    { key: 'J', label: 'Complex cases (peer review)' },
+    { key: 'K', label: 'Skin conditions' },
+    { key: 'L', label: 'Highly specialised medicine' },
+    { key: 'M', label: 'Palliative medicine' },
+    { key: 'N', label: 'Robotic surgery' },
+    { key: 'Y', label: 'COVID-19 related' },
+    { key: 'Z', label: 'Supplementary indicators' }
   ];
+  const procedureCategoryMap = new Map(
+    procedureCategoryDefinitions.map((definition) => [definition.key, definition])
+  );
+  const procedureCategoryOrder = procedureCategoryDefinitions.map((definition) => definition.key);
+  let procedureCatalog = [];
 
   const ALL_CANTONS_OPTION = 'ALL';
 
@@ -411,17 +413,89 @@ if (finderRoot) {
 
   const PAGE_SIZE = 7;
 
-  const defaultCategory = procedureCatalog[0] ?? null;
-  const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
-
   const state = {
-    selectedCategory: defaultCategory?.id ?? null,
-    selectedProc: defaultProcedure,
+    selectedCategory: null,
+    selectedProc: null,
     selectedCanton: ALL_CANTONS_OPTION,
     search: '',
     procedureQuery: '',
     typeFilter: { university: true, kanton: true, private: true },
     listPage: 0
+  };
+
+  const buildProcedureCatalog = (dataset) => {
+    if (!dataset || !dataset.byProcedure) {
+      return [];
+    }
+
+    const codes = Array.from(dataset.byProcedure.keys()).sort((a, b) =>
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+    );
+
+    const categories = new Map();
+
+    codes.forEach((code) => {
+      const root = code.split('.', 1)[0] || 'Other';
+      const definition = procedureCategoryMap.get(root);
+      const key = definition ? root : `other:${root}`;
+      if (!categories.has(key)) {
+        const order = definition ? procedureCategoryOrder.indexOf(root) : procedureCategoryOrder.length;
+        const label = definition ? `${root} — ${definition.label}` : `${root} — Other indicators`;
+        const id = definition ? `cat-${root.toLowerCase()}` : `cat-${root.toLowerCase()}-other`;
+        categories.set(key, { id, label, order, procedures: [] });
+      }
+
+      const labelText = dataset.procedureLabels?.get(code) ?? code;
+      categories.get(key).procedures.push({ code, name: labelText });
+    });
+
+    const result = Array.from(categories.values());
+    result.forEach((category) => {
+      category.procedures.sort((a, b) =>
+        a.code.localeCompare(b.code, undefined, { numeric: true, sensitivity: 'base' })
+      );
+    });
+
+    result.sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return a.label.localeCompare(b.label, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    return result.map(({ order, ...rest }) => rest);
+  };
+
+  const ensureProcedureSelection = (preferredCode = null) => {
+    if (!procedureCatalog.length) {
+      state.selectedCategory = null;
+      state.selectedProc = null;
+      return;
+    }
+
+    const targetCode = preferredCode ?? state.selectedProc?.code ?? null;
+    let resolvedCategory = null;
+    let resolvedProcedure = null;
+
+    if (targetCode) {
+      procedureCatalog.some((category) => {
+        const match = category.procedures.find((proc) => proc.code === targetCode);
+        if (match) {
+          resolvedCategory = category;
+          resolvedProcedure = match;
+          return true;
+        }
+        return false;
+      });
+    }
+
+    if (!resolvedCategory) {
+      resolvedCategory = procedureCatalog[0];
+      resolvedProcedure = resolvedCategory.procedures[0];
+    }
+
+    state.selectedCategory = resolvedCategory.id;
+    state.selectedProc = resolvedProcedure;
   };
 
   const typeLabels = {
@@ -465,20 +539,31 @@ if (finderRoot) {
       });
     }
 
-    function matchesProcedure(procedure, query) {
-      if (!query) {
+    function matchesProcedure(procedure, normalizedQuery) {
+      if (!normalizedQuery) {
         return true;
       }
-      const normalized = query.trim().toLowerCase();
-      if (!normalized) {
-        return true;
-      }
-      const haystack = `${procedure.name} ${procedure.code}`.toLowerCase();
-      return haystack.includes(normalized);
+      const haystack = normalizeString(`${procedure.name} ${procedure.code}`);
+      return haystack.includes(normalizedQuery);
     }
 
     function renderProcedureControls() {
       finderProcedureSearch.value = state.procedureQuery;
+
+      if (!procedureCatalog.length) {
+        finderProcedureSearch.disabled = true;
+        finderProcedureSearch.placeholder = 'Loading procedures…';
+        finderCategoryTabs.innerHTML = '';
+        finderProcedureList.innerHTML = '<p class="finder-loading">Loading procedures…</p>';
+        return;
+      }
+
+      finderProcedureSearch.disabled = false;
+      finderProcedureSearch.placeholder = 'Search by name or code';
+
+      if (!state.selectedCategory || !state.selectedProc) {
+        ensureProcedureSelection();
+      }
 
       let activeCategory = procedureCatalog.find((cat) => cat.id === state.selectedCategory) ?? null;
       if (!activeCategory && procedureCatalog.length) {
@@ -496,12 +581,12 @@ if (finderRoot) {
         }
       }
 
-      const query = state.procedureQuery.trim().toLowerCase();
-      const isSearching = Boolean(query);
+      const normalizedQuery = normalizeString(state.procedureQuery.trim());
+      const isSearching = Boolean(normalizedQuery);
 
       const categoriesWithMatches = procedureCatalog.map((category) => ({
         ...category,
-        hasMatch: category.procedures.some((proc) => matchesProcedure(proc, query))
+        hasMatch: category.procedures.some((proc) => matchesProcedure(proc, normalizedQuery))
       }));
 
       finderCategoryTabs.innerHTML = categoriesWithMatches
@@ -511,8 +596,8 @@ if (finderRoot) {
           return `
           <button type="button" class="finder-chip finder-category-btn${
             isActive ? ' active' : ''
-          }${dimmed ? ' dimmed' : ''}" data-category="${category.id}">
-            ${category.label}
+          }${dimmed ? ' dimmed' : ''}" data-category="${escapeHtml(category.id)}">
+            ${escapeHtml(category.label)}
           </button>
         `;
         })
@@ -540,7 +625,7 @@ if (finderRoot) {
           .map((category) => ({
             id: category.id,
             label: category.label,
-            procedures: category.procedures.filter((proc) => matchesProcedure(proc, query))
+            procedures: category.procedures.filter((proc) => matchesProcedure(proc, normalizedQuery))
           }));
       } else if (activeCategory) {
         groupsToRender = [
@@ -563,16 +648,18 @@ if (finderRoot) {
       finderProcedureList.innerHTML = groupsToRender
         .map((group) => {
           const showHeading = isSearching || groupsToRender.length > 1;
-          const heading = showHeading ? `<p class="finder-procedure-group-title">${group.label}</p>` : '';
+          const heading = showHeading
+            ? `<p class="finder-procedure-group-title">${escapeHtml(group.label)}</p>`
+            : '';
           const options = group.procedures
             .map((proc) => {
               const isActive = state.selectedProc?.code === proc.code;
               return `
               <button type="button" class="finder-procedure-option${
                 isActive ? ' active' : ''
-              }" data-code="${proc.code}" data-category="${group.id}">
-                <span class="finder-procedure-name">${proc.name}</span>
-                <span class="finder-procedure-code">${proc.code}</span>
+              }" data-code="${escapeHtml(proc.code)}" data-category="${escapeHtml(group.id)}">
+                <span class="finder-procedure-name">${escapeHtml(proc.name)}</span>
+                <span class="finder-procedure-code">${escapeHtml(proc.code)}</span>
               </button>
             `;
             })
@@ -1048,6 +1135,9 @@ if (finderRoot) {
         finderDataset = data;
         availableTypes = Array.from(data.types);
         availableTypes.sort((a, b) => typeOrder.indexOf(a) - typeOrder.indexOf(b));
+        procedureCatalog = buildProcedureCatalog(data);
+        const previousCode = state.selectedProc?.code ?? null;
+        ensureProcedureSelection(previousCode);
         ensureTypeFilter();
         render();
       })
@@ -1057,8 +1147,12 @@ if (finderRoot) {
         finderList.innerHTML = '';
         finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-error">Unable to load hospital dataset.</p>';
         finderCantonSummary.textContent = 'Unable to load hospital dataset.';
+        finderCategoryTabs.innerHTML = '';
+        finderProcedureList.innerHTML = '<p class="finder-error">Unable to load hospital dataset.</p>';
+        finderProcedureSearch.disabled = true;
+        finderProcedureSearch.placeholder = 'Unable to load procedures';
       });
-  }
+}
 
   initializeFinderUi();
 }

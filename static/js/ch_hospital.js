@@ -565,12 +565,39 @@ if (finderRoot) {
     }
   ];
 
+  const ALL_CANTONS_OPTION = 'ALL';
+
   const cantonOptions = [
-    'AG', 'AI', 'AR', 'BE', 'BL', 'BS', 'FR', 'GE', 'GL', 'GR', 'JU', 'LU', 'NE',
-    'NW', 'OW', 'SG', 'SH', 'SO', 'SZ', 'TG', 'TI', 'UR', 'VD', 'VS', 'ZG', 'ZH'
+    { value: ALL_CANTONS_OPTION, label: 'All cantons' },
+    { value: 'AG', label: 'AG' },
+    { value: 'AI', label: 'AI' },
+    { value: 'AR', label: 'AR' },
+    { value: 'BE', label: 'BE' },
+    { value: 'BL', label: 'BL' },
+    { value: 'BS', label: 'BS' },
+    { value: 'FR', label: 'FR' },
+    { value: 'GE', label: 'GE' },
+    { value: 'GL', label: 'GL' },
+    { value: 'GR', label: 'GR' },
+    { value: 'JU', label: 'JU' },
+    { value: 'LU', label: 'LU' },
+    { value: 'NE', label: 'NE' },
+    { value: 'NW', label: 'NW' },
+    { value: 'OW', label: 'OW' },
+    { value: 'SG', label: 'SG' },
+    { value: 'SH', label: 'SH' },
+    { value: 'SO', label: 'SO' },
+    { value: 'SZ', label: 'SZ' },
+    { value: 'TG', label: 'TG' },
+    { value: 'TI', label: 'TI' },
+    { value: 'UR', label: 'UR' },
+    { value: 'VD', label: 'VD' },
+    { value: 'VS', label: 'VS' },
+    { value: 'ZG', label: 'ZG' },
+    { value: 'ZH', label: 'ZH' }
   ];
 
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 7;
 
   const defaultCategory = procedureCatalog[0] ?? null;
   const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
@@ -578,7 +605,7 @@ if (finderRoot) {
   const state = {
     selectedCategory: defaultCategory?.id ?? null,
     selectedProc: defaultProcedure,
-    selectedCanton: 'BE',
+    selectedCanton: ALL_CANTONS_OPTION,
     search: '',
     procedureQuery: '',
     typeFilter: { university: true, kanton: true, private: true },
@@ -869,7 +896,10 @@ if (finderRoot) {
       .map((h) => ({ ...h, share: h.cases / total }))
       .sort((a, b) => b.cases - a.cases);
 
-    const cantonHosp = hospitalsWithShare.filter((h) => h.canton === state.selectedCanton);
+    const cantonHosp =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? hospitalsWithShare
+        : hospitalsWithShare.filter((h) => h.canton === state.selectedCanton);
 
     const hhi = Math.round(
       hospitalsWithShare.reduce((sum, h) => sum + (h.share * 100) ** 2, 0)
@@ -934,7 +964,11 @@ if (finderRoot) {
     const procedureLabel = state.selectedProc
       ? `${state.selectedProc.name} (${state.selectedProc.code})`
       : 'Selected procedure';
-    finderListTitle.textContent = `Top hospitals — ${procedureLabel}`;
+    const listLocationLabel =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? 'Top hospitals'
+        : `Top hospitals in ${state.selectedCanton}`;
+    finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
 
     if (!agg.hospitals.length) {
       finderListMeta.textContent = 'No hospitals match the current filters.';
@@ -942,7 +976,6 @@ if (finderRoot) {
       return;
     }
 
-    const maxCases = agg.hospitals[0]?.cases || 1;
     const searchLower = normalizeString(state.search.trim());
     const filteredBySearch = agg.hospitals.filter((h) =>
       normalizeString(h.hospital).includes(searchLower)
@@ -953,16 +986,32 @@ if (finderRoot) {
       return;
     }
 
-    const totalPages = Math.max(1, Math.ceil(filteredBySearch.length / PAGE_SIZE));
+    const filteredByCanton =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? filteredBySearch
+        : filteredBySearch.filter((h) => h.canton === state.selectedCanton);
+
+    if (!filteredByCanton.length) {
+      finderListMeta.textContent =
+        state.selectedCanton === ALL_CANTONS_OPTION
+          ? 'No hospitals match the current filters.'
+          : `No hospitals in canton ${state.selectedCanton} match the current filters.`;
+      finderList.innerHTML = '<p class="finder-empty">Try adjusting the filters or search query.</p>';
+      return;
+    }
+
+    const maxCases = filteredByCanton[0]?.cases || 1;
+
+    const totalPages = Math.max(1, Math.ceil(filteredByCanton.length / PAGE_SIZE));
     if (state.listPage >= totalPages) {
       state.listPage = totalPages - 1;
     }
     const startIndex = state.listPage * PAGE_SIZE;
-    const endIndex = Math.min(startIndex + PAGE_SIZE, filteredBySearch.length);
-    const toDisplay = filteredBySearch.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + PAGE_SIZE, filteredByCanton.length);
+    const toDisplay = filteredByCanton.slice(startIndex, endIndex);
 
     const hasPrevious = state.listPage > 0;
-    const hasNext = endIndex < filteredBySearch.length;
+    const hasNext = endIndex < filteredByCanton.length;
 
     finderListMeta.innerHTML = `
       <div class="finder-pagination">
@@ -971,7 +1020,7 @@ if (finderRoot) {
         }>
           <span aria-hidden="true">&#8592;</span>
         </button>
-        <span>Showing ${startIndex + 1}–${endIndex} of ${filteredBySearch.length}</span>
+        <span>Showing ${startIndex + 1}–${endIndex} of ${filteredByCanton.length}</span>
         <button class="finder-page-btn" data-direction="next" aria-label="Next hospitals" ${
           hasNext ? '' : 'disabled'
         }>
@@ -1019,7 +1068,11 @@ if (finderRoot) {
   }
 
   function renderMap(agg) {
-    const hospitals = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
+    const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
+    const hospitals =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? hospitalsWithCoords
+        : hospitalsWithCoords.filter((h) => h.canton === state.selectedCanton);
 
     if (!hospitals.length) {
       finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-empty">No map data available for this selection.</p>';
@@ -1064,6 +1117,13 @@ if (finderRoot) {
 
   function renderCantonDetails(agg) {
     const cantonHosp = agg.cantonHosp;
+
+    if (state.selectedCanton === ALL_CANTONS_OPTION) {
+      finderCantonSummary.textContent = 'Select a canton to view local hospital details.';
+      finderCantonList.innerHTML = '';
+      return;
+    }
+
     const totalCanton = cantonHosp.reduce((sum, h) => sum + h.cases, 0);
     const leader = cantonHosp[0];
     let summaryText;
@@ -1101,7 +1161,12 @@ if (finderRoot) {
       ? `${selectedProcedure.name} (${selectedProcedure.code})`
       : 'Select a procedure';
 
-    finderListTitle.textContent = `Top hospitals — ${procedureLabel}`;
+    const listLocationLabel =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? 'Top hospitals'
+        : `Top hospitals in ${state.selectedCanton}`;
+
+    finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
 
     if (!selectedProcedure) {
       finderListMeta.textContent = 'Choose a procedure to explore hospital volumes.';
@@ -1151,10 +1216,16 @@ if (finderRoot) {
       render();
     });
 
-    finderCanton.innerHTML = cantonOptions.map((c) => `<option value="${c}">${c}</option>`).join('');
+    finderCanton.innerHTML = cantonOptions
+      .map((option) => `<option value="${option.value}">${option.label}</option>`)
+      .join('');
     finderCanton.value = state.selectedCanton;
     finderCanton.addEventListener('change', (event) => {
-      state.selectedCanton = event.target.value;
+      const value = event.target.value;
+      state.selectedCanton = cantonOptions.some((option) => option.value === value)
+        ? value
+        : ALL_CANTONS_OPTION;
+      state.listPage = 0;
       render();
     });
 

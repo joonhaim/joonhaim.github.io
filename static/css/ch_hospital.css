@@ -254,9 +254,11 @@ body {
   box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
   padding: 1.5rem;
   margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: 1.2rem;
+  height: 28rem;
+  overflow: hidden;
 }
 
 .finder-procedure-search {
@@ -288,9 +290,48 @@ body {
 }
 
 .finder-procedure-list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+.finder-procedure-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.finder-procedure-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.finder-procedure-list::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.18);
+  border-radius: 999px;
+}
+
+.finder-procedure-list::before,
+.finder-procedure-list::after {
+  content: '';
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 1.1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.finder-procedure-list::before {
+  top: 0;
+  background: linear-gradient(180deg, #fff 40%, rgba(255, 255, 255, 0));
+}
+
+.finder-procedure-list::after {
+  bottom: 0;
+  background: linear-gradient(0deg, #fff 40%, rgba(255, 255, 255, 0));
 }
 
 .finder-procedure-group {
@@ -773,6 +814,10 @@ body {
   .finder-category-tabs {
     justify-content: center;
   }
+
+  .finder-procedure-selector {
+    height: 26rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -786,6 +831,8 @@ body {
 
   .finder-procedure-selector {
     padding: 1.25rem;
+    height: auto;
+    max-height: none;
   }
 
   .finder-procedure-option {
@@ -794,6 +841,10 @@ body {
 
   .finder-procedure-options {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finder-procedure-list {
+    max-height: 20rem;
   }
 }
 

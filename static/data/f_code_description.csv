@@ -1,0 +1,152 @@
+code;German;French;Italian
+A.3.1.F;Fälle mit Katheter der Koronargefässe (Alter >19);Cas avec cathétérisme des vaisseaux coronaires (âge >19);Casi con catetere dei vasi coronarici (età >19)
+A.3.6.F;Fälle mit Herzkathetern bei Kindern und Jugendlichen (Alter <20);Cas avec cathétérisme cardiaque chez l'enfant et l'adolescent (âge <20);Casi con cateterismo cardiaco su bambini e adolescenti (età <20)
+A.4.1.F;HD Herzrhythmusstörungen;DP troubles du rythme cardiaque;DP disturbi del ritmo cardiaco
+A.5.1.F;Schrittmacherversorgung (Implantationen und Wechsel, inkl. Defibrillatoren);Traitement par pacemaker (implantation et changement, défibrillateur inclus);Trattamento con pacemaker (impianto e sostituzione, incluso defibrillatore)
+A.5.2.F;Implantation oder Wechsel eines Defibrillators;Implantation et changement de défibrillateur;Impianto e sostituzione di defibrillatore
+A.6.1.F;Kathetergestützte ablative Therapie;Ablation par cathéter;Terapia ablativa supportata da catetere
+A.6.2.F;Chirurgisch ablative Therapie;Ablation chirurgicale;Terapia ablativa chirurgica
+A.7.1.F;OP am Herzen insgesamt;Total des OP du cœur;OP al cuore, totale
+A.7.2.F;OP an Herzklappen;OP des valves cardiaques;OP alle valvole cardiache
+A.7.24.F;Offener Aortenklappenersatz insgesamt (Alter >19);Total des remplacements de valve aortique à cœur ouvert (âge >19);Sostituzioni della valvola aortica a cuore aperto (età >19), totale
+A.7.3.F;OP an Koronargefässen;OP des vaisseaux coronaires;OP ai vasi coronarici
+A.7.4.F;Andere OP am Herzen;Autres OP du cœur;Altre OP al cuore
+A.7.5.F;Kombinierte OP am Herzen;OP combinée du cœur;OP combinata al cuore
+A.7.6.F;OP am Herzen bei Kindern und Jugendlichen (Alter <20);OP du cœur chez l'enfant et l'adolescent (âge <20);OP al cuore di bambini o adolescenti (età <20)
+B.2.3.F;Neurologische oder andere Komplexbehandlung (Stroke Unit);Traitement complexe neurologique ou autre (unité cérébro­vasculaire);Trattamento neurologico o altro trattamento complesso (Stroke Unit)
+B.2.7.F;Neurologische oder andere Komplexbehandlung (Stroke Unit) bei anderen Diagnosen oder Alter <20;Traitement complexe neurologique ou autre (unité cérébro­vasculaire) en cas d’autre diagnostic ou âge <20;Trattamento neurologico o altro trattamento complesso (Stroke Unit) in caso di altre diagnosi o età <20
+B.3.1.F;HD bösartige Neubildungen des Gehirns oder der Hirnhäute;DP tumeurs malignes de l'encéphale ou des méninges cérébrales;DP tumori maligni del cervello o delle meningi
+B.4.1.F;Stationäre Behandlungen wegen HD Epilepsie (Alter >19);Traitements hospitaliers en cas de DP épilepsie (âge >19);Cure ospedaliere in caso di DP epilessia (età >19)
+B.4.2.F;Stationäre Behandlungen wegen HD Epilepsie (Alter <20);Traitements hospitaliers en cas de DP épilepsie (âge <20);Cure ospedaliere in caso di DP epilessia (età <20)
+B.5.1.F;Stationäre Behandlungen wegen HD Multiple Sklerose;Traitements hospitaliers en cas de DP sclérose en plaques;Cure ospedaliere in caso di DP sclerosi multipla
+C.1.1.F;Geriatrische Frührehabilitation;Rééducation gériatrique précoce;Riabilitazione geriatrica precoce
+D.3.1.F;Stationäre Behandlungen wegen HD Lungenkrebs;Traitements hospitaliers en cas de DP cancer du poumon;Cure ospedaliere in caso di DP cancro polmonare
+E.3.1.F;Resektion der Schilddrüse;Résections thyroïdiennes;Resezione della tiroide
+E.3.3.F;Radiojodtherapie;Radiothérapie par iode radioactif;Radioiodioterapia
+E.3.4.F;Resektion der Schilddrüse bei bösartigen Neubildungen der Schilddrüse;Résections thyroïdiennes en cas de tumeurs malignes de la thyroïde;Resezione della tiroide per tumori maligni della tiroide
+E.3.5.F;Resektion der Schilddrüse bei gutartiger Erkrankung der Schilddrüse;Résections thyroïdiennes pour affections bénignes de la thyroïde;Resezione della tiroide per malattie benigne della tiroide
+E.4.11.F;Stationäre Behandlungen wegen HD kolorektales Karzinom;Traitements hospitaliers en cas de DP carcinome colorectal;Cure ospedaliere per DP carcinoma colorettale
+E.4.12.F;Stationäre Behandlungen bei Colitis ulcerosa oder Morbus Crohn (als HD oder ND);Traitements hospitaliers en cas de colite ulcéreuse ou maladie de Crohn (DP ou DS);Cure ospedaliere per colite ulcerosa o morbo di Crohn (DP o DS)
+E.5.1.F;Magenresektionen insgesamt;Total des gastrectomies;Resezioni gastriche, totale
+E.5.4.F;Stationäre Behandlungen wegen HD Magenkarzinom;Traitements hospitaliers en cas de DP cancer de l'estomac;Cure ospedaliere in caso di DP carcinoma dello stomaco
+F.1.4.F;Intrakranielle perkutan­transluminale Gefässinterventionen;Interventions vasculaires percutanées transluminales intracrâniennes;Interventi vascolari percutanei transluminali intracranici
+F.2.1.F;OP an der Aorta insgesamt;Total des OP de l'aorte;OP all'aorta, totale
+F.2.4.F;Resektion/Ersatz der thorakalen/thorakoabdominalen Aorta (ohne klappentragende Prothesen);Résection/remplacement de l'aorte thoracique/thoraco­abdominale (sans prothèse vasculaire avec valve);Resezione/sostituzione dell'aorta toracica/toracicoaddominale (senza protesi valvolare)
+F.2.7.F;Resektion/Ersatz der abdominalen Aorta;Résection/remplacement de l'aorte abdominale;Resezione/sostituzione dell'aorta addominale
+F.3.8.F;OP an Becken­/Beinarterien kombiniert mit Aorten­OP;OP des artères du bassin/des jambes combinée à une OP de l'aorte;OP alle arterie del bacino/delle gambe combinata con OP aortica
+F.3.9.F;OP an Becken­/Beinarterien bei anderen komplexen Diagnosen;OP des artères du bassin/des jambes en cas d'autre diagnostic complexe;OP alle arterie del bacino/delle gambe in caso di altre diagnosi complesse
+F.5.2.F;PTA abdominale/Beinarterien (ohne Aorta) mit OP an Becken­/Beinarterien;ATP des artères de l'abdomen/des jambes (hormis aorte) avec OP des artères du bassin/des jambes;PTA di arterie addominali/delle gambe (senza aorta) con OP alle arterie del bacino/delle gambe
+F.5.3.F;Aneurysma/Dissektion der Becken­/Beinarterien mit OP;Anévrisme/dissection des artères du bassin/des jambes avec OP;Aneurisma/dissezione delle arterie del bacino/delle gambe con OP
+F.6.1.F;Anlegen eines arteriovenösen Shunts (innere AV­Fistel);Insertion de shunt artério­veineux (fistule AV interne);Posizionamento di shunt arteriovenoso (fistola AV interna)
+G.1.1.F;Stationäre Geburten;Accouchements hospitaliers;Parti ospedalieri
+G.2.1.F;Neugeborene <1250 g;Nouveau­nés <1250 g;Neonati <1250 g
+G.2.2.F;Neugeborene <1250 g, Zuverlegungen;Nouveau­nés <1250 g, transféré d'un autre hôpital;Neonati <1250 g, trasferiti da un altro ospedale
+G.2.3.F;Neugeborene <500 g;Nouveau­nés <500 g;Neonati <500 g
+G.2.4.F;Neugeborene 500-749 g;Nouveau­nés 500-749 g;Neonati 500-749 g
+G.2.5.F;Neugeborene 750-999 g;Nouveau­nés 750-999 g;Neonati 750-999 g
+G.2.6.F;Neugeborene 1000-1249 g;Nouveau­nés 1000-1249 g;Neonati 1000-1249 g
+G.2.7.F;Neugeborene 1250-1499 g;Nouveau­nés 1250-1499 g;Neonati 1250-1499 g
+G.2.8.F;Neugeborene 1500-2499 g;Nouveau­nés 1500-2499 g;Neonati 1500-2499 g
+G.2.9.F;Neugeborene >2499 g oder ohne Gewichtsangabe;Nouveau­nés >2499 g ou sans indication de poids;Neonati >2499 g o senza indicazione del peso
+G.4.1.F;Stationäre Behandlungen wegen HD Brustkrebs;Traitements hospitaliers en cas de DP cancer du sein;Cure ospedaliere in caso di DP cancro al seno
+G.4.2.F;HD bösartige Neubildungen der Mamma und weiblichen Geschlechtsorgane;DP tumeurs malignes du sein et des organes génitaux féminins;DP tumori maligni della mammella e degli organi genitali femminili
+G.4.3.F;Stationäre Behandlungen wegen HD bösartige Neubildungen der Ovarien;Traitements hospitaliers en cas de DP tumeurs malignes des ovaires;Cure ospedaliere in caso di DP tumori maligni delle ovaie
+G.4.5.F;Stationäre Behandlungen wegen HD bösartige Neubildungen des Uterus;Traitements hospitaliers en cas de DP tumeurs malignes de l'utérus;Cure ospedaliere in caso di DP tumori maligni dell'utero
+G.5.1.F;Eingriffe an der Brust insgesamt (Mammaresektionen und ­plastiken);Total des interventions sur le sein (résections et plasties mammaires);Interventi al seno (resezioni e plastiche mammarie), totale
+G.5.2.F;Resektionen der Mamma bei Brustkrebs;Résections mammaires en cas de cancer du sein;Resezione mammaria in caso di cancro al seno
+G.6.1.F;Suspensions-OP und Plastiken im Bereich des Beckenbodens insgesamt;Total des OP de suspension et plasties du plancher pelvien;OP di sospensione e plastiche nella regione del pavimento pelvico, totale
+G.6.2.F;OP bei Genitalprolaps;OP en cas de prolapsus génital;OP per prolasso genitale
+G.6.3.F;OP bei Inkontinenz, ohne Genitalprolaps;OP en cas d'incontinence, sans prolapsus génital;OP per incontinenza, senza prolasso genitale
+G.6.4.F;OP im Bereich des Beckenbodens bei anderer Diagnose;Interventions sur le plancher pelvien pour autre diagnostic;OP nella regione del pavimento pelvico per altra diagnosi
+H.2.1.F;HD Nierensteine;DP calculs rénaux;DP calcoli ai reni
+H.3.1.F;HD Malignom der Blase;DP tumeur maligne de la vessie;DP tumore maligno alla vescica
+H.3.2.F;TUR der Blase insgesamt;Total des RTU de vessie;TUR della vescica, totale
+H.3.3.F;TUR der Blase bei Malignom;RTU de vessie en cas de tumeur maligne;TUR della vescica in caso di tumore maligno
+H.5.1.F;HD Prostatakarzinom;DP carcinome de la prostate;DP carcinoma prostatico
+I.2.16.F;Lokale Schmerztherapie an der Wirbelsäule, ohne OP an der Wirbelsäule;Traitement local des douleurs de la colonne vertébrale, sans OP de la colonne vertébrale;Terapia locale del dolore alla colonna vertebrale, senza OP alla colonna vertebrale
+I.2.17.F;Stationäre Behandlungen bei HD Erkrankung der Wirbelsäule, ohne OP oder lokale Schmerztherapie an der Wirbelsäule;Traitements hospitaliers en cas de DP maladies de la colonne vertébrale, sans OP ou traitement local des douleurs de la colonne;Cure ospedaliere in caso di DP malattia della colonna vertebrale, senza OP o terapia locale del dolore alla colonna vertebrale
+I.2.3.F;OP an der Wirbelsäule und am Rückenmark, ohne isolierte lokale Schmerztherapie;OP de la colonne vertébrale et de la moelle épinière, sans traitement local des douleurs isolé;OP alla colonna vertebrale e al midollo spinale, senza terapia locale del dolore isolata
+I.2.4.F;OP am Rückenmark/Spinalkanal, ohne isolierte lokale Schmerztherapie;OP de la moelle épinière/du canal rachidien, sans traitement local des douleurs isolé;OP al midollo spinale/canale vertebrale, senza terapia locale del dolore isolata
+I.3.22.F;Versorgung bei hüftgelenknaher Fraktur gemäss G-BA Richtlinie (Alter >17);Traitement en cas de fracture métaphysaire de la hanche selon la directive du G-BA (âge >17);Trattamento in caso di frattura vicino all'articolazione dell'anca secondo le direttive del Gemeinsamer Bundesausschuss (G-BA) (età >17)
+I.4.1.F;HD bösartige Neubildungen von Knochen, Gelenkknorpel, peripheren Nerven, Retroperitoneum, Bindegewebe, Weichteilen;DP tumeurs malignes des os, du cartilage articulaire, des nerfs périphériques, du rétropéritoine, du tissu conjonctif, des tissus mous;DP tumori maligni delle ossa, della cartilagine articolare, dei nervi periferici, del retroperitoneo, del tessuto connettivo e dei tessuti molli
+I.5.1.F;Endoprothese am Schulter-/Ellenbogengelenk;Endoprothèse à l’articulation de l’épaule/du coude;Endoprotesi all'articolazione della spalla/del gomito
+I.6.1.F;Polytrauma im Sinne der DRG-Definition;Traumatisme multiple au sens de la définition DRG;Politrauma ai sensi della definizione DRG
+J.1.7.F;ECMO-Lungenunterstützung;Assistance pulmonaire ECMO;Assistenza respiratoria ECMO
+J.1.8.F;ECLS/ECMO-Herz-/Herz-Lungenunterstützung;Assistance cardio/cardio-pulmonaire ECLS/ECMO;Assistenza cardiaca/cardiopolmonare ECLS/ECMO
+J.3.2.F;Patienten mit angeborenen Gerinnungsstörungen;Patients avec des troubles congénitaux de la coagulation;Pazienti con disturbi della coagulazione congeniti
+J.3.3.F;Operierte Patienten mit angeborenen Gerinnungsstörungen;Patients opérés avec des troubles congénitaux de la coagulation;Pazienti operati con disturbi della coagulazione congeniti
+K.1.1.F;Stationäre Behandlungen wegen HD Melanom;Traitements hospitaliers en cas de DP mélanome;Cure ospedaliere in caso di DP melanoma
+K.1.2.F;Stationäre Behandlungen wegen HD Dermatitis und Ekzem;Traitements hospitaliers en cas de DP dermatoses et eczémas;Cure ospedaliere in caso di DP dermatite ed eczema
+K.1.3.F;Stationäre Behandlungen wegen HD Psoriasis;Traitements hospitaliers en cas de DP psoriasis;Cure ospedaliere in caso di DP psoriasi
+L.1.1.F;Herz­ und Herz­Lungen­Transplantation insgesamt;Total des transplantations cardiaques et transplantations combinées cœur­poumons;Trapianti di cuore e trapianti combinati cuore­polmone, totale
+L.1.2.F;Herz­Lungen­Transplantation;Transplantation combinée cœur­poumons;Trapianto combinato cuore­polmone
+L.1.3.F;Herztransplantation;Transplantation cardiaque;Trapianto di cuore
+L.2.1.F;Lungen­ und Herz­Lungen­Transplantation insgesamt;Total des transplantations pulmonaires et transplantations combinées cœur­poumons;Trapianti di polmone e trapianti combinati cuore­polmone, totale
+L.2.2.F;Lungentransplantation;Transplantation pulmonaire;Trapianto di polmone
+L.3.1.F;Lebertransplantation insgesamt;Total des transplantations hépatiques;Trapianti di fegato, totale
+L.3.2.F;Lebertransplantation, komplett;Transplantation hépatique, foie entier;Trapianto di fegato, organo intero
+L.3.3.F;Lebertransplantation, partiell/auxiliär/andere;Transplantation hépatique, foie partiel/auxiliaire/autre;Trapianto di fegato parziale/ausiliario/altro
+L.3.4.F;Leber­Retransplantation im gleichen Aufenthalt, alle Formen;Retransplantation de foie durant la même hospitalisation, toutes les formes;Ritrapianto di fegato nella stessa degenza ospedaliera, tutte le forme
+L.4.1.F;Transplantation von Pankreas oder ­gewebe insgesamt;Total des transplantations du pancréas ou de tissu pancréatique;Trapienti di pancreas o di tessuto pancreatico, totale
+L.5.1.F;Nierentransplantation insgesamt;Total des transplantations rénales;Trapianti di rene, totale
+L.5.2.F;Nierentransplantation, Lebendspender allogen, syngen;Transplantation rénale, donneur vivant allogénique, syngénique;Trapianto di rene da donatore vivente allogenico, singenico
+L.5.3.F;Nierentransplantation, allogen, Leichenniere;Transplantation rénale, allogénique, rein d'un cadavre;Trapianto di rene, allogenico, rene da un cadavere
+L.5.4.F;Nierentransplantation, Autotransplantation und andere;Transplantation rénale, autogreffe et autre;Trapianto di rene, autotrapianto e altro
+L.5.5.F;Kombinierte Transplantation von Niere und Pankreas;Transplantation combinée de rein et pancréas;Trapianto combinato di rene e pancreas
+L.5.6.F;Nieren-Retransplantation während desselben stationären Aufenthaltes;Retransplantation rénale durant la même hospitalisation;Ritrapianto di rene nella stessa degenza ospedaliera
+L.6.1.F;Transplantation oder Transfusion von hämatopoetischen Stammzellen insgesamt;Total des transplantations ou transfusions de cellules souches hématopoïétiques;Trapianti o trasfusioni di cellule staminali ematopoietiche, totale
+L.6.2.F;Transplantation von hämatopoetischen Stammzellen aus Knochenmark insgesamt;Total des transplantations de cellules souches hématopoïétiques de moelle osseuse;Trapianti di cellule staminali ematopoietiche di midollo osseo, totale
+L.6.3.F;Transplantation von hämatopoetischen Stammzellen aus Knochenmark, autogen;Transplantation de cellules souches hématopoïétiques de moelle osseuse, autogène;Trapianto di cellule staminali ematopoietiche di midollo osseo, autogeno
+L.6.4.F;Transfusion von peripheren hämatopoetischen Stammzellen;Transfusion de cellules souches hématopoïétiques périphériques;Trasfusione di cellule staminali ematopoietiche periferiche
+L.6.5.F;Transfusion von peripheren hämatopoetischen Stammzellen, autogen;Transfusion de cellules souches hématopoïétiques périphériques, autogène;Trasfusione di cellule staminali ematopoietiche periferiche, autogeno
+L.6.8.F;Andere Stammzelltherapien;Autres thérapies de cellules souches;Altre terapie con cellule staminali
+L.7.1.F;Hypertherme intraperitoneale Chemotherapie [HIPEC];Chimiothérapie intrapéritonéale hyperthermique [HIPEC];Chemioipertermia intraperitoneale [HIPEC]
+L.7.2.F;Hypertherme intrathorakale Chemotherapie [HITOC];Chimiothérapie hyperthermique intrathoracique [HITOC];Chemioipertermia intratoracica [HITOC]
+M.1.1.F;Palliativmedizinische Komplexbehandlung;Traitement complexe de médecine palliative;Trattamento medico palliativo complesso
+M.1.2.F;Palliativmedizinische Komplexbehandlung durch Palliativ-Dienst (intern und extern);Traitement complexe de médecine palliative par une équipe de soins palliatifs (interne et externe);Trattamento medico palliativo complesso eseguito dal servizio palliativo (interno ed esterno)
+N.1.1.F;Roboterchirurgie bei urologischen Index-Eingriffen;Chirurgie robotisée en cas d’interventions index urologiques;Chirurgia robotica in caso di interventi secondo l'indice urologico
+Z.4.1.F;Dermatologische Onkologie;Oncologie dermatologique;Dermatologia oncologica
+Z.4.10.F;Zerebrovaskuläre Störungen im Stroke Center (IVHSM);Traitement des accidents vasculaires cérébraux en Stroke Center (CIMHS);Malattie cerebrovascolari presso Stroke Center (CIMAS)
+Z.4.11.F;Epileptologie: Komplex-Diagnostik;Epileptologie : diagnostic complexe;Epilettologia: diagnostica complessa
+Z.4.12.F;Epileptologie: Komplex-Behandlung;Epileptologie : traitement complexe;Epilettologia: trattamento complesso
+Z.4.13.F;Grosse Pankreaseingriffe (IVHSM);Chirurgie pancréatique lourde (CIMHS);Chirurgia pancreatica maggiore (CIMAS)
+Z.4.14.F;Grosse Lebereingriffe (IVHSM);Résection hépatique lourde (CIMHS);Chirurgia epatica maggiore (CIMAS)
+Z.4.15.F;Oesophaguschirurgie (IVHSM);Résections œsophagiennes (CIMHS);Chirurgia esofagea (CIMAS)
+Z.4.16.F;Spezialisierte Bariatrische Chirurgie (IVHSM);Chirurgie bariatrique complexe (CIMHS);Chirurgia bariatrica specializzata (CIMAS)
+Z.4.17.F;Tiefe Rektumeingriffe (IVHSM);Résection rectale profonde (CIMHS);Chirurgia rettale bassa (CIMAS)
+Z.4.18.F;Hoch-aggressive Lymphome und akute Leukämien mit kurativer Chemotherapie;Lymphomes très agressifs et leucémies aiguës avec chimiothérapie curative;Linfomi altamente aggressivi e leucemie acute con chemioterapia curativa
+Z.4.19.F;Autologe Blutstammzelltransplantation;Transplantation de cellules souches hématopoïétiques autologues;Trapianto autologo di cellule staminali ematopoietiche
+Z.4.2.F;Cochlea Implantate (IVHSM);Implants cochléaires (CIMHS);Impianti cocleari (CIMAS)
+Z.4.20.F;Allogene Blutstammzelltransplantation (IVHSM);Transplantation de cellules souches hématopoïétiques allogéniques (CIMHS);Trapianto allogenico di cellule staminali ematopaietiche (CIMAS)
+Z.4.21.F;Gefässchirurgie periphere Gefässe (arteriell);Chirurgie vasculaire périphérique (artérielle);Chirurgia vascolare dei vasi periferici (arteriosi)
+Z.4.22.F;Interventionen und Gefässchirurgie intraabdominale Gefässe;Interventions et chirurgie vasculaire sur les vaisseaux intra-abdominaux;Interventi e chirurgia vascolare dei vasi intra-addominali
+Z.4.23.F;Gefässchirurgie Carotis;Chirurgie carotidienne;Chirurgia della carotide
+Z.4.24.F;Interventionen Carotis und extrakranielle Gefässe;Interventions sur la carotide et les vaisseaux extracrâniens;Interventi alla carotide e ai vasi extracranici
+Z.4.25.F;Koronarchirurgie (CABG);Chirurgie coronarienne (PAC);Chirurgia coronarica (BPAC)
+Z.4.26.F;Komplexe kongenitale Herzchirurgie;Chirurgie cardiaque congénitale complexe;Cardiochirurgia congenita complessa
+Z.4.27.F;Interventionelle Kardiologie (Spezialeingriffe);Cardiologie interventionnelle (interventions spéciales);Cardiologia interventistica (interventi speciali)
+Z.4.28.F;Radikale Prostatektomie;Prostatectomie radicale;Prostatectomia radicale
+Z.4.29.F;Radikale Zystektomie;Cystectomie radicale;Cistectomia radicale
+Z.4.3.F;Schild- und Nebenschilddrüsenchirurgie;Chirurgie de la thyroïde et des parathyroïdes;Chirurgia della tiroide e delle parotidi
+Z.4.30.F;Komplexe Chirurgie der Niere (Tumornephrektomie und Nierenteilsektion);Chirurgie complexe des reins (néphrectomie pour tumeur et résection partielle du rein);Chirurgia complessa dei reni (Nefrectomia per indicazione oncologica e nefrectomia parziale)
+Z.4.31.F;Maligne Neoplasien des Atmungssystems (kurative Resektion durch Lobektomie/Pneumonektomie);Cancers du système respiratoire (résection curative par lobectomie/pneumonectomie);Neoplasie maligne del sistema respiratorio (resezione curativa)
+Z.4.32.F;Herztransplantation (IVHSM);Transplantation cardiaque (CIMHS);Trapianto cardiaco (CIMAS)
+Z.4.33.F;Lungentransplantation (IVHSM);Transplantation pulmonaire (CIMHS);Trapianto polmonare (CIMAS)
+Z.4.34.F;Lebertransplantation (IVHSM);Transplantation hépatique (CIMHS);Trapianto epatico (CIMAS)
+Z.4.35.F;Pankreastransplantation (IVHSM);Transplantation pancréatique (CIMHS);Trapianto pancreatico (CIMAS)
+Z.4.36.F;Nierentransplantation (IVHSM);Transplantation rénale CIMHS);Trapianto renale (CIMAS)
+Z.4.37.F;Erstprothese Hüfte;Prothèses de hanche de première intention;Prima protesi all'anca
+Z.4.38.F;Erstprothese Knie;Prothèses du genou de première intention;Prima protesi al ginocchio
+Z.4.39.F;Spezialisierte Wirbelsäulenchirurgie;Chirurgie spécialisée du rachis;Chirurgia specialistica della colonna vertebrale
+Z.4.4.F;Spezialisierte Neurochirurgie;Neurochirurgie spécialisée;Neurochirurgia specializzata
+Z.4.40.F;Knochentumore;Tumeurs osseuses;Tumori ossei
+Z.4.41.F;Plexuschirurgie;Chirurgie du plexus;Chirurgia del plesso
+Z.4.42.F;Gynäkologische Tumore;Tumeurs gynécologiques;Tumori ginecologici
+Z.4.43.F;Anerkanntes zertifiziertes Brustzentrum;Centre de sénologie certifié reconnu;Centro certificato di senologia riconosciuto
+Z.4.44.F;Geburtshilfe (ab GA 32 0/7 SSW und GG 1250g);Obstétrique (à partir de AG 32 0/7 SA et PN 1250g);Ostetricia (dalla 32 settimana di gestazione e >1249g)
+Z.4.45.F;Ausgedehnte Verbrennungen (IVHSM);Brûlures étendues (CIMHS);Ustioni (CIMAS)
+Z.4.5.F;Behandlungen von vaskulären Erkrankungen des ZNS ohne die komplexen vaskulären Anomalien (IVHSM);Traitement des pathologies vasculaires du SNC hormis les anomalies vasculaires complexes (CIMHS);Trattamento di patologie vascolari del SNC senza le anomalie vascolari complesse (CIMAS)
+Z.4.6.F;Behandlungen von komplexen vaskulären Anomalien des ZNS (IVHSM);Traitement des anomalies vasculaires complexes du SNC (CIMHS);Trattamento di anomalie vascolari complesse del SNC (CIMAS)
+Z.4.7.F;Stereotaktische funktionelle Neurochirurgie (IVHSM);Neurochirurgie stéréotaxique fonctionnelle (CIMHS);Neurochirurgia stereotassica funzionale (CIMAS)
+Z.4.8.F;Epilepsiechirurgie (IVHSM);Chirurgie de l’épilepsie (CIMHS);Chirurgia dell'epilessia (CIMAS)
+Z.4.9.F;Tumori intramidollari primari e secondari (CIMAS);Processus expansifs intramédullaires primaires et secondaires (CIMHS);Primäre und sekundäre intramedulläre Raumforderungen (IVHSM)

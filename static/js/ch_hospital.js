@@ -503,11 +503,14 @@ if (finderRoot) {
 
   const cantonOptions = ['ZH', 'BE', 'VD', 'GE', 'BS', 'SG', 'AG', 'FR', 'VS', 'LU', 'GR'];
 
+  const PAGE_SIZE = 10;
+
   const state = {
     selectedProc: procedures[0],
     selectedCanton: 'BE',
     search: '',
-    typeFilter: { university: true, kanton: true, private: true }
+    typeFilter: { university: true, kanton: true, private: true },
+    listPage: 0
   };
 
   const typeLabels = {
@@ -559,6 +562,7 @@ if (finderRoot) {
         const newProc = procedures.find((p) => p.code === btn.dataset.code);
         if (newProc && newProc.code !== state.selectedProc.code) {
           state.selectedProc = newProc;
+          state.listPage = 0;
           render();
         }
       });
@@ -594,6 +598,7 @@ if (finderRoot) {
         if (!hasActive) {
           state.typeFilter[key] = true;
         }
+        state.listPage = 0;
         render();
       });
     });
@@ -720,9 +725,49 @@ if (finderRoot) {
     const filteredBySearch = agg.hospitals.filter((h) =>
       h.hospital.toLowerCase().includes(searchLower)
     );
-    const toDisplay = filteredBySearch.slice(0, 12);
+    if (!filteredBySearch.length) {
+      finderListMeta.textContent = 'No hospitals match your search.';
+      finderList.innerHTML = '<p class="finder-empty">Try adjusting the filters or search query.</p>';
+      return;
+    }
 
-    finderListMeta.textContent = `Showing ${toDisplay.length} of ${filteredBySearch.length}`;
+    const totalPages = Math.max(1, Math.ceil(filteredBySearch.length / PAGE_SIZE));
+    if (state.listPage >= totalPages) {
+      state.listPage = totalPages - 1;
+    }
+    const startIndex = state.listPage * PAGE_SIZE;
+    const endIndex = Math.min(startIndex + PAGE_SIZE, filteredBySearch.length);
+    const toDisplay = filteredBySearch.slice(startIndex, endIndex);
+
+    const hasPrevious = state.listPage > 0;
+    const hasNext = endIndex < filteredBySearch.length;
+
+    finderListMeta.innerHTML = `
+      <div class="finder-pagination">
+        <button class="finder-page-btn" data-direction="prev" aria-label="Previous hospitals" ${
+          hasPrevious ? '' : 'disabled'
+        }>
+          <span aria-hidden="true">&#8592;</span>
+        </button>
+        <span>Showing ${startIndex + 1}–${endIndex} of ${filteredBySearch.length}</span>
+        <button class="finder-page-btn" data-direction="next" aria-label="Next hospitals" ${
+          hasNext ? '' : 'disabled'
+        }>
+          <span aria-hidden="true">&#8594;</span>
+        </button>
+      </div>
+    `;
+
+    finderListMeta.querySelectorAll('.finder-page-btn').forEach((btn) => {
+      if (btn.disabled) {
+        return;
+      }
+      btn.addEventListener('click', () => {
+        const direction = btn.dataset.direction === 'next' ? 1 : -1;
+        state.listPage = Math.min(Math.max(0, state.listPage + direction), totalPages - 1);
+        renderTopList(agg);
+      });
+    });
 
     finderList.innerHTML = toDisplay
       .map((h, idx) => {
@@ -732,7 +777,7 @@ if (finderRoot) {
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
         return `
           <div class="finder-row">
-            <span class="finder-rank">${idx + 1}</span>
+            <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
                 <strong>${h.hospital}</strong>
@@ -850,6 +895,7 @@ if (finderRoot) {
 
   finderSearch.addEventListener('input', (event) => {
     state.search = event.target.value;
+    state.listPage = 0;
     render();
   });
 

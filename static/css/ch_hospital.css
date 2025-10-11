@@ -695,6 +695,27 @@ body {
   border-radius: 0.6rem;
 }
 
+.finder-map-background {
+  transform-origin: center;
+  animation: finder-map-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes finder-map-drift {
+  0% {
+    transform: translate3d(-8px, -6px, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(8px, 6px, 0) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finder-map-background {
+    animation: none;
+  }
+}
+
 .finder-map-legend {
   display: flex;
   gap: 1rem;

@@ -1248,6 +1248,8 @@ if (finderRoot) {
           preserveAspectRatio="none"
           opacity="0.35"
           aria-hidden="true"
+          class="finder-map-background"
+          pointer-events="none"
         ></image>
         ${circles}
       </svg>

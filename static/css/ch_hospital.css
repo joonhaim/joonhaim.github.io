@@ -86,43 +86,35 @@ body {
 }
 
 .hero {
-  background: linear-gradient(135deg, #ffffff 20%, #f5f5f5 100%);
-  color: #111827;
-  padding: 4.5rem 2rem 4rem;
+  background: linear-gradient(135deg, #DA291C 0%, #A70000 100%);
+  color: #fff;
+  padding: 4rem 2rem;
   text-align: center;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
 .hero h1 {
-  font-size: 2.1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.75rem;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
 }
 .hero .tagline {
-  max-width: 680px;
+  max-width: 700px;
   margin: 0 auto;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 .hero .hero-links {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.85rem;
+  flex-direction: column;
+  gap: 0.25rem;
   font-size: 0.9rem;
-  color: #6b7280;
+  align-items: center;
 }
 .hero .hero-links a {
-  color: #DA291C;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(218, 41, 28, 0.4);
-  padding-bottom: 0.1rem;
+  color: #fff;
+  text-decoration: underline;
 }
 .hero .hero-links a:hover {
-  border-bottom-color: #DA291C;
+  color: #fff;
 }
 
 .comparison {

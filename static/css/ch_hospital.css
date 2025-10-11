@@ -797,7 +797,7 @@ body {
   flex-direction: column;
   gap: 0.65rem;
   padding: 1.1rem 1.15rem;
-  margin: 0.5rem 0 1.25rem;
+  margin: 0;
   border-radius: 0.85rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
   background: #f9fafb;
@@ -897,6 +897,14 @@ body {
   border: 1px solid rgba(15, 23, 42, 0.08);
   padding: 1.4rem;
   box-shadow: 0 20px 48px rgba(15, 23, 42, 0.05);
+  align-self: stretch;
+}
+
+.finder-list-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  min-height: 420px;
 }
 
 .finder-list-header {
@@ -904,7 +912,6 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .finder-list-header h3 {
@@ -956,6 +963,22 @@ body {
 .finder-list {
   display: grid;
   gap: 0.75rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  margin-right: -0.25rem;
+  min-height: 0;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.finder-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.finder-list::-webkit-scrollbar-thumb {
+  background: rgba(17, 24, 39, 0.2);
+  border-radius: 999px;
 }
 
 .finder-row {
@@ -1150,6 +1173,14 @@ body {
 @media (max-width: 960px) {
   .finder-main {
     grid-template-columns: 1fr;
+  }
+
+  .finder-list-card {
+    min-height: 0;
+  }
+
+  .finder-list {
+    max-height: 60vh;
   }
 
   .finder-map-card {

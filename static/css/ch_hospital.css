@@ -222,6 +222,373 @@ body {
   font-style: italic;
 }
 
+.procedure-finder {
+  max-width: 1040px;
+  margin: 3rem auto 4rem;
+  padding: 0 1.5rem 3rem;
+}
+
+.finder-intro {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 2rem;
+}
+
+.finder-intro h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.finder-intro p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+.finder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.finder-chip {
+  border: 2px solid #DA291C;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  background: #fff;
+  color: #DA291C;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.finder-chip.active,
+.finder-chip:hover {
+  background: #DA291C;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(218, 41, 28, 0.25);
+}
+
+.finder-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.finder-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #f7f7f7;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.finder-control label,
+.finder-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #555;
+}
+
+.finder-control input,
+.finder-control select {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.finder-type-toggle {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.finder-type-btn {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.finder-type-btn.active {
+  background: #DA291C;
+  border-color: #DA291C;
+  color: #fff;
+}
+
+.finder-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.finder-kpi {
+  background: #fff;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.finder-kpi small {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.finder-kpi strong {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.finder-kpi span {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.finder-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.finder-list-card,
+.finder-map-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+.finder-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.finder-list-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.finder-list-header span {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.finder-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.finder-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.finder-row:last-child {
+  border-bottom: none;
+}
+
+.finder-rank {
+  font-size: 0.8rem;
+  color: #6b7280;
+  width: 1.5rem;
+  text-align: right;
+}
+
+.finder-hospital {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.finder-hospital-header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.finder-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.badge-university {
+  background: rgba(5, 150, 105, 0.12);
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.badge-kanton {
+  background: rgba(14, 165, 233, 0.12);
+  color: #0369a1;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.badge-private {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.finder-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.finder-progress-bar {
+  height: 100%;
+  background: #DA291C;
+}
+
+.finder-figures {
+  text-align: right;
+}
+
+.finder-figures strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.finder-figures span {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+.finder-map-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.finder-map-card svg {
+  width: 100%;
+  height: 280px;
+  border-radius: 1rem;
+}
+
+.finder-map-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+.finder-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.finder-map-legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.finder-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.finder-canton-card,
+.finder-note-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.finder-canton-summary {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.finder-canton-list {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.finder-canton-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.finder-canton-row:last-child {
+  border-bottom: none;
+}
+
+.finder-note-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+@media (max-width: 960px) {
+  .finder-main {
+    grid-template-columns: 1fr;
+  }
+
+  .finder-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .finder-control {
+    padding: 0.85rem;
+  }
+
+  .finder-kpi strong {
+    font-size: 1.4rem;
+  }
+}
+
 .fade-element {
   opacity: 0;
   transform: translateY(20px);

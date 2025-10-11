@@ -27,81 +27,320 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
-  <section class="hero">
-    <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
-      performance of major hospitals. Select a procedure to explore 2023 case volumes.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
-      <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
-    </p>
-  </section>
+  <button class="sidebar-toggle" type="button" aria-expanded="false" aria-controls="section-sidebar">☰ Sections</button>
+  <div class="sidebar-backdrop" hidden></div>
 
-  <section class="comparison">
-    <h2 class="fade-element">Case Volume Comparison of University Hospitals</h2>
-    <p class="dataset-info fade-element">
-      This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
-      I retrieved and reshaped the original tables using R scripts available in the linked repository.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
+  <div class="page-layout">
+    <nav id="section-sidebar" class="section-sidebar" aria-label="Hospital insights sections">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Explore the report</h2>
+        <p class="sidebar-intro">Jump to a chapter and dig into the subsections.</p>
       </div>
-      <div class="controls fade-element">
-        <p>Choose procedure:</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Cardiology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
-            </div>
+      <ul class="sidebar-list">
+        <li class="sidebar-group" data-group="access">
+          <button class="sidebar-group-toggle" type="button" aria-expanded="true" aria-controls="group-access">
+            <span>🏥 1. Access &amp; Care Volumes</span>
+          </button>
+          <p class="sidebar-goal">Goal: “Where do Swiss patients get care, and for what?”</p>
+          <ul id="group-access" class="sidebar-sublist">
+            <li><a class="sidebar-link" href="#access-landscape">1.1 Swiss Hospital Landscape (Map)</a></li>
+            <li><a class="sidebar-link" href="#centralization-distribution">1.2 Centralization vs Distribution</a></li>
+            <li><a class="sidebar-link" href="#top-procedures">1.3 Top Procedures by Hospital</a></li>
+            <li><a class="sidebar-link" href="#national-summary">1.4 National Summary</a></li>
+          </ul>
+        </li>
+        <li class="sidebar-group" data-group="quality">
+          <button class="sidebar-group-toggle" type="button" aria-expanded="true" aria-controls="group-quality">
+            <span>⚕️ 2. Quality &amp; Outcomes</span>
+          </button>
+          <p class="sidebar-goal">Goal: “How good is the care I receive, and how safe is it?”</p>
+          <ul id="group-quality" class="sidebar-sublist">
+            <li><a class="sidebar-link" href="#mortality-complications">2.1 Mortality &amp; Complication Rates</a></li>
+            <li><a class="sidebar-link" href="#stay-vs-mortality">2.2 Length of Stay vs Mortality</a></li>
+            <li><a class="sidebar-link" href="#readmissions-safety">2.3 Readmissions &amp; Safety Indicators</a></li>
+            <li><a class="sidebar-link" href="#quality-interpretation">2.4 Interpretation Section</a></li>
+          </ul>
+        </li>
+        <li class="sidebar-group" data-group="equity">
+          <button class="sidebar-group-toggle" type="button" aria-expanded="true" aria-controls="group-equity">
+            <span>⚖️ 3. Equity &amp; Regional Access</span>
+          </button>
+          <p class="sidebar-goal">Goal: “Does every Swiss resident have fair access to care?”</p>
+          <ul id="group-equity" class="sidebar-sublist">
+            <li><a class="sidebar-link" href="#cases-per-canton">3.1 Cases per Canton</a></li>
+            <li><a class="sidebar-link" href="#urban-rural">3.2 Urban vs Rural Disparities</a></li>
+            <li><a class="sidebar-link" href="#insurance-gender">3.3 Insurance &amp; Gender Lens</a></li>
+            <li><a class="sidebar-link" href="#equity-summary">3.4 Equity Dashboard Summary</a></li>
+          </ul>
+        </li>
+        <li class="sidebar-group" data-group="profiles">
+          <button class="sidebar-group-toggle" type="button" aria-expanded="true" aria-controls="group-profiles">
+            <span>🏥 4. Hospital Profiles</span>
+          </button>
+          <p class="sidebar-goal">Goal: “What’s the profile of my hospital?”</p>
+          <ul id="group-profiles" class="sidebar-sublist">
+            <li><a class="sidebar-link" href="#select-hospital">4.1 Select a Hospital</a></li>
+            <li><a class="sidebar-link" href="#peer-comparison">4.2 Peer Comparison</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="page-content">
+      <section class="hero">
+        <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
+        <p class="tagline fade-element">
+          The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
+          performance of major hospitals. Select a procedure to explore 2023 case volumes.
+        </p>
+        <p class="hero-links fade-element">
+          <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
+          <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
+        </p>
+      </section>
+
+      <section id="access-care" class="topic-section fade-element">
+        <div class="section-heading">
+          <h2>🏥 1. Access &amp; Care Volumes</h2>
+          <p class="section-goal"><strong>Goal:</strong> “Where do Swiss patients get care, and for what?”</p>
+        </div>
+        <div id="access-landscape" class="topic-subsection fade-element">
+          <h3>1.1 Swiss Hospital Landscape (Map)</h3>
+          <p>Visualize the national hospital footprint with an interactive map showing every facility by category (university, cantonal, regional and private clinics).</p>
+          <div class="viz-placeholder" role="img" aria-label="Interactive map placeholder showing Swiss hospitals by category">
+            <h4>Interactive map coming soon</h4>
+            <ul>
+              <li>Display all hospitals with color-coded categories.</li>
+              <li>Tooltip fields: name, canton, ownership, bed count, specialization.</li>
+              <li>Filter by ownership type to explore regional coverage.</li>
+            </ul>
           </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Epilepsy treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Oncology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Lung cancer treatments</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Colorectal cancer treatments</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Kidney transplant</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopedics</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Primary hip prosthesis</button>
+        </div>
+        <div id="centralization-distribution" class="topic-subsection fade-element">
+          <h3>1.2 Centralization vs Distribution</h3>
+          <p>Compare how complex procedures concentrate in the university hubs. Use the multi-select below to contrast CH-IQI case volumes across the five university hospitals.</p>
+          <div class="comparison">
+            <p class="dataset-info">
+              This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
+              I retrieved and reshaped the original tables using R scripts available in the linked repository.
+            </p>
+            <div class="chart-controls">
+              <div id="procedure-description" class="procedure-description"></div>
+              <div class="chart-container">
+                <canvas id="casesChart"></canvas>
+              </div>
+              <div class="controls">
+                <p>Choose procedure:</p>
+                <div id="procedure-groups">
+                  <div class="procedure-group">
+                    <p class="group-title">Cardiology</p>
+                    <div class="procedure-buttons">
+                      <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
+                      <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
+                      <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
+                    </div>
+                  </div>
+                  <div class="procedure-group">
+                    <p class="group-title">Neurology</p>
+                    <div class="procedure-buttons">
+                      <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
+                      <button class="procedure-btn" data-code="B.4.1.F">Epilepsy treatments</button>
+                    </div>
+                  </div>
+                  <div class="procedure-group">
+                    <p class="group-title">Oncology</p>
+                    <div class="procedure-buttons">
+                      <button class="procedure-btn" data-code="D.3.1.F">Lung cancer treatments</button>
+                      <button class="procedure-btn" data-code="E.4.11.F">Colorectal cancer treatments</button>
+                      <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
+                    </div>
+                  </div>
+                  <div class="procedure-group">
+                    <p class="group-title">Transplantation</p>
+                    <div class="procedure-buttons">
+                      <button class="procedure-btn" data-code="L.5.1.F">Kidney transplant</button>
+                    </div>
+                  </div>
+                  <div class="procedure-group">
+                    <p class="group-title">Orthopedics</p>
+                    <div class="procedure-buttons">
+                      <button class="procedure-btn" data-code="Z.4.37.F">Primary hip prosthesis</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+        <div id="top-procedures" class="topic-subsection fade-element">
+          <h3>1.3 Top Procedures by Hospital</h3>
+          <p>Surface the signature services for each flagship hospital to answer “What is Inselspital best known for?”</p>
+          <div class="viz-placeholder" role="img" aria-label="Treemap placeholder showing procedures by hospital">
+            <h4>Treemap or ranked list</h4>
+            <ul>
+              <li>Highlight top procedures for each university hospital.</li>
+              <li>Allow sorting by cases, growth, or share of national activity.</li>
+              <li>Use tooltips to reveal oncology, stroke, transplant and other specialties.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="national-summary" class="topic-subsection fade-element">
+          <h3>1.4 National Summary</h3>
+          <p>Showcase which hospitals lead key specialties and how cantons depend on one another for complex care.</p>
+          <div class="viz-placeholder" role="img" aria-label="Heatmap placeholder summarizing hospital leadership">
+            <h4>Heatmap or summary table</h4>
+            <ul>
+              <li>Rank each hospital’s top three procedures.</li>
+              <li>Surface cantons that rely on out-of-region expertise.</li>
+              <li>Call out diversity of services beyond the big university centers.</li>
+            </ul>
+          </div>
+          <p class="insight-note">Insight: illustrate how tertiary care remains centralized while regional hospitals anchor routine services.</p>
+        </div>
+      </section>
 
-  <section class="placeholder fade-element">
-    <h2>Hospital Performance Comparison</h2>
-    <p>Under construction</p>
-  </section>
+      <section id="quality-outcomes" class="topic-section fade-element">
+        <div class="section-heading">
+          <h2>⚕️ 2. Quality &amp; Outcomes</h2>
+          <p class="section-goal"><strong>Goal:</strong> “How good is the care I receive, and how safe is it?”</p>
+        </div>
+        <div id="mortality-complications" class="topic-subsection fade-element">
+          <h3>2.1 Mortality &amp; Complication Rates</h3>
+          <p>Track CH-IQI mortality and complication indicators over time to benchmark performance for surgery, stroke units, and other critical services.</p>
+          <div class="viz-placeholder" role="img" aria-label="Line chart placeholder tracking mortality and complication rates">
+            <h4>Trendline over five years</h4>
+            <ul>
+              <li>Plot postoperative mortality rates and stroke outcomes.</li>
+              <li>Compare institutions against the national average.</li>
+              <li>Annotate improvements or areas needing review.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="stay-vs-mortality" class="topic-subsection fade-element">
+          <h3>2.2 Length of Stay vs Mortality</h3>
+          <p>Balance efficiency and outcomes with a bubble plot mapping average length of stay against mortality rates per hospital.</p>
+          <div class="viz-placeholder" role="img" aria-label="Bubble chart placeholder comparing length of stay and mortality">
+            <h4>Bubble plot</h4>
+            <ul>
+              <li>Size bubbles by case volume to show operational scale.</li>
+              <li>Highlight outliers delivering exceptional efficiency.</li>
+              <li>Enable hover details for mortality, LOS, and volume.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="readmissions-safety" class="topic-subsection fade-element">
+          <h3>2.3 Readmissions &amp; Patient Safety Indicators</h3>
+          <p>Spot the hospitals excelling in low readmissions and fewer adverse events across CH-IQI safety metrics.</p>
+          <div class="viz-placeholder" role="img" aria-label="Dashboard placeholder highlighting readmission and safety indicators">
+            <h4>Patient safety dashboard</h4>
+            <ul>
+              <li>Flag hospitals with &lt;5% readmission rates.</li>
+              <li>Call out specialties with higher adverse events.</li>
+              <li>Provide filters for procedure family or hospital type.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="quality-interpretation" class="topic-subsection fade-element">
+          <h3>2.4 Interpretation Section (“What it means”)</h3>
+          <p>Provide neutral commentary that contextualizes the metrics, noting that differences may reflect case complexity, referral patterns, or data coverage.</p>
+          <div class="insight-panel">
+            <h4>Key talking points</h4>
+            <ul>
+              <li>Clarify when high mortality is tied to higher acuity caseloads.</li>
+              <li>Explain data quality caveats and reporting cadence.</li>
+              <li>Suggest prompts for hospital quality leads reviewing the dashboard.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-  <section class="placeholder fade-element">
-    <h2>Comparison of Large, Medium and Small Hospitals</h2>
-    <p>Under construction</p>
-  </section>
+      <section id="equity-access" class="topic-section fade-element">
+        <div class="section-heading">
+          <h2>⚖️ 3. Equity &amp; Regional Access</h2>
+          <p class="section-goal"><strong>Goal:</strong> “Does every Swiss resident have fair access to care?”</p>
+        </div>
+        <div id="cases-per-canton" class="topic-subsection fade-element">
+          <h3>3.1 Cases per Canton (Population-Adjusted)</h3>
+          <p>Use a choropleth map to show procedure cases per 100k inhabitants and reveal cantonal differences in service consumption.</p>
+          <div class="viz-placeholder" role="img" aria-label="Choropleth placeholder displaying cases per canton">
+            <h4>Population-adjusted choropleth</h4>
+            <ul>
+              <li>Overlay canton outlines with optional district drill-down.</li>
+              <li>Toggle between procedures and highlight cantons relying on referrals.</li>
+              <li>Annotate national quartiles to frame disparities.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="urban-rural" class="topic-subsection fade-element">
+          <h3>3.2 Urban vs Rural Disparities</h3>
+          <p>Contrast urban centers with alpine or rural cantons by comparing travel distance and time to advanced services.</p>
+          <div class="viz-placeholder" role="img" aria-label="Comparison placeholder for urban versus rural access">
+            <h4>Travel time comparison</h4>
+            <ul>
+              <li>Combine bar charts with iso-distance bands around tertiary hospitals.</li>
+              <li>Surface how Zürich, Bern, Geneva and Vaud concentrate tertiary care.</li>
+              <li>Show reliance on inter-cantonal transfers for specialized care.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="insurance-gender" class="topic-subsection fade-element">
+          <h3>3.3 Insurance &amp; Gender Lens (optional)</h3>
+          <p>Illustrate how insurance coverage or gender affects procedure access when the data allow deeper segmentation.</p>
+          <div class="viz-placeholder" role="img" aria-label="Dashboard placeholder for insurance and gender patterns">
+            <h4>Equity filters</h4>
+            <ul>
+              <li>Split case counts by basic vs private insurance plans.</li>
+              <li>Break down access by gender or age group.</li>
+              <li>Highlight where data gaps require further reporting.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="equity-summary" class="topic-subsection fade-element">
+          <h3>3.4 Equity Dashboard Summary</h3>
+          <p>Summarize regional equity in a narrative panel describing who travels, who stays local, and where specialized care clusters.</p>
+          <div class="insight-panel">
+            <h4>Suggested narrative</h4>
+            <ul>
+              <li>Most complex care remains centralized in a few urban cantons.</li>
+              <li>Rural cantons leverage inter-cantonal transfers for advanced treatments.</li>
+              <li>Flag forthcoming data needed to quantify unmet demand.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="hospital-profiles" class="topic-section fade-element">
+        <div class="section-heading">
+          <h2>🏥 4. Hospital Profiles</h2>
+          <p class="section-goal"><strong>Goal:</strong> “What’s the profile of my hospital?”</p>
+        </div>
+        <div id="select-hospital" class="topic-subsection fade-element">
+          <h3>4.1 Select a Hospital</h3>
+          <p>Enable visitors to pick a hospital via dropdown or map click to reveal a concise profile card.</p>
+          <div class="viz-placeholder" role="img" aria-label="Hospital profile card placeholder">
+            <h4>Profile summary card</h4>
+            <ul>
+              <li>Display full name, canton, beds, staff, ownership.</li>
+              <li>Show case volumes, leading specializations and CH-IQI metrics.</li>
+              <li>Link directly to the hospital’s official BAG/FOPH quality report.</li>
+            </ul>
+          </div>
+        </div>
+        <div id="peer-comparison" class="topic-subsection fade-element">
+          <h3>4.2 Peer Comparison (“Similar Hospitals”)</h3>
+          <p>Compare a selected hospital with peers of similar size or mandate to place its performance in context.</p>
+          <div class="viz-placeholder" role="img" aria-label="Peer comparison chart placeholder">
+            <h4>Benchmark visual</h4>
+            <ul>
+              <li>Cluster hospitals by type (university, cantonal, regional).</li>
+              <li>Plot key metrics side-by-side for a quick ranking.</li>
+              <li>Include callouts for notable differences that merit review.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="static/js/ch_hospital.js"></script>

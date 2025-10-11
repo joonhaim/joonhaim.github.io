@@ -70,10 +70,6 @@
         <input id="finder-search" type="search" placeholder="Tippen, um die Liste einzugrenzen" />
       </div>
       <div class="finder-control">
-        <span class="finder-label">Nach Spitaltyp filtern</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
-      <div class="finder-control">
         <label for="finder-canton">Nach Kanton filtern</label>
         <select id="finder-canton"></select>
       </div>
@@ -88,6 +84,10 @@
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
+        <div class="finder-type-filter" role="group" aria-label="Filter nach Spitaltyp">
+          <span class="finder-type-filter__label">Spitaltyp</span>
+          <div class="finder-type-toggle" id="finder-type-toggle"></div>
+        </div>
       </div>
       <div class="finder-map-card" id="finder-map"></div>
     </div>

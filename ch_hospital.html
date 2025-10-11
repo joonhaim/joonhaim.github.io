@@ -69,10 +69,6 @@
         <label for="finder-search">Search hospital</label>
         <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
       </div>
-      <div class="finder-control">
-        <span class="finder-label">Filter by hospital type</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
       <div class="finder-control finder-control--canton">
         <label for="finder-canton">Filter by canton</label>
         <select id="finder-canton"></select>
@@ -88,6 +84,10 @@
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
+        <div class="finder-type-filter" role="group" aria-label="Hospital type filter">
+          <span class="finder-type-filter__label">Hospital type</span>
+          <div class="finder-type-toggle" id="finder-type-toggle"></div>
+        </div>
       </div>
       <div class="finder-map-card" id="finder-map"></div>
     </div>

@@ -70,10 +70,6 @@
         <input id="finder-search" type="search" placeholder="Inizia a digitare per restringere l'elenco" />
       </div>
       <div class="finder-control">
-        <span class="finder-label">Filtra per tipo di ospedale</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
-      <div class="finder-control">
         <label for="finder-canton">Filtra per cantone</label>
         <select id="finder-canton"></select>
       </div>
@@ -88,6 +84,10 @@
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
+        <div class="finder-type-filter" role="group" aria-label="Filtro per tipo di ospedale">
+          <span class="finder-type-filter__label">Tipo di ospedale</span>
+          <div class="finder-type-toggle" id="finder-type-toggle"></div>
+        </div>
       </div>
       <div class="finder-map-card" id="finder-map"></div>
     </div>

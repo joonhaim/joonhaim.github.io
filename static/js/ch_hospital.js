@@ -373,6 +373,23 @@ if (finderRoot) {
       messages: {
         allCantons: 'All cantons',
         letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiology',
+          B: 'Neurology & stroke',
+          C: 'Geriatric rehabilitation',
+          D: 'Thoracic oncology',
+          E: 'Endocrine & gastrointestinal oncology',
+          F: 'Vascular surgery',
+          G: 'Maternity & neonatology',
+          H: 'Urology',
+          I: 'Spine & orthopedics',
+          J: 'Critical care & ECMO',
+          K: 'Dermatology',
+          L: 'Transplantation',
+          M: 'Palliative care',
+          N: 'Robotic surgery',
+          Z: 'Specialized centers'
+        },
         selectedProcedure: 'Select a procedure',
         chooseProcedure: 'Choose a procedure to explore hospital volumes.',
         selectProcedureNational: 'Select a procedure above to see national volumes.',
@@ -460,6 +477,23 @@ if (finderRoot) {
       messages: {
         allCantons: 'Alle Kantone',
         letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Kardiologie',
+          B: 'Neurologie & Schlaganfall',
+          C: 'Geriatrische Rehabilitation',
+          D: 'Thoraxonkologie',
+          E: 'Endokrinologie & Gastroenterologie',
+          F: 'Gefässchirurgie',
+          G: 'Geburtshilfe & Neonatologie',
+          H: 'Urologie',
+          I: 'Wirbelsäule & Orthopädie',
+          J: 'Intensivmedizin & ECMO',
+          K: 'Dermatologie',
+          L: 'Transplantationen',
+          M: 'Palliative Care',
+          N: 'Robotische Chirurgie',
+          Z: 'Spezialzentren'
+        },
         selectedProcedure: 'Behandlung wählen',
         chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
         selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
@@ -547,6 +581,23 @@ if (finderRoot) {
       messages: {
         allCantons: 'Tous les cantons',
         letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiologie',
+          B: 'Neurologie & AVC',
+          C: 'Réadaptation gériatrique',
+          D: 'Oncologie thoracique',
+          E: 'Endocrinologie & gastroentérologie',
+          F: 'Chirurgie vasculaire',
+          G: 'Maternité & néonatologie',
+          H: 'Urologie',
+          I: 'Rachis & orthopédie',
+          J: 'Soins intensifs & ECMO',
+          K: 'Dermatologie',
+          L: 'Transplantation',
+          M: 'Soins palliatifs',
+          N: 'Chirurgie robotique',
+          Z: 'Centres spécialisés'
+        },
         selectedProcedure: 'Sélectionner une intervention',
         chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
         selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
@@ -634,6 +685,23 @@ if (finderRoot) {
       messages: {
         allCantons: 'Tutti i cantoni',
         letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiologia',
+          B: 'Neurologia e ictus',
+          C: 'Riabilitazione geriatrica',
+          D: 'Oncologia toracica',
+          E: 'Endocrinologia e gastroenterologia',
+          F: 'Chirurgia vascolare',
+          G: 'Maternità e neonatologia',
+          H: 'Urologia',
+          I: 'Colonna vertebrale e ortopedia',
+          J: 'Terapia intensiva ed ECMO',
+          K: 'Dermatologia',
+          L: 'Trapianti',
+          M: 'Cure palliative',
+          N: 'Chirurgia robotica',
+          Z: 'Centri specializzati'
+        },
         selectedProcedure: 'Seleziona un intervento',
         chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
         selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
@@ -685,6 +753,15 @@ if (finderRoot) {
     const defaultName = translations.en?.procedures?.[code] ?? code;
     const localeName = translations[activeLocale]?.procedures?.[code];
     return localeName || defaultName || code;
+  };
+
+  const getLetterCategoryName = (letter) => {
+    if (!letter) {
+      return '';
+    }
+    const key = `messages.letterCategories.${letter}`;
+    const label = translate(key);
+    return typeof label === 'string' && label !== key ? label : '';
   };
 
   const getObjectTranslation = (path) => {
@@ -802,15 +879,19 @@ if (finderRoot) {
       return Array.from(groupedByLetter.entries())
         .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
         .map(([letter, procedures]) => {
-          const exampleName = procedures.find((proc) => typeof proc?.name === 'string')?.name ?? '';
-          const translatedLabel =
-            exampleName && translate('messages.letterCategoryLabel', { letter, example: exampleName });
+          const categoryName = getLetterCategoryName(letter);
+          const fallbackName = procedures.find((proc) => typeof proc?.name === 'string')?.name ?? '';
+          const exampleName = categoryName || fallbackName;
           let label = letter;
           if (exampleName) {
-            label = `${letter} - ${exampleName}`;
-            if (typeof translatedLabel === 'string' && translatedLabel !== 'messages.letterCategoryLabel') {
-              label = translatedLabel;
-            }
+            const translatedLabel = translate('messages.letterCategoryLabel', {
+              letter,
+              example: exampleName
+            });
+            label =
+              typeof translatedLabel === 'string' && translatedLabel !== 'messages.letterCategoryLabel'
+                ? translatedLabel
+                : `${letter} - ${exampleName}`;
           }
           return {
             id: `letter-${letter}`,

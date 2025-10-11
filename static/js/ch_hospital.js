@@ -318,6 +318,7 @@ if (finderRoot) {
   const translations = {
     en: {
       categories: {
+        all: 'All procedures',
         cardiology: 'Cardiology',
         neurosciences: 'Neurosciences',
         oncology: 'Oncology',
@@ -403,6 +404,7 @@ if (finderRoot) {
     },
     de: {
       categories: {
+        all: 'Alle Behandlungen',
         cardiology: 'Kardiologie',
         neurosciences: 'Neurowissenschaften',
         oncology: 'Onkologie',
@@ -488,6 +490,7 @@ if (finderRoot) {
     },
     fr: {
       categories: {
+        all: 'Toutes les interventions',
         cardiology: 'Cardiologie',
         neurosciences: 'Neurosciences',
         oncology: 'Oncologie',
@@ -573,6 +576,7 @@ if (finderRoot) {
     },
     it: {
       categories: {
+        all: 'Tutte le procedure',
         cardiology: 'Cardiologia',
         neurosciences: 'Neuroscienze',
         oncology: 'Oncologia',
@@ -688,7 +692,7 @@ if (finderRoot) {
     return { ...base };
   };
 
-  const procedureCatalogSchema = [
+  const FALLBACK_PROCEDURE_SCHEMA = [
     { id: 'cardiology', procedures: ['A.3.1.F', 'A.4.1.F', 'A.5.1.F', 'A.7.2.F', 'A.7.3.F'] },
     { id: 'neurosciences', procedures: ['B.2.3.F', 'B.3.1.F', 'B.4.1.F', 'Z.4.5.F'] },
     { id: 'oncology', procedures: ['D.3.1.F', 'E.4.11.F', 'G.4.1.F', 'K.1.1.F', 'Z.4.42.F'] },
@@ -769,8 +773,29 @@ if (finderRoot) {
     });
   }
 
-  const buildProcedureCatalog = () =>
-    procedureCatalogSchema.map((category) => ({
+  const buildProcedureCatalog = (entries) => {
+    if (entries && entries.length) {
+      const collator = new Intl.Collator(activeLocale === 'en' ? 'en' : `${activeLocale}-CH`, {
+        sensitivity: 'base'
+      });
+      const sortedCodes = entries
+        .map((entry) => entry.code)
+        .filter((code) => Boolean(code))
+        .sort((a, b) => collator.compare(getProcedureName(a), getProcedureName(b)));
+
+      return [
+        {
+          id: 'all',
+          label: translate('categories.all'),
+          procedures: sortedCodes.map((code) => ({
+            code,
+            name: getProcedureName(code)
+          }))
+        }
+      ];
+    }
+
+    return FALLBACK_PROCEDURE_SCHEMA.map((category) => ({
       id: category.id,
       label: translate(`categories.${category.id}`),
       procedures: category.procedures.map((code) => ({
@@ -778,6 +803,7 @@ if (finderRoot) {
         name: getProcedureName(code)
       }))
     }));
+  };
 
   const ALL_CANTONS_OPTION = 'ALL';
 
@@ -1469,19 +1495,18 @@ if (finderRoot) {
       });
   }
 
-  const bootstrapFinder = () => {
-    const procedureCatalog = buildProcedureCatalog();
+  const bootstrapFinder = (entries) => {
+    const procedureCatalog = buildProcedureCatalog(entries);
     initializeFinderUi(procedureCatalog);
   };
 
   loadProcedureTranslationDataset()
     .then((entries) => {
       applyProcedureTranslations(entries);
+      bootstrapFinder(entries);
     })
     .catch((error) => {
       console.warn('Unable to load procedure descriptions', error);
-    })
-    .finally(() => {
       bootstrapFinder();
     });
 }

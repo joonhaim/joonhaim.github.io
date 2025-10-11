@@ -1367,15 +1367,6 @@ if (finderRoot) {
       lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, targetBounds.lonMax + lonPadding)
     };
 
-    const lonSpan = Math.max(0.05, bounds.lonMax - bounds.lonMin);
-    const latSpan = Math.max(0.05, bounds.latMax - bounds.latMin);
-
-    const project = (lat, lon) => {
-      const x = ((lon - bounds.lonMin) / lonSpan) * MAP_WIDTH;
-      const y = (1 - (lat - bounds.latMin) / latSpan) * MAP_HEIGHT;
-      return { x, y };
-    };
-
     const baseLonSpan = SWITZERLAND_BOUNDS.lonMax - SWITZERLAND_BOUNDS.lonMin;
     const baseLatSpan = SWITZERLAND_BOUNDS.latMax - SWITZERLAND_BOUNDS.latMin;
 
@@ -1399,6 +1390,14 @@ if (finderRoot) {
       `translate(${translateX.toFixed(2)} ${translateY.toFixed(2)})`,
       `scale(${uniformScale.toFixed(4)})`
     ].join(' ');
+
+    const project = (lat, lon) => {
+      const baseX = ((lon - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
+      const baseY = ((SWITZERLAND_BOUNDS.latMax - lat) / baseLatSpan) * MAP_HEIGHT;
+      const x = baseX * uniformScale + translateX;
+      const y = baseY * uniformScale + translateY;
+      return { x, y };
+    };
 
     const circles = hospitals
       .map((h) => {

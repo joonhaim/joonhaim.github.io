@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
+  <a class="skip-link" href="#procedure-content">Zum Behandlungsfinder springen</a>
   <div class="header-left">
     <a href="index.html" class="back-arrow" aria-label="Zur Startseite">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
@@ -28,85 +29,87 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Zur Startseite"></a>
 
-  <section class="hero">
-    <h1 class="fade-element">Schweizer Spitalüberblick (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      Die Datenbank Swiss Inpatient Quality Indicators (CH-IQI) bietet Einblick in die
-      Leistung der grossen Spitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
-      <span>Methodik: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub-Repo</a></span>
-    </p>
-  </section>
-
-  <section id="procedure-finder" class="procedure-finder fade-element">
-    <div class="finder-intro">
-      <h2>Verfügbarkeit von Behandlungen in der ganzen Schweiz</h2>
-      <p>
-        Erkunden Sie, welche Spitäler für ausgewählte CH-IQI-Verfahren höhere Fallzahlen melden.
-        Nutzen Sie die Schnellfilter, um bestimmte Spitaltypen und Kantone in den Fokus zu nehmen.
+  <main id="procedure-content">
+    <section class="hero">
+      <h1 class="fade-element">Schweizer Spitalüberblick (CH-IQI)</h1>
+      <p class="tagline fade-element">
+        Die Datenbank Swiss Inpatient Quality Indicators (CH-IQI) bietet Einblick in die
+        Leistung der grossen Spitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
       </p>
-    </div>
+      <p class="hero-links fade-element">
+        <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
+        <span>Methodik: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub-Repo</a></span>
+      </p>
+    </section>
 
-    <div class="finder-procedure-selector">
-      <div class="finder-procedure-search">
-        <label class="finder-label" for="finder-procedure-search">Behandlung suchen</label>
-        <input id="finder-procedure-search" type="search" placeholder="Nach Name oder Code suchen" />
-      </div>
-      <div class="finder-category-panel" aria-labelledby="finder-category-label">
-        <p id="finder-category-label" class="finder-panel-title">Verfahrensgruppen</p>
-        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-      </div>
-      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
-        <p id="finder-procedure-label" class="finder-panel-title">Behandlungen</p>
-        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
-      </div>
-    </div>
-
-    <div class="finder-controls">
-      <div class="finder-control">
-        <label for="finder-search">Spital suchen</label>
-        <input id="finder-search" type="search" placeholder="Tippen, um die Liste einzugrenzen" />
-      </div>
-      <div class="finder-control">
-        <span class="finder-label">Nach Spitaltyp filtern</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
-      <div class="finder-control">
-        <label for="finder-canton">Nach Kanton filtern</label>
-        <select id="finder-canton"></select>
-      </div>
-    </div>
-
-    <div class="finder-kpis" id="finder-kpis"></div>
-
-    <div class="finder-main">
-      <div class="finder-list-card">
-        <div class="finder-list-header">
-          <h3 id="finder-list-title">Top-Spitäler</h3>
-          <span id="finder-list-meta"></span>
-        </div>
-        <div id="finder-list" class="finder-list"></div>
-      </div>
-      <div class="finder-map-card" id="finder-map"></div>
-    </div>
-
-    <div class="finder-bottom">
-      <div class="finder-canton-card">
-        <h3>Fokus auf Ihren Kanton</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
-      </div>
-      <div class="finder-note-card">
-        <h3>Hinweise zur Datennutzung</h3>
+    <section id="procedure-finder" class="procedure-finder fade-element">
+      <div class="finder-intro">
+        <h2>Verfügbarkeit von Behandlungen in der ganzen Schweiz</h2>
         <p>
-          Höhere Fallzahlen können auf mehr Routine und Erfahrung hinweisen, dennoch werden Resultate von vielen Faktoren beeinflusst,
-          darunter der Fallmix und die Komplexität der Patientinnen und Patienten. Nutzen Sie diese Werte als Ausgangspunkt und betrachten Sie Qualitätsindikatoren zusammen mit der Verfügbarkeit.
+          Erkunden Sie, welche Spitäler für ausgewählte CH-IQI-Verfahren höhere Fallzahlen melden.
+          Nutzen Sie die Schnellfilter, um bestimmte Spitaltypen und Kantone in den Fokus zu nehmen.
         </p>
       </div>
-    </div>
-  </section>
+
+      <div class="finder-procedure-selector">
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Behandlung suchen</label>
+          <input id="finder-procedure-search" type="search" placeholder="Nach Name oder Code suchen" />
+        </div>
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Verfahrensgruppen</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Behandlungen</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
+      </div>
+
+      <div class="finder-controls">
+        <div class="finder-control">
+          <label for="finder-search">Spital suchen</label>
+          <input id="finder-search" type="search" placeholder="Tippen, um die Liste einzugrenzen" />
+        </div>
+        <div class="finder-control">
+          <span class="finder-label">Nach Spitaltyp filtern</span>
+          <div class="finder-type-toggle" id="finder-type-toggle"></div>
+        </div>
+        <div class="finder-control">
+          <label for="finder-canton">Nach Kanton filtern</label>
+          <select id="finder-canton"></select>
+        </div>
+      </div>
+
+      <div class="finder-kpis" id="finder-kpis"></div>
+
+      <div class="finder-main">
+        <div class="finder-list-card">
+          <div class="finder-list-header">
+            <h3 id="finder-list-title">Top-Spitäler</h3>
+            <span id="finder-list-meta"></span>
+          </div>
+          <div id="finder-list" class="finder-list"></div>
+        </div>
+        <div class="finder-map-card" id="finder-map"></div>
+      </div>
+
+      <div class="finder-bottom">
+        <div class="finder-canton-card">
+          <h3>Fokus auf Ihren Kanton</h3>
+          <p id="finder-canton-summary" class="finder-canton-summary"></p>
+          <div id="finder-canton-list" class="finder-canton-list"></div>
+        </div>
+        <div class="finder-note-card">
+          <h3>Hinweise zur Datennutzung</h3>
+          <p>
+            Höhere Fallzahlen können auf mehr Routine und Erfahrung hinweisen, dennoch werden Resultate von vielen Faktoren beeinflusst,
+            darunter der Fallmix und die Komplexität der Patientinnen und Patienten. Nutzen Sie diese Werte als Ausgangspunkt und betrachten Sie Qualitätsindikatoren zusammen mit der Verfügbarkeit.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>

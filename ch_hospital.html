@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
+  <a class="skip-link" href="#procedure-content">Skip to procedure finder</a>
   <div class="header-left">
     <a href="index.html" class="back-arrow" aria-label="Back to homepage">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
@@ -28,86 +29,88 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
-  <section class="hero">
-    <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
-      performance of major hospitals. Select a procedure to explore 2023 case volumes.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
-      <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
-    </p>
-  </section>
-
-  <section id="procedure-finder" class="procedure-finder fade-element">
-    <div class="finder-intro">
-      <h2>Procedure availability across Switzerland</h2>
-      <p>
-        Explore which hospitals report higher case volumes for selected CH-IQI procedures.
-        Use the quick filters to focus on specific hospital types and cantons.
+  <main id="procedure-content">
+    <section class="hero">
+      <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
+      <p class="tagline fade-element">
+        The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
+        performance of major hospitals. Select a procedure to explore 2023 case volumes.
       </p>
-    </div>
+      <p class="hero-links fade-element">
+        <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
+        <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
+      </p>
+    </section>
 
-    <div class="finder-procedure-selector">
-      <div class="finder-procedure-search">
-        <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
-        <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
-      </div>
-      <div class="finder-category-panel" aria-labelledby="finder-category-label">
-        <p id="finder-category-label" class="finder-panel-title">Procedure families</p>
-        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-      </div>
-      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
-        <p id="finder-procedure-label" class="finder-panel-title">Procedures</p>
-        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
-      </div>
-    </div>
-
-    <div class="finder-controls">
-      <div class="finder-control finder-control--search">
-        <label for="finder-search">Search hospital</label>
-        <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
-      </div>
-      <div class="finder-control finder-control--canton">
-        <label for="finder-canton">Filter by canton</label>
-        <select id="finder-canton"></select>
-      </div>
-    </div>
-
-    <div class="finder-kpis" id="finder-kpis"></div>
-
-    <div class="finder-main">
-      <div class="finder-list-card">
-        <div class="finder-list-header">
-          <h3 id="finder-list-title">Top hospitals</h3>
-          <span id="finder-list-meta"></span>
-        </div>
-        <div class="finder-type-filter">
-          <span class="finder-label">Filter by hospital type</span>
-          <div class="finder-type-toggle" id="finder-type-toggle"></div>
-        </div>
-        <div id="finder-list" class="finder-list"></div>
-      </div>
-      <div class="finder-map-card" id="finder-map"></div>
-    </div>
-
-    <div class="finder-bottom">
-      <div class="finder-canton-card">
-        <h3>Focus on your canton</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
-      </div>
-      <div class="finder-note-card">
-        <h3>Reading the data</h3>
+    <section id="procedure-finder" class="procedure-finder fade-element">
+      <div class="finder-intro">
+        <h2>Procedure availability across Switzerland</h2>
         <p>
-          Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
-          by many factors including case mix and patient complexity. Use these figures as a starting
-          point and review quality indicators alongside availability.
+          Explore which hospitals report higher case volumes for selected CH-IQI procedures.
+          Use the quick filters to focus on specific hospital types and cantons.
         </p>
       </div>
-    </div>
-  </section>
+
+      <div class="finder-procedure-selector">
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
+          <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
+        </div>
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Procedure families</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Procedures</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
+      </div>
+
+      <div class="finder-controls">
+        <div class="finder-control finder-control--search">
+          <label for="finder-search">Search hospital</label>
+          <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
+        </div>
+        <div class="finder-control finder-control--canton">
+          <label for="finder-canton">Filter by canton</label>
+          <select id="finder-canton"></select>
+        </div>
+      </div>
+
+      <div class="finder-kpis" id="finder-kpis"></div>
+
+      <div class="finder-main">
+        <div class="finder-list-card">
+          <div class="finder-list-header">
+            <h3 id="finder-list-title">Top hospitals</h3>
+            <span id="finder-list-meta"></span>
+          </div>
+          <div class="finder-type-filter">
+            <span class="finder-label">Filter by hospital type</span>
+            <div class="finder-type-toggle" id="finder-type-toggle"></div>
+          </div>
+          <div id="finder-list" class="finder-list"></div>
+        </div>
+        <div class="finder-map-card" id="finder-map"></div>
+      </div>
+
+      <div class="finder-bottom">
+        <div class="finder-canton-card">
+          <h3>Focus on your canton</h3>
+          <p id="finder-canton-summary" class="finder-canton-summary"></p>
+          <div id="finder-canton-list" class="finder-canton-list"></div>
+        </div>
+        <div class="finder-note-card">
+          <h3>Reading the data</h3>
+          <p>
+            Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
+            by many factors including case mix and patient complexity. Use these figures as a starting
+            point and review quality indicators alongside availability.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>

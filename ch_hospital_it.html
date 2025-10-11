@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
+  <a class="skip-link" href="#procedure-content">Vai al selettore delle procedure</a>
   <div class="header-left">
     <a href="index.html" class="back-arrow" aria-label="Torna alla homepage">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
@@ -28,85 +29,87 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Torna alla homepage"></a>
 
-  <section class="hero">
-    <h1 class="fade-element">Panoramica degli ospedali svizzeri (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      Il database Swiss Inpatient Quality Indicators (CH-IQI) offre una panoramica delle prestazioni dei principali ospedali.
-      Seleziona un intervento per esplorare i volumi di casi 2023.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Fonte: <a href="https://www.bag.admin.ch/it/indicatori-di-qualita-degli-ospedali-svizzeri-di-cure-acute" target="_blank" rel="noopener">UFSP CH-IQI</a></span>
-      <span>Metodologia: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
-    </p>
-  </section>
-
-  <section id="procedure-finder" class="procedure-finder fade-element">
-    <div class="finder-intro">
-      <h2>Disponibilità degli interventi in tutta la Svizzera</h2>
-      <p>
-        Scopri quali ospedali registrano volumi di casi più elevati per gli interventi CH-IQI selezionati.
-        Usa i filtri rapidi per concentrarti su specifici tipi di ospedali e cantoni.
+  <main id="procedure-content">
+    <section class="hero">
+      <h1 class="fade-element">Panoramica degli ospedali svizzeri (CH-IQI)</h1>
+      <p class="tagline fade-element">
+        Il database Swiss Inpatient Quality Indicators (CH-IQI) offre una panoramica delle prestazioni dei principali ospedali.
+        Seleziona un intervento per esplorare i volumi di casi 2023.
       </p>
-    </div>
+      <p class="hero-links fade-element">
+        <span>Fonte: <a href="https://www.bag.admin.ch/it/indicatori-di-qualita-degli-ospedali-svizzeri-di-cure-acute" target="_blank" rel="noopener">UFSP CH-IQI</a></span>
+        <span>Metodologia: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
+      </p>
+    </section>
 
-    <div class="finder-procedure-selector">
-      <div class="finder-procedure-search">
-        <label class="finder-label" for="finder-procedure-search">Trova un intervento</label>
-        <input id="finder-procedure-search" type="search" placeholder="Cerca per nome o codice" />
-      </div>
-      <div class="finder-category-panel" aria-labelledby="finder-category-label">
-        <p id="finder-category-label" class="finder-panel-title">Famiglie di procedure</p>
-        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-      </div>
-      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
-        <p id="finder-procedure-label" class="finder-panel-title">Procedure</p>
-        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
-      </div>
-    </div>
-
-    <div class="finder-controls">
-      <div class="finder-control">
-        <label for="finder-search">Cerca ospedale</label>
-        <input id="finder-search" type="search" placeholder="Inizia a digitare per restringere l'elenco" />
-      </div>
-      <div class="finder-control">
-        <span class="finder-label">Filtra per tipo di ospedale</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
-      <div class="finder-control">
-        <label for="finder-canton">Filtra per cantone</label>
-        <select id="finder-canton"></select>
-      </div>
-    </div>
-
-    <div class="finder-kpis" id="finder-kpis"></div>
-
-    <div class="finder-main">
-      <div class="finder-list-card">
-        <div class="finder-list-header">
-          <h3 id="finder-list-title">Ospedali principali</h3>
-          <span id="finder-list-meta"></span>
-        </div>
-        <div id="finder-list" class="finder-list"></div>
-      </div>
-      <div class="finder-map-card" id="finder-map"></div>
-    </div>
-
-    <div class="finder-bottom">
-      <div class="finder-canton-card">
-        <h3>Focus sul tuo cantone</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
-      </div>
-      <div class="finder-note-card">
-        <h3>Come leggere i dati</h3>
+    <section id="procedure-finder" class="procedure-finder fade-element">
+      <div class="finder-intro">
+        <h2>Disponibilità degli interventi in tutta la Svizzera</h2>
         <p>
-          Volumi di intervento più elevati possono indicare una maggiore esperienza operativa, ma gli esiti dipendono da molti fattori,
-          tra cui il mix dei casi e la complessità dei pazienti. Usa queste cifre come punto di partenza e valuta gli indicatori di qualità insieme alla disponibilità.
+          Scopri quali ospedali registrano volumi di casi più elevati per gli interventi CH-IQI selezionati.
+          Usa i filtri rapidi per concentrarti su specifici tipi di ospedali e cantoni.
         </p>
       </div>
-    </div>
-  </section>
+
+      <div class="finder-procedure-selector">
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Trova un intervento</label>
+          <input id="finder-procedure-search" type="search" placeholder="Cerca per nome o codice" />
+        </div>
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Famiglie di procedure</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Procedure</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
+      </div>
+
+      <div class="finder-controls">
+        <div class="finder-control">
+          <label for="finder-search">Cerca ospedale</label>
+          <input id="finder-search" type="search" placeholder="Inizia a digitare per restringere l'elenco" />
+        </div>
+        <div class="finder-control">
+          <span class="finder-label">Filtra per tipo di ospedale</span>
+          <div class="finder-type-toggle" id="finder-type-toggle"></div>
+        </div>
+        <div class="finder-control">
+          <label for="finder-canton">Filtra per cantone</label>
+          <select id="finder-canton"></select>
+        </div>
+      </div>
+
+      <div class="finder-kpis" id="finder-kpis"></div>
+
+      <div class="finder-main">
+        <div class="finder-list-card">
+          <div class="finder-list-header">
+            <h3 id="finder-list-title">Ospedali principali</h3>
+            <span id="finder-list-meta"></span>
+          </div>
+          <div id="finder-list" class="finder-list"></div>
+        </div>
+        <div class="finder-map-card" id="finder-map"></div>
+      </div>
+
+      <div class="finder-bottom">
+        <div class="finder-canton-card">
+          <h3>Focus sul tuo cantone</h3>
+          <p id="finder-canton-summary" class="finder-canton-summary"></p>
+          <div id="finder-canton-list" class="finder-canton-list"></div>
+        </div>
+        <div class="finder-note-card">
+          <h3>Come leggere i dati</h3>
+          <p>
+            Volumi di intervento più elevati possono indicare una maggiore esperienza operativa, ma gli esiti dipendono da molti fattori,
+            tra cui il mix dei casi e la complessità dei pazienti. Usa queste cifre come punto di partenza e valuta gli indicatori di qualità insieme alla disponibilità.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>

@@ -372,6 +372,7 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'All cantons',
+        letterCategoryLabel: '{letter} - {example}',
         selectedProcedure: 'Select a procedure',
         chooseProcedure: 'Choose a procedure to explore hospital volumes.',
         selectProcedureNational: 'Select a procedure above to see national volumes.',
@@ -458,6 +459,7 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Alle Kantone',
+        letterCategoryLabel: '{letter} - {example}',
         selectedProcedure: 'Behandlung wählen',
         chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
         selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
@@ -544,6 +546,7 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Tous les cantons',
+        letterCategoryLabel: '{letter} - {example}',
         selectedProcedure: 'Sélectionner une intervention',
         chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
         selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
@@ -630,6 +633,7 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Tutti i cantoni',
+        letterCategoryLabel: '{letter} - {example}',
         selectedProcedure: 'Seleziona un intervento',
         chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
         selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
@@ -797,11 +801,23 @@ if (finderRoot) {
 
       return Array.from(groupedByLetter.entries())
         .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
-        .map(([letter, procedures]) => ({
-          id: `letter-${letter}`,
-          label: letter,
-          procedures
-        }));
+        .map(([letter, procedures]) => {
+          const exampleName = procedures.find((proc) => typeof proc?.name === 'string')?.name ?? '';
+          const translatedLabel =
+            exampleName && translate('messages.letterCategoryLabel', { letter, example: exampleName });
+          let label = letter;
+          if (exampleName) {
+            label = `${letter} - ${exampleName}`;
+            if (typeof translatedLabel === 'string' && translatedLabel !== 'messages.letterCategoryLabel') {
+              label = translatedLabel;
+            }
+          }
+          return {
+            id: `letter-${letter}`,
+            label,
+            procedures
+          };
+        });
     }
 
     return FALLBACK_PROCEDURE_SCHEMA.map((category) => ({

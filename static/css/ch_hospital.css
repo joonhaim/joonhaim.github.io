@@ -544,34 +544,70 @@ body {
 
 
 .finder-controls {
+  margin-bottom: 1.9rem;
+}
+
+.finder-filter-card {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
-  align-items: stretch;
-  margin-bottom: 1.75rem;
+  padding: 1.4rem 1.55rem 1.5rem;
+  border-radius: 1.05rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #fdf5f5 100%);
+  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+}
+
+.finder-filter-title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.finder-filter-row {
+  display: grid;
+  gap: 1.15rem;
+  align-items: end;
+}
+
+.finder-filter-row--primary {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.finder-filter-row--secondary {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.finder-filter-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.14) 50%, rgba(15, 23, 42, 0) 100%);
+  border-radius: 999px;
 }
 
 .finder-control {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  background: #ffffff;
-  padding: 1.05rem 1.15rem;
-  border-radius: 0.85rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 12px 38px rgba(15, 23, 42, 0.05);
-  height: 100%;
+  gap: 0.6rem;
+}
+
+.finder-control--type .finder-type-toggle {
+  width: 100%;
 }
 
 .finder-control--canton {
   width: 100%;
-  justify-self: stretch;
 }
 
 @media (min-width: 900px) {
-  .finder-controls {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
-    gap: 1.5rem;
+  .finder-filter-card {
+    padding: 1.6rem 1.8rem 1.7rem;
+  }
+
+  .finder-filter-row--secondary {
+    grid-template-columns: minmax(0, 0.65fr) minmax(0, 0.35fr);
   }
 }
 
@@ -783,17 +819,6 @@ body {
 
 .finder-canton-dropdown__option + .finder-canton-dropdown__option {
   border-top: 1px solid rgba(15, 23, 42, 0.05);
-}
-
-.finder-type-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  padding: 1.1rem 1.15rem;
-  margin: 0;
-  border-radius: 0.85rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #f9fafb;
 }
 
 .finder-type-toggle {
@@ -1231,10 +1256,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .finder-control {
-    padding: 0.9rem 1rem;
-  }
-
   .finder-kpi strong {
     font-size: 1.4rem;
   }
@@ -1270,9 +1291,6 @@ body {
     padding: 0.55rem 0.4rem 0.55rem 0.55rem;
   }
 
-  .finder-type-filter {
-    padding: 0.95rem 1rem;
-  }
 }
 
 .fade-element {

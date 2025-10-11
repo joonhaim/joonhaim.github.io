@@ -311,76 +311,399 @@ function loadHospitalDataset() {
 const finderRoot = document.getElementById('procedure-finder');
 
 if (finderRoot) {
-  const procedureCatalog = [
-    {
-      id: 'cardiology',
-      label: 'Cardiology',
-      procedures: [
-        { code: 'A.3.1.F', name: 'Coronary catheterization' },
-        { code: 'A.4.1.F', name: 'Cardiac rhythm disorders' },
-        { code: 'A.5.1.F', name: 'Pacemaker/ICD implantation' },
-        { code: 'A.7.2.F', name: 'Valve surgery' },
-        { code: 'A.7.3.F', name: 'Coronary bypass surgery' }
-      ]
+  const SUPPORTED_LOCALES = ['en', 'de', 'fr', 'it'];
+  const pageLocale = document.documentElement.lang?.toLowerCase() ?? 'en';
+  const activeLocale = SUPPORTED_LOCALES.includes(pageLocale) ? pageLocale : 'en';
+
+  const translations = {
+    en: {
+      categories: {
+        cardiology: 'Cardiology',
+        neurosciences: 'Neurosciences',
+        oncology: 'Oncology',
+        urology: 'Urology',
+        transplantation: 'Transplantation',
+        musculoskeletal: 'Musculoskeletal'
+      },
+      procedures: {
+        'A.3.1.F': 'Coronary catheterization',
+        'A.4.1.F': 'Cardiac rhythm disorders',
+        'A.5.1.F': 'Pacemaker/ICD implantation',
+        'A.7.2.F': 'Valve surgery',
+        'A.7.3.F': 'Coronary bypass surgery',
+        'B.2.3.F': 'Stroke unit – complex treatment',
+        'B.3.1.F': 'Brain tumour treatments',
+        'B.4.1.F': 'Epilepsy treatments',
+        'Z.4.5.F': 'CNS vascular interventions',
+        'D.3.1.F': 'Lung cancer treatments',
+        'E.4.11.F': 'Colorectal cancer treatments',
+        'G.4.1.F': 'Breast cancer treatments',
+        'K.1.1.F': 'Melanoma inpatient treatments',
+        'Z.4.42.F': 'Gynecologic tumour treatments',
+        'H.2.1.F': 'Kidney stone treatments',
+        'H.3.1.F': 'Bladder cancer treatments',
+        'H.3.2.F': 'Transurethral bladder resections',
+        'H.5.1.F': 'Prostate cancer treatments',
+        'L.5.1.F': 'Kidney transplant',
+        'Z.4.33.F': 'Lung transplant (CIMHS)',
+        'Z.4.34.F': 'Liver transplant (CIMHS)',
+        'Z.4.35.F': 'Pancreas transplant (CIMHS)',
+        'Z.4.36.F': 'Kidney transplant (CIMHS)',
+        'Z.4.37.F': 'Primary hip prosthesis',
+        'Z.4.38.F': 'Primary knee prosthesis',
+        'Z.4.39.F': 'Specialized spine surgery',
+        'Z.4.40.F': 'Bone tumour treatments'
+      },
+      types: {
+        labels: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
+        badges: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
+        legend: { university: 'University', kanton: 'Cantonal', private: 'Private' }
+      },
+      hhi: {
+        labels: { low: 'Low', moderate: 'Moderate', high: 'High' },
+        footnote: '&lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
+      },
+      kpi: {
+        totalCases: 'Total cases (CH)',
+        hospitalsPerforming: 'Hospitals performing',
+        universityShare: 'Share at Univ. hospitals',
+        centralization: 'Centralization (HHI)'
+      },
+      messages: {
+        allCantons: 'All cantons',
+        selectedProcedure: 'Select a procedure',
+        chooseProcedure: 'Choose a procedure to explore hospital volumes.',
+        selectProcedureNational: 'Select a procedure above to see national volumes.',
+        selectProcedureMap: 'Select a procedure to display hospital locations.',
+        selectProcedureCantonal: 'Select a procedure to view cantonal details.',
+        loadingData: 'Loading data…',
+        loadingMap: 'Loading map…',
+        failedToLoad: 'Failed to load data.',
+        datasetError: 'Unable to load hospital dataset.',
+        noHospitalsFilters: 'No hospitals match the current filters.',
+        noHospitalVolumes: 'No hospital volumes available for this selection.',
+        noHospitalsSearch: 'No hospitals match your search.',
+        noProceduresMatch: 'No procedures match your search. Try a different keyword.',
+        tryAdjustFilters: 'Try adjusting the filters or search query.',
+        paginationShowing: 'Showing {start}–{end} of {total}',
+        ariaPrevHospitals: 'Previous hospitals',
+        ariaNextHospitals: 'Next hospitals',
+        topHospitals: 'Top hospitals',
+        topHospitalsIn: 'Top hospitals in {canton}',
+        cantonSelectPrompt: 'Select a canton to view local hospital details.',
+        cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
+        cantonSummary:
+          'In canton {canton}, {count} hospitals report volumes for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% nationally.',
+        cantonRowCases: '{cases} cases',
+        mapTitle: 'Map preview',
+        mapAriaLabel: 'Hospital locations by volume',
+        mapNoData: 'No map data available for this selection.',
+        mapTooltip: '{hospital} — {cases} cases'
+      }
     },
-    {
-      id: 'neurosciences',
-      label: 'Neurosciences',
-      procedures: [
-        { code: 'B.2.3.F', name: 'Stroke unit – complex treatment' },
-        { code: 'B.3.1.F', name: 'Brain tumour treatments' },
-        { code: 'B.4.1.F', name: 'Epilepsy treatments' },
-        { code: 'Z.4.5.F', name: 'CNS vascular interventions' }
-      ]
+    de: {
+      categories: {
+        cardiology: 'Kardiologie',
+        neurosciences: 'Neurowissenschaften',
+        oncology: 'Onkologie',
+        urology: 'Urologie',
+        transplantation: 'Transplantation',
+        musculoskeletal: 'Bewegungsapparat'
+      },
+      procedures: {
+        'A.3.1.F': 'Koronarangiographie',
+        'A.4.1.F': 'Herzrhythmusstörungen',
+        'A.5.1.F': 'Implantation von Schrittmacher/ICD',
+        'A.7.2.F': 'Herzklappenoperationen',
+        'A.7.3.F': 'Koronar-Bypass-Operationen',
+        'B.2.3.F': 'Schlaganfallstation – komplexe Behandlung',
+        'B.3.1.F': 'Behandlungen von Hirntumoren',
+        'B.4.1.F': 'Behandlungen bei Epilepsie',
+        'Z.4.5.F': 'Gefässeingriffe am ZNS',
+        'D.3.1.F': 'Lungenkrebsbehandlungen',
+        'E.4.11.F': 'Behandlungen bei Darmkrebs',
+        'G.4.1.F': 'Behandlungen bei Brustkrebs',
+        'K.1.1.F': 'Stationäre Behandlungen bei Melanom',
+        'Z.4.42.F': 'Behandlungen gynäkologischer Tumoren',
+        'H.2.1.F': 'Behandlungen bei Nierensteinen',
+        'H.3.1.F': 'Behandlungen bei Blasenkrebs',
+        'H.3.2.F': 'Transurethrale Blasenresektionen',
+        'H.5.1.F': 'Behandlungen bei Prostatakrebs',
+        'L.5.1.F': 'Nierentransplantation',
+        'Z.4.33.F': 'Lungentransplantation (CIMHS)',
+        'Z.4.34.F': 'Lebertransplantation (CIMHS)',
+        'Z.4.35.F': 'Pankreastransplantation (CIMHS)',
+        'Z.4.36.F': 'Nierentransplantation (CIMHS)',
+        'Z.4.37.F': 'Primärprothese Hüfte',
+        'Z.4.38.F': 'Primärprothese Knie',
+        'Z.4.39.F': 'Spezialisierte Wirbelsäulenchirurgie',
+        'Z.4.40.F': 'Behandlungen von Knochentumoren'
+      },
+      types: {
+        labels: { university: 'Universitär', kanton: 'Kantonale', private: 'Private', other: 'Weitere' },
+        badges: { university: 'Universitär', kanton: 'Kanton', private: 'Privat', other: 'Weitere' },
+        legend: { university: 'Universitär', kanton: 'Kantonale', private: 'Private' }
+      },
+      hhi: {
+        labels: { low: 'Niedrig', moderate: 'Mittel', high: 'Hoch' },
+        footnote: '&lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
+      },
+      kpi: {
+        totalCases: 'Fallzahlen gesamt (CH)',
+        hospitalsPerforming: 'Durchführende Spitäler',
+        universityShare: 'Anteil universitäre Spitäler',
+        centralization: 'Zentralisierung (HHI)'
+      },
+      messages: {
+        allCantons: 'Alle Kantone',
+        selectedProcedure: 'Behandlung wählen',
+        chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
+        selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
+        selectProcedureMap: 'Wählen Sie eine Behandlung, um Spitalstandorte anzuzeigen.',
+        selectProcedureCantonal: 'Wählen Sie eine Behandlung, um kantonale Details zu sehen.',
+        loadingData: 'Daten werden geladen…',
+        loadingMap: 'Karte wird geladen…',
+        failedToLoad: 'Fehler beim Laden der Daten.',
+        datasetError: 'Spitaldaten konnten nicht geladen werden.',
+        noHospitalsFilters: 'Keine Spitäler passen zu den aktuellen Filtern.',
+        noHospitalVolumes: 'Für diese Auswahl liegen keine Spitalvolumen vor.',
+        noHospitalsSearch: 'Keine Spitäler entsprechen Ihrer Suche.',
+        noProceduresMatch: 'Keine Behandlungen passen zur Suche. Versuchen Sie einen anderen Begriff.',
+        tryAdjustFilters: 'Passen Sie Filter oder Suchbegriff an.',
+        paginationShowing: 'Anzeige {start}–{end} von {total}',
+        ariaPrevHospitals: 'Vorherige Spitäler',
+        ariaNextHospitals: 'Weitere Spitäler',
+        topHospitals: 'Top-Spitäler',
+        topHospitalsIn: 'Top-Spitäler im Kanton {canton}',
+        cantonSelectPrompt: 'Wählen Sie einen Kanton, um lokale Spitaldetails zu sehen.',
+        cantonNoHospitals: 'Keine Spitäler im Kanton {canton} erfüllen die aktuelle Auswahl.',
+        cantonSummary:
+          'Im Kanton {canton} melden {count} Spitäler Volumen für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% schweizweit.',
+        cantonRowCases: '{cases} Fälle',
+        mapTitle: 'Kartenübersicht',
+        mapAriaLabel: 'Spitalstandorte nach Fallzahlen',
+        mapNoData: 'Für diese Auswahl stehen keine Kartendaten zur Verfügung.',
+        mapTooltip: '{hospital} — {cases} Fälle'
+      }
     },
-    {
-      id: 'oncology',
-      label: 'Oncology',
-      procedures: [
-        { code: 'D.3.1.F', name: 'Lung cancer treatments' },
-        { code: 'E.4.11.F', name: 'Colorectal cancer treatments' },
-        { code: 'G.4.1.F', name: 'Breast cancer treatments' },
-        { code: 'K.1.1.F', name: 'Melanoma inpatient treatments' },
-        { code: 'Z.4.42.F', name: 'Gynecologic tumour treatments' }
-      ]
+    fr: {
+      categories: {
+        cardiology: 'Cardiologie',
+        neurosciences: 'Neurosciences',
+        oncology: 'Oncologie',
+        urology: 'Urologie',
+        transplantation: 'Transplantation',
+        musculoskeletal: 'Appareil locomoteur'
+      },
+      procedures: {
+        'A.3.1.F': 'Cathétérisme coronarien',
+        'A.4.1.F': 'Troubles du rythme cardiaque',
+        'A.5.1.F': 'Implantation de pacemaker/défibrillateur',
+        'A.7.2.F': 'Chirurgie valvulaire',
+        'A.7.3.F': 'Pontage coronarien',
+        'B.2.3.F': 'Unité AVC – prise en charge complexe',
+        'B.3.1.F': 'Traitements des tumeurs cérébrales',
+        'B.4.1.F': "Prise en charge de l'épilepsie",
+        'Z.4.5.F': 'Interventions vasculaires du SNC',
+        'D.3.1.F': 'Traitements du cancer du poumon',
+        'E.4.11.F': 'Traitements du cancer colorectal',
+        'G.4.1.F': 'Traitements du cancer du sein',
+        'K.1.1.F': 'Traitements stationnaires du mélanome',
+        'Z.4.42.F': 'Traitements des tumeurs gynécologiques',
+        'H.2.1.F': 'Traitements des calculs rénaux',
+        'H.3.1.F': 'Traitements du cancer de la vessie',
+        'H.3.2.F': 'Résections transurétrales de la vessie',
+        'H.5.1.F': 'Traitements du cancer de la prostate',
+        'L.5.1.F': 'Transplantation rénale',
+        'Z.4.33.F': 'Transplantation pulmonaire (CIMHS)',
+        'Z.4.34.F': 'Transplantation hépatique (CIMHS)',
+        'Z.4.35.F': 'Transplantation pancréatique (CIMHS)',
+        'Z.4.36.F': 'Transplantation rénale (CIMHS)',
+        'Z.4.37.F': 'Prothèse totale de hanche primaire',
+        'Z.4.38.F': 'Prothèse totale de genou primaire',
+        'Z.4.39.F': 'Chirurgie spécialisée de la colonne vertébrale',
+        'Z.4.40.F': 'Traitements des tumeurs osseuses'
+      },
+      types: {
+        labels: { university: 'Universitaires', kanton: 'Cantonaux', private: 'Privés', other: 'Autres' },
+        badges: { university: 'Universitaire', kanton: 'Cantonal', private: 'Privé', other: 'Autre' },
+        legend: { university: 'Universitaires', kanton: 'Cantonaux', private: 'Privés' }
+      },
+      hhi: {
+        labels: { low: 'Faible', moderate: 'Modérée', high: 'Élevée' },
+        footnote: '&lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée'
+      },
+      kpi: {
+        totalCases: 'Cas totaux (CH)',
+        hospitalsPerforming: 'Hôpitaux actifs',
+        universityShare: 'Part des hôpitaux universitaires',
+        centralization: 'Centralisation (HHI)'
+      },
+      messages: {
+        allCantons: 'Tous les cantons',
+        selectedProcedure: 'Sélectionner une intervention',
+        chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
+        selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
+        selectProcedureMap: 'Sélectionnez une intervention pour afficher les emplacements des hôpitaux.',
+        selectProcedureCantonal: 'Sélectionnez une intervention pour voir les détails cantonaux.',
+        loadingData: 'Chargement des données…',
+        loadingMap: 'Chargement de la carte…',
+        failedToLoad: 'Échec du chargement des données.',
+        datasetError: "Impossible de charger l’ensemble de données hospitalier.",
+        noHospitalsFilters: 'Aucun hôpital ne correspond aux filtres actuels.',
+        noHospitalVolumes: 'Aucun volume hospitalier disponible pour cette sélection.',
+        noHospitalsSearch: 'Aucun hôpital ne correspond à votre recherche.',
+        noProceduresMatch: 'Aucune intervention ne correspond à votre recherche. Essayez un autre mot-clé.',
+        tryAdjustFilters: 'Modifiez les filtres ou la requête de recherche.',
+        paginationShowing: 'Affichage {start}–{end} sur {total}',
+        ariaPrevHospitals: 'Hôpitaux précédents',
+        ariaNextHospitals: 'Hôpitaux suivants',
+        topHospitals: 'Hôpitaux principaux',
+        topHospitalsIn: 'Hôpitaux principaux dans le canton {canton}',
+        cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
+        cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à la sélection actuelle.',
+        cantonSummary:
+          'Dans le canton {canton}, {count} hôpitaux déclarent des volumes pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% au niveau national.',
+        cantonRowCases: '{cases} cas',
+        mapTitle: 'Aperçu cartographique',
+        mapAriaLabel: 'Localisation des hôpitaux selon le volume',
+        mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
+        mapTooltip: '{hospital} — {cases} cas'
+      }
     },
-    {
-      id: 'urology',
-      label: 'Urology',
-      procedures: [
-        { code: 'H.2.1.F', name: 'Kidney stone treatments' },
-        { code: 'H.3.1.F', name: 'Bladder cancer treatments' },
-        { code: 'H.3.2.F', name: 'Transurethral bladder resections' },
-        { code: 'H.5.1.F', name: 'Prostate cancer treatments' }
-      ]
-    },
-    {
-      id: 'transplantation',
-      label: 'Transplantation',
-      procedures: [
-        { code: 'L.5.1.F', name: 'Kidney transplant' },
-        { code: 'Z.4.33.F', name: 'Lung transplant (CIMHS)' },
-        { code: 'Z.4.34.F', name: 'Liver transplant (CIMHS)' },
-        { code: 'Z.4.35.F', name: 'Pancreas transplant (CIMHS)' },
-        { code: 'Z.4.36.F', name: 'Kidney transplant (CIMHS)' }
-      ]
-    },
-    {
-      id: 'musculoskeletal',
-      label: 'Musculoskeletal',
-      procedures: [
-        { code: 'Z.4.37.F', name: 'Primary hip prosthesis' },
-        { code: 'Z.4.38.F', name: 'Primary knee prosthesis' },
-        { code: 'Z.4.39.F', name: 'Specialized spine surgery' },
-        { code: 'Z.4.40.F', name: 'Bone tumour treatments' }
-      ]
+    it: {
+      categories: {
+        cardiology: 'Cardiologia',
+        neurosciences: 'Neuroscienze',
+        oncology: 'Oncologia',
+        urology: 'Urologia',
+        transplantation: 'Trapianti',
+        musculoskeletal: 'Apparato muscoloscheletrico'
+      },
+      procedures: {
+        'A.3.1.F': 'Cateterismo coronarico',
+        'A.4.1.F': 'Disturbi del ritmo cardiaco',
+        'A.5.1.F': 'Impianto di pacemaker/ICD',
+        'A.7.2.F': 'Chirurgia valvolare',
+        'A.7.3.F': 'Chirurgia di bypass coronarico',
+        'B.2.3.F': 'Stroke unit – trattamento complesso',
+        'B.3.1.F': 'Trattamenti dei tumori cerebrali',
+        'B.4.1.F': 'Trattamenti per l’epilessia',
+        'Z.4.5.F': 'Interventi vascolari SNC',
+        'D.3.1.F': 'Trattamenti per il cancro al polmone',
+        'E.4.11.F': 'Trattamenti per il cancro colorettale',
+        'G.4.1.F': 'Trattamenti per il cancro al seno',
+        'K.1.1.F': 'Trattamenti ospedalieri del melanoma',
+        'Z.4.42.F': 'Trattamenti dei tumori ginecologici',
+        'H.2.1.F': 'Trattamenti per i calcoli renali',
+        'H.3.1.F': 'Trattamenti per il cancro alla vescica',
+        'H.3.2.F': 'Resezioni transuretrali della vescica',
+        'H.5.1.F': 'Trattamenti per il cancro alla prostata',
+        'L.5.1.F': 'Trapianto di rene',
+        'Z.4.33.F': 'Trapianto di polmone (CIMHS)',
+        'Z.4.34.F': 'Trapianto di fegato (CIMHS)',
+        'Z.4.35.F': 'Trapianto di pancreas (CIMHS)',
+        'Z.4.36.F': 'Trapianto di rene (CIMHS)',
+        'Z.4.37.F': 'Protesi d’anca primaria',
+        'Z.4.38.F': 'Protesi di ginocchio primaria',
+        'Z.4.39.F': 'Chirurgia specialistica della colonna vertebrale',
+        'Z.4.40.F': 'Trattamenti dei tumori ossei'
+      },
+      types: {
+        labels: { university: 'Universitari', kanton: 'Cantonali', private: 'Privati', other: 'Altri' },
+        badges: { university: 'Universitario', kanton: 'Cantonale', private: 'Privato', other: 'Altro' },
+        legend: { university: 'Universitari', kanton: 'Cantonali', private: 'Privati' }
+      },
+      hhi: {
+        labels: { low: 'Bassa', moderate: 'Moderata', high: 'Alta' },
+        footnote: '&lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta'
+      },
+      kpi: {
+        totalCases: 'Casi totali (CH)',
+        hospitalsPerforming: 'Ospedali attivi',
+        universityShare: 'Quota ospedali universitari',
+        centralization: 'Centralizzazione (HHI)'
+      },
+      messages: {
+        allCantons: 'Tutti i cantoni',
+        selectedProcedure: 'Seleziona un intervento',
+        chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
+        selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
+        selectProcedureMap: 'Seleziona un intervento per visualizzare le posizioni degli ospedali.',
+        selectProcedureCantonal: 'Seleziona un intervento per vedere i dettagli cantonali.',
+        loadingData: 'Caricamento dati…',
+        loadingMap: 'Caricamento mappa…',
+        failedToLoad: 'Errore nel caricamento dei dati.',
+        datasetError: 'Impossibile caricare il dataset ospedaliero.',
+        noHospitalsFilters: 'Nessun ospedale corrisponde ai filtri correnti.',
+        noHospitalVolumes: 'Nessun volume ospedaliero disponibile per questa selezione.',
+        noHospitalsSearch: 'Nessun ospedale corrisponde alla ricerca.',
+        noProceduresMatch: 'Nessun intervento corrisponde alla ricerca. Prova con un’altra parola chiave.',
+        tryAdjustFilters: 'Modifica filtri o termine di ricerca.',
+        paginationShowing: 'Visualizzazione {start}–{end} di {total}',
+        ariaPrevHospitals: 'Ospedali precedenti',
+        ariaNextHospitals: 'Ospedali successivi',
+        topHospitals: 'Ospedali principali',
+        topHospitalsIn: 'Ospedali principali nel cantone {canton}',
+        cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
+        cantonNoHospitals: 'Nessun ospedale nel cantone {canton} corrisponde alla selezione corrente.',
+        cantonSummary:
+          'Nel cantone {canton}, {count} ospedali riportano volumi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% a livello nazionale.',
+        cantonRowCases: '{cases} casi',
+        mapTitle: 'Anteprima mappa',
+        mapAriaLabel: 'Posizioni ospedaliere per volume',
+        mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
+        mapTooltip: '{hospital} — {cases} casi'
+      }
     }
+  };
+
+  const defaultTranslations = translations.en;
+  const localeTranslations = translations[activeLocale] ?? defaultTranslations;
+
+  const resolvePath = (target, path) =>
+    path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), target);
+
+  const translate = (path, replacements = {}) => {
+    const template =
+      resolvePath(localeTranslations, path) ?? resolvePath(defaultTranslations, path) ?? path;
+    if (typeof template !== 'string') {
+      return template;
+    }
+    return template.replace(/\{(\w+)\}/g, (_, key) => (replacements[key] ?? ''));
+  };
+
+  const getObjectTranslation = (path) => {
+    const base = resolvePath(defaultTranslations, path) ?? {};
+    const value = resolvePath(localeTranslations, path);
+    if (value && typeof value === 'object') {
+      return { ...base, ...value };
+    }
+    return { ...base };
+  };
+
+  const procedureCatalogSchema = [
+    { id: 'cardiology', procedures: ['A.3.1.F', 'A.4.1.F', 'A.5.1.F', 'A.7.2.F', 'A.7.3.F'] },
+    { id: 'neurosciences', procedures: ['B.2.3.F', 'B.3.1.F', 'B.4.1.F', 'Z.4.5.F'] },
+    { id: 'oncology', procedures: ['D.3.1.F', 'E.4.11.F', 'G.4.1.F', 'K.1.1.F', 'Z.4.42.F'] },
+    { id: 'urology', procedures: ['H.2.1.F', 'H.3.1.F', 'H.3.2.F', 'H.5.1.F'] },
+    { id: 'transplantation', procedures: ['L.5.1.F', 'Z.4.33.F', 'Z.4.34.F', 'Z.4.35.F', 'Z.4.36.F'] },
+    { id: 'musculoskeletal', procedures: ['Z.4.37.F', 'Z.4.38.F', 'Z.4.39.F', 'Z.4.40.F'] }
   ];
+
+  const procedureCatalog = procedureCatalogSchema.map((category) => ({
+    id: category.id,
+    label: translate(`categories.${category.id}`),
+    procedures: category.procedures.map((code) => ({
+      code,
+      name: translate(`procedures.${code}`)
+    }))
+  }));
 
   const ALL_CANTONS_OPTION = 'ALL';
 
   const cantonOptions = [
-    { value: ALL_CANTONS_OPTION, label: 'All cantons' },
+    { value: ALL_CANTONS_OPTION, label: translate('messages.allCantons') },
     { value: 'AG', label: 'AG' },
     { value: 'AI', label: 'AI' },
     { value: 'AR', label: 'AR' },
@@ -409,6 +732,19 @@ if (finderRoot) {
     { value: 'ZH', label: 'ZH' }
   ];
 
+  const typeLabels = getObjectTranslation('types.labels');
+  const typeBadges = getObjectTranslation('types.badges');
+  const typeLegend = getObjectTranslation('types.legend');
+  const hhiLabels = getObjectTranslation('hhi.labels');
+  const hhiFootnote = translate('hhi.footnote');
+  const kpiLabels = {
+    totalCases: translate('kpi.totalCases'),
+    hospitalsPerforming: translate('kpi.hospitalsPerforming'),
+    universityShare: translate('kpi.universityShare'),
+    centralization: translate('kpi.centralization')
+  };
+  const msg = (key, replacements) => translate(`messages.${key}`, replacements);
+
   const PAGE_SIZE = 7;
 
   const defaultCategory = procedureCatalog[0] ?? null;
@@ -422,13 +758,6 @@ if (finderRoot) {
     procedureQuery: '',
     typeFilter: { university: true, kanton: true, private: true },
     listPage: 0
-  };
-
-  const typeLabels = {
-    university: 'University',
-    kanton: 'Cantonal',
-    private: 'Private',
-    other: 'Other'
   };
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
@@ -452,7 +781,7 @@ if (finderRoot) {
       return;
     }
 
-    const labelFromHHI = (hhi) => (hhi < 1500 ? 'Low' : hhi <= 2500 ? 'Moderate' : 'High');
+    const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
     let finderDataset = null;
     let availableTypes = [];
@@ -555,8 +884,7 @@ if (finderRoot) {
       const hasProcedures = groupsToRender.some((group) => group.procedures && group.procedures.length);
 
       if (!hasProcedures) {
-        finderProcedureList.innerHTML =
-          '<p class="finder-procedure-empty">No procedures match your search. Try a different keyword.</p>';
+        finderProcedureList.innerHTML = `<p class="finder-procedure-empty">${msg('noProceduresMatch')}</p>`;
         return;
       }
 
@@ -728,34 +1056,26 @@ if (finderRoot) {
   }
 
   function renderKpis(agg) {
-    if (!agg.total) {
-      finderKpis.innerHTML = `
-        <div class="finder-kpi"><small>Total cases (CH)</small><strong>0</strong></div>
-        <div class="finder-kpi"><small>Hospitals performing</small><strong>0</strong></div>
-        <div class="finder-kpi"><small>Share at Univ. hospitals</small><strong>${Math.round(
-          agg.uniShare * 100
-        )}%</strong></div>
-        <div class="finder-kpi">
-          <small>Centralization (HHI)</small>
-          <strong>0 – ${labelFromHHI(0)}</strong>
-          <span>&lt;1500 Low · 1500–2500 Moderate · &gt;2500 High</span>
-        </div>
-      `;
-      return;
-    }
-
     const tiles = [
-      { label: 'Total cases (CH)', value: agg.total.toLocaleString(), footnote: '' },
-      { label: 'Hospitals performing', value: agg.hospitals.length, footnote: '' },
       {
-        label: 'Share at Univ. hospitals',
+        label: kpiLabels.totalCases,
+        value: agg.total ? agg.total.toLocaleString() : '0',
+        footnote: ''
+      },
+      {
+        label: kpiLabels.hospitalsPerforming,
+        value: agg.hospitals.length.toLocaleString(),
+        footnote: ''
+      },
+      {
+        label: kpiLabels.universityShare,
         value: `${Math.round(agg.uniShare * 100)}%`,
         footnote: ''
       },
       {
-        label: 'Centralization (HHI)',
+        label: kpiLabels.centralization,
         value: `${agg.hhi} – ${agg.hhiLabel}`,
-        footnote: '<1500 Low · 1500–2500 Moderate · >2500 High'
+        footnote: hhiFootnote
       }
     ];
 
@@ -775,16 +1095,16 @@ if (finderRoot) {
   function renderTopList(agg) {
     const procedureLabel = state.selectedProc
       ? `${state.selectedProc.name} (${state.selectedProc.code})`
-      : 'Selected procedure';
+      : msg('selectedProcedure');
     const listLocationLabel =
       state.selectedCanton === ALL_CANTONS_OPTION
-        ? 'Top hospitals'
-        : `Top hospitals in ${state.selectedCanton}`;
+        ? msg('topHospitals')
+        : msg('topHospitalsIn', { canton: state.selectedCanton });
     finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
 
     if (!agg.hospitals.length) {
-      finderListMeta.textContent = 'No hospitals match the current filters.';
-      finderList.innerHTML = '<p class="finder-empty">No hospital volumes available for this selection.</p>';
+      finderListMeta.textContent = msg('noHospitalsFilters');
+      finderList.innerHTML = `<p class="finder-empty">${msg('noHospitalVolumes')}</p>`;
       return;
     }
 
@@ -793,8 +1113,8 @@ if (finderRoot) {
       normalizeString(h.hospital).includes(searchLower)
     );
     if (!filteredBySearch.length) {
-      finderListMeta.textContent = 'No hospitals match your search.';
-      finderList.innerHTML = '<p class="finder-empty">Try adjusting the filters or search query.</p>';
+      finderListMeta.textContent = msg('noHospitalsSearch');
+      finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
       return;
     }
 
@@ -804,11 +1124,8 @@ if (finderRoot) {
         : filteredBySearch.filter((h) => h.canton === state.selectedCanton);
 
     if (!filteredByCanton.length) {
-      finderListMeta.textContent =
-        state.selectedCanton === ALL_CANTONS_OPTION
-          ? 'No hospitals match the current filters.'
-          : `No hospitals in canton ${state.selectedCanton} match the current filters.`;
-      finderList.innerHTML = '<p class="finder-empty">Try adjusting the filters or search query.</p>';
+      finderListMeta.textContent = msg('cantonNoHospitals', { canton: state.selectedCanton });
+      finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
       return;
     }
 
@@ -827,13 +1144,17 @@ if (finderRoot) {
 
     finderListMeta.innerHTML = `
       <div class="finder-pagination">
-        <button class="finder-page-btn" data-direction="prev" aria-label="Previous hospitals" ${
+        <button class="finder-page-btn" data-direction="prev" aria-label="${msg('ariaPrevHospitals')}" ${
           hasPrevious ? '' : 'disabled'
         }>
           <span aria-hidden="true">&#8592;</span>
         </button>
-        <span>Showing ${startIndex + 1}–${endIndex} of ${filteredByCanton.length}</span>
-        <button class="finder-page-btn" data-direction="next" aria-label="Next hospitals" ${
+        <span>${msg('paginationShowing', {
+          start: startIndex + 1,
+          end: endIndex,
+          total: filteredByCanton.length
+        })}</span>
+        <button class="finder-page-btn" data-direction="next" aria-label="${msg('ariaNextHospitals')}" ${
           hasNext ? '' : 'disabled'
         }>
           <span aria-hidden="true">&#8594;</span>
@@ -858,13 +1179,14 @@ if (finderRoot) {
         const width = Math.round((h.cases / maxCases) * 100);
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
+        const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
           <div class="finder-row">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
                 <strong>${h.hospital}</strong>
-                <span class="finder-badge ${badgeClass}">${h.type.toUpperCase()}</span>
+                <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
                 <span class="finder-badge" style="background: none; border: none; color: #6b7280;">${h.canton}</span>
               </div>
               <div class="finder-progress"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
@@ -887,7 +1209,7 @@ if (finderRoot) {
         : hospitalsWithCoords.filter((h) => h.canton === state.selectedCanton);
 
     if (!hospitals.length) {
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-empty">No map data available for this selection.</p>';
+      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('mapNoData')}</p>`;
       return;
     }
 
@@ -904,25 +1226,26 @@ if (finderRoot) {
         const radius = 4 + (h.cases / maxCases) * 10;
         const color =
           h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
+        const tooltip = msg('mapTooltip', { hospital: h.hospital, cases: h.cases.toLocaleString() });
         return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${radius.toFixed(
           1
         )}" fill="${color}" opacity="0.9">
-          <title>${h.hospital} — ${h.cases} cases</title>
+          <title>${tooltip}</title>
         </circle>`;
       })
       .join('');
 
     finderMap.innerHTML = `
-      <h3>Map preview</h3>
-      <svg viewBox="0 0 1000 600" role="img" aria-label="Hospital locations by volume">
+      <h3>${msg('mapTitle')}</h3>
+      <svg viewBox="0 0 1000 600" role="img" aria-label="${msg('mapAriaLabel')}">
         <rect x="0" y="0" width="1000" height="600" fill="#f8fafc"></rect>
         <path d="M120,310 C200,180 360,120 520,160 C700,200 820,260 860,360 C760,520 520,520 320,480 C200,450 120,380 120,310 Z" fill="#eef2f7" stroke="#cbd5e1"></path>
         ${circles}
       </svg>
       <div class="finder-map-legend">
-        <span><i style="background:#059669"></i>University</span>
-        <span><i style="background:#0ea5e9"></i>Cantonal</span>
-        <span><i style="background:#f59e0b"></i>Private</span>
+        <span><i style="background:#059669"></i>${typeLegend.university}</span>
+        <span><i style="background:#0ea5e9"></i>${typeLegend.kanton}</span>
+        <span><i style="background:#f59e0b"></i>${typeLegend.private}</span>
       </div>
     `;
   }
@@ -931,7 +1254,7 @@ if (finderRoot) {
     const cantonHosp = agg.cantonHosp;
 
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
-      finderCantonSummary.textContent = 'Select a canton to view local hospital details.';
+      finderCantonSummary.textContent = msg('cantonSelectPrompt');
       finderCantonList.innerHTML = '';
       return;
     }
@@ -941,11 +1264,19 @@ if (finderRoot) {
     let summaryText;
 
     if (!leader) {
-      summaryText = `No hospitals in canton ${state.selectedCanton} match the current selection.`;
+      summaryText = msg('cantonNoHospitals', { canton: state.selectedCanton });
     } else {
       const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
       const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
-      summaryText = `In canton ${state.selectedCanton}, ${cantonHosp.length} hospitals report volumes for ${state.selectedProc.name} (${state.selectedProc.code}). ${leader.hospital} accounts for ${cantonShare}% of cantonal cases and ${nationalShare}% nationally.`;
+      const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
+      summaryText = msg('cantonSummary', {
+        canton: state.selectedCanton,
+        count: cantonHosp.length,
+        procedure: procedureLabel,
+        leader: leader.hospital,
+        cantonShare,
+        nationalShare
+      });
     }
 
     finderCantonSummary.textContent = summaryText;
@@ -954,10 +1285,11 @@ if (finderRoot) {
       .map((h) => {
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
+        const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
           <div class="finder-canton-row">
-            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${h.type.toUpperCase()}</span></span>
-            <span>${h.cases.toLocaleString()} cases</span>
+            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+            <span>${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
           </div>
         `;
       })
@@ -971,33 +1303,31 @@ if (finderRoot) {
     const selectedProcedure = state.selectedProc;
     const procedureLabel = selectedProcedure
       ? `${selectedProcedure.name} (${selectedProcedure.code})`
-      : 'Select a procedure';
+      : msg('selectedProcedure');
 
     const listLocationLabel =
       state.selectedCanton === ALL_CANTONS_OPTION
-        ? 'Top hospitals'
-        : `Top hospitals in ${state.selectedCanton}`;
+        ? msg('topHospitals')
+        : msg('topHospitalsIn', { canton: state.selectedCanton });
 
     finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
 
     if (!selectedProcedure) {
-      finderListMeta.textContent = 'Choose a procedure to explore hospital volumes.';
-      finderKpis.innerHTML =
-        '<div class="finder-empty">Select a procedure above to see national volumes.</div>';
+      finderListMeta.textContent = msg('chooseProcedure');
+      finderKpis.innerHTML = `<div class="finder-empty">${msg('selectProcedureNational')}</div>`;
       finderList.innerHTML = '';
-      finderMap.innerHTML =
-        '<h3>Map preview</h3><p class="finder-empty">Select a procedure to display hospital locations.</p>';
-      finderCantonSummary.textContent = 'Select a procedure to view cantonal details.';
+      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('selectProcedureMap')}</p>`;
+      finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
       return;
     }
 
     if (!finderDataset) {
-      finderListMeta.textContent = 'Loading data…';
-      finderKpis.innerHTML = '<div class="finder-loading">Loading data…</div>';
+      finderListMeta.textContent = msg('loadingData');
+      finderKpis.innerHTML = `<div class="finder-loading">${msg('loadingData')}</div>`;
       finderList.innerHTML = '';
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-loading">Loading map…</p>';
-      finderCantonSummary.textContent = 'Loading data…';
+      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-loading">${msg('loadingMap')}</p>`;
+      finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
       return;
     }
@@ -1052,11 +1382,11 @@ if (finderRoot) {
         render();
       })
       .catch(() => {
-        finderListMeta.textContent = 'Failed to load data.';
-        finderKpis.innerHTML = '<div class="finder-error">Unable to load hospital dataset.</div>';
+        finderListMeta.textContent = msg('failedToLoad');
+        finderKpis.innerHTML = `<div class="finder-error">${msg('datasetError')}</div>`;
         finderList.innerHTML = '';
-        finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-error">Unable to load hospital dataset.</p>';
-        finderCantonSummary.textContent = 'Unable to load hospital dataset.';
+        finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-error">${msg('datasetError')}</p>`;
+        finderCantonSummary.textContent = msg('datasetError');
       });
   }
 

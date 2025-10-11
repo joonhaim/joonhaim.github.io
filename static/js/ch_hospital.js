@@ -783,16 +783,25 @@ if (finderRoot) {
         .filter((code) => Boolean(code))
         .sort((a, b) => collator.compare(getProcedureName(a), getProcedureName(b)));
 
-      return [
-        {
-          id: 'all',
-          label: translate('categories.all'),
-          procedures: sortedCodes.map((code) => ({
-            code,
-            name: getProcedureName(code)
-          }))
+      const groupedByLetter = sortedCodes.reduce((groups, code) => {
+        const letter = (code && code.charAt(0).toUpperCase()) || '#';
+        if (!groups.has(letter)) {
+          groups.set(letter, []);
         }
-      ];
+        groups.get(letter).push({
+          code,
+          name: getProcedureName(code)
+        });
+        return groups;
+      }, new Map());
+
+      return Array.from(groupedByLetter.entries())
+        .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+        .map(([letter, procedures]) => ({
+          id: `letter-${letter}`,
+          label: letter,
+          procedures
+        }));
     }
 
     return FALLBACK_PROCEDURE_SCHEMA.map((category) => ({

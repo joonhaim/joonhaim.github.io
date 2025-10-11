@@ -158,10 +158,10 @@ body {
 }
 
 .procedure-buttons {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 .procedure-group {
@@ -176,7 +176,7 @@ body {
 }
 
 .procedure-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   border: 2px solid #DA291C;
   border-radius: 9999px;
   background: #fff;
@@ -186,6 +186,8 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  text-align: center;
 }
 
 .procedure-btn.active {
@@ -310,6 +312,7 @@ body {
 
 .finder-procedure-options {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
@@ -753,6 +756,10 @@ body {
   .finder-procedure-option {
     padding: 0.65rem 0.75rem;
   }
+
+  .finder-procedure-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .fade-element {
@@ -769,5 +776,9 @@ body {
 @media (max-width: 768px) {
   #procedure-groups {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .procedure-buttons {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

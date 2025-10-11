@@ -673,6 +673,12 @@ if (finderRoot) {
     return template.replace(/\{(\w+)\}/g, (_, key) => (replacements[key] ?? ''));
   };
 
+  const getProcedureName = (code) => {
+    const defaultName = translations.en?.procedures?.[code] ?? code;
+    const localeName = translations[activeLocale]?.procedures?.[code];
+    return localeName || defaultName || code;
+  };
+
   const getObjectTranslation = (path) => {
     const base = resolvePath(defaultTranslations, path) ?? {};
     const value = resolvePath(localeTranslations, path);
@@ -747,8 +753,11 @@ if (finderRoot) {
           return;
         }
         const localeTranslations = translations[localeKey];
-        if (!localeTranslations || !localeTranslations.procedures) {
+        if (!localeTranslations) {
           return;
+        }
+        if (!localeTranslations.procedures) {
+          localeTranslations.procedures = {};
         }
         localeTranslations.procedures[code] = value;
       };
@@ -766,7 +775,7 @@ if (finderRoot) {
       label: translate(`categories.${category.id}`),
       procedures: category.procedures.map((code) => ({
         code,
-        name: translate(`procedures.${code}`)
+        name: getProcedureName(code)
       }))
     }));
 

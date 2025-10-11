@@ -54,8 +54,14 @@
         <label class="finder-label" for="finder-procedure-search">Trova un intervento</label>
         <input id="finder-procedure-search" type="search" placeholder="Cerca per nome o codice" />
       </div>
-      <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-      <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+      <div class="finder-category-panel" aria-labelledby="finder-category-label">
+        <p id="finder-category-label" class="finder-panel-title">Famiglie di procedure</p>
+        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+      </div>
+      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+        <p id="finder-procedure-label" class="finder-panel-title">Procedure</p>
+        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+      </div>
     </div>
 
     <div class="finder-controls">

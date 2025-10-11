@@ -617,7 +617,7 @@ if (finderRoot) {
     }
 
     const entries = finderDataset.byProcedure.get(procCode) || [];
-    const enriched = entries
+    const enrichedAll = entries
       .map((entry) => {
         const meta = finderDataset.meta.get(entry.institution) || inferHospitalMeta(entry.institution);
         return {
@@ -628,12 +628,11 @@ if (finderRoot) {
           lat: meta.lat,
           lon: meta.lon
         };
-      })
-      .filter((h) => state.typeFilter[h.type] !== false);
+      });
 
-    const total = enriched.reduce((sum, h) => sum + h.cases, 0);
+    const totalAll = enrichedAll.reduce((sum, h) => sum + h.cases, 0);
 
-    if (!total) {
+    if (!totalAll) {
       return {
         total: 0,
         hospitals: [],
@@ -644,13 +643,28 @@ if (finderRoot) {
       };
     }
 
+    const overallUniShare = enrichedAll
+      .filter((h) => h.type === 'university')
+      .reduce((sum, h) => sum + h.cases, 0) / totalAll;
+
+    const enriched = enrichedAll.filter((h) => state.typeFilter[h.type] !== false);
+
+    const total = enriched.reduce((sum, h) => sum + h.cases, 0);
+
+    if (!total) {
+      return {
+        total: 0,
+        hospitals: [],
+        uniShare: overallUniShare,
+        hhi: 0,
+        hhiLabel: labelFromHHI(0),
+        cantonHosp: []
+      };
+    }
+
     const hospitalsWithShare = enriched
       .map((h) => ({ ...h, share: h.cases / total }))
       .sort((a, b) => b.cases - a.cases);
-
-    const uniCases = hospitalsWithShare
-      .filter((h) => h.type === 'university')
-      .reduce((sum, h) => sum + h.cases, 0);
 
     const cantonHosp = hospitalsWithShare.filter((h) => h.canton === state.selectedCanton);
 
@@ -661,7 +675,7 @@ if (finderRoot) {
     return {
       total,
       hospitals: hospitalsWithShare,
-      uniShare: uniCases / total,
+      uniShare: overallUniShare,
       hhi,
       hhiLabel: labelFromHHI(hhi),
       cantonHosp
@@ -673,7 +687,9 @@ if (finderRoot) {
       finderKpis.innerHTML = `
         <div class="finder-kpi"><small>Total cases (CH)</small><strong>0</strong></div>
         <div class="finder-kpi"><small>Hospitals performing</small><strong>0</strong></div>
-        <div class="finder-kpi"><small>Share at Univ. hospitals</small><strong>0%</strong></div>
+        <div class="finder-kpi"><small>Share at Univ. hospitals</small><strong>${Math.round(
+          agg.uniShare * 100
+        )}%</strong></div>
         <div class="finder-kpi">
           <small>Centralization (HHI)</small>
           <strong>0 – ${labelFromHHI(0)}</strong>

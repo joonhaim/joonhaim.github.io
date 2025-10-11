@@ -983,36 +983,52 @@ if (finderRoot) {
   };
 
   const ALL_CANTONS_OPTION = 'ALL';
+  const cantonIconPath = (code) => `static/images/cantons/${code.toLowerCase()}.svg`;
+  const cantonCodes = [
+    'AG',
+    'AI',
+    'AR',
+    'BE',
+    'BL',
+    'BS',
+    'FR',
+    'GE',
+    'GL',
+    'GR',
+    'JU',
+    'LU',
+    'NE',
+    'NW',
+    'OW',
+    'SG',
+    'SH',
+    'SO',
+    'SZ',
+    'TG',
+    'TI',
+    'UR',
+    'VD',
+    'VS',
+    'ZG',
+    'ZH'
+  ];
 
   const cantonOptions = [
-    { value: ALL_CANTONS_OPTION, label: translate('messages.allCantons') },
-    { value: 'AG', label: 'AG' },
-    { value: 'AI', label: 'AI' },
-    { value: 'AR', label: 'AR' },
-    { value: 'BE', label: 'BE' },
-    { value: 'BL', label: 'BL' },
-    { value: 'BS', label: 'BS' },
-    { value: 'FR', label: 'FR' },
-    { value: 'GE', label: 'GE' },
-    { value: 'GL', label: 'GL' },
-    { value: 'GR', label: 'GR' },
-    { value: 'JU', label: 'JU' },
-    { value: 'LU', label: 'LU' },
-    { value: 'NE', label: 'NE' },
-    { value: 'NW', label: 'NW' },
-    { value: 'OW', label: 'OW' },
-    { value: 'SG', label: 'SG' },
-    { value: 'SH', label: 'SH' },
-    { value: 'SO', label: 'SO' },
-    { value: 'SZ', label: 'SZ' },
-    { value: 'TG', label: 'TG' },
-    { value: 'TI', label: 'TI' },
-    { value: 'UR', label: 'UR' },
-    { value: 'VD', label: 'VD' },
-    { value: 'VS', label: 'VS' },
-    { value: 'ZG', label: 'ZG' },
-    { value: 'ZH', label: 'ZH' }
+    {
+      value: ALL_CANTONS_OPTION,
+      label: translate('messages.allCantons'),
+      icon: cantonIconPath('CH')
+    },
+    ...cantonCodes.map((code) => ({
+      value: code,
+      label: code,
+      icon: cantonIconPath(code)
+    }))
   ];
+
+  const cantonOptionMap = new Map(cantonOptions.map((option) => [option.value, option]));
+  const getCantonOptionByValue = (value) =>
+    cantonOptionMap.get(value) ?? cantonOptionMap.get(ALL_CANTONS_OPTION);
 
   const typeLabels = getObjectTranslation('types.labels');
   const typeBadges = getObjectTranslation('types.badges');
@@ -1044,6 +1060,264 @@ if (finderRoot) {
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
+
+    let cantonDropdown;
+    let cantonDropdownToggle;
+    let cantonDropdownMenu;
+    let cantonDropdownOptions = [];
+    let cantonDropdownOpen = false;
+    let cantonDropdownActiveIndex = -1;
+    const cantonDropdownMenuId = 'finder-canton-dropdown-menu';
+
+    function renderCantonDropdownOption(option) {
+      if (!option) {
+        return '';
+      }
+      return `
+        <span class="finder-canton-dropdown__icon" aria-hidden="true">
+          <img src="${option.icon}" alt="" loading="lazy" />
+        </span>
+        <span class="finder-canton-dropdown__label">${option.label}</span>
+      `;
+    }
+
+    function updateCantonDropdownDisplay(value) {
+      if (!cantonDropdownToggle) {
+        return;
+      }
+      const option = getCantonOptionByValue(value);
+      cantonDropdownToggle.innerHTML = renderCantonDropdownOption(option);
+      cantonDropdownToggle.dataset.value = option.value;
+      cantonDropdownOptions.forEach((optionEl, index) => {
+        const isSelected = optionEl.dataset.value === option.value;
+        optionEl.classList.toggle('is-selected', isSelected);
+        optionEl.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        if (isSelected) {
+          cantonDropdownActiveIndex = index;
+          if (!cantonDropdownOpen && cantonDropdownMenu) {
+            cantonDropdownMenu.setAttribute('aria-activedescendant', optionEl.id);
+          }
+        }
+      });
+    }
+
+    function focusCantonDropdownOption(index) {
+      if (!cantonDropdownOptions.length) {
+        return;
+      }
+      const clampedIndex = Math.max(0, Math.min(index, cantonDropdownOptions.length - 1));
+      cantonDropdownActiveIndex = clampedIndex;
+      cantonDropdownOptions.forEach((optionEl, optionIndex) => {
+        const isActive = optionIndex === clampedIndex;
+        optionEl.classList.toggle('is-focused', isActive);
+        if (isActive) {
+          optionEl.focus();
+          optionEl.scrollIntoView({ block: 'nearest' });
+          if (cantonDropdownMenu) {
+            cantonDropdownMenu.setAttribute('aria-activedescendant', optionEl.id);
+          }
+        }
+      });
+    }
+
+    function handleDocumentClickForDropdown(event) {
+      if (!cantonDropdown || cantonDropdown.contains(event.target)) {
+        return;
+      }
+      closeCantonDropdown();
+    }
+
+    function handleDocumentKeydownForDropdown(event) {
+      if (event.key === 'Escape' && cantonDropdownOpen) {
+        closeCantonDropdown();
+        cantonDropdownToggle?.focus();
+      }
+    }
+
+    function closeCantonDropdown() {
+      if (!cantonDropdownOpen || !cantonDropdown || !cantonDropdownMenu || !cantonDropdownToggle) {
+        return;
+      }
+      cantonDropdownOpen = false;
+      cantonDropdown.classList.remove('is-open');
+      cantonDropdownToggle.setAttribute('aria-expanded', 'false');
+      cantonDropdownOptions.forEach((optionEl) => optionEl.classList.remove('is-focused'));
+      const menuRef = cantonDropdownMenu;
+      const hideMenu = () => {
+        menuRef.hidden = true;
+        menuRef.removeEventListener('transitionend', hideMenu);
+        menuRef.removeEventListener('transitioncancel', hideMenu);
+      };
+      menuRef.addEventListener('transitionend', hideMenu);
+      menuRef.addEventListener('transitioncancel', hideMenu);
+      setTimeout(() => {
+        if (!cantonDropdownOpen) {
+          hideMenu();
+        }
+      }, 220);
+      cantonDropdownMenu.removeAttribute('aria-activedescendant');
+      document.removeEventListener('mousedown', handleDocumentClickForDropdown);
+      document.removeEventListener('keydown', handleDocumentKeydownForDropdown);
+    }
+
+    function openCantonDropdown() {
+      if (cantonDropdownOpen || !cantonDropdown || !cantonDropdownMenu || !cantonDropdownToggle) {
+        return;
+      }
+      cantonDropdownOpen = true;
+      cantonDropdownMenu.hidden = false;
+      cantonDropdownToggle.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(() => {
+        if (cantonDropdownOpen) {
+          cantonDropdown.classList.add('is-open');
+        }
+      });
+      const selectedIndex = cantonDropdownOptions.findIndex(
+        (optionEl) => optionEl.dataset.value === finderCanton?.value
+      );
+      focusCantonDropdownOption(selectedIndex >= 0 ? selectedIndex : 0);
+      document.addEventListener('mousedown', handleDocumentClickForDropdown);
+      document.addEventListener('keydown', handleDocumentKeydownForDropdown);
+    }
+
+    function selectCantonFromDropdown(value) {
+      if (!finderCanton) {
+        return;
+      }
+      const option = getCantonOptionByValue(value);
+      finderCanton.value = option.value;
+      finderCanton.dispatchEvent(new Event('change', { bubbles: true }));
+      closeCantonDropdown();
+      cantonDropdownToggle?.focus();
+    }
+
+    function ensureCantonDropdown() {
+      if (!finderCanton || cantonDropdown) {
+        return;
+      }
+      const wrapper = finderCanton.closest('.finder-control');
+      if (!wrapper) {
+        return;
+      }
+
+      cantonDropdownOptions = [];
+      const dropdown = document.createElement('div');
+      dropdown.className = 'finder-canton-dropdown';
+
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.id = 'finder-canton-dropdown-toggle';
+      toggle.className = 'finder-canton-dropdown__toggle';
+      toggle.setAttribute('aria-haspopup', 'listbox');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', cantonDropdownMenuId);
+
+      const menu = document.createElement('ul');
+      menu.id = cantonDropdownMenuId;
+      menu.className = 'finder-canton-dropdown__menu';
+      menu.setAttribute('role', 'listbox');
+      menu.setAttribute('aria-labelledby', toggle.id);
+      menu.hidden = true;
+
+      dropdown.appendChild(toggle);
+      dropdown.appendChild(menu);
+
+      cantonOptions.forEach((option) => {
+        const optionEl = document.createElement('li');
+        optionEl.className = 'finder-canton-dropdown__option';
+        optionEl.setAttribute('role', 'option');
+        optionEl.dataset.value = option.value;
+        optionEl.id = `finder-canton-option-${option.value}`;
+        optionEl.tabIndex = -1;
+        optionEl.innerHTML = renderCantonDropdownOption(option);
+        menu.appendChild(optionEl);
+        cantonDropdownOptions.push(optionEl);
+      });
+
+      finderCanton.insertAdjacentElement('afterend', dropdown);
+      wrapper.classList.add('finder-canton--enhanced');
+
+      cantonDropdown = dropdown;
+      cantonDropdownToggle = toggle;
+      cantonDropdownMenu = menu;
+
+      cantonDropdownToggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (cantonDropdownOpen) {
+          closeCantonDropdown();
+        } else {
+          openCantonDropdown();
+        }
+      });
+
+      cantonDropdownToggle.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (!cantonDropdownOpen) {
+            openCantonDropdown();
+          }
+          const selectedIndex = cantonDropdownOptions.findIndex(
+            (optionEl) => optionEl.dataset.value === finderCanton.value
+          );
+          if (event.key === 'ArrowDown') {
+            focusCantonDropdownOption(selectedIndex >= 0 ? selectedIndex : 0);
+          } else {
+            const lastIndex = cantonDropdownOptions.length - 1;
+            focusCantonDropdownOption(selectedIndex >= 0 ? selectedIndex : lastIndex);
+          }
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          if (cantonDropdownOpen && cantonDropdownActiveIndex >= 0) {
+            const selectedEl = cantonDropdownOptions[cantonDropdownActiveIndex];
+            selectCantonFromDropdown(selectedEl.dataset.value);
+          } else {
+            openCantonDropdown();
+          }
+        } else if (event.key === 'Escape' && cantonDropdownOpen) {
+          event.preventDefault();
+          closeCantonDropdown();
+        }
+      });
+
+      cantonDropdownMenu.addEventListener('click', (event) => {
+        const optionEl = event.target.closest('.finder-canton-dropdown__option');
+        if (optionEl) {
+          event.preventDefault();
+          selectCantonFromDropdown(optionEl.dataset.value);
+        }
+      });
+
+      cantonDropdownMenu.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          const nextIndex = Math.min(
+            cantonDropdownOptions.length - 1,
+            (cantonDropdownActiveIndex === -1 ? 0 : cantonDropdownActiveIndex + 1)
+          );
+          focusCantonDropdownOption(nextIndex);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          const prevIndex = Math.max(0, (cantonDropdownActiveIndex === -1 ? 0 : cantonDropdownActiveIndex - 1));
+          focusCantonDropdownOption(prevIndex);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          focusCantonDropdownOption(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          focusCantonDropdownOption(cantonDropdownOptions.length - 1);
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          const optionEl = event.target.closest('.finder-canton-dropdown__option');
+          if (optionEl) {
+            event.preventDefault();
+            selectCantonFromDropdown(optionEl.dataset.value);
+          }
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          closeCantonDropdown();
+          cantonDropdownToggle.focus();
+        }
+      });
+    }
 
     if (!finderProcedureSearch || !finderCategoryTabs || !finderProcedureList) {
       console.warn('Procedure finder UI is missing required elements.');
@@ -1781,12 +2055,19 @@ if (finderRoot) {
       .map((option) => `<option value="${option.value}">${option.label}</option>`)
       .join('');
     finderCanton.value = state.selectedCanton;
+
+    ensureCantonDropdown();
+    updateCantonDropdownDisplay(state.selectedCanton);
+
     finderCanton.addEventListener('change', (event) => {
       const value = event.target.value;
-      state.selectedCanton = cantonOptions.some((option) => option.value === value)
-        ? value
-        : ALL_CANTONS_OPTION;
+      const selectedOption = getCantonOptionByValue(value);
+      if (finderCanton.value !== selectedOption.value) {
+        finderCanton.value = selectedOption.value;
+      }
+      state.selectedCanton = selectedOption.value;
       state.listPage = 0;
+      updateCantonDropdownDisplay(state.selectedCanton);
       render();
     });
 

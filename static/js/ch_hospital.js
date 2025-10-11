@@ -226,7 +226,7 @@ const cantonCentroids = {
 };
 
 const hospitalMetadataOverrides = {
-  "AMEOS Spital Einsiedeln AG": { type: "kanton", canton: "SZ" },
+  "AMEOS Spital Einsiedeln AG": { type: "private", canton: "SZ" },
   "Andreas Klinik": { type: "private", canton: "ZG" },
   "ArKa SA": { type: "private", canton: "TI" },
   "Asana Spital Leuggern AG": { type: "kanton", canton: "AG" },
@@ -272,7 +272,7 @@ const hospitalMetadataOverrides = {
   "Hirslanden Klinik St. Anna AG": { type: "private", canton: "LU" },
   "Hirslanden Klinik Stephanshorn": { type: "private", canton: "SG" },
   "Hôpital Intercantonal de la Broye (HIB)": { type: "kanton", canton: "VD" },
-  "Hôpital Jules Daler": { type: "kanton", canton: "FR" },
+  "Hôpital Jules Daler": { type: "private", canton: "FR" },
   "Hôpital Riviera-Chablais Vaud-Valais": { type: "kanton", canton: "VD" },
   "Hôpital de la Tour": { type: "private", canton: "GE" },
   "Hôpital du Jura": { type: "kanton", canton: "JU" },
@@ -308,7 +308,7 @@ const hospitalMetadataOverrides = {
   "Regionalspital Surselva AG": { type: "kanton", canton: "GR" },
   "Rosenklinik AG": { type: "private", canton: "SG" },
   "Réseau Santé Balcon du Jura.vd (RSBJ)": { type: "kanton", canton: "VD" },
-  "Réseau de l'Arc SA": { type: "kanton", canton: "JU" },
+  "Réseau de l'Arc SA": { type: "private", canton: "JU" },
   "Réseau hospitalier neuchâtelois RHNe": { type: "kanton", canton: "NE" },
   "SRO AG": { type: "kanton", canton: "SO" },
   "Schulthess Klinik": { type: "private", canton: "ZH" },
@@ -343,7 +343,7 @@ const hospitalMetadataOverrides = {
   "Stadtspital Zürich": { type: "kanton", canton: "ZH" },
   "Stiftung Diaconis Palliative Care": { type: "private", canton: "BE" },
   "Stiftung Ostschweizer Kinderspital": { type: "kanton", canton: "SG" },
-  "Stiftung Spital Muri": { type: "kanton", canton: "AG" },
+  "Stiftung Spital Muri": { type: "private", canton: "AG" },
   "Swiss Medical Network Hospitals SA Clinica Ars Medica": { type: "private", canton: "TI" },
   "Swiss Medical Network Hospitals SA Clinica Sant'Anna": { type: "private", canton: "TI" },
   "Swiss Medical Network Hospitals SA Clinique Générale Ste-Anne": { type: "private", canton: "FR" },

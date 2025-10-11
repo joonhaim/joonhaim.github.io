@@ -1,5 +1,11 @@
 const lang = document.documentElement.lang || 'en';
 
+const normalizeString = (value) =>
+  (value || '')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase();
+
 const hospitals = {
   en: ['CHUV (Lausanne)', 'HUG (Geneva)', 'Inselspital (Bern)', 'USB (Basel)', 'USZ (Zurich)'],
   de: ['CHUV (Lausanne)', 'HUG (Genf)', 'Inselspital (Bern)', 'USB (Basel)', 'USZ (Zürich)'],
@@ -737,9 +743,9 @@ if (finderRoot) {
     }
 
     const maxCases = agg.hospitals[0]?.cases || 1;
-    const searchLower = state.search.trim().toLowerCase();
+    const searchLower = normalizeString(state.search.trim());
     const filteredBySearch = agg.hospitals.filter((h) =>
-      h.hospital.toLowerCase().includes(searchLower)
+      normalizeString(h.hospital).includes(searchLower)
     );
     if (!filteredBySearch.length) {
       finderListMeta.textContent = 'No hospitals match your search.';

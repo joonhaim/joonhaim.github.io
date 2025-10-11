@@ -325,35 +325,7 @@ if (finderRoot) {
         transplantation: 'Transplantation',
         musculoskeletal: 'Musculoskeletal'
       },
-      procedures: {
-        'A.3.1.F': 'Coronary catheterization',
-        'A.4.1.F': 'Cardiac rhythm disorders',
-        'A.5.1.F': 'Pacemaker/ICD implantation',
-        'A.7.2.F': 'Valve surgery',
-        'A.7.3.F': 'Coronary bypass surgery',
-        'B.2.3.F': 'Stroke unit – complex treatment',
-        'B.3.1.F': 'Brain tumour treatments',
-        'B.4.1.F': 'Epilepsy treatments',
-        'Z.4.5.F': 'CNS vascular interventions',
-        'D.3.1.F': 'Lung cancer treatments',
-        'E.4.11.F': 'Colorectal cancer treatments',
-        'G.4.1.F': 'Breast cancer treatments',
-        'K.1.1.F': 'Melanoma inpatient treatments',
-        'Z.4.42.F': 'Gynecologic tumour treatments',
-        'H.2.1.F': 'Kidney stone treatments',
-        'H.3.1.F': 'Bladder cancer treatments',
-        'H.3.2.F': 'Transurethral bladder resections',
-        'H.5.1.F': 'Prostate cancer treatments',
-        'L.5.1.F': 'Kidney transplant',
-        'Z.4.33.F': 'Lung transplant (CIMHS)',
-        'Z.4.34.F': 'Liver transplant (CIMHS)',
-        'Z.4.35.F': 'Pancreas transplant (CIMHS)',
-        'Z.4.36.F': 'Kidney transplant (CIMHS)',
-        'Z.4.37.F': 'Primary hip prosthesis',
-        'Z.4.38.F': 'Primary knee prosthesis',
-        'Z.4.39.F': 'Specialized spine surgery',
-        'Z.4.40.F': 'Bone tumour treatments'
-      },
+      procedures: {},
       types: {
         labels: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
         badges: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
@@ -410,35 +382,7 @@ if (finderRoot) {
         transplantation: 'Transplantation',
         musculoskeletal: 'Bewegungsapparat'
       },
-      procedures: {
-        'A.3.1.F': 'Koronarangiographie',
-        'A.4.1.F': 'Herzrhythmusstörungen',
-        'A.5.1.F': 'Implantation von Schrittmacher/ICD',
-        'A.7.2.F': 'Herzklappenoperationen',
-        'A.7.3.F': 'Koronar-Bypass-Operationen',
-        'B.2.3.F': 'Schlaganfallstation – komplexe Behandlung',
-        'B.3.1.F': 'Behandlungen von Hirntumoren',
-        'B.4.1.F': 'Behandlungen bei Epilepsie',
-        'Z.4.5.F': 'Gefässeingriffe am ZNS',
-        'D.3.1.F': 'Lungenkrebsbehandlungen',
-        'E.4.11.F': 'Behandlungen bei Darmkrebs',
-        'G.4.1.F': 'Behandlungen bei Brustkrebs',
-        'K.1.1.F': 'Stationäre Behandlungen bei Melanom',
-        'Z.4.42.F': 'Behandlungen gynäkologischer Tumoren',
-        'H.2.1.F': 'Behandlungen bei Nierensteinen',
-        'H.3.1.F': 'Behandlungen bei Blasenkrebs',
-        'H.3.2.F': 'Transurethrale Blasenresektionen',
-        'H.5.1.F': 'Behandlungen bei Prostatakrebs',
-        'L.5.1.F': 'Nierentransplantation',
-        'Z.4.33.F': 'Lungentransplantation (CIMHS)',
-        'Z.4.34.F': 'Lebertransplantation (CIMHS)',
-        'Z.4.35.F': 'Pankreastransplantation (CIMHS)',
-        'Z.4.36.F': 'Nierentransplantation (CIMHS)',
-        'Z.4.37.F': 'Primärprothese Hüfte',
-        'Z.4.38.F': 'Primärprothese Knie',
-        'Z.4.39.F': 'Spezialisierte Wirbelsäulenchirurgie',
-        'Z.4.40.F': 'Behandlungen von Knochentumoren'
-      },
+      procedures: {},
       types: {
         labels: { university: 'Universitär', kanton: 'Kantonale', private: 'Private', other: 'Weitere' },
         badges: { university: 'Universitär', kanton: 'Kanton', private: 'Privat', other: 'Weitere' },
@@ -495,35 +439,7 @@ if (finderRoot) {
         transplantation: 'Transplantation',
         musculoskeletal: 'Appareil locomoteur'
       },
-      procedures: {
-        'A.3.1.F': 'Cathétérisme coronarien',
-        'A.4.1.F': 'Troubles du rythme cardiaque',
-        'A.5.1.F': 'Implantation de pacemaker/défibrillateur',
-        'A.7.2.F': 'Chirurgie valvulaire',
-        'A.7.3.F': 'Pontage coronarien',
-        'B.2.3.F': 'Unité AVC – prise en charge complexe',
-        'B.3.1.F': 'Traitements des tumeurs cérébrales',
-        'B.4.1.F': "Prise en charge de l'épilepsie",
-        'Z.4.5.F': 'Interventions vasculaires du SNC',
-        'D.3.1.F': 'Traitements du cancer du poumon',
-        'E.4.11.F': 'Traitements du cancer colorectal',
-        'G.4.1.F': 'Traitements du cancer du sein',
-        'K.1.1.F': 'Traitements stationnaires du mélanome',
-        'Z.4.42.F': 'Traitements des tumeurs gynécologiques',
-        'H.2.1.F': 'Traitements des calculs rénaux',
-        'H.3.1.F': 'Traitements du cancer de la vessie',
-        'H.3.2.F': 'Résections transurétrales de la vessie',
-        'H.5.1.F': 'Traitements du cancer de la prostate',
-        'L.5.1.F': 'Transplantation rénale',
-        'Z.4.33.F': 'Transplantation pulmonaire (CIMHS)',
-        'Z.4.34.F': 'Transplantation hépatique (CIMHS)',
-        'Z.4.35.F': 'Transplantation pancréatique (CIMHS)',
-        'Z.4.36.F': 'Transplantation rénale (CIMHS)',
-        'Z.4.37.F': 'Prothèse totale de hanche primaire',
-        'Z.4.38.F': 'Prothèse totale de genou primaire',
-        'Z.4.39.F': 'Chirurgie spécialisée de la colonne vertébrale',
-        'Z.4.40.F': 'Traitements des tumeurs osseuses'
-      },
+      procedures: {},
       types: {
         labels: { university: 'Universitaires', kanton: 'Cantonaux', private: 'Privés', other: 'Autres' },
         badges: { university: 'Universitaire', kanton: 'Cantonal', private: 'Privé', other: 'Autre' },
@@ -580,35 +496,7 @@ if (finderRoot) {
         transplantation: 'Trapianti',
         musculoskeletal: 'Apparato muscoloscheletrico'
       },
-      procedures: {
-        'A.3.1.F': 'Cateterismo coronarico',
-        'A.4.1.F': 'Disturbi del ritmo cardiaco',
-        'A.5.1.F': 'Impianto di pacemaker/ICD',
-        'A.7.2.F': 'Chirurgia valvolare',
-        'A.7.3.F': 'Chirurgia di bypass coronarico',
-        'B.2.3.F': 'Stroke unit – trattamento complesso',
-        'B.3.1.F': 'Trattamenti dei tumori cerebrali',
-        'B.4.1.F': 'Trattamenti per l’epilessia',
-        'Z.4.5.F': 'Interventi vascolari SNC',
-        'D.3.1.F': 'Trattamenti per il cancro al polmone',
-        'E.4.11.F': 'Trattamenti per il cancro colorettale',
-        'G.4.1.F': 'Trattamenti per il cancro al seno',
-        'K.1.1.F': 'Trattamenti ospedalieri del melanoma',
-        'Z.4.42.F': 'Trattamenti dei tumori ginecologici',
-        'H.2.1.F': 'Trattamenti per i calcoli renali',
-        'H.3.1.F': 'Trattamenti per il cancro alla vescica',
-        'H.3.2.F': 'Resezioni transuretrali della vescica',
-        'H.5.1.F': 'Trattamenti per il cancro alla prostata',
-        'L.5.1.F': 'Trapianto di rene',
-        'Z.4.33.F': 'Trapianto di polmone (CIMHS)',
-        'Z.4.34.F': 'Trapianto di fegato (CIMHS)',
-        'Z.4.35.F': 'Trapianto di pancreas (CIMHS)',
-        'Z.4.36.F': 'Trapianto di rene (CIMHS)',
-        'Z.4.37.F': 'Protesi d’anca primaria',
-        'Z.4.38.F': 'Protesi di ginocchio primaria',
-        'Z.4.39.F': 'Chirurgia specialistica della colonna vertebrale',
-        'Z.4.40.F': 'Trattamenti dei tumori ossei'
-      },
+      procedures: {},
       types: {
         labels: { university: 'Universitari', kanton: 'Cantonali', private: 'Privati', other: 'Altri' },
         badges: { university: 'Universitario', kanton: 'Cantonale', private: 'Privato', other: 'Altro' },
@@ -691,14 +579,64 @@ if (finderRoot) {
     { id: 'musculoskeletal', procedures: ['Z.4.37.F', 'Z.4.38.F', 'Z.4.39.F', 'Z.4.40.F'] }
   ];
 
-  const procedureCatalog = procedureCatalogSchema.map((category) => ({
-    id: category.id,
-    label: translate(`categories.${category.id}`),
-    procedures: category.procedures.map((code) => ({
-      code,
-      name: translate(`procedures.${code}`)
-    }))
-  }));
+  let procedureCatalog = [];
+
+  function buildProcedureCatalog() {
+    procedureCatalog = procedureCatalogSchema.map((category) => ({
+      id: category.id,
+      label: translate(`categories.${category.id}`),
+      procedures: category.procedures.map((code) => ({
+        code,
+        name: translate(`procedures.${code}`)
+      }))
+    }));
+  }
+
+  function loadProcedureTranslations() {
+    const path = 'static/data/f_code_description.csv';
+    return fetch(path)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch procedure descriptions from ${path}`);
+        }
+        return response.text();
+      })
+      .then((text) => {
+        text
+          .split(/\r?\n/)
+          .slice(1)
+          .forEach((line) => {
+            if (!line.trim()) {
+              return;
+            }
+            const parts = line.split(';');
+            if (parts.length < 4) {
+              return;
+            }
+            const [codeRaw, germanRaw, frenchRaw, italianRaw] = parts;
+            const code = (codeRaw || '').replace(/^\ufeff/, '').trim();
+            if (!code) {
+              return;
+            }
+            const german = (germanRaw || '').trim();
+            const french = (frenchRaw || '').trim();
+            const italian = (italianRaw || '').trim();
+            if (german) {
+              translations.de.procedures[code] = german;
+            }
+            if (french) {
+              translations.fr.procedures[code] = french;
+              translations.en.procedures[code] = french;
+            }
+            if (italian) {
+              translations.it.procedures[code] = italian;
+            }
+          });
+      })
+      .catch((error) => {
+        console.error('Failed to load procedure translations:', error);
+      });
+  }
 
   const ALL_CANTONS_OPTION = 'ALL';
 
@@ -746,22 +684,27 @@ if (finderRoot) {
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
-
-  const defaultCategory = procedureCatalog[0] ?? null;
-  const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
-
-  const state = {
-    selectedCategory: defaultCategory?.id ?? null,
-    selectedProc: defaultProcedure,
-    selectedCanton: ALL_CANTONS_OPTION,
-    search: '',
-    procedureQuery: '',
-    typeFilter: { university: true, kanton: true, private: true },
-    listPage: 0
-  };
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
   function initializeFinderUi() {
+    if (!procedureCatalog.length) {
+      console.warn('No procedure catalog available to initialize UI.');
+      return;
+    }
+
+    const defaultCategory = procedureCatalog[0] ?? null;
+    const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
+
+    const state = {
+      selectedCategory: defaultCategory?.id ?? null,
+      selectedProc: defaultProcedure,
+      selectedCanton: ALL_CANTONS_OPTION,
+      search: '',
+      procedureQuery: '',
+      typeFilter: { university: true, kanton: true, private: true },
+      listPage: 0
+    };
+
     const finderProcedureSearch = document.getElementById('finder-procedure-search');
     const finderCategoryTabs = document.getElementById('finder-category-tabs');
     const finderProcedureList = document.getElementById('finder-procedure-list');
@@ -781,10 +724,10 @@ if (finderRoot) {
       return;
     }
 
-    const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
-
     let finderDataset = null;
     let availableTypes = [];
+
+    const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
     function ensureTypeFilter() {
       availableTypes.forEach((type) => {
@@ -1390,5 +1333,9 @@ if (finderRoot) {
       });
   }
 
-  initializeFinderUi();
+  loadProcedureTranslations()
+    .finally(() => {
+      buildProcedureCatalog();
+      initializeFinderUi();
+    });
 }

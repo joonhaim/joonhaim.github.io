@@ -102,61 +102,6 @@
     </div>
   </section>
 
-  <section class="comparison">
-    <h2 class="fade-element">Case Volume Comparison of University Hospitals</h2>
-    <p class="dataset-info fade-element">
-      This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
-      I retrieved and reshaped the original tables using R scripts available in the linked repository.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
-      </div>
-      <div class="controls fade-element">
-        <p>Choose procedure:</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Cardiology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Epilepsy treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Oncology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Lung cancer treatments</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Colorectal cancer treatments</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Kidney transplant</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopedics</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Primary hip prosthesis</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

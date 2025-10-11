@@ -427,6 +427,41 @@ body {
   font-family: inherit;
 }
 
+#finder-canton {
+  -webkit-appearance: none;
+  appearance: none;
+  border-color: rgba(218, 41, 28, 0.35);
+  background-color: #fff;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23DA291C' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M4 6l4 4 4-4'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, rgba(218, 41, 28, 0.12), rgba(218, 41, 28, 0));
+  background-repeat: no-repeat, no-repeat;
+  background-size: 0.75rem, 100% 100%;
+  background-position: right 1rem center, center;
+  box-shadow: 0 10px 24px rgba(218, 41, 28, 0.08);
+  color: #1f2937;
+  font-weight: 600;
+  cursor: pointer;
+  padding-right: 2.75rem;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+#finder-canton:hover {
+  border-color: #DA291C;
+  box-shadow: 0 12px 28px rgba(218, 41, 28, 0.12);
+}
+
+#finder-canton:focus {
+  outline: none;
+  border-color: #DA291C;
+  box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.18);
+}
+
+#finder-canton::-ms-expand {
+  display: none;
+}
+
 .finder-type-toggle {
   display: flex;
   gap: 0.5rem;

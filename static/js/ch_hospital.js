@@ -1318,7 +1318,18 @@ if (finderRoot) {
       <h3>${msg('mapTitle')}</h3>
       <svg viewBox="0 0 1000 600" role="img" aria-label="${msg('mapAriaLabel')}">
         <rect x="0" y="0" width="1000" height="600" fill="#f8fafc"></rect>
-        <path d="M120,310 C200,180 360,120 520,160 C700,200 820,260 860,360 C760,520 520,520 320,480 C200,450 120,380 120,310 Z" fill="#eef2f7" stroke="#cbd5e1"></path>
+        <image
+          href="static/images/roestigraben/switzerland.svg"
+          x="0"
+          y="0"
+          width="1000"
+          height="600"
+          preserveAspectRatio="none"
+          opacity="0.35"
+          aria-hidden="true"
+          class="finder-map-background"
+          pointer-events="none"
+        ></image>
         ${circles}
       </svg>
       <div class="finder-map-legend">

@@ -264,8 +264,8 @@ body {
   column-gap: 1.4rem;
   row-gap: 0.95rem;
   align-items: start;
-  min-height: 16.5rem;
-  max-height: min(65vh, 22.5rem);
+  min-height: 18.5rem;
+  max-height: min(70vh, 26rem);
   overflow-y: auto;
   min-width: 0;
 }

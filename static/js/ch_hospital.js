@@ -234,7 +234,12 @@ const hospitalMetadataOverrides = {
   "Berit Klinik AG": { type: "private", canton: "AR" },
   "Berit Klinik Wattwil": { type: "private", canton: "SG" },
   "Bethesda Spital AG": { type: "private", canton: "BS" },
-  "CHUV Centre Hospitalier Universitaire Vaudois": { type: "university", canton: "VD" },
+  "CHUV Centre Hospitalier Universitaire Vaudois": {
+    type: "university",
+    canton: "VD",
+    lat: 46.5231,
+    lon: 6.6279
+  },
   "Center da Sanadad Savognin SA": { type: "kanton", canton: "GR" },
   "Center da Sanda Engiadina Bassa Ospidal d'Engiadina Bassa": { type: "kanton", canton: "GR" },
   "Center da Sanda Val Müstair Akutabteilung": { type: "kanton", canton: "GR" },
@@ -277,8 +282,18 @@ const hospitalMetadataOverrides = {
   "Hôpital de la Tour": { type: "private", canton: "GE" },
   "Hôpital du Jura": { type: "kanton", canton: "JU" },
   "Hôpital du Valais Centre hospitalier du Valais Romand CHVR": { type: "kanton", canton: "VS" },
-  "Insel Gruppe AG (nicht-universitär)": { type: "kanton", canton: "BE" },
-  "Insel Gruppe AG (universitär)": { type: "university", canton: "BE" },
+  "Insel Gruppe AG (nicht-universitär)": {
+    type: "kanton",
+    canton: "BE",
+    lat: 46.9484,
+    lon: 7.4346
+  },
+  "Insel Gruppe AG (universitär)": {
+    type: "university",
+    canton: "BE",
+    lat: 46.9477,
+    lon: 7.4232
+  },
   "Kantonsspital Aarau AG": { type: "kanton", canton: "AG" },
   "Kantonsspital Baden AG": { type: "kanton", canton: "AG" },
   "Kantonsspital Baselland": { type: "kanton", canton: "BL" },
@@ -296,7 +311,12 @@ const hospitalMetadataOverrides = {
   "Klinik Pyramide am See AG": { type: "private", canton: "ZH" },
   "Klinik Seeschau AG": { type: "private", canton: "TG" },
   "LUKS Spitalbetriebe AG": { type: "kanton", canton: "LU" },
-  "Les Hôpitaux Universitaires de Genève HUG": { type: "university", canton: "GE" },
+  "Les Hôpitaux Universitaires de Genève HUG": {
+    type: "university",
+    canton: "GE",
+    lat: 46.1918,
+    lon: 6.1393
+  },
   "Lindenhofgruppe AG": { type: "private", canton: "BE" },
   "Matthea Geburtshaus": { type: "private", canton: "BE" },
   "Merian Iselin Klinik AG": { type: "private", canton: "BS" },
@@ -354,11 +374,36 @@ const hospitalMetadataOverrides = {
   "Swiss Medical Network Hospitals SA Privatklinik Siloah": { type: "private", canton: "BE" },
   "Swiss Medical Network Hospitals SA Privatklinik Villa im Park": { type: "private", canton: "AG" },
   "Thurklinik AG": { type: "private", canton: "TG" },
-  "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": { type: "university", canton: "ZH" },
-  "Universitäts-Kinderspital beider Basel (UKBB)": { type: "university", canton: "BS" },
-  "Universitätsklinik Balgrist": { type: "university", canton: "ZH" },
-  "Universitätsspital Basel": { type: "university", canton: "BS" },
-  "Universitätsspital Zürich": { type: "university", canton: "ZH" },
+  "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": {
+    type: "university",
+    canton: "ZH",
+    lat: 47.3854,
+    lon: 8.5482
+  },
+  "Universitäts-Kinderspital beider Basel (UKBB)": {
+    type: "university",
+    canton: "BS",
+    lat: 47.5651,
+    lon: 7.5889
+  },
+  "Universitätsklinik Balgrist": {
+    type: "university",
+    canton: "ZH",
+    lat: 47.3513,
+    lon: 8.5722
+  },
+  "Universitätsspital Basel": {
+    type: "university",
+    canton: "BS",
+    lat: 47.5596,
+    lon: 7.5886
+  },
+  "Universitätsspital Zürich": {
+    type: "university",
+    canton: "ZH",
+    lat: 47.3763,
+    lon: 8.5481
+  },
   "Zuger Kantonsspital AG": { type: "kanton", canton: "ZG" }
 };
 
@@ -401,11 +446,15 @@ function inferHospitalMeta(name) {
   const type = override?.type ?? 'kanton';
   const canton = override?.canton ?? '??';
   const centroid = cantonCentroids[canton];
+  const lat = override?.lat ?? centroid?.lat ?? null;
+  const lon = override?.lon ?? centroid?.lon ?? null;
+  const hasPreciseCoords = override?.lat != null && override?.lon != null;
   return {
     type,
     canton,
-    lat: centroid?.lat ?? null,
-    lon: centroid?.lon ?? null
+    lat,
+    lon,
+    approx: !(hasPreciseCoords && lat != null && lon != null)
   };
 }
 
@@ -518,6 +567,41 @@ if (finderRoot) {
   };
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
+  const typeColors = {
+    university: '#059669',
+    kanton: '#0ea5e9',
+    private: '#f59e0b',
+    other: '#6366f1'
+  };
+
+  const mapStrings = {
+    title: 'Hospital map',
+    loading: 'Loading map…',
+    empty: 'No hospitals match the current filters.',
+    summary(count, top) {
+      const base = `${count} hospital${count === 1 ? '' : 's'} shown`;
+      if (top) {
+        return `${base} • ${top.hospital} leads with ${top.cases.toLocaleString()} cases`;
+      }
+      return base;
+    }
+  };
+
+  const legendMarkup = `
+    <div class="finder-map-legend">
+      <span><i style="background:${typeColors.university}"></i>University</span>
+      <span><i style="background:${typeColors.kanton}"></i>Cantonal</span>
+      <span><i style="background:${typeColors.private}"></i>Private</span>
+    </div>
+  `;
+
+  let mapMetaEl = null;
+  let mapEmptyEl = null;
+  let mapInitialized = false;
+  let leafletMap = null;
+  let leafletMarkers = null;
+  const hasLeaflet = typeof window !== 'undefined' && window.L && typeof window.L.map === 'function';
+
   const finderChips = document.getElementById('finder-procedure-chips');
   const finderTypeToggle = document.getElementById('finder-type-toggle');
   const finderSearch = document.getElementById('finder-search');
@@ -534,6 +618,139 @@ if (finderRoot) {
 
   let finderDataset = null;
   let availableTypes = [];
+
+  function resetLeafletMap() {
+    if (leafletMap) {
+      leafletMap.remove();
+    }
+    mapInitialized = false;
+    mapMetaEl = null;
+    mapEmptyEl = null;
+    leafletMap = null;
+    leafletMarkers = null;
+  }
+
+  function ensureLeafletMapStructure() {
+    if (!hasLeaflet || mapInitialized) {
+      return;
+    }
+
+    finderMap.innerHTML = `
+      <div class="finder-map-header">
+        <h3>${mapStrings.title}</h3>
+        <span class="finder-map-meta"></span>
+      </div>
+      <div class="finder-map-canvas">
+        <div id="finder-map-leaflet" class="finder-map-leaflet" role="img" aria-label="Map of Swiss hospitals"></div>
+        <div class="finder-map-empty" hidden></div>
+      </div>
+      ${legendMarkup}
+    `;
+
+    mapMetaEl = finderMap.querySelector('.finder-map-meta');
+    mapEmptyEl = finderMap.querySelector('.finder-map-empty');
+
+    const mapElement = finderMap.querySelector('#finder-map-leaflet');
+    leafletMap = L.map(mapElement, {
+      attributionControl: false,
+      zoomControl: true,
+      scrollWheelZoom: false
+    });
+    leafletMap.setView([46.8, 8.3], 7);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 12,
+      minZoom: 6,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(leafletMap);
+
+    leafletMarkers = L.layerGroup().addTo(leafletMap);
+
+    L.control
+      .attribution({ prefix: false })
+      .addTo(leafletMap)
+      .addAttribution('© OpenStreetMap contributors');
+
+    mapInitialized = true;
+    requestAnimationFrame(() => leafletMap.invalidateSize());
+  }
+
+  function jitterCoordinates(lat, lon, key) {
+    let hash = 0;
+    for (let i = 0; i < key.length; i += 1) {
+      hash = (hash * 31 + key.charCodeAt(i)) & 0xffffffff;
+    }
+    const angle = ((hash >>> 8) % 360) * (Math.PI / 180);
+    const radius = 0.01 + (((hash >>> 20) & 0xff) / 255) * 0.012;
+    const latOffset = Math.cos(angle) * radius;
+    const lonScale = Math.max(Math.cos((lat * Math.PI) / 180), 0.35);
+    const lonOffset = Math.sin(angle) * radius / lonScale;
+    const minLat = 45.7;
+    const maxLat = 47.9;
+    const minLon = 5.6;
+    const maxLon = 10.7;
+    return {
+      lat: Math.min(Math.max(lat + latOffset, minLat), maxLat),
+      lon: Math.min(Math.max(lon + lonOffset, minLon), maxLon)
+    };
+  }
+
+  function positionHospitals(list) {
+    return list.map((hospital) => {
+      if (!hospital.approx || hospital.lat == null || hospital.lon == null) {
+        return hospital;
+      }
+      const jittered = jitterCoordinates(hospital.lat, hospital.lon, hospital.hospital);
+      return { ...hospital, lat: jittered.lat, lon: jittered.lon, approx: false };
+    });
+  }
+
+  function renderSvgFallback(hospitals) {
+    if (!hospitals.length) {
+      finderMap.innerHTML = `
+        <div class="finder-map-header">
+          <h3>${mapStrings.title}</h3>
+        </div>
+        <p class="finder-empty">${mapStrings.empty}</p>
+        ${legendMarkup}
+      `;
+      return;
+    }
+
+    const latMin = 45.8;
+    const latMax = 47.8;
+    const lonMin = 5.9;
+    const lonMax = 10.5;
+    const maxCases = hospitals[0]?.cases || 1;
+
+    const circles = hospitals
+      .map((hospital) => {
+        const x = ((hospital.lon - lonMin) / (lonMax - lonMin)) * 1000;
+        const y = (1 - (hospital.lat - latMin) / (latMax - latMin)) * 600;
+        const radius = 6 + Math.sqrt(hospital.cases / maxCases) * 14;
+        const color = typeColors[hospital.type] || typeColors.other;
+        const casesLabel = hospital.cases.toLocaleString();
+        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(
+          1
+        )}" r="${radius.toFixed(1)}" fill="${color}" opacity="0.8"><title>${hospital.hospital} — ${casesLabel} cases</title></circle>`;
+      })
+      .join('');
+
+    const summary = mapStrings.summary(hospitals.length, hospitals[0]);
+
+    finderMap.innerHTML = `
+      <div class="finder-map-header">
+        <h3>${mapStrings.title}</h3>
+        <span class="finder-map-meta">${summary}</span>
+      </div>
+      <svg viewBox="0 0 1000 600" role="img" aria-label="Hospital locations by volume">
+        <rect x="0" y="0" width="1000" height="600" fill="#f8fafc"></rect>
+        <path d="M120,310 C200,180 360,120 520,160 C700,200 820,260 860,360 C760,520 520,520 320,480 C200,450 120,380 120,310 Z" fill="#eef2f7" stroke="#cbd5e1"></path>
+        ${circles}
+      </svg>
+      ${legendMarkup}
+    `;
+  }
 
   function ensureTypeFilter() {
     availableTypes.forEach((type) => {
@@ -621,7 +838,8 @@ if (finderRoot) {
           type: meta.type,
           canton: meta.canton,
           lat: meta.lat,
-          lon: meta.lon
+          lon: meta.lon,
+          approx: meta.approx
         };
       })
       .filter((h) => state.typeFilter[h.type] !== false);
@@ -752,47 +970,67 @@ if (finderRoot) {
   }
 
   function renderMap(agg) {
-    const hospitals = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
+    const hospitalsWithCoords = agg.hospitals.filter(
+      (hospital) => Number.isFinite(hospital.lat) && Number.isFinite(hospital.lon)
+    );
+    const hospitals = positionHospitals(hospitalsWithCoords);
 
-    if (!hospitals.length) {
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-empty">No map data available for this selection.</p>';
+    if (!hasLeaflet) {
+      renderSvgFallback(hospitals);
       return;
     }
 
+    ensureLeafletMapStructure();
+
+    if (!mapInitialized || !leafletMap || !leafletMarkers || !mapMetaEl || !mapEmptyEl) {
+      return;
+    }
+
+    leafletMarkers.clearLayers();
+
+    if (!hospitals.length) {
+      mapMetaEl.textContent = mapStrings.empty;
+      mapEmptyEl.textContent = mapStrings.empty;
+      mapEmptyEl.hidden = false;
+      return;
+    }
+
+    mapEmptyEl.hidden = true;
+
+    const summary = mapStrings.summary(hospitals.length, hospitals[0]);
+    mapMetaEl.textContent = summary;
+
     const maxCases = hospitals[0]?.cases || 1;
-    const latMin = 45.8;
-    const latMax = 47.8;
-    const lonMin = 5.9;
-    const lonMax = 10.5;
+    const bounds = [];
 
-    const circles = hospitals
-      .map((h) => {
-        const x = ((h.lon - lonMin) / (lonMax - lonMin)) * 1000;
-        const y = (1 - (h.lat - latMin) / (latMax - latMin)) * 600;
-        const radius = 4 + (h.cases / maxCases) * 10;
-        const color =
-          h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
-        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${radius.toFixed(
-          1
-        )}" fill="${color}" opacity="0.9">
-          <title>${h.hospital} — ${h.cases} cases</title>
-        </circle>`;
-      })
-      .join('');
+    leafletMap.invalidateSize();
 
-    finderMap.innerHTML = `
-      <h3>Map preview</h3>
-      <svg viewBox="0 0 1000 600" role="img" aria-label="Hospital locations by volume">
-        <rect x="0" y="0" width="1000" height="600" fill="#f8fafc"></rect>
-        <path d="M120,310 C200,180 360,120 520,160 C700,200 820,260 860,360 C760,520 520,520 320,480 C200,450 120,380 120,310 Z" fill="#eef2f7" stroke="#cbd5e1"></path>
-        ${circles}
-      </svg>
-      <div class="finder-map-legend">
-        <span><i style="background:#059669"></i>University</span>
-        <span><i style="background:#0ea5e9"></i>Cantonal</span>
-        <span><i style="background:#f59e0b"></i>Private</span>
-      </div>
-    `;
+    hospitals.forEach((hospital) => {
+      const color = typeColors[hospital.type] || typeColors.other;
+      const radius = 6 + Math.sqrt(hospital.cases / maxCases) * 14;
+      const marker = L.circleMarker([hospital.lat, hospital.lon], {
+        radius,
+        color,
+        weight: 1.5,
+        opacity: 0.9,
+        fillColor: color,
+        fillOpacity: 0.7
+      });
+      marker.bindTooltip(`${hospital.hospital}<br>${hospital.cases.toLocaleString()} cases`, {
+        className: 'finder-map-tooltip',
+        direction: 'top',
+        offset: [0, -2],
+        sticky: true
+      });
+      leafletMarkers.addLayer(marker);
+      bounds.push([hospital.lat, hospital.lon]);
+    });
+
+    if (bounds.length === 1) {
+      leafletMap.setView(bounds[0], 9);
+    } else if (bounds.length) {
+      leafletMap.fitBounds(L.latLngBounds(bounds).pad(0.2), { animate: false });
+    }
   }
 
   function renderCantonDetails(agg) {
@@ -835,7 +1073,13 @@ if (finderRoot) {
       finderListMeta.textContent = 'Loading data…';
       finderKpis.innerHTML = '<div class="finder-loading">Loading data…</div>';
       finderList.innerHTML = '';
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-loading">Loading map…</p>';
+      resetLeafletMap();
+      finderMap.innerHTML = `
+        <div class="finder-map-header">
+          <h3>${mapStrings.title}</h3>
+        </div>
+        <p class="finder-loading">${mapStrings.loading}</p>
+      `;
       finderCantonSummary.textContent = 'Loading data…';
       finderCantonList.innerHTML = '';
       return;
@@ -874,7 +1118,14 @@ if (finderRoot) {
       finderListMeta.textContent = 'Failed to load data.';
       finderKpis.innerHTML = '<div class="finder-error">Unable to load hospital dataset.</div>';
       finderList.innerHTML = '';
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-error">Unable to load hospital dataset.</p>';
+      resetLeafletMap();
+      finderMap.innerHTML = `
+        <div class="finder-map-header">
+          <h3>${mapStrings.title}</h3>
+        </div>
+        <p class="finder-error">Unable to load hospital dataset.</p>
+      `;
       finderCantonSummary.textContent = 'Unable to load hospital dataset.';
+      finderCantonList.innerHTML = '';
     });
 }

@@ -284,6 +284,7 @@ body {
   text-transform: uppercase;
   font-weight: 600;
   color: #9ca3af;
+  flex-shrink: 0;
 }
 
 .finder-procedure-selector input[type="search"] {
@@ -308,6 +309,8 @@ body {
   gap: 0.6rem;
   min-height: 0;
   align-self: stretch;
+  height: 100%;
+  overflow: hidden;
 }
 
 .finder-category-tabs {
@@ -341,6 +344,8 @@ body {
   flex-direction: column;
   gap: 0.6rem;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .finder-category-btn.dimmed {
@@ -960,6 +965,12 @@ body {
     padding: 1.1rem 1.2rem 1rem;
     min-height: 0;
     max-height: none;
+    overflow: visible;
+  }
+
+  .finder-category-panel,
+  .finder-procedure-panel {
+    height: auto;
     overflow: visible;
   }
 

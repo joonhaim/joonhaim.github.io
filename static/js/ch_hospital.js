@@ -52,9 +52,6 @@ const SWITZERLAND_BOUNDS = {
   lonMax: 10.5
 };
 
-const MAP_WIDTH = 1000;
-const MAP_HEIGHT = 600;
-
 // Approximate lat/lon span (in degrees) for each canton to derive custom bounds.
 const cantonSpan = {
   AG: { lat: 0.8, lon: 1.1 },
@@ -487,6 +484,7 @@ if (finderRoot) {
         mapTitle: 'Map preview',
         mapAriaLabel: 'Hospital locations by volume',
         mapNoData: 'No map data available for this selection.',
+        mapUnavailable: 'Interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases'
       }
     },
@@ -591,6 +589,7 @@ if (finderRoot) {
         mapTitle: 'Kartenübersicht',
         mapAriaLabel: 'Spitalstandorte nach Fallzahlen',
         mapNoData: 'Für diese Auswahl stehen keine Kartendaten zur Verfügung.',
+        mapUnavailable: 'Interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle'
       }
     },
@@ -695,6 +694,7 @@ if (finderRoot) {
         mapTitle: 'Aperçu cartographique',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
+        mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas'
       }
     },
@@ -799,6 +799,7 @@ if (finderRoot) {
         mapTitle: 'Anteprima mappa',
         mapAriaLabel: 'Posizioni ospedaliere per volume',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
+        mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi'
       }
     }
@@ -1047,6 +1048,88 @@ if (finderRoot) {
     if (!finderProcedureSearch || !finderCategoryTabs || !finderProcedureList) {
       console.warn('Procedure finder UI is missing required elements.');
       return;
+    }
+
+    const mapState = {
+      ready: false,
+      map: null,
+      markersLayer: null,
+      container: null,
+      titleEl: null,
+      messageEl: null,
+      legendEls: { university: null, kanton: null, private: null }
+    };
+
+    function ensureMapStructure() {
+      if (!finderMap) {
+        return false;
+      }
+      if (typeof window.L === 'undefined') {
+        return false;
+      }
+      if (!mapState.ready) {
+        finderMap.innerHTML = `
+          <h3 class="finder-map-title"></h3>
+          <div class="finder-map-view" role="img"></div>
+          <p class="finder-map-message finder-empty" hidden></p>
+          <div class="finder-map-legend">
+            <span data-type="university"><i style="background:#059669"></i><span class="legend-label"></span></span>
+            <span data-type="kanton"><i style="background:#0ea5e9"></i><span class="legend-label"></span></span>
+            <span data-type="private"><i style="background:#f59e0b"></i><span class="legend-label"></span></span>
+          </div>
+        `;
+        mapState.titleEl = finderMap.querySelector('.finder-map-title');
+        mapState.container = finderMap.querySelector('.finder-map-view');
+        mapState.messageEl = finderMap.querySelector('.finder-map-message');
+        mapState.legendEls = {
+          university: finderMap.querySelector('[data-type="university"] .legend-label'),
+          kanton: finderMap.querySelector('[data-type="kanton"] .legend-label'),
+          private: finderMap.querySelector('[data-type="private"] .legend-label')
+        };
+
+        mapState.map = L.map(mapState.container, {
+          zoomSnap: 0.5,
+          scrollWheelZoom: false,
+          attributionControl: true
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mapState.map);
+
+        if (mapState.map.attributionControl?.setPrefix) {
+          mapState.map.attributionControl.setPrefix('');
+        }
+
+        mapState.markersLayer = L.layerGroup().addTo(mapState.map);
+        mapState.ready = true;
+        requestAnimationFrame(() => mapState.map.invalidateSize());
+      }
+
+      mapState.titleEl.textContent = msg('mapTitle');
+      mapState.container.setAttribute('aria-label', msg('mapAriaLabel'));
+      mapState.legendEls.university.textContent = typeLegend.university;
+      mapState.legendEls.kanton.textContent = typeLegend.kanton;
+      mapState.legendEls.private.textContent = typeLegend.private;
+      mapState.messageEl.hidden = true;
+
+      return true;
+    }
+
+    function displayMapMessage(message, className = 'finder-empty') {
+      if (!finderMap) {
+        return;
+      }
+      if (!ensureMapStructure()) {
+        finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="${className}">${message}</p>`;
+        return;
+      }
+      mapState.markersLayer?.clearLayers();
+      mapState.messageEl.className = `finder-map-message ${className}`;
+      mapState.messageEl.textContent = message;
+      mapState.messageEl.hidden = false;
     }
 
     const defaultCategory = procedureCatalog[0] ?? null;
@@ -1495,9 +1578,21 @@ if (finderRoot) {
   }
 
   function renderMap(agg) {
+    if (!finderMap) {
+      return;
+    }
+
+    if (!ensureMapStructure()) {
+      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-error">${msg('mapUnavailable')}</p>`;
+      return;
+    }
+
     const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
     if (!hospitalsWithCoords.length) {
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('mapNoData')}</p>`;
+      mapState.markersLayer.clearLayers();
+      mapState.messageEl.className = 'finder-map-message finder-empty';
+      mapState.messageEl.textContent = msg('mapNoData');
+      mapState.messageEl.hidden = false;
       return;
     }
 
@@ -1525,84 +1620,53 @@ if (finderRoot) {
       lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, targetBounds.lonMax + lonPadding)
     };
 
-    const baseLonSpan = SWITZERLAND_BOUNDS.lonMax - SWITZERLAND_BOUNDS.lonMin;
-    const baseLatSpan = SWITZERLAND_BOUNDS.latMax - SWITZERLAND_BOUNDS.latMin;
+    const leafletBounds = L.latLngBounds(
+      [bounds.latMin, bounds.lonMin],
+      [bounds.latMax, bounds.lonMax]
+    );
 
-    const baseTopLeftX = ((bounds.lonMin - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
-    const baseBottomRightX = ((bounds.lonMax - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
-    const baseTopLeftY = ((SWITZERLAND_BOUNDS.latMax - bounds.latMax) / baseLatSpan) * MAP_HEIGHT;
-    const baseBottomRightY = ((SWITZERLAND_BOUNDS.latMax - bounds.latMin) / baseLatSpan) * MAP_HEIGHT;
+    mapState.markersLayer.clearLayers();
 
-    const baseWidth = Math.max(1, baseBottomRightX - baseTopLeftX);
-    const baseHeight = Math.max(1, baseBottomRightY - baseTopLeftY);
-    const scaleX = MAP_WIDTH / baseWidth;
-    const scaleY = MAP_HEIGHT / baseHeight;
-    const uniformScale = Math.min(scaleX, scaleY);
-    const targetWidth = baseWidth * uniformScale;
-    const targetHeight = baseHeight * uniformScale;
-    const offsetX = (MAP_WIDTH - targetWidth) / 2;
-    const offsetY = (MAP_HEIGHT - targetHeight) / 2;
-    const translateX = offsetX - baseTopLeftX * uniformScale;
-    const translateY = offsetY - baseTopLeftY * uniformScale;
-    const backgroundTransform = [
-      `translate(${translateX.toFixed(2)} ${translateY.toFixed(2)})`,
-      `scale(${uniformScale.toFixed(4)})`
-    ].join(' ');
+    hospitals.forEach((h) => {
+      const color = h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
+      const radius = 6 + (h.cases / maxCases) * 9;
+      const marker = L.circleMarker([h.lat, h.lon], {
+        radius,
+        color,
+        fillColor: color,
+        weight: 1,
+        opacity: 0.9,
+        fillOpacity: 0.9
+      });
+      marker.bindTooltip(msg('mapTooltip', { hospital: h.hospital, cases: h.cases.toLocaleString() }), {
+        direction: 'top',
+        offset: [0, -8]
+      });
+      marker.addTo(mapState.markersLayer);
+    });
 
-    const project = (lat, lon) => {
-      const baseX = ((lon - SWITZERLAND_BOUNDS.lonMin) / baseLonSpan) * MAP_WIDTH;
-      const baseY = ((SWITZERLAND_BOUNDS.latMax - lat) / baseLatSpan) * MAP_HEIGHT;
-      const x = baseX * uniformScale + translateX;
-      const y = baseY * uniformScale + translateY;
-      return { x, y };
-    };
+    if (!hospitals.length) {
+      mapState.messageEl.className = 'finder-map-message finder-empty';
+      mapState.messageEl.textContent = msg('mapNoData');
+      mapState.messageEl.hidden = false;
+    } else {
+      mapState.messageEl.hidden = true;
+    }
 
-    const circles = hospitals
-      .map((h) => {
-        const { x, y } = project(h.lat, h.lon);
-        const radius = 4 + (h.cases / maxCases) * 10;
-        const color =
-          h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
-        const tooltip = msg('mapTooltip', { hospital: h.hospital, cases: h.cases.toLocaleString() });
-        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${radius.toFixed(
-          1
-        )}" fill="${color}" opacity="0.9">
-          <title>${tooltip}</title>
-        </circle>`;
-      })
-      .join('');
+    if (leafletBounds.isValid()) {
+      const northEast = leafletBounds.getNorthEast();
+      const southWest = leafletBounds.getSouthWest();
+      const samePoint =
+        Math.abs(northEast.lat - southWest.lat) < 0.0001 &&
+        Math.abs(northEast.lng - southWest.lng) < 0.0001;
+      if (samePoint) {
+        mapState.map.setView([northEast.lat, northEast.lng], 9);
+      } else {
+        mapState.map.fitBounds(leafletBounds.pad(0.12), { animate: false });
+      }
+    }
 
-    const emptyNotice = !hospitals.length
-      ? `<p class="finder-empty finder-map-empty">${msg('mapNoData')}</p>`
-      : '';
-
-    finderMap.innerHTML = `
-      <h3>${msg('mapTitle')}</h3>
-      <svg viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}" role="img" aria-label="${msg('mapAriaLabel')}">
-        <rect x="0" y="0" width="${MAP_WIDTH}" height="${MAP_HEIGHT}" fill="#f8fafc"></rect>
-        <g transform="${backgroundTransform}">
-          <image
-            href="static/images/roestigraben/switzerland.svg"
-            x="0"
-            y="0"
-            width="${MAP_WIDTH}"
-            height="${MAP_HEIGHT}"
-            preserveAspectRatio="xMidYMid meet"
-            opacity="0.35"
-            aria-hidden="true"
-            class="finder-map-background"
-            pointer-events="none"
-          ></image>
-        </g>
-        ${circles}
-      </svg>
-      ${emptyNotice}
-      <div class="finder-map-legend">
-        <span><i style="background:#059669"></i>${typeLegend.university}</span>
-        <span><i style="background:#0ea5e9"></i>${typeLegend.kanton}</span>
-        <span><i style="background:#f59e0b"></i>${typeLegend.private}</span>
-      </div>
-    `;
+    mapState.map.invalidateSize();
   }
 
   function renderCantonDetails(agg) {
@@ -1671,7 +1735,7 @@ if (finderRoot) {
       finderListMeta.textContent = msg('chooseProcedure');
       finderKpis.innerHTML = `<div class="finder-empty">${msg('selectProcedureNational')}</div>`;
       finderList.innerHTML = '';
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('selectProcedureMap')}</p>`;
+      displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
       return;
@@ -1681,7 +1745,7 @@ if (finderRoot) {
       finderListMeta.textContent = msg('loadingData');
       finderKpis.innerHTML = `<div class="finder-loading">${msg('loadingData')}</div>`;
       finderList.innerHTML = '';
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-loading">${msg('loadingMap')}</p>`;
+      displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
       return;
@@ -1740,7 +1804,7 @@ if (finderRoot) {
         finderListMeta.textContent = msg('failedToLoad');
         finderKpis.innerHTML = `<div class="finder-error">${msg('datasetError')}</div>`;
         finderList.innerHTML = '';
-        finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-error">${msg('datasetError')}</p>`;
+        displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
       });
   }

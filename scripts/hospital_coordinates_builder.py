@@ -1,39 +1,14 @@
 import csv
-import hashlib
 import json
 import re
 from collections import OrderedDict
 from pathlib import Path
 
-# Canton bounding boxes (approximate lat/lon ranges)
-CANTON_BOUNDS = {
-    "AG": ((47.20, 47.60), (7.80, 8.45)),
-    "AI": ((47.28, 47.40), (9.34, 9.45)),
-    "AR": ((47.32, 47.45), (9.18, 9.50)),
-    "BE": ((46.60, 47.40), (7.00, 7.95)),
-    "BL": ((47.35, 47.60), (7.40, 7.90)),
-    "BS": ((47.52, 47.60), (7.53, 7.63)),
-    "FR": ((46.50, 46.95), (6.70, 7.35)),
-    "GE": ((46.15, 46.30), (5.95, 6.30)),
-    "GL": ((46.85, 47.12), (8.90, 9.20)),
-    "GR": ((46.30, 46.90), (8.40, 10.50)),
-    "JU": ((47.20, 47.45), (6.90, 7.60)),
-    "LU": ((46.80, 47.25), (7.90, 8.55)),
-    "NE": ((46.80, 47.15), (6.60, 7.15)),
-    "NW": ((46.90, 47.05), (8.30, 8.50)),
-    "OW": ((46.75, 46.95), (8.00, 8.40)),
-    "SG": ((47.10, 47.65), (8.70, 9.75)),
-    "SH": ((47.65, 47.80), (8.50, 8.75)),
-    "SO": ((47.10, 47.40), (7.30, 7.75)),
-    "SZ": ((46.90, 47.20), (8.45, 9.05)),
-    "TG": ((47.40, 47.70), (8.70, 9.45)),
-    "TI": ((45.80, 46.55), (8.45, 9.30)),
-    "UR": ((46.60, 46.95), (8.40, 8.90)),
-    "VD": ((46.20, 47.00), (6.05, 7.20)),
-    "VS": ((45.80, 46.50), (6.80, 7.95)),
-    "ZG": ((47.05, 47.25), (8.40, 8.75)),
-    "ZH": ((47.20, 47.65), (8.40, 8.95)),
-}
+import sys
+
+sys.path.append(str(Path(__file__).parent))
+
+from hospital_coordinates_manual import UPDATED_COORDS
 
 EXCLUDED_INSTITUTIONS = {
     "CH",
@@ -118,25 +93,18 @@ def load_institutions(csv_path: Path) -> list:
     return list(institutions.items())
 
 
-def hash_to_range(text: str, bounds: tuple[tuple[float, float], tuple[float, float]]) -> tuple[float, float]:
-    lat_range, lon_range = bounds
-    digest = hashlib.sha256(text.encode("utf-8")).digest()
-    lat_fraction = int.from_bytes(digest[:8], "big") / 2**64
-    lon_fraction = int.from_bytes(digest[8:16], "big") / 2**64
-    lat = lat_range[0] + lat_fraction * (lat_range[1] - lat_range[0])
-    lon = lon_range[0] + lon_fraction * (lon_range[1] - lon_range[0])
-    return round(lat, 6), round(lon, 6)
-
-
 def build_coordinate_map() -> OrderedDict:
     institutions = load_institutions(Path("static/data/qip23_tabdaten.csv"))
     coordinates = OrderedDict()
+    missing = []
     for name, canton in institutions:
-        bounds = CANTON_BOUNDS.get(canton)
-        if not bounds:
+        if name not in UPDATED_COORDS:
+            missing.append(name)
             continue
-        lat, lon = hash_to_range(f"{canton}:{name}", bounds)
+        lat, lon = UPDATED_COORDS[name]
         coordinates[name] = {"lat": lat, "lon": lon, "canton": canton}
+    if missing:
+        raise RuntimeError(f"Missing coordinates for {len(missing)} institutions: {', '.join(missing)}")
     return coordinates
 
 

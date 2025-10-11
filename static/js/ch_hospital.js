@@ -1388,13 +1388,16 @@ if (finderRoot) {
     const baseHeight = Math.max(1, baseBottomRightY - baseTopLeftY);
     const scaleX = MAP_WIDTH / baseWidth;
     const scaleY = MAP_HEIGHT / baseHeight;
-    const translateX = -baseTopLeftX;
-    const translateY = -baseTopLeftY;
-    const translateXFormatted = translateX.toFixed(2);
-    const translateYFormatted = translateY.toFixed(2);
+    const uniformScale = Math.min(scaleX, scaleY);
+    const targetWidth = baseWidth * uniformScale;
+    const targetHeight = baseHeight * uniformScale;
+    const offsetX = (MAP_WIDTH - targetWidth) / 2;
+    const offsetY = (MAP_HEIGHT - targetHeight) / 2;
+    const translateX = offsetX - baseTopLeftX * uniformScale;
+    const translateY = offsetY - baseTopLeftY * uniformScale;
     const backgroundTransform = [
-      `scale(${scaleX.toFixed(4)} ${scaleY.toFixed(4)})`,
-      `translate(${translateXFormatted} ${translateYFormatted})`
+      `translate(${translateX.toFixed(2)} ${translateY.toFixed(2)})`,
+      `scale(${uniformScale.toFixed(4)})`
     ].join(' ');
 
     const circles = hospitals
@@ -1423,7 +1426,7 @@ if (finderRoot) {
             y="0"
             width="${MAP_WIDTH}"
             height="${MAP_HEIGHT}"
-            preserveAspectRatio="none"
+            preserveAspectRatio="xMidYMid meet"
             opacity="0.35"
             aria-hidden="true"
             class="finder-map-background"

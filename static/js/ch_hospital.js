@@ -7,18 +7,92 @@ const hospitals = {
   it: ['CHUV (Losanna)', 'HUG (Ginevra)', 'Inselspital (Berna)', 'USB (Basilea)', 'USZ (Zurigo)']
 };
 
-const cases = {
-  'A.3.1.F': [1299, 1188, 3057, 1960, 2099],
-  'A.4.1.F': [703, 615, 1974, 1539, 764],
-  'A.5.1.F': [265, 264, 714, 540, 486],
-  'B.2.3.F': [751, 958, 1907, 1206, 909],
-  'B.4.1.F': [301, 296, 379, 526, 235],
-  'D.3.1.F': [460, 377, 298, 509, 417],
-  'E.4.11.F': [228, 295, 162, 158, 220],
-  'G.4.1.F': [341, 349, 278, 339, 199],
-  'L.5.1.F': [61, 46, 78, 71, 109],
-  'Z.4.37.F': [308, 531, 133, 284, 67]
+const hospitalOrder = ['CHUV', 'HUG', 'Inselspital', 'USB', 'USZ'];
+
+const hospitalNameMapping = {
+  'CHUV Centre Hospitalier Universitaire Vaudois': 'CHUV',
+  'Les Hôpitaux Universitaires de Genève HUG': 'HUG',
+  'Insel Gruppe AG (universitär)': 'Inselspital',
+  'Universitätsspital Basel': 'USB',
+  'Universitätsspital Zürich': 'USZ'
 };
+
+let aggregatedCases = null;
+
+function parseNumeric(value) {
+  if (!value) {
+    return 0;
+  }
+  const cleaned = value.replace(/'/g, '').replace(/\s+/g, '');
+  const digits = cleaned.match(/\d+/g);
+  if (!digits) {
+    return 0;
+  }
+  return Number(digits.join(''));
+}
+
+async function loadCasesData() {
+  try {
+    const response = await fetch('/static/data/qip23_tabdaten.csv');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch cases data: ${response.status}`);
+    }
+
+    const rawText = await response.text();
+    const text = rawText.replace(/^\uFEFF/, '');
+    const rows = text.split(/\r?\n/).filter(row => row.trim().length > 0);
+    const data = {};
+
+    rows.forEach((row, idx) => {
+      if (idx === 0) {
+        return; // skip header
+      }
+
+      const columns = row.split(';');
+      if (columns.length < 2) {
+        return;
+      }
+
+      const institution = columns[0].trim();
+      const indicatorField = columns[1].trim();
+      const indicatorCode = indicatorField.split(' ')[0];
+
+      if (!indicatorCodes.includes(indicatorCode)) {
+        return;
+      }
+
+      const hospitalKey = hospitalNameMapping[institution];
+      if (!hospitalKey) {
+        return;
+      }
+
+      const casesValue = parseNumeric(columns[columns.length - 1]);
+      if (!data[indicatorCode]) {
+        data[indicatorCode] = {};
+      }
+      if (!data[indicatorCode][hospitalKey]) {
+        data[indicatorCode][hospitalKey] = 0;
+      }
+      data[indicatorCode][hospitalKey] += casesValue;
+    });
+
+    indicatorCodes.forEach(code => {
+      if (!data[code]) {
+        data[code] = {};
+      }
+      hospitalOrder.forEach(hospitalKey => {
+        if (!data[code][hospitalKey]) {
+          data[code][hospitalKey] = 0;
+        }
+      });
+    });
+
+    aggregatedCases = data;
+    updateChart(Array.from(selectedCodes));
+  } catch (error) {
+    console.error('Error loading hospital cases data:', error);
+  }
+}
 
 const procedureLabels = {
   'A.3.1.F': {
@@ -106,13 +180,26 @@ const palette = [
   ['rgba(120, 0, 0, 0.7)', 'rgba(120, 0, 0, 1)']
 ];
 
+const indicatorCodes = Object.keys(procedureLabels);
+
+function getDatasetForCode(code) {
+  if (!aggregatedCases) {
+    return hospitalOrder.map(() => 0);
+  }
+  const codeData = aggregatedCases[code] || {};
+  return hospitalOrder.map(hospitalKey => codeData[hospitalKey] || 0);
+}
+
 function updateChart(codes) {
+  if (!aggregatedCases) {
+    return;
+  }
   const hospitalLabels = hospitals[lang];
   const descriptionEl = document.getElementById('procedure-description');
 
   const datasets = codes.map((code, idx) => ({
     label: procedureLabels[code][lang],
-    data: cases[code],
+    data: getDatasetForCode(code),
     backgroundColor: palette[idx % palette.length][0],
     borderColor: palette[idx % palette.length][1],
     borderWidth: 1
@@ -148,6 +235,7 @@ function updateChart(codes) {
       }
     });
   } else {
+    casesChart.data.labels = hospitalLabels;
     casesChart.data.datasets = datasets;
     casesChart.update();
   }
@@ -194,7 +282,7 @@ const fadeObserver = new IntersectionObserver((entries, observer) => {
 
 document.querySelectorAll('.fade-element').forEach(el => fadeObserver.observe(el));
 
-updateChart(Array.from(selectedCodes));
+loadCasesData();
 
 // ---------------------------------------------------------------------------
 // Procedure finder interactive section (vanilla JS, placeholder values)

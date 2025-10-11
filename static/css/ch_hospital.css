@@ -578,8 +578,12 @@ body {
 
 @media (min-width: 900px) {
   .finder-controls {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
+  }
+
+  .finder-control--search {
+    grid-column: 1 / -1;
   }
 }
 
@@ -791,17 +795,6 @@ body {
 
 .finder-canton-dropdown__option + .finder-canton-dropdown__option {
   border-top: 1px solid rgba(15, 23, 42, 0.05);
-}
-
-.finder-type-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  padding: 1.1rem 1.15rem;
-  margin: 0;
-  border-radius: 0.85rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #f9fafb;
 }
 
 .finder-type-toggle {
@@ -1278,9 +1271,6 @@ body {
     padding: 0.55rem 0.4rem 0.55rem 0.55rem;
   }
 
-  .finder-type-filter {
-    padding: 0.95rem 1rem;
-  }
 }
 
 .fade-element {

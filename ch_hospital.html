@@ -27,6 +27,62 @@
   </div>
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
+  <section id="procedure-finder" class="procedure-finder fade-element">
+    <div class="finder-intro">
+      <h2>Procedure availability across Switzerland</h2>
+      <p>
+        Explore which hospitals report higher case volumes for selected CH-IQI procedures.
+        Use the quick filters to focus on specific hospital types and cantons.
+      </p>
+    </div>
+
+    <div class="finder-chips" id="finder-procedure-chips"></div>
+
+    <div class="finder-controls">
+      <div class="finder-control">
+        <label for="finder-search">Search hospital</label>
+        <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
+      </div>
+      <div class="finder-control">
+        <span class="finder-label">Filter by hospital type</span>
+        <div class="finder-type-toggle" id="finder-type-toggle"></div>
+      </div>
+      <div class="finder-control">
+        <label for="finder-canton">Your canton</label>
+        <select id="finder-canton"></select>
+      </div>
+    </div>
+
+    <div class="finder-kpis" id="finder-kpis"></div>
+
+    <div class="finder-main">
+      <div class="finder-list-card">
+        <div class="finder-list-header">
+          <h3 id="finder-list-title">Top hospitals</h3>
+          <span id="finder-list-meta"></span>
+        </div>
+        <div id="finder-list" class="finder-list"></div>
+      </div>
+      <div class="finder-map-card" id="finder-map"></div>
+    </div>
+
+    <div class="finder-bottom">
+      <div class="finder-canton-card">
+        <h3>Focus on your canton</h3>
+        <p id="finder-canton-summary" class="finder-canton-summary"></p>
+        <div id="finder-canton-list" class="finder-canton-list"></div>
+      </div>
+      <div class="finder-note-card">
+        <h3>Reading the data</h3>
+        <p>
+          Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
+          by many factors including case mix and patient complexity. Use these figures as a starting
+          point and review quality indicators alongside availability.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="hero">
     <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
     <p class="tagline fade-element">
@@ -89,62 +145,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="procedure-finder" class="procedure-finder fade-element">
-    <div class="finder-intro">
-      <h2>Procedure availability across Switzerland</h2>
-      <p>
-        Explore which hospitals report higher case volumes for selected CH-IQI procedures.
-        Use the quick filters to focus on specific hospital types and cantons.
-      </p>
-    </div>
-
-    <div class="finder-chips" id="finder-procedure-chips"></div>
-
-    <div class="finder-controls">
-      <div class="finder-control">
-        <label for="finder-search">Search hospital</label>
-        <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
-      </div>
-      <div class="finder-control">
-        <span class="finder-label">Filter by hospital type</span>
-        <div class="finder-type-toggle" id="finder-type-toggle"></div>
-      </div>
-      <div class="finder-control">
-        <label for="finder-canton">Your canton</label>
-        <select id="finder-canton"></select>
-      </div>
-    </div>
-
-    <div class="finder-kpis" id="finder-kpis"></div>
-
-    <div class="finder-main">
-      <div class="finder-list-card">
-        <div class="finder-list-header">
-          <h3 id="finder-list-title">Top hospitals</h3>
-          <span id="finder-list-meta"></span>
-        </div>
-        <div id="finder-list" class="finder-list"></div>
-      </div>
-      <div class="finder-map-card" id="finder-map"></div>
-    </div>
-
-    <div class="finder-bottom">
-      <div class="finder-canton-card">
-        <h3>Focus on your canton</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
-      </div>
-      <div class="finder-note-card">
-        <h3>Reading the data</h3>
-        <p>
-          Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
-          by many factors including case mix and patient complexity. Use these figures as a starting
-          point and review quality indicators alongside availability.
-        </p>
       </div>
     </div>
   </section>

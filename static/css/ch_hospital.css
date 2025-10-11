@@ -284,7 +284,7 @@ body {
   gap: 0.5rem;
   background: #f7f7f7;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 0.65rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -300,7 +300,7 @@ body {
 .finder-control input,
 .finder-control select {
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   padding: 0.65rem 0.85rem;
   font-size: 0.95rem;
   font-family: inherit;
@@ -338,7 +338,7 @@ body {
 
 .finder-kpi {
   background: #fff;
-  border-radius: 1.25rem;
+  border-radius: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
   padding: 1.1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -375,7 +375,7 @@ body {
 .finder-list-card,
 .finder-map-card {
   background: #fff;
-  border-radius: 1.5rem;
+  border-radius: 0.85rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
   padding: 1.25rem;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
@@ -500,7 +500,7 @@ body {
 .finder-map-card svg {
   width: 100%;
   height: 280px;
-  border-radius: 1rem;
+  border-radius: 0.6rem;
 }
 
 .finder-map-legend {
@@ -532,7 +532,7 @@ body {
 .finder-canton-card,
 .finder-note-card {
   background: #fff;
-  border-radius: 1.5rem;
+  border-radius: 0.85rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
   padding: 1.5rem;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);

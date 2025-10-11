@@ -1074,10 +1074,10 @@ if (finderRoot) {
         return '';
       }
       return `
+        <span class="finder-canton-dropdown__label">${option.label}</span>
         <span class="finder-canton-dropdown__icon" aria-hidden="true">
           <img src="${option.icon}" alt="" loading="lazy" />
         </span>
-        <span class="finder-canton-dropdown__label">${option.label}</span>
       `;
     }
 

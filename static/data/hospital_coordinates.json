@@ -1,0 +1,782 @@
+{
+  "Les Hôpitaux Universitaires de Genève HUG": {
+    "lat": 46.183662,
+    "lon": 6.20614,
+    "canton": "GE"
+  },
+  "CHUV Centre Hospitalier Universitaire Vaudois": {
+    "lat": 46.740776,
+    "lon": 6.97961,
+    "canton": "VD"
+  },
+  "Insel Gruppe AG (universitär)": {
+    "lat": 47.306241,
+    "lon": 7.494564,
+    "canton": "BE"
+  },
+  "Universitätsspital Basel": {
+    "lat": 47.578881,
+    "lon": 7.617758,
+    "canton": "BS"
+  },
+  "Universitätsspital Zürich": {
+    "lat": 47.318412,
+    "lon": 8.507761,
+    "canton": "ZH"
+  },
+  "EOC Ente ospedaliero cantonale": {
+    "lat": 46.035657,
+    "lon": 8.526904,
+    "canton": "TI"
+  },
+  "LUKS Spitalbetriebe AG": {
+    "lat": 47.108821,
+    "lon": 8.044225,
+    "canton": "LU"
+  },
+  "Kantonsspital St. Gallen": {
+    "lat": 47.238883,
+    "lon": 8.911125,
+    "canton": "SG"
+  },
+  "Stadtspital Zürich": {
+    "lat": 47.534595,
+    "lon": 8.741931,
+    "canton": "ZH"
+  },
+  "Solothurner Spitäler AG": {
+    "lat": 47.143668,
+    "lon": 7.431112,
+    "canton": "SO"
+  },
+  "Kantonsspital Aarau AG": {
+    "lat": 47.391781,
+    "lon": 8.384359,
+    "canton": "AG"
+  },
+  "Spital Thurgau AG Kantonsspitäler Frauenfeld & Münsterlingen": {
+    "lat": 47.450611,
+    "lon": 8.912062,
+    "canton": "TG"
+  },
+  "Lindenhofgruppe AG": {
+    "lat": 46.874741,
+    "lon": 7.862849,
+    "canton": "BE"
+  },
+  "Kantonsspital Winterthur": {
+    "lat": 47.600369,
+    "lon": 8.703078,
+    "canton": "ZH"
+  },
+  "Hôpital du Valais Centre hospitalier du Valais Romand CHVR": {
+    "lat": 46.39443,
+    "lon": 7.460387,
+    "canton": "VS"
+  },
+  "Kantonsspital Baselland": {
+    "lat": 47.472634,
+    "lon": 7.68407,
+    "canton": "BL"
+  },
+  "Kantonsspital Baden AG": {
+    "lat": 47.53605,
+    "lon": 8.133387,
+    "canton": "AG"
+  },
+  "HFR - Hôpital fribourgeois": {
+    "lat": 46.668685,
+    "lon": 7.080935,
+    "canton": "FR"
+  },
+  "Klinik Hirslanden AG": {
+    "lat": 47.433057,
+    "lon": 8.790474,
+    "canton": "ZH"
+  },
+  "Réseau hospitalier neuchâtelois RHNe": {
+    "lat": 46.893346,
+    "lon": 6.83571,
+    "canton": "NE"
+  },
+  "Kantonsspital Graubünden": {
+    "lat": 46.672897,
+    "lon": 9.328855,
+    "canton": "GR"
+  },
+  "Hôpital Riviera-Chablais Vaud-Valais": {
+    "lat": 46.292384,
+    "lon": 6.769435,
+    "canton": "VD"
+  },
+  "Hirslanden Bern AG": {
+    "lat": 47.275882,
+    "lon": 7.286733,
+    "canton": "BE"
+  },
+  "Spital STS AG": {
+    "lat": 46.713607,
+    "lon": 7.690524,
+    "canton": "BE"
+  },
+  "Spitalzentrum Biel AG": {
+    "lat": 46.784345,
+    "lon": 7.364387,
+    "canton": "BE"
+  },
+  "Hirslanden Klinik St. Anna AG": {
+    "lat": 46.800235,
+    "lon": 8.291596,
+    "canton": "LU"
+  },
+  "EHC Ensemble hospitalier de la Côte": {
+    "lat": 46.776511,
+    "lon": 6.282909,
+    "canton": "VD"
+  },
+  "Spitalregion Rheintal Werdenberg Sarganserland": {
+    "lat": 47.279748,
+    "lon": 9.074825,
+    "canton": "SG"
+  },
+  "Spital Limmattal": {
+    "lat": 47.374658,
+    "lon": 8.65701,
+    "canton": "ZH"
+  },
+  "Etablissements Hospitaliers du Nord Vaudois (eHnv)": {
+    "lat": 46.267854,
+    "lon": 6.413034,
+    "canton": "VD"
+  },
+  "Spital Wallis - Spitalzentrum Oberwallis (SZO)": {
+    "lat": 45.826962,
+    "lon": 7.404259,
+    "canton": "VS"
+  },
+  "St. Claraspital": {
+    "lat": 47.565556,
+    "lon": 7.576296,
+    "canton": "BS"
+  },
+  "Spital Zollikerberg": {
+    "lat": 47.276318,
+    "lon": 8.897723,
+    "canton": "ZH"
+  },
+  "Zuger Kantonsspital AG": {
+    "lat": 47.118592,
+    "lon": 8.508666,
+    "canton": "ZG"
+  },
+  "Regionalspital Emmental AG": {
+    "lat": 47.064262,
+    "lon": 7.61669,
+    "canton": "BE"
+  },
+  "Hirslanden Klinik Aarau": {
+    "lat": 47.562761,
+    "lon": 7.842484,
+    "canton": "AG"
+  },
+  "Spitäler Schaffhausen": {
+    "lat": 47.740924,
+    "lon": 8.682618,
+    "canton": "SH"
+  },
+  "Insel Gruppe AG (nicht-universitär)": {
+    "lat": 46.609879,
+    "lon": 7.543021,
+    "canton": "BE"
+  },
+  "Spitäler Frutigen Meiringen Interlaken AG": {
+    "lat": 47.126998,
+    "lon": 7.328618,
+    "canton": "BE"
+  },
+  "Spital Bülach AG": {
+    "lat": 47.260319,
+    "lon": 8.888955,
+    "canton": "ZH"
+  },
+  "Spital Uster AG": {
+    "lat": 47.55181,
+    "lon": 8.60954,
+    "canton": "ZH"
+  },
+  "GZO Spital Wetzikon": {
+    "lat": 47.373989,
+    "lon": 8.753694,
+    "canton": "ZH"
+  },
+  "See-Spital": {
+    "lat": 47.295254,
+    "lon": 8.903647,
+    "canton": "ZH"
+  },
+  "SRO AG": {
+    "lat": 47.372119,
+    "lon": 7.337552,
+    "canton": "SO"
+  },
+  "Hôpital du Jura": {
+    "lat": 47.239319,
+    "lon": 7.116385,
+    "canton": "JU"
+  },
+  "Gesundheitszentrum Fricktal": {
+    "lat": 47.529419,
+    "lon": 7.87946,
+    "canton": "AG"
+  },
+  "Groupement Hospitalier de l'Ouest Lémanique (GHOL) SA": {
+    "lat": 46.249235,
+    "lon": 7.021173,
+    "canton": "VD"
+  },
+  "Hôpital de la Tour": {
+    "lat": 46.151718,
+    "lon": 6.249856,
+    "canton": "GE"
+  },
+  "Spital Männedorf AG": {
+    "lat": 47.339867,
+    "lon": 8.700612,
+    "canton": "ZH"
+  },
+  "Hirslanden Klinik Stephanshorn": {
+    "lat": 47.311093,
+    "lon": 8.893692,
+    "canton": "SG"
+  },
+  "Gruppo ospedaliero Moncucco Clinica Moncucco": {
+    "lat": 46.008192,
+    "lon": 8.652671,
+    "canton": "TI"
+  },
+  "Stiftung Spital Muri": {
+    "lat": 47.248576,
+    "lon": 8.136273,
+    "canton": "AG"
+  },
+  "Spital Lachen": {
+    "lat": 47.192476,
+    "lon": 8.602651,
+    "canton": "SZ"
+  },
+  "Spitalregion Fürstenland Toggenburg": {
+    "lat": 47.424834,
+    "lon": 9.123364,
+    "canton": "SG"
+  },
+  "Spital Schwyz": {
+    "lat": 47.184989,
+    "lon": 8.960459,
+    "canton": "SZ"
+  },
+  "Hirslanden Klinik Linde AG": {
+    "lat": 46.742981,
+    "lon": 7.811478,
+    "canton": "BE"
+  },
+  "Clinique des Grangettes SA": {
+    "lat": 46.163312,
+    "lon": 6.133253,
+    "canton": "GE"
+  },
+  "Spitalverbund Appenzell Ausserrhoden": {
+    "lat": 47.378061,
+    "lon": 9.435516,
+    "canton": "AR"
+  },
+  "Hôpital Intercantonal de la Broye (HIB)": {
+    "lat": 46.328967,
+    "lon": 6.938996,
+    "canton": "VD"
+  },
+  "Réseau de l'Arc SA": {
+    "lat": 47.362441,
+    "lon": 6.929325,
+    "canton": "JU"
+  },
+  "Kantonsspital Glarus": {
+    "lat": 46.879594,
+    "lon": 9.054277,
+    "canton": "GL"
+  },
+  "Kantonsspital Obwalden": {
+    "lat": 46.865594,
+    "lon": 8.166417,
+    "canton": "OW"
+  },
+  "Spital Walenstadt": {
+    "lat": 47.334468,
+    "lon": 8.905621,
+    "canton": "SG"
+  },
+  "Bethesda Spital AG": {
+    "lat": 47.523889,
+    "lon": 7.5513,
+    "canton": "BS"
+  },
+  "Klinik Im Park": {
+    "lat": 47.251878,
+    "lon": 8.740797,
+    "canton": "ZH"
+  },
+  "Hôpital Jules Daler": {
+    "lat": 46.577627,
+    "lon": 6.992183,
+    "canton": "FR"
+  },
+  "Spital Linth": {
+    "lat": 47.389735,
+    "lon": 9.414974,
+    "canton": "SG"
+  },
+  "Spital Nidwalden AG": {
+    "lat": 47.01719,
+    "lon": 8.404439,
+    "canton": "NW"
+  },
+  "Clinique Générale-Beaulieu": {
+    "lat": 46.175475,
+    "lon": 6.115324,
+    "canton": "GE"
+  },
+  "Clinique Cecil": {
+    "lat": 46.753573,
+    "lon": 6.675038,
+    "canton": "VD"
+  },
+  "Spital Zofingen AG": {
+    "lat": 47.229984,
+    "lon": 8.242889,
+    "canton": "AG"
+  },
+  "Andreas Klinik": {
+    "lat": 47.229842,
+    "lon": 8.673207,
+    "canton": "ZG"
+  },
+  "Asana Spital Leuggern AG": {
+    "lat": 47.370951,
+    "lon": 7.960389,
+    "canton": "AG"
+  },
+  "Clinique de La Source": {
+    "lat": 46.540438,
+    "lon": 6.955204,
+    "canton": "VD"
+  },
+  "Kantonsspital Uri": {
+    "lat": 46.781973,
+    "lon": 8.699603,
+    "canton": "UR"
+  },
+  "AMEOS Spital Einsiedeln AG": {
+    "lat": 46.936191,
+    "lon": 8.789367,
+    "canton": "SZ"
+  },
+  "GSMN Schweiz AG Privatklinik Bethanien": {
+    "lat": 47.496857,
+    "lon": 8.532676,
+    "canton": "ZH"
+  },
+  "Clinique Bois-Cerf": {
+    "lat": 46.317622,
+    "lon": 6.122276,
+    "canton": "VD"
+  },
+  "Asana Spital Menziken AG": {
+    "lat": 47.589652,
+    "lon": 8.446614,
+    "canton": "AG"
+  },
+  "Spital Oberengadin": {
+    "lat": 46.385284,
+    "lon": 8.845936,
+    "canton": "GR"
+  },
+  "Flury Stiftung Spital Schiers": {
+    "lat": 46.35371,
+    "lon": 10.190091,
+    "canton": "GR"
+  },
+  "Regionalspital Surselva AG": {
+    "lat": 46.830218,
+    "lon": 9.113925,
+    "canton": "GR"
+  },
+  "Spital Affoltern AG": {
+    "lat": 47.44305,
+    "lon": 8.661987,
+    "canton": "ZH"
+  },
+  "GSMN Schweiz AG Clinique de Genolier": {
+    "lat": 46.487702,
+    "lon": 6.217243,
+    "canton": "VD"
+  },
+  "Spital Davos AG Akutabteilung": {
+    "lat": 46.836656,
+    "lon": 9.829571,
+    "canton": "GR"
+  },
+  "Swiss Medical Network Hospitals SA Clinica Sant'Anna": {
+    "lat": 46.432365,
+    "lon": 8.964316,
+    "canton": "TI"
+  },
+  "Gruppo ospedaliero Moncucco Clinica Santa Chiara SA": {
+    "lat": 46.362299,
+    "lon": 8.521629,
+    "canton": "TI"
+  },
+  "Klinik Arlesheim AG": {
+    "lat": 47.487649,
+    "lon": 7.619207,
+    "canton": "BL"
+  },
+  "Herz-Neuro-Zentrum Bodensee AG": {
+    "lat": 47.536095,
+    "lon": 8.716674,
+    "canton": "TG"
+  },
+  "Spital Thusis": {
+    "lat": 46.356516,
+    "lon": 9.312732,
+    "canton": "GR"
+  },
+  "Center da Sanda Engiadina Bassa Ospidal d'Engiadina Bassa": {
+    "lat": 46.650802,
+    "lon": 9.372604,
+    "canton": "GR"
+  },
+  "Réseau Santé Balcon du Jura.vd (RSBJ)": {
+    "lat": 46.554925,
+    "lon": 6.348336,
+    "canton": "VD"
+  },
+  "ArKa SA": {
+    "lat": 46.453167,
+    "lon": 8.72398,
+    "canton": "TI"
+  },
+  "Pôle santé Vallée de Joux Hôpital de la Vallée de Joux": {
+    "lat": 46.56959,
+    "lon": 6.815594,
+    "canton": "VD"
+  },
+  "Center da Sanadad Savognin SA": {
+    "lat": 46.62331,
+    "lon": 8.468943,
+    "canton": "GR"
+  },
+  "Centro Sanitario Valposchiavo Ospedale San Sisto": {
+    "lat": 46.534849,
+    "lon": 9.808074,
+    "canton": "GR"
+  },
+  "Pôle santé du Pays-d'Enhaut": {
+    "lat": 46.346671,
+    "lon": 6.074938,
+    "canton": "VD"
+  },
+  "Stiftung Diaconis Palliative Care": {
+    "lat": 46.890046,
+    "lon": 7.408903,
+    "canton": "BE"
+  },
+  "Center da Sanda Val Müstair Akutabteilung": {
+    "lat": 46.725852,
+    "lon": 9.580437,
+    "canton": "GR"
+  },
+  "PALLIATIVKLINIK IM PARK": {
+    "lat": 47.453509,
+    "lon": 8.905512,
+    "canton": "ZH"
+  },
+  "Centro Sanitario Bregaglia Reparto Acuto": {
+    "lat": 46.897343,
+    "lon": 8.740109,
+    "canton": "GR"
+  },
+  "Schulthess Klinik": {
+    "lat": 47.641638,
+    "lon": 8.632811,
+    "canton": "ZH"
+  },
+  "Merian Iselin Klinik AG": {
+    "lat": 47.559046,
+    "lon": 7.540992,
+    "canton": "BS"
+  },
+  "Universitätsklinik Balgrist": {
+    "lat": 47.479769,
+    "lon": 8.64584,
+    "canton": "ZH"
+  },
+  "Berit Klinik AG": {
+    "lat": 47.391166,
+    "lon": 9.335519,
+    "canton": "AR"
+  },
+  "Clinique la Colline": {
+    "lat": 46.17446,
+    "lon": 6.224755,
+    "canton": "GE"
+  },
+  "Hirslanden Klinik Birshof": {
+    "lat": 47.443995,
+    "lon": 7.624251,
+    "canton": "BL"
+  },
+  "Swiss Medical Network Hospitals SA Clinica Ars Medica": {
+    "lat": 46.350523,
+    "lon": 9.209178,
+    "canton": "TI"
+  },
+  "Klinik Gut St. Moritz AG": {
+    "lat": 46.562074,
+    "lon": 8.471818,
+    "canton": "GR"
+  },
+  "Swiss Medical Network Hospitals SA Clinique Générale Ste-Anne": {
+    "lat": 46.822631,
+    "lon": 7.066741,
+    "canton": "FR"
+  },
+  "Hirslanden Klinik Am Rosenberg AG": {
+    "lat": 47.348305,
+    "lon": 9.480869,
+    "canton": "AR"
+  },
+  "Swiss Medical Network Hospitals SA Clinique de Valère": {
+    "lat": 46.145246,
+    "lon": 7.734183,
+    "canton": "VS"
+  },
+  "Swiss Medical Network Hospitals SA Neuchâtel": {
+    "lat": 46.971814,
+    "lon": 7.114268,
+    "canton": "NE"
+  },
+  "Klinik Seeschau AG": {
+    "lat": 47.453949,
+    "lon": 8.838475,
+    "canton": "TG"
+  },
+  "Limmatklinik AG": {
+    "lat": 47.336323,
+    "lon": 8.636249,
+    "canton": "ZH"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Obach": {
+    "lat": 47.390842,
+    "lon": 7.514361,
+    "canton": "SO"
+  },
+  "Clinique CIC Riviera": {
+    "lat": 46.904499,
+    "lon": 7.102964,
+    "canton": "VD"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Siloah": {
+    "lat": 46.864238,
+    "lon": 7.858017,
+    "canton": "BE"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Villa im Park": {
+    "lat": 47.324231,
+    "lon": 8.082949,
+    "canton": "AG"
+  },
+  "Praxisklinik Rennbahn AG": {
+    "lat": 47.358105,
+    "lon": 7.445805,
+    "canton": "BL"
+  },
+  "Clinique CIC Valais SA": {
+    "lat": 46.019622,
+    "lon": 7.614943,
+    "canton": "VS"
+  },
+  "Uroviva Klinik AG": {
+    "lat": 47.422321,
+    "lon": 8.875583,
+    "canton": "ZH"
+  },
+  "Klinik Hohmad AG": {
+    "lat": 46.688051,
+    "lon": 7.167524,
+    "canton": "BE"
+  },
+  "GSMN Schweiz AG Privatklinik Lindberg": {
+    "lat": 47.526147,
+    "lon": 8.672397,
+    "canton": "ZH"
+  },
+  "Rosenklinik AG": {
+    "lat": 47.439328,
+    "lon": 9.604697,
+    "canton": "SG"
+  },
+  "Klinik Pyramide am See AG": {
+    "lat": 47.446187,
+    "lon": 8.501667,
+    "canton": "ZH"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Belair": {
+    "lat": 47.717416,
+    "lon": 8.714175,
+    "canton": "SH"
+  },
+  "GSMN Schweiz AG Clinique de Montchoisi": {
+    "lat": 46.99852,
+    "lon": 6.271577,
+    "canton": "VD"
+  },
+  "Berit Klinik Wattwil": {
+    "lat": 47.284151,
+    "lon": 9.512223,
+    "canton": "SG"
+  },
+  "Adus Medica AG": {
+    "lat": 47.558141,
+    "lon": 8.482233,
+    "canton": "ZH"
+  },
+  "Thurklinik AG": {
+    "lat": 47.529127,
+    "lon": 9.38235,
+    "canton": "TG"
+  },
+  "Clinique de la Plaine": {
+    "lat": 46.186357,
+    "lon": 6.268227,
+    "canton": "GE"
+  },
+  "Venenklinik Bellevue AG": {
+    "lat": 47.523768,
+    "lon": 8.772794,
+    "canton": "TG"
+  },
+  "Nouvelle Clinique Vert-Pré": {
+    "lat": 46.941119,
+    "lon": 6.683321,
+    "canton": "NE"
+  },
+  "Klinik Tiefenbrunnen AG": {
+    "lat": 47.290264,
+    "lon": 8.517224,
+    "canton": "ZH"
+  },
+  "Berit Klinik Goldach": {
+    "lat": 47.122347,
+    "lon": 9.459344,
+    "canton": "SG"
+  },
+  "Eulachklinik AG": {
+    "lat": 47.250364,
+    "lon": 8.695639,
+    "canton": "ZH"
+  },
+  "Geburtshaus Terra Alta": {
+    "lat": 47.293585,
+    "lon": 8.529518,
+    "canton": "ZH"
+  },
+  "Geburtshaus St.Gallen GmbH": {
+    "lat": 47.431091,
+    "lon": 9.20416,
+    "canton": "SG"
+  },
+  "Geburtshaus Zürcher Oberland AG": {
+    "lat": 47.485541,
+    "lon": 8.691809,
+    "canton": "ZH"
+  },
+  "Geburtshaus Luna AG": {
+    "lat": 47.233854,
+    "lon": 8.558893,
+    "canton": "ZH"
+  },
+  "Matthea Geburtshaus": {
+    "lat": 46.98061,
+    "lon": 7.33561,
+    "canton": "BE"
+  },
+  "Geburtshaus Delphys": {
+    "lat": 47.567339,
+    "lon": 8.786917,
+    "canton": "ZH"
+  },
+  "Maison de Naissance le Petit Prince": {
+    "lat": 46.836353,
+    "lon": 6.829929,
+    "canton": "NE"
+  },
+  "Maison de naissance La Roseraie": {
+    "lat": 46.678032,
+    "lon": 6.924973,
+    "canton": "FR"
+  },
+  "Geburtshaus Tagmond GmbH": {
+    "lat": 47.636633,
+    "lon": 8.735681,
+    "canton": "TG"
+  },
+  "Geburtshaus Winterthur AG": {
+    "lat": 47.447652,
+    "lon": 8.923988,
+    "canton": "ZH"
+  },
+  "Genossenschaft Geburtshaus Simmental-Saanenland Maternité Alpine": {
+    "lat": 46.848464,
+    "lon": 7.34661,
+    "canton": "BE"
+  },
+  "Maison de Naissance Tilia Sàrl": {
+    "lat": 46.82006,
+    "lon": 6.922331,
+    "canton": "NE"
+  },
+  "Geburtshaus Stans GmbH": {
+    "lat": 46.992117,
+    "lon": 8.387885,
+    "canton": "NW"
+  },
+  "Maison de naissance Les Cigognes": {
+    "lat": 46.23589,
+    "lon": 6.515593,
+    "canton": "VD"
+  },
+  "Geburtshaus ambra GmbH": {
+    "lat": 46.886095,
+    "lon": 7.141828,
+    "canton": "BE"
+  },
+  "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": {
+    "lat": 47.488196,
+    "lon": 8.846337,
+    "canton": "ZH"
+  },
+  "Universitäts-Kinderspital beider Basel (UKBB)": {
+    "lat": 47.545494,
+    "lon": 7.592132,
+    "canton": "BS"
+  },
+  "Stiftung Ostschweizer Kinderspital": {
+    "lat": 47.500541,
+    "lon": 9.689241,
+    "canton": "SG"
+  },
+  "Spezialklinik Gynäkologie, Neonatologie": {
+    "lat": 46.726016,
+    "lon": 7.49616,
+    "canton": "BE"
+  }
+}

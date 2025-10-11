@@ -507,7 +507,10 @@ if (finderRoot) {
     { code: 'Z.4.37.F', name: 'Primary hip prosthesis' }
   ];
 
-  const cantonOptions = ['ZH', 'BE', 'VD', 'GE', 'BS', 'SG', 'AG', 'FR', 'VS', 'LU', 'GR'];
+  const cantonOptions = [
+    'AG', 'AI', 'AR', 'BE', 'BL', 'BS', 'FR', 'GE', 'GL', 'GR', 'JU', 'LU', 'NE',
+    'NW', 'OW', 'SG', 'SH', 'SO', 'SZ', 'TG', 'TI', 'UR', 'VD', 'VS', 'ZG', 'ZH'
+  ];
 
   const PAGE_SIZE = 10;
 

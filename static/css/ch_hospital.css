@@ -249,21 +249,21 @@ body {
 
 .finder-procedure-selector {
   background: #fff;
-  border-radius: 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
-  padding: 1.8rem;
-  margin-bottom: 2rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  padding: 1.35rem 1.45rem 1.25rem;
+  margin-bottom: 1.25rem;
   display: grid;
-  grid-template-columns: minmax(190px, 0.8fr) minmax(0, 2.2fr);
+  grid-template-columns: minmax(170px, 0.75fr) minmax(0, 2.25fr);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     'search search'
     'categories list';
-  column-gap: 1.75rem;
-  row-gap: 1.25rem;
+  column-gap: 1.4rem;
+  row-gap: 0.95rem;
   align-items: start;
-  min-height: 26rem;
+  min-height: 19.5rem;
   min-width: 0;
 }
 
@@ -293,7 +293,7 @@ body {
   grid-area: categories;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
   min-height: 0;
   align-self: stretch;
 }
@@ -309,12 +309,12 @@ body {
 .finder-category-tabs {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding: 0.6rem;
-  background: #f4f5f7;
-  border-radius: 0.9rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  gap: 0.45rem;
+  padding: 0.5rem 0.45rem;
+  background: #f6f7f8;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   overflow-y: auto;
   scrollbar-width: thin;
   min-height: 0;
@@ -344,14 +344,14 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.85rem;
   overflow-y: auto;
-  padding: 0.75rem 0.55rem 0.75rem 0.75rem;
+  padding: 0.65rem 0.5rem 0.65rem 0.7rem;
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  background: #f4f5f7;
-  border-radius: 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #f6f7f8;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
   grid-area: list;
   min-height: 0;
 }
@@ -382,20 +382,20 @@ body {
 
 .finder-procedure-list::before {
   top: 0;
-  background: linear-gradient(180deg, #f4f5f7 40%, rgba(244, 245, 247, 0));
+  background: linear-gradient(180deg, #f6f7f8 40%, rgba(246, 247, 248, 0));
 }
 
 .finder-procedure-list::after {
   bottom: 0;
-  background: linear-gradient(0deg, #f4f5f7 40%, rgba(244, 245, 247, 0));
+  background: linear-gradient(0deg, #f6f7f8 40%, rgba(246, 247, 248, 0));
 }
 
 .finder-procedure-group {
   background: #fff;
-  border-radius: 0.95rem;
-  border: 1px solid rgba(15, 23, 42, 0.05);
-  padding: 1.15rem;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+  border-radius: 0.8rem;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  padding: 0.9rem 1rem;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.07);
 }
 
 .finder-procedure-group-title {
@@ -410,19 +410,19 @@ body {
 .finder-procedure-options {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .finder-procedure-option {
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 0.75rem;
-  padding: 0.85rem 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 0.7rem;
+  padding: 0.75rem 0.9rem;
   background: #fdfdfd;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  font-size: 0.95rem;
+  gap: 0.9rem;
+  font-size: 0.93rem;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
     transform 0.2s ease;
@@ -430,20 +430,20 @@ body {
 
 .finder-procedure-option:hover,
 .finder-procedure-option:focus-visible {
-  border-color: rgba(218, 41, 28, 0.35);
-  box-shadow: 0 14px 28px rgba(218, 41, 28, 0.16);
+  border-color: rgba(218, 41, 28, 0.3);
+  box-shadow: 0 10px 22px rgba(218, 41, 28, 0.14);
   outline: none;
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.08), rgba(218, 41, 28, 0.02));
-  transform: translateX(2px);
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.07), rgba(218, 41, 28, 0.015));
+  transform: translateX(1px);
 }
 
 .finder-procedure-option.active {
   border-color: #DA291C;
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.1), rgba(218, 41, 28, 0.03));
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.09), rgba(218, 41, 28, 0.02));
   color: #9b1c15;
   font-weight: 600;
-  box-shadow: 0 16px 32px rgba(218, 41, 28, 0.2);
-  transform: translateX(2px);
+  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.18);
+  transform: translateX(1px);
 }
 
 .finder-procedure-name {
@@ -474,12 +474,12 @@ body {
 
 .finder-chip {
   position: relative;
-  border-radius: 0.8rem;
+  border-radius: 0.75rem;
   border: 1px solid transparent;
-  padding: 0.9rem 1rem 0.9rem 1.4rem;
-  background: rgba(255, 255, 255, 0.85);
+  padding: 0.75rem 0.9rem 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.9);
   color: #1f2937;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   text-align: left;
   cursor: pointer;
@@ -491,10 +491,10 @@ body {
 .finder-chip::after {
   content: '';
   position: absolute;
-  top: 0.65rem;
-  bottom: 0.65rem;
-  left: 0.7rem;
-  width: 0.32rem;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  left: 0.65rem;
+  width: 0.28rem;
   border-radius: 999px;
   background: rgba(218, 41, 28, 0);
   transition: background 0.2s ease;
@@ -505,8 +505,8 @@ body {
 .finder-chip:hover,
 .finder-chip:focus-visible {
   background: #fff;
-  transform: translateX(2px);
-  box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.18), 0 14px 28px rgba(15, 23, 42, 0.12);
+  transform: translateX(1px);
+  box-shadow: 0 0 0 2px rgba(218, 41, 28, 0.18), 0 10px 22px rgba(15, 23, 42, 0.12);
   outline: none;
 }
 
@@ -516,11 +516,11 @@ body {
 }
 
 .finder-chip.active {
-  border-color: rgba(218, 41, 28, 0.45);
+  border-color: rgba(218, 41, 28, 0.4);
   background: #fff;
   color: #DA291C;
-  box-shadow: 0 18px 34px rgba(218, 41, 28, 0.18);
-  transform: translateX(2px);
+  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.16);
+  transform: translateX(1px);
 }
 
 .finder-chip.active::after {
@@ -932,7 +932,8 @@ body {
       'search'
       'categories'
       'list';
-    row-gap: 1rem;
+    row-gap: 0.85rem;
+    padding: 1.1rem 1.2rem 1rem;
     min-height: 0;
   }
 
@@ -962,7 +963,7 @@ body {
   }
 
   .finder-procedure-list {
-    padding: 0.6rem 0.45rem 0.6rem 0.6rem;
+    padding: 0.55rem 0.4rem 0.55rem 0.55rem;
   }
 }
 
@@ -976,7 +977,7 @@ body {
   }
 
   .finder-procedure-selector {
-    padding: 1.35rem;
+    padding: 1.05rem 1.1rem 0.95rem;
   }
 
   .finder-category-tabs {
@@ -999,11 +1000,11 @@ body {
   }
 
   .finder-procedure-option {
-    padding: 0.75rem 0.85rem;
+    padding: 0.7rem 0.8rem;
   }
 
   .finder-procedure-list {
-    padding: 0.6rem 0.45rem 0.6rem 0.6rem;
+    padding: 0.55rem 0.4rem 0.55rem 0.55rem;
   }
 }
 

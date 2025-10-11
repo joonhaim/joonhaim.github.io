@@ -787,6 +787,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  flex-shrink: 0;
 }
 
 .finder-type-filter__label {
@@ -891,12 +892,19 @@ body {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
 }
 
+.finder-list-card {
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(320px, 60vh, 420px);
+}
+
 .finder-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .finder-list-header h3 {
@@ -948,6 +956,7 @@ body {
 .finder-list {
   display: grid;
   gap: 0.75rem;
+  flex: 1 1 auto;
 }
 
 .finder-row {

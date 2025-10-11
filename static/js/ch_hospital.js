@@ -423,9 +423,23 @@ if (finderRoot) {
         'Z.4.40.F': 'Bone tumour treatments'
       },
       types: {
-        labels: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
-        badges: { university: 'University', kanton: 'Cantonal', private: 'Private', other: 'Other' },
-        legend: { university: 'University', kanton: 'Cantonal', private: 'Private' }
+        labels: {
+          university: 'University',
+          kanton: 'Cantonal / Regional',
+          private: 'Private',
+          other: 'Other'
+        },
+        badges: {
+          university: 'University',
+          kanton: 'Cantonal / Regional',
+          private: 'Private',
+          other: 'Other'
+        },
+        legend: {
+          university: 'University',
+          kanton: 'Cantonal / Regional',
+          private: 'Private'
+        }
       },
       hhi: {
         labels: { low: 'Low', moderate: 'Moderate', high: 'High' },
@@ -461,7 +475,7 @@ if (finderRoot) {
         chooseProcedure: 'Choose a procedure to explore hospital volumes.',
         selectProcedureNational: 'Select a procedure above to see national volumes.',
         selectProcedureMap: 'Select a procedure to display hospital locations.',
-        selectProcedureCantonal: 'Select a procedure to view cantonal details.',
+        selectProcedureCantonal: 'Select a procedure to view cantonal / regional details.',
         loadingData: 'Loading data…',
         loadingMap: 'Loading map…',
         failedToLoad: 'Failed to load data.',
@@ -479,7 +493,7 @@ if (finderRoot) {
         cantonSelectPrompt: 'Select a canton to view local hospital details.',
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
         cantonSummary:
-          'In canton {canton}, {count} hospitals report volumes for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% nationally.',
+          'In canton {canton}, {count} hospitals report volumes for {procedure}. {leader} accounts for {cantonShare}% of cantonal / regional cases and {nationalShare}% nationally.',
         cantonRowCases: '{cases} cases',
         mapTitle: 'Map preview',
         mapAriaLabel: 'Hospital locations by volume',
@@ -528,9 +542,23 @@ if (finderRoot) {
         'Z.4.40.F': 'Behandlungen von Knochentumoren'
       },
       types: {
-        labels: { university: 'Universitär', kanton: 'Kantonale', private: 'Private', other: 'Weitere' },
-        badges: { university: 'Universitär', kanton: 'Kanton', private: 'Privat', other: 'Weitere' },
-        legend: { university: 'Universitär', kanton: 'Kantonale', private: 'Private' }
+        labels: {
+          university: 'Universitär',
+          kanton: 'Kantonale / Regionale',
+          private: 'Private',
+          other: 'Weitere'
+        },
+        badges: {
+          university: 'Universitär',
+          kanton: 'Kanton / Region',
+          private: 'Privat',
+          other: 'Weitere'
+        },
+        legend: {
+          university: 'Universitär',
+          kanton: 'Kantonale / Regionale',
+          private: 'Private'
+        }
       },
       hhi: {
         labels: { low: 'Niedrig', moderate: 'Mittel', high: 'Hoch' },
@@ -566,7 +594,7 @@ if (finderRoot) {
         chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
         selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
         selectProcedureMap: 'Wählen Sie eine Behandlung, um Spitalstandorte anzuzeigen.',
-        selectProcedureCantonal: 'Wählen Sie eine Behandlung, um kantonale Details zu sehen.',
+        selectProcedureCantonal: 'Wählen Sie eine Behandlung, um kantonale / regionale Details zu sehen.',
         loadingData: 'Daten werden geladen…',
         loadingMap: 'Karte wird geladen…',
         failedToLoad: 'Fehler beim Laden der Daten.',
@@ -584,7 +612,7 @@ if (finderRoot) {
         cantonSelectPrompt: 'Wählen Sie einen Kanton, um lokale Spitaldetails zu sehen.',
         cantonNoHospitals: 'Keine Spitäler im Kanton {canton} erfüllen die aktuelle Auswahl.',
         cantonSummary:
-          'Im Kanton {canton} melden {count} Spitäler Volumen für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% schweizweit.',
+          'Im Kanton {canton} melden {count} Spitäler Volumen für {procedure}. {leader} steht für {cantonShare}% der kantonalen / regionalen Fälle und {nationalShare}% schweizweit.',
         cantonRowCases: '{cases} Fälle',
         mapTitle: 'Kartenübersicht',
         mapAriaLabel: 'Spitalstandorte nach Fallzahlen',
@@ -633,9 +661,23 @@ if (finderRoot) {
         'Z.4.40.F': 'Traitements des tumeurs osseuses'
       },
       types: {
-        labels: { university: 'Universitaires', kanton: 'Cantonaux', private: 'Privés', other: 'Autres' },
-        badges: { university: 'Universitaire', kanton: 'Cantonal', private: 'Privé', other: 'Autre' },
-        legend: { university: 'Universitaires', kanton: 'Cantonaux', private: 'Privés' }
+        labels: {
+          university: 'Universitaires',
+          kanton: 'Cantonaux / Régionaux',
+          private: 'Privés',
+          other: 'Autres'
+        },
+        badges: {
+          university: 'Universitaire',
+          kanton: 'Cantonal / Régional',
+          private: 'Privé',
+          other: 'Autre'
+        },
+        legend: {
+          university: 'Universitaires',
+          kanton: 'Cantonaux / Régionaux',
+          private: 'Privés'
+        }
       },
       hhi: {
         labels: { low: 'Faible', moderate: 'Modérée', high: 'Élevée' },
@@ -671,7 +713,7 @@ if (finderRoot) {
         chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
         selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
         selectProcedureMap: 'Sélectionnez une intervention pour afficher les emplacements des hôpitaux.',
-        selectProcedureCantonal: 'Sélectionnez une intervention pour voir les détails cantonaux.',
+        selectProcedureCantonal: 'Sélectionnez une intervention pour voir les détails cantonaux / régionaux.',
         loadingData: 'Chargement des données…',
         loadingMap: 'Chargement de la carte…',
         failedToLoad: 'Échec du chargement des données.',
@@ -689,7 +731,7 @@ if (finderRoot) {
         cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
         cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à la sélection actuelle.',
         cantonSummary:
-          'Dans le canton {canton}, {count} hôpitaux déclarent des volumes pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% au niveau national.',
+          'Dans le canton {canton}, {count} hôpitaux déclarent des volumes pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux / régionaux et {nationalShare}% au niveau national.',
         cantonRowCases: '{cases} cas',
         mapTitle: 'Aperçu cartographique',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume',
@@ -738,9 +780,23 @@ if (finderRoot) {
         'Z.4.40.F': 'Trattamenti dei tumori ossei'
       },
       types: {
-        labels: { university: 'Universitari', kanton: 'Cantonali', private: 'Privati', other: 'Altri' },
-        badges: { university: 'Universitario', kanton: 'Cantonale', private: 'Privato', other: 'Altro' },
-        legend: { university: 'Universitari', kanton: 'Cantonali', private: 'Privati' }
+        labels: {
+          university: 'Universitari',
+          kanton: 'Cantonali / Regionali',
+          private: 'Privati',
+          other: 'Altri'
+        },
+        badges: {
+          university: 'Universitario',
+          kanton: 'Cantonale / Regionale',
+          private: 'Privato',
+          other: 'Altro'
+        },
+        legend: {
+          university: 'Universitari',
+          kanton: 'Cantonali / Regionali',
+          private: 'Privati'
+        }
       },
       hhi: {
         labels: { low: 'Bassa', moderate: 'Moderata', high: 'Alta' },
@@ -776,7 +832,7 @@ if (finderRoot) {
         chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
         selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
         selectProcedureMap: 'Seleziona un intervento per visualizzare le posizioni degli ospedali.',
-        selectProcedureCantonal: 'Seleziona un intervento per vedere i dettagli cantonali.',
+        selectProcedureCantonal: 'Seleziona un intervento per vedere i dettagli cantonali / regionali.',
         loadingData: 'Caricamento dati…',
         loadingMap: 'Caricamento mappa…',
         failedToLoad: 'Errore nel caricamento dei dati.',
@@ -794,7 +850,7 @@ if (finderRoot) {
         cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
         cantonNoHospitals: 'Nessun ospedale nel cantone {canton} corrisponde alla selezione corrente.',
         cantonSummary:
-          'Nel cantone {canton}, {count} ospedali riportano volumi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% a livello nazionale.',
+          'Nel cantone {canton}, {count} ospedali riportano volumi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali / regionali e il {nationalShare}% a livello nazionale.',
         cantonRowCases: '{cases} casi',
         mapTitle: 'Anteprima mappa',
         mapAriaLabel: 'Posizioni ospedaliere per volume',

@@ -1339,17 +1339,18 @@ if (finderRoot) {
 
   function renderMap(agg) {
     const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
+    if (!hospitalsWithCoords.length) {
+      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('mapNoData')}</p>`;
+      return;
+    }
+
     const hospitals =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? hospitalsWithCoords
         : hospitalsWithCoords.filter((h) => h.canton === state.selectedCanton);
 
-    if (!hospitals.length) {
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-empty">${msg('mapNoData')}</p>`;
-      return;
-    }
-
-    const maxCases = hospitals[0]?.cases || 1;
+    const referenceHospitals = hospitals.length ? hospitals : hospitalsWithCoords;
+    const maxCases = referenceHospitals[0]?.cases || 1;
 
     const targetBounds =
       state.selectedCanton === ALL_CANTONS_OPTION
@@ -1414,6 +1415,10 @@ if (finderRoot) {
       })
       .join('');
 
+    const emptyNotice = !hospitals.length
+      ? `<p class="finder-empty finder-map-empty">${msg('mapNoData')}</p>`
+      : '';
+
     finderMap.innerHTML = `
       <h3>${msg('mapTitle')}</h3>
       <svg viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}" role="img" aria-label="${msg('mapAriaLabel')}">
@@ -1434,6 +1439,7 @@ if (finderRoot) {
         </g>
         ${circles}
       </svg>
+      ${emptyNotice}
       <div class="finder-map-legend">
         <span><i style="background:#059669"></i>${typeLegend.university}</span>
         <span><i style="background:#0ea5e9"></i>${typeLegend.kanton}</span>

@@ -584,141 +584,142 @@ if (finderRoot) {
   };
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
-  const finderProcedureSearch = document.getElementById('finder-procedure-search');
-  const finderCategoryTabs = document.getElementById('finder-category-tabs');
-  const finderProcedureList = document.getElementById('finder-procedure-list');
-  const finderTypeToggle = document.getElementById('finder-type-toggle');
-  const finderSearch = document.getElementById('finder-search');
-  const finderCanton = document.getElementById('finder-canton');
-  const finderKpis = document.getElementById('finder-kpis');
-  const finderList = document.getElementById('finder-list');
-  const finderListTitle = document.getElementById('finder-list-title');
-  const finderListMeta = document.getElementById('finder-list-meta');
-  const finderMap = document.getElementById('finder-map');
-  const finderCantonSummary = document.getElementById('finder-canton-summary');
-  const finderCantonList = document.getElementById('finder-canton-list');
+  function initializeFinderUi() {
+    const finderProcedureSearch = document.getElementById('finder-procedure-search');
+    const finderCategoryTabs = document.getElementById('finder-category-tabs');
+    const finderProcedureList = document.getElementById('finder-procedure-list');
+    const finderTypeToggle = document.getElementById('finder-type-toggle');
+    const finderSearch = document.getElementById('finder-search');
+    const finderCanton = document.getElementById('finder-canton');
+    const finderKpis = document.getElementById('finder-kpis');
+    const finderList = document.getElementById('finder-list');
+    const finderListTitle = document.getElementById('finder-list-title');
+    const finderListMeta = document.getElementById('finder-list-meta');
+    const finderMap = document.getElementById('finder-map');
+    const finderCantonSummary = document.getElementById('finder-canton-summary');
+    const finderCantonList = document.getElementById('finder-canton-list');
 
-  if (!finderProcedureSearch || !finderCategoryTabs || !finderProcedureList) {
-    console.warn('Procedure finder UI is missing required elements.');
-    return;
-  }
+    if (!finderProcedureSearch || !finderCategoryTabs || !finderProcedureList) {
+      console.warn('Procedure finder UI is missing required elements.');
+      return;
+    }
 
-  const labelFromHHI = (hhi) => (hhi < 1500 ? 'Low' : hhi <= 2500 ? 'Moderate' : 'High');
+    const labelFromHHI = (hhi) => (hhi < 1500 ? 'Low' : hhi <= 2500 ? 'Moderate' : 'High');
 
-  let finderDataset = null;
-  let availableTypes = [];
+    let finderDataset = null;
+    let availableTypes = [];
 
-  function ensureTypeFilter() {
-    availableTypes.forEach((type) => {
-      if (state.typeFilter[type] === undefined) {
-        state.typeFilter[type] = true;
+    function ensureTypeFilter() {
+      availableTypes.forEach((type) => {
+        if (state.typeFilter[type] === undefined) {
+          state.typeFilter[type] = true;
+        }
+      });
+    }
+
+    function matchesProcedure(procedure, query) {
+      if (!query) {
+        return true;
       }
-    });
-  }
-
-  function matchesProcedure(procedure, query) {
-    if (!query) {
-      return true;
-    }
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) {
-      return true;
-    }
-    const haystack = `${procedure.name} ${procedure.code}`.toLowerCase();
-    return haystack.includes(normalized);
-  }
-
-  function renderProcedureControls() {
-    finderProcedureSearch.value = state.procedureQuery;
-
-    let activeCategory = procedureCatalog.find((cat) => cat.id === state.selectedCategory) ?? null;
-    if (!activeCategory && procedureCatalog.length) {
-      activeCategory = procedureCatalog[0];
-      state.selectedCategory = activeCategory.id;
-      if (!state.selectedProc) {
-        state.selectedProc = activeCategory.procedures?.[0] ?? null;
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) {
+        return true;
       }
+      const haystack = `${procedure.name} ${procedure.code}`.toLowerCase();
+      return haystack.includes(normalized);
     }
 
-    if (activeCategory && activeCategory.procedures && activeCategory.procedures.length) {
-      const hasSelected = activeCategory.procedures.some((proc) => proc.code === state.selectedProc?.code);
-      if (!hasSelected && activeCategory.procedures[0]) {
-        state.selectedProc = activeCategory.procedures[0];
+    function renderProcedureControls() {
+      finderProcedureSearch.value = state.procedureQuery;
+
+      let activeCategory = procedureCatalog.find((cat) => cat.id === state.selectedCategory) ?? null;
+      if (!activeCategory && procedureCatalog.length) {
+        activeCategory = procedureCatalog[0];
+        state.selectedCategory = activeCategory.id;
+        if (!state.selectedProc) {
+          state.selectedProc = activeCategory.procedures?.[0] ?? null;
+        }
       }
-    }
 
-    const query = state.procedureQuery.trim().toLowerCase();
-    const isSearching = Boolean(query);
+      if (activeCategory && activeCategory.procedures && activeCategory.procedures.length) {
+        const hasSelected = activeCategory.procedures.some((proc) => proc.code === state.selectedProc?.code);
+        if (!hasSelected && activeCategory.procedures[0]) {
+          state.selectedProc = activeCategory.procedures[0];
+        }
+      }
 
-    const categoriesWithMatches = procedureCatalog.map((category) => ({
-      ...category,
-      hasMatch: category.procedures.some((proc) => matchesProcedure(proc, query))
-    }));
+      const query = state.procedureQuery.trim().toLowerCase();
+      const isSearching = Boolean(query);
 
-    finderCategoryTabs.innerHTML = categoriesWithMatches
-      .map((category) => {
-        const isActive = category.id === state.selectedCategory;
-        const dimmed = isSearching && !category.hasMatch && !isActive;
-        return `
+      const categoriesWithMatches = procedureCatalog.map((category) => ({
+        ...category,
+        hasMatch: category.procedures.some((proc) => matchesProcedure(proc, query))
+      }));
+
+      finderCategoryTabs.innerHTML = categoriesWithMatches
+        .map((category) => {
+          const isActive = category.id === state.selectedCategory;
+          const dimmed = isSearching && !category.hasMatch && !isActive;
+          return `
           <button type="button" class="finder-chip finder-category-btn${
             isActive ? ' active' : ''
           }${dimmed ? ' dimmed' : ''}" data-category="${category.id}">
             ${category.label}
           </button>
         `;
-      })
-      .join('');
+        })
+        .join('');
 
-    finderCategoryTabs.querySelectorAll('button').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const category = procedureCatalog.find((cat) => cat.id === btn.dataset.category);
-        if (!category) {
-          return;
-        }
-        state.selectedCategory = category.id;
-        state.selectedProc = category.procedures?.[0] ?? state.selectedProc;
-        state.procedureQuery = '';
-        finderProcedureSearch.value = '';
-        state.listPage = 0;
-        render();
+      finderCategoryTabs.querySelectorAll('button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const category = procedureCatalog.find((cat) => cat.id === btn.dataset.category);
+          if (!category) {
+            return;
+          }
+          state.selectedCategory = category.id;
+          state.selectedProc = category.procedures?.[0] ?? state.selectedProc;
+          state.procedureQuery = '';
+          finderProcedureSearch.value = '';
+          state.listPage = 0;
+          render();
+        });
       });
-    });
 
-    let groupsToRender = [];
-    if (isSearching) {
-      groupsToRender = categoriesWithMatches
-        .filter((category) => category.hasMatch)
-        .map((category) => ({
-          id: category.id,
-          label: category.label,
-          procedures: category.procedures.filter((proc) => matchesProcedure(proc, query))
-        }));
-    } else if (activeCategory) {
-      groupsToRender = [
-        {
-          id: activeCategory.id,
-          label: activeCategory.label,
-          procedures: activeCategory.procedures
-        }
-      ];
-    }
+      let groupsToRender = [];
+      if (isSearching) {
+        groupsToRender = categoriesWithMatches
+          .filter((category) => category.hasMatch)
+          .map((category) => ({
+            id: category.id,
+            label: category.label,
+            procedures: category.procedures.filter((proc) => matchesProcedure(proc, query))
+          }));
+      } else if (activeCategory) {
+        groupsToRender = [
+          {
+            id: activeCategory.id,
+            label: activeCategory.label,
+            procedures: activeCategory.procedures
+          }
+        ];
+      }
 
-    const hasProcedures = groupsToRender.some((group) => group.procedures && group.procedures.length);
+      const hasProcedures = groupsToRender.some((group) => group.procedures && group.procedures.length);
 
-    if (!hasProcedures) {
-      finderProcedureList.innerHTML =
-        '<p class="finder-procedure-empty">No procedures match your search. Try a different keyword.</p>';
-      return;
-    }
+      if (!hasProcedures) {
+        finderProcedureList.innerHTML =
+          '<p class="finder-procedure-empty">No procedures match your search. Try a different keyword.</p>';
+        return;
+      }
 
-    finderProcedureList.innerHTML = groupsToRender
-      .map((group) => {
-        const showHeading = isSearching || groupsToRender.length > 1;
-        const heading = showHeading ? `<p class="finder-procedure-group-title">${group.label}</p>` : '';
-        const options = group.procedures
-          .map((proc) => {
-            const isActive = state.selectedProc?.code === proc.code;
-            return `
+      finderProcedureList.innerHTML = groupsToRender
+        .map((group) => {
+          const showHeading = isSearching || groupsToRender.length > 1;
+          const heading = showHeading ? `<p class="finder-procedure-group-title">${group.label}</p>` : '';
+          const options = group.procedures
+            .map((proc) => {
+              const isActive = state.selectedProc?.code === proc.code;
+              return `
               <button type="button" class="finder-procedure-option${
                 isActive ? ' active' : ''
               }" data-code="${proc.code}" data-category="${group.id}">
@@ -726,9 +727,9 @@ if (finderRoot) {
                 <span class="finder-procedure-code">${proc.code}</span>
               </button>
             `;
-          })
-          .join('');
-        return `
+            })
+            .join('');
+          return `
           <div class="finder-procedure-group">
             ${heading}
             <div class="finder-procedure-options">
@@ -736,31 +737,31 @@ if (finderRoot) {
             </div>
           </div>
         `;
-      })
-      .join('');
+        })
+        .join('');
 
-    finderProcedureList.querySelectorAll('.finder-procedure-option').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const { code, category } = btn.dataset;
-        const categoryEntry =
-          procedureCatalog.find((cat) => cat.id === category) ||
-          procedureCatalog.find((cat) => cat.procedures.some((proc) => proc.code === code));
-        if (!categoryEntry) {
-          return;
-        }
-        const selected = categoryEntry.procedures.find((proc) => proc.code === code);
-        if (!selected) {
-          return;
-        }
-        state.selectedCategory = categoryEntry.id;
-        state.selectedProc = selected;
-        state.procedureQuery = '';
-        finderProcedureSearch.value = '';
-        state.listPage = 0;
-        render();
+      finderProcedureList.querySelectorAll('.finder-procedure-option').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const { code, category } = btn.dataset;
+          const categoryEntry =
+            procedureCatalog.find((cat) => cat.id === category) ||
+            procedureCatalog.find((cat) => cat.procedures.some((proc) => proc.code === code));
+          if (!categoryEntry) {
+            return;
+          }
+          const selected = categoryEntry.procedures.find((proc) => proc.code === code);
+          if (!selected) {
+            return;
+          }
+          state.selectedCategory = categoryEntry.id;
+          state.selectedProc = selected;
+          state.procedureQuery = '';
+          finderProcedureSearch.value = '';
+          state.listPage = 0;
+          render();
+        });
       });
-    });
-  }
+    }
 
   function renderTypeToggle() {
     if (!availableTypes.length) {
@@ -1120,49 +1121,52 @@ if (finderRoot) {
     renderTopList(aggregation);
     renderMap(aggregation);
     renderCantonDetails(aggregation);
+    }
+
+    finderProcedureSearch.addEventListener('input', (event) => {
+      state.procedureQuery = event.target.value;
+      renderProcedureControls();
+    });
+
+    finderProcedureSearch.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        state.procedureQuery = '';
+        finderProcedureSearch.value = '';
+        renderProcedureControls();
+      }
+    });
+
+    finderSearch.addEventListener('input', (event) => {
+      state.search = event.target.value;
+      state.listPage = 0;
+      render();
+    });
+
+    finderCanton.innerHTML = cantonOptions.map((c) => `<option value="${c}">${c}</option>`).join('');
+    finderCanton.value = state.selectedCanton;
+    finderCanton.addEventListener('change', (event) => {
+      state.selectedCanton = event.target.value;
+      render();
+    });
+
+    render();
+
+    loadHospitalDataset()
+      .then((data) => {
+        finderDataset = data;
+        availableTypes = Array.from(data.types);
+        availableTypes.sort((a, b) => typeOrder.indexOf(a) - typeOrder.indexOf(b));
+        ensureTypeFilter();
+        render();
+      })
+      .catch(() => {
+        finderListMeta.textContent = 'Failed to load data.';
+        finderKpis.innerHTML = '<div class="finder-error">Unable to load hospital dataset.</div>';
+        finderList.innerHTML = '';
+        finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-error">Unable to load hospital dataset.</p>';
+        finderCantonSummary.textContent = 'Unable to load hospital dataset.';
+      });
   }
 
-  finderProcedureSearch.addEventListener('input', (event) => {
-    state.procedureQuery = event.target.value;
-    renderProcedureControls();
-  });
-
-  finderProcedureSearch.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      state.procedureQuery = '';
-      finderProcedureSearch.value = '';
-      renderProcedureControls();
-    }
-  });
-
-  finderSearch.addEventListener('input', (event) => {
-    state.search = event.target.value;
-    state.listPage = 0;
-    render();
-  });
-
-  finderCanton.innerHTML = cantonOptions.map((c) => `<option value="${c}">${c}</option>`).join('');
-  finderCanton.value = state.selectedCanton;
-  finderCanton.addEventListener('change', (event) => {
-    state.selectedCanton = event.target.value;
-    render();
-  });
-
-  render();
-
-  loadHospitalDataset()
-    .then((data) => {
-      finderDataset = data;
-      availableTypes = Array.from(data.types);
-      availableTypes.sort((a, b) => typeOrder.indexOf(a) - typeOrder.indexOf(b));
-      ensureTypeFilter();
-      render();
-    })
-    .catch(() => {
-      finderListMeta.textContent = 'Failed to load data.';
-      finderKpis.innerHTML = '<div class="finder-error">Unable to load hospital dataset.</div>';
-      finderList.innerHTML = '';
-      finderMap.innerHTML = '<h3>Map preview</h3><p class="finder-error">Unable to load hospital dataset.</p>';
-      finderCantonSummary.textContent = 'Unable to load hospital dataset.';
-    });
+  initializeFinderUi();
 }

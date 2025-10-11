@@ -1,11 +1,6 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' role='img' aria-label='ZH emblem'>
-  <defs>
-    <linearGradient id='zh-gradient' x1='0' y1='0' x2='1' y2='1'>
-      <stop offset='0%' stop-color='#c2410c' />
-      <stop offset='100%' stop-color='#d78361' />
-    </linearGradient>
-  </defs>
-  <rect width='64' height='64' rx='12' fill='url(#zh-gradient)'/>
-  <path d='M12 52 L52 12' stroke='rgba(255,255,255,0.35)' stroke-width='4' stroke-linecap='round'/>
-  <text x='32' y='39' text-anchor='middle' font-family='"\"Open Sans\"", "\"Helvetica Neue\"", Arial, sans-serif' font-weight='700' font-size='22' fill='#fff'>ZH</text>
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+width="474" height="474">
+<path fill="#FFF" d="m0,0h474v474"/>
+<path fill="#268bcc" d="m0,0v474h474"/>
 </svg>

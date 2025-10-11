@@ -535,32 +535,35 @@ body {
   background: #DA291C;
 }
 
+
 .finder-controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
   margin-bottom: 1.5rem;
 }
 
 .finder-control {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   background: #f7f7f7;
-  padding: 1rem;
-  border-radius: 0.65rem;
+  padding: 1.1rem;
+  border-radius: 0.75rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  height: 100%;
 }
 
 .finder-control--canton {
   width: 100%;
-  max-width: 260px;
-  justify-self: start;
+  justify-self: stretch;
 }
 
 @media (min-width: 900px) {
   .finder-controls {
-    grid-template-columns: minmax(320px, 1.75fr) minmax(220px, 1fr) minmax(180px, 0.8fr);
+    grid-template-columns: minmax(380px, 2.1fr) minmax(320px, 1.35fr) minmax(240px, 1fr);
   }
 
   .finder-control--search {
@@ -584,11 +587,11 @@ body {
   padding: 0.65rem 0.85rem;
   font-size: 0.95rem;
   font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 #finder-canton {
   width: 100%;
-  max-width: 260px;
   -webkit-appearance: none;
   appearance: none;
   border-color: rgba(15, 23, 42, 0.16);
@@ -638,7 +641,6 @@ body {
 .finder-canton-dropdown {
   position: relative;
   width: 100%;
-  max-width: 260px;
 }
 
 .finder-canton-dropdown__toggle {
@@ -648,9 +650,9 @@ body {
   gap: 0.75rem;
   justify-content: space-between;
   border: 1px solid rgba(15, 23, 42, 0.16);
-  border-radius: 0.55rem;
-  padding: 0.6rem 0.9rem;
-  padding-right: 2.75rem;
+  border-radius: 0.6rem;
+  padding: 0.65rem 1rem;
+  padding-right: 2.9rem;
   font-size: 0.95rem;
   font-family: inherit;
   font-weight: 500;
@@ -658,7 +660,7 @@ body {
   background: #f9fafb;
   cursor: pointer;
   box-shadow: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   text-align: left;
   position: relative;
 }
@@ -779,23 +781,44 @@ body {
 }
 
 .finder-type-toggle {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.65rem;
 }
 
 .finder-type-btn {
   border-radius: 999px;
   border: 1px solid #d1d5db;
-  padding: 0.45rem 0.9rem;
-  font-size: 0.8rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   background: #fff;
   color: #374151;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .finder-type-btn.active {
+  background: #DA291C;
+  border-color: #DA291C;
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(218, 41, 28, 0.15);
+}
+
+.finder-type-btn:hover,
+.finder-type-btn:focus-visible {
+  border-color: rgba(218, 41, 28, 0.4);
+  background: #f3f4f6;
+  color: #111827;
+  outline: none;
+}
+
+.finder-type-btn.active:hover,
+.finder-type-btn.active:focus-visible {
   background: #DA291C;
   border-color: #DA291C;
   color: #fff;

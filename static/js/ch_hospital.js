@@ -193,7 +193,8 @@ const excludedInstitutions = new Set([
 
 const hospitalDatasetCache = {
   promise: null,
-  data: null
+  data: null,
+  coordinates: new Map()
 };
 
 function parseInteger(value) {
@@ -211,23 +212,24 @@ function parseInteger(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function inferHospitalMeta(name) {
+function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinates) {
   const override = hospitalMetadataOverrides[name];
-  if (!override) {
+  const coordinateEntry = coordinatesMap?.get?.(name);
+  if (!override && !coordinateEntry) {
     console.warn(`Missing metadata for ${name}`);
   }
   const type = override?.type ?? 'kanton';
-  const canton = override?.canton ?? '??';
-  const centroid = cantonCentroids[canton];
+  const canton = override?.canton ?? coordinateEntry?.canton ?? '??';
+  const fallback = cantonCentroids[canton];
   return {
     type,
     canton,
-    lat: centroid?.lat ?? null,
-    lon: centroid?.lon ?? null
+    lat: coordinateEntry?.lat ?? fallback?.lat ?? null,
+    lon: coordinateEntry?.lon ?? fallback?.lon ?? null
   };
 }
 
-function parseHospitalCsv(text) {
+function parseHospitalCsv(text, coordinatesMap) {
   const lines = text.split(/\r?\n/);
   if (!lines.length) {
     return { byProcedure: new Map(), meta: new Map(), types: new Set() };
@@ -266,7 +268,7 @@ function parseHospitalCsv(text) {
     }
 
     if (!meta.has(institution)) {
-      meta.set(institution, inferHospitalMeta(institution));
+      meta.set(institution, inferHospitalMeta(institution, coordinatesMap));
     }
 
     const entry = { institution, code, cases };
@@ -284,15 +286,24 @@ function parseHospitalCsv(text) {
 
 function loadHospitalDataset() {
   if (!hospitalDatasetCache.promise) {
-    hospitalDatasetCache.promise = fetch('static/data/qip23_tabdaten.csv')
-      .then(response => {
+    hospitalDatasetCache.promise = Promise.all([
+      fetch('static/data/hospital_coordinates.json').then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load coordinate dataset (${response.status})`);
+        }
+        return response.json();
+      }),
+      fetch('static/data/qip23_tabdaten.csv').then(response => {
         if (!response.ok) {
           throw new Error(`Failed to load dataset (${response.status})`);
         }
         return response.text();
       })
-      .then(text => {
-        const parsed = parseHospitalCsv(text);
+    ])
+      .then(([coordinateData, csvText]) => {
+        const coordinateMap = new Map(Object.entries(coordinateData || {}));
+        hospitalDatasetCache.coordinates = coordinateMap;
+        const parsed = parseHospitalCsv(csvText, coordinateMap);
         hospitalDatasetCache.data = parsed;
         return parsed;
       })

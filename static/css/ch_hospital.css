@@ -881,7 +881,7 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
-  --finder-card-height: 420px;
+  --finder-card-height: 640px;
 }
 
 .finder-list-card,
@@ -960,7 +960,7 @@ body {
   gap: 0.75rem;
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .finder-row {
@@ -1060,8 +1060,8 @@ body {
 
 .finder-map-view {
   width: 100%;
-  flex: 1 0 360px;
-  min-height: 360px;
+  flex: 1 0 420px;
+  min-height: 420px;
   border-radius: 0.6rem;
   overflow: hidden;
 }
@@ -1156,12 +1156,12 @@ body {
 @media (max-width: 960px) {
   .finder-main {
     grid-template-columns: 1fr;
-    --finder-card-height: 360px;
+    --finder-card-height: 560px;
   }
 
   .finder-map-view {
-    min-height: 320px;
-    flex-basis: 320px;
+    min-height: 360px;
+    flex-basis: 360px;
   }
 
   .finder-bottom {
@@ -1211,7 +1211,7 @@ body {
 
 @media (max-width: 640px) {
   .finder-main {
-    --finder-card-height: 320px;
+    --finder-card-height: 520px;
   }
 
   .finder-control {

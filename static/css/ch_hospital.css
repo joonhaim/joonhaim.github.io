@@ -552,6 +552,22 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.finder-control--canton {
+  width: 100%;
+  max-width: 260px;
+  justify-self: start;
+}
+
+@media (min-width: 900px) {
+  .finder-controls {
+    grid-template-columns: minmax(320px, 1.75fr) minmax(220px, 1fr) minmax(180px, 0.8fr);
+  }
+
+  .finder-control--search {
+    grid-column: auto;
+  }
+}
+
 .finder-control label,
 .finder-label {
   font-size: 0.8rem;
@@ -571,6 +587,8 @@ body {
 }
 
 #finder-canton {
+  width: 100%;
+  max-width: 260px;
   -webkit-appearance: none;
   appearance: none;
   border-color: rgba(15, 23, 42, 0.16);
@@ -619,6 +637,8 @@ body {
 
 .finder-canton-dropdown {
   position: relative;
+  width: 100%;
+  max-width: 260px;
 }
 
 .finder-canton-dropdown__toggle {
@@ -677,7 +697,7 @@ body {
   margin-left: auto;
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 0.4rem;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.1);
   background: #fff;

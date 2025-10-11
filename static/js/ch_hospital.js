@@ -673,6 +673,12 @@ if (finderRoot) {
     return template.replace(/\{(\w+)\}/g, (_, key) => (replacements[key] ?? ''));
   };
 
+  const getProcedureName = (code) => {
+    const defaultName = translations.en?.procedures?.[code] ?? code;
+    const localeName = translations[activeLocale]?.procedures?.[code];
+    return localeName || defaultName || code;
+  };
+
   const getObjectTranslation = (path) => {
     const base = resolvePath(defaultTranslations, path) ?? {};
     const value = resolvePath(localeTranslations, path);
@@ -691,14 +697,87 @@ if (finderRoot) {
     { id: 'musculoskeletal', procedures: ['Z.4.37.F', 'Z.4.38.F', 'Z.4.39.F', 'Z.4.40.F'] }
   ];
 
-  const procedureCatalog = procedureCatalogSchema.map((category) => ({
-    id: category.id,
-    label: translate(`categories.${category.id}`),
-    procedures: category.procedures.map((code) => ({
-      code,
-      name: translate(`procedures.${code}`)
-    }))
-  }));
+  const procedureTranslationCache = {
+    promise: null,
+    data: null
+  };
+
+  function parseProcedureTranslationCsv(text) {
+    const lines = text.split(/\r?\n/);
+    lines.shift();
+    return lines
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const [code, descriptionDe, descriptionFr, descriptionIt, descriptionEn] = line
+          .split(';')
+          .map((value) => value?.trim() ?? '');
+        return {
+          code,
+          de: descriptionDe,
+          fr: descriptionFr,
+          it: descriptionIt,
+          en: descriptionEn
+        };
+      })
+      .filter((entry) => entry.code);
+  }
+
+  function loadProcedureTranslationDataset() {
+    if (!procedureTranslationCache.promise) {
+      procedureTranslationCache.promise = fetch('static/data/f_code_description_translated.csv')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to load procedure descriptions (${response.status})`);
+          }
+          return response.text();
+        })
+        .then((text) => {
+          const parsed = parseProcedureTranslationCsv(text);
+          procedureTranslationCache.data = parsed;
+          return parsed;
+        });
+    }
+    return procedureTranslationCache.promise;
+  }
+
+  function applyProcedureTranslations(entries) {
+    entries.forEach((entry) => {
+      const code = entry.code?.trim();
+      if (!code) {
+        return;
+      }
+
+      const updateLocale = (localeKey, value) => {
+        if (!value) {
+          return;
+        }
+        const localeTranslations = translations[localeKey];
+        if (!localeTranslations) {
+          return;
+        }
+        if (!localeTranslations.procedures) {
+          localeTranslations.procedures = {};
+        }
+        localeTranslations.procedures[code] = value;
+      };
+
+      updateLocale('de', entry.de);
+      updateLocale('fr', entry.fr);
+      updateLocale('it', entry.it);
+      updateLocale('en', entry.en);
+    });
+  }
+
+  const buildProcedureCatalog = () =>
+    procedureCatalogSchema.map((category) => ({
+      id: category.id,
+      label: translate(`categories.${category.id}`),
+      procedures: category.procedures.map((code) => ({
+        code,
+        name: getProcedureName(code)
+      }))
+    }));
 
   const ALL_CANTONS_OPTION = 'ALL';
 
@@ -746,22 +825,9 @@ if (finderRoot) {
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
-
-  const defaultCategory = procedureCatalog[0] ?? null;
-  const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
-
-  const state = {
-    selectedCategory: defaultCategory?.id ?? null,
-    selectedProc: defaultProcedure,
-    selectedCanton: ALL_CANTONS_OPTION,
-    search: '',
-    procedureQuery: '',
-    typeFilter: { university: true, kanton: true, private: true },
-    listPage: 0
-  };
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
-  function initializeFinderUi() {
+  function initializeFinderUi(procedureCatalog) {
     const finderProcedureSearch = document.getElementById('finder-procedure-search');
     const finderCategoryTabs = document.getElementById('finder-category-tabs');
     const finderProcedureList = document.getElementById('finder-procedure-list');
@@ -780,6 +846,19 @@ if (finderRoot) {
       console.warn('Procedure finder UI is missing required elements.');
       return;
     }
+
+    const defaultCategory = procedureCatalog[0] ?? null;
+    const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
+
+    const state = {
+      selectedCategory: defaultCategory?.id ?? null,
+      selectedProc: defaultProcedure,
+      selectedCanton: ALL_CANTONS_OPTION,
+      search: '',
+      procedureQuery: '',
+      typeFilter: { university: true, kanton: true, private: true },
+      listPage: 0
+    };
 
     const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
@@ -1390,5 +1469,19 @@ if (finderRoot) {
       });
   }
 
-  initializeFinderUi();
+  const bootstrapFinder = () => {
+    const procedureCatalog = buildProcedureCatalog();
+    initializeFinderUi(procedureCatalog);
+  };
+
+  loadProcedureTranslationDataset()
+    .then((entries) => {
+      applyProcedureTranslations(entries);
+    })
+    .catch((error) => {
+      console.warn('Unable to load procedure descriptions', error);
+    })
+    .finally(() => {
+      bootstrapFinder();
+    });
 }

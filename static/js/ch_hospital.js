@@ -1,3 +1,57 @@
+const languageSwitcher = document.querySelector('.language-switcher');
+if (languageSwitcher) {
+  const languageButtons = Array.from(languageSwitcher.querySelectorAll('.lang-btn'));
+  if (languageButtons.length) {
+    const slider = document.createElement('span');
+    slider.className = 'lang-slider';
+    languageSwitcher.appendChild(slider);
+    languageSwitcher.classList.add('has-slider');
+
+    const moveSlider = (target) => {
+      slider.style.width = `${target.offsetWidth}px`;
+      slider.style.height = `${target.offsetHeight}px`;
+      slider.style.transform = `translate(${target.offsetLeft}px, ${target.offsetTop}px)`;
+    };
+
+    const setActive = (target) => {
+      languageButtons.forEach(btn => btn.classList.remove('active'));
+      target.classList.add('active');
+      moveSlider(target);
+    };
+
+    const initialActive = languageSwitcher.querySelector('.lang-btn.active') || languageButtons[0];
+    if (initialActive) {
+      slider.style.transition = 'none';
+      moveSlider(initialActive);
+      requestAnimationFrame(() => {
+        slider.style.transition = 'transform 0.3s ease, width 0.3s ease, height 0.3s ease';
+      });
+    }
+
+    languageButtons.forEach(button => {
+      if (button.tagName === 'A') {
+        button.addEventListener('click', (event) => {
+          const href = button.getAttribute('href');
+          if (href) {
+            event.preventDefault();
+            setActive(button);
+            setTimeout(() => {
+              window.location.href = href;
+            }, 200);
+          }
+        });
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      const currentActive = languageSwitcher.querySelector('.lang-btn.active');
+      if (currentActive) {
+        moveSlider(currentActive);
+      }
+    });
+  }
+}
+
 const normalizeString = (value) =>
   (value || '')
     .normalize('NFD')

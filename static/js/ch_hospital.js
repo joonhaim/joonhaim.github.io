@@ -329,6 +329,7 @@ if (finderRoot) {
   const translations = {
     en: {
       categories: {
+        all: 'All procedures',
         cardiology: 'Cardiology',
         neurosciences: 'Neurosciences',
         oncology: 'Oncology',
@@ -382,6 +383,24 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'All cantons',
+        letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiology',
+          B: 'Neurology & stroke',
+          C: 'Geriatric rehabilitation',
+          D: 'Thoracic oncology',
+          E: 'Endocrine & gastrointestinal oncology',
+          F: 'Vascular surgery',
+          G: 'Maternity & neonatology',
+          H: 'Urology',
+          I: 'Spine & orthopedics',
+          J: 'Critical care & ECMO',
+          K: 'Dermatology',
+          L: 'Transplantation',
+          M: 'Palliative care',
+          N: 'Robotic surgery',
+          Z: 'Specialized centers'
+        },
         selectedProcedure: 'Select a procedure',
         chooseProcedure: 'Choose a procedure to explore hospital volumes.',
         selectProcedureNational: 'Select a procedure above to see national volumes.',
@@ -414,6 +433,7 @@ if (finderRoot) {
     },
     de: {
       categories: {
+        all: 'Alle Behandlungen',
         cardiology: 'Kardiologie',
         neurosciences: 'Neurowissenschaften',
         oncology: 'Onkologie',
@@ -467,6 +487,24 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Alle Kantone',
+        letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Kardiologie',
+          B: 'Neurologie & Schlaganfall',
+          C: 'Geriatrische Rehabilitation',
+          D: 'Thoraxonkologie',
+          E: 'Endokrinologie & Gastroenterologie',
+          F: 'Gefässchirurgie',
+          G: 'Geburtshilfe & Neonatologie',
+          H: 'Urologie',
+          I: 'Wirbelsäule & Orthopädie',
+          J: 'Intensivmedizin & ECMO',
+          K: 'Dermatologie',
+          L: 'Transplantationen',
+          M: 'Palliative Care',
+          N: 'Robotische Chirurgie',
+          Z: 'Spezialzentren'
+        },
         selectedProcedure: 'Behandlung wählen',
         chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
         selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
@@ -499,6 +537,7 @@ if (finderRoot) {
     },
     fr: {
       categories: {
+        all: 'Toutes les interventions',
         cardiology: 'Cardiologie',
         neurosciences: 'Neurosciences',
         oncology: 'Oncologie',
@@ -552,6 +591,24 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Tous les cantons',
+        letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiologie',
+          B: 'Neurologie & AVC',
+          C: 'Réadaptation gériatrique',
+          D: 'Oncologie thoracique',
+          E: 'Endocrinologie & gastroentérologie',
+          F: 'Chirurgie vasculaire',
+          G: 'Maternité & néonatologie',
+          H: 'Urologie',
+          I: 'Rachis & orthopédie',
+          J: 'Soins intensifs & ECMO',
+          K: 'Dermatologie',
+          L: 'Transplantation',
+          M: 'Soins palliatifs',
+          N: 'Chirurgie robotique',
+          Z: 'Centres spécialisés'
+        },
         selectedProcedure: 'Sélectionner une intervention',
         chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
         selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
@@ -584,6 +641,7 @@ if (finderRoot) {
     },
     it: {
       categories: {
+        all: 'Tutte le procedure',
         cardiology: 'Cardiologia',
         neurosciences: 'Neuroscienze',
         oncology: 'Oncologia',
@@ -637,6 +695,24 @@ if (finderRoot) {
       },
       messages: {
         allCantons: 'Tutti i cantoni',
+        letterCategoryLabel: '{letter} - {example}',
+        letterCategories: {
+          A: 'Cardiologia',
+          B: 'Neurologia e ictus',
+          C: 'Riabilitazione geriatrica',
+          D: 'Oncologia toracica',
+          E: 'Endocrinologia e gastroenterologia',
+          F: 'Chirurgia vascolare',
+          G: 'Maternità e neonatologia',
+          H: 'Urologia',
+          I: 'Colonna vertebrale e ortopedia',
+          J: 'Terapia intensiva ed ECMO',
+          K: 'Dermatologia',
+          L: 'Trapianti',
+          M: 'Cure palliative',
+          N: 'Chirurgia robotica',
+          Z: 'Centri specializzati'
+        },
         selectedProcedure: 'Seleziona un intervento',
         chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
         selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
@@ -690,6 +766,15 @@ if (finderRoot) {
     return localeName || defaultName || code;
   };
 
+  const getLetterCategoryName = (letter) => {
+    if (!letter) {
+      return '';
+    }
+    const key = `messages.letterCategories.${letter}`;
+    const label = translate(key);
+    return typeof label === 'string' && label !== key ? label : '';
+  };
+
   const getObjectTranslation = (path) => {
     const base = resolvePath(defaultTranslations, path) ?? {};
     const value = resolvePath(localeTranslations, path);
@@ -699,7 +784,7 @@ if (finderRoot) {
     return { ...base };
   };
 
-  const procedureCatalogSchema = [
+  const FALLBACK_PROCEDURE_SCHEMA = [
     { id: 'cardiology', procedures: ['A.3.1.F', 'A.4.1.F', 'A.5.1.F', 'A.7.2.F', 'A.7.3.F'] },
     { id: 'neurosciences', procedures: ['B.2.3.F', 'B.3.1.F', 'B.4.1.F', 'Z.4.5.F'] },
     { id: 'oncology', procedures: ['D.3.1.F', 'E.4.11.F', 'G.4.1.F', 'K.1.1.F', 'Z.4.42.F'] },
@@ -780,8 +865,54 @@ if (finderRoot) {
     });
   }
 
-  const buildProcedureCatalog = () =>
-    procedureCatalogSchema.map((category) => ({
+  const buildProcedureCatalog = (entries) => {
+    if (entries && entries.length) {
+      const collator = new Intl.Collator(activeLocale === 'en' ? 'en' : `${activeLocale}-CH`, {
+        sensitivity: 'base'
+      });
+      const sortedCodes = entries
+        .map((entry) => entry.code)
+        .filter((code) => Boolean(code))
+        .sort((a, b) => collator.compare(getProcedureName(a), getProcedureName(b)));
+
+      const groupedByLetter = sortedCodes.reduce((groups, code) => {
+        const letter = (code && code.charAt(0).toUpperCase()) || '#';
+        if (!groups.has(letter)) {
+          groups.set(letter, []);
+        }
+        groups.get(letter).push({
+          code,
+          name: getProcedureName(code)
+        });
+        return groups;
+      }, new Map());
+
+      return Array.from(groupedByLetter.entries())
+        .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+        .map(([letter, procedures]) => {
+          const categoryName = getLetterCategoryName(letter);
+          const fallbackName = procedures.find((proc) => typeof proc?.name === 'string')?.name ?? '';
+          const exampleName = categoryName || fallbackName;
+          let label = letter;
+          if (exampleName) {
+            const translatedLabel = translate('messages.letterCategoryLabel', {
+              letter,
+              example: exampleName
+            });
+            label =
+              typeof translatedLabel === 'string' && translatedLabel !== 'messages.letterCategoryLabel'
+                ? translatedLabel
+                : `${letter} - ${exampleName}`;
+          }
+          return {
+            id: `letter-${letter}`,
+            label,
+            procedures
+          };
+        });
+    }
+
+    return FALLBACK_PROCEDURE_SCHEMA.map((category) => ({
       id: category.id,
       label: translate(`categories.${category.id}`),
       procedures: category.procedures.map((code) => ({
@@ -789,6 +920,7 @@ if (finderRoot) {
         name: getProcedureName(code)
       }))
     }));
+  };
 
   const ALL_CANTONS_OPTION = 'ALL';
 
@@ -1491,19 +1623,18 @@ if (finderRoot) {
       });
   }
 
-  const bootstrapFinder = () => {
-    const procedureCatalog = buildProcedureCatalog();
+  const bootstrapFinder = (entries) => {
+    const procedureCatalog = buildProcedureCatalog(entries);
     initializeFinderUi(procedureCatalog);
   };
 
   loadProcedureTranslationDataset()
     .then((entries) => {
       applyProcedureTranslations(entries);
+      bootstrapFinder(entries);
     })
     .catch((error) => {
       console.warn('Unable to load procedure descriptions', error);
-    })
-    .finally(() => {
       bootstrapFinder();
     });
 }

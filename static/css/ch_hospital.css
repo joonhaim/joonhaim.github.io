@@ -213,6 +213,10 @@ body {
   -webkit-tap-highlight-color: transparent;
   width: 100%;
   text-align: center;
+  min-height: 2.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .procedure-btn.active {

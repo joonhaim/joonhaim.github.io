@@ -342,6 +342,22 @@ function parseInteger(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function parseDecimal(value) {
+  if (!value) {
+    return null;
+  }
+  const cleaned = value
+    .replace(/['\u00A0\s]/g, '')
+    .replace(/%$/, '')
+    .replace(',', '.')
+    .trim();
+  if (!cleaned || cleaned === '*' || cleaned === '-') {
+    return null;
+  }
+  const parsed = Number.parseFloat(cleaned);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinates) {
   const override = hospitalMetadataOverrides[name];
   const coordinateEntry = coordinatesMap?.get?.(name);
@@ -362,7 +378,7 @@ function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinat
 function parseHospitalCsv(text, coordinatesMap) {
   const lines = text.split(/\r?\n/);
   if (!lines.length) {
-    return { byProcedure: new Map(), meta: new Map(), types: new Set() };
+    return { byProcedure: new Map(), byHospital: new Map(), meta: new Map(), types: new Set() };
   }
   if (lines[0] && lines[0].charCodeAt(0) === 0xfeff) {
     lines[0] = lines[0].slice(1);
@@ -370,6 +386,7 @@ function parseHospitalCsv(text, coordinatesMap) {
   lines.shift();
 
   const byProcedure = new Map();
+  const byHospital = new Map();
   const meta = new Map();
 
   lines.forEach(line => {
@@ -397,6 +414,15 @@ function parseHospitalCsv(text, coordinatesMap) {
       return;
     }
 
+    const description = indicator.slice(code.length).trim();
+    const observedText = (cols[6] ?? '').trim();
+    const expectedText = (cols[7] ?? '').trim();
+    const smrText = (cols[8] ?? '').trim();
+
+    const observedRate = parseDecimal(cols[6]);
+    const expectedRate = parseDecimal(cols[7]);
+    const smr = parseDecimal(cols[8]);
+
     if (!meta.has(institution)) {
       meta.set(institution, inferHospitalMeta(institution, coordinatesMap));
     }
@@ -406,12 +432,28 @@ function parseHospitalCsv(text, coordinatesMap) {
       byProcedure.set(code, []);
     }
     byProcedure.get(code).push(entry);
+
+    if (!byHospital.has(institution)) {
+      byHospital.set(institution, []);
+    }
+    byHospital.get(institution).push({
+      institution,
+      code,
+      cases,
+      description,
+      observedRate,
+      expectedRate,
+      smr,
+      observedText,
+      expectedText,
+      smrText
+    });
   });
 
   const types = new Set();
   meta.forEach(details => types.add(details.type));
 
-  return { byProcedure, meta, types };
+  return { byProcedure, byHospital, meta, types };
 }
 
 function loadHospitalDataset() {
@@ -571,6 +613,23 @@ if (finderRoot) {
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
+        openHospitalDetails: 'View procedure details for {hospital}',
+        modalTitle: 'Procedures at {hospital}',
+        modalMeta: '{type} hospital in canton {canton}',
+        modalMetaNoCanton: '{type} hospital',
+        modalTypeUnknown: 'Hospital type unknown',
+        modalQualityHeading: 'Quality indicators',
+        modalQualityCaption: 'Observed and expected rates are percentages; SMR denotes the standardised mortality ratio.',
+        modalNoData: 'No procedure records are available for this hospital.',
+        modalColumnProcedure: 'Procedure',
+        modalColumnCode: 'Code',
+        modalColumnCases: 'Cases (2023)',
+        modalColumnObserved: 'Observed rate (2023)',
+        modalColumnExpected: 'Expected rate (2023)',
+        modalColumnSmr: 'SMR (2023)',
+        modalClose: 'Close details',
+        modalSort: 'Sort by {column}',
+        modalTableLabel: 'Procedure outcomes table',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
@@ -692,6 +751,23 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
+        openHospitalDetails: 'Behandlungsdetails für {hospital} anzeigen',
+        modalTitle: 'Eingriffe in {hospital}',
+        modalMeta: '{type}-Spital im Kanton {canton}',
+        modalMetaNoCanton: '{type}-Spital',
+        modalTypeUnknown: 'Spitaltyp unbekannt',
+        modalQualityHeading: 'Qualitätsindikatoren',
+        modalQualityCaption: 'Beobachtete und erwartete Raten sind Prozentwerte; der SMR steht für den standardisierten Mortalitätsindex.',
+        modalNoData: 'Für dieses Spital liegen keine Verfahrensdaten vor.',
+        modalColumnProcedure: 'Eingriff',
+        modalColumnCode: 'Code',
+        modalColumnCases: 'Fälle (2023)',
+        modalColumnObserved: 'Beobachtete Rate (2023)',
+        modalColumnExpected: 'Erwartete Rate (2023)',
+        modalColumnSmr: 'SMR (2023)',
+        modalClose: 'Details schliessen',
+        modalSort: 'Nach {column} sortieren',
+        modalTableLabel: 'Tabelle der Behandlungsergebnisse',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
@@ -813,6 +889,23 @@ if (finderRoot) {
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
+        openHospitalDetails: 'Voir les détails des interventions pour {hospital}',
+        modalTitle: 'Interventions à {hospital}',
+        modalMeta: 'Établissement {type} dans le canton {canton}',
+        modalMetaNoCanton: 'Établissement {type}',
+        modalTypeUnknown: 'Type d’établissement inconnu',
+        modalQualityHeading: 'Indicateurs de qualité',
+        modalQualityCaption: 'Les taux observés et attendus sont exprimés en pourcentage ; le SMR correspond au ratio de mortalité standardisé.',
+        modalNoData: 'Aucun enregistrement de procédure n’est disponible pour cet hôpital.',
+        modalColumnProcedure: 'Procédure',
+        modalColumnCode: 'Code',
+        modalColumnCases: 'Cas (2023)',
+        modalColumnObserved: 'Taux observé (2023)',
+        modalColumnExpected: 'Taux attendu (2023)',
+        modalColumnSmr: 'SMR (2023)',
+        modalClose: 'Fermer les détails',
+        modalSort: 'Trier par {column}',
+        modalTableLabel: 'Tableau des résultats par procédure',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
@@ -934,6 +1027,23 @@ if (finderRoot) {
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
+        openHospitalDetails: 'Visualizza i dettagli degli interventi per {hospital}',
+        modalTitle: 'Interventi presso {hospital}',
+        modalMeta: 'Struttura {type} nel cantone {canton}',
+        modalMetaNoCanton: 'Struttura {type}',
+        modalTypeUnknown: 'Tipologia di struttura sconosciuta',
+        modalQualityHeading: 'Indicatori di qualità',
+        modalQualityCaption: 'I tassi osservati e attesi sono percentuali; l’SMR indica il rapporto standardizzato di mortalità.',
+        modalNoData: 'Non sono disponibili dati di procedura per questo ospedale.',
+        modalColumnProcedure: 'Procedura',
+        modalColumnCode: 'Codice',
+        modalColumnCases: 'Casi (2023)',
+        modalColumnObserved: 'Tasso osservato (2023)',
+        modalColumnExpected: 'Tasso atteso (2023)',
+        modalColumnSmr: 'SMR (2023)',
+        modalClose: 'Chiudi dettagli',
+        modalSort: 'Ordina per {column}',
+        modalTableLabel: 'Tabella dei risultati per procedura',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
@@ -1595,6 +1705,7 @@ if (finderRoot) {
 
     let finderDataset = null;
     let availableTypes = [];
+    const hospitalModal = createHospitalModal();
 
     function ensureTypeFilter() {
       availableTypes.forEach((type) => {
@@ -2026,6 +2137,324 @@ if (finderRoot) {
       .join('');
   }
 
+  function createHospitalModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'finder-modal';
+    overlay.hidden = true;
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div class="finder-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="finder-modal-title" aria-describedby="finder-modal-caption">
+        <div class="finder-modal__header">
+          <div class="finder-modal__heading">
+            <h2 id="finder-modal-title" class="finder-modal__title"></h2>
+            <p id="finder-modal-meta" class="finder-modal__meta"></p>
+          </div>
+          <button type="button" class="finder-modal__close">
+            <span class="finder-modal__close-text">${escapeHtml(msg('modalClose'))}</span>
+            <span class="finder-modal__close-icon" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="finder-modal__body">
+          <h3 class="finder-modal__section-title">${escapeHtml(msg('modalQualityHeading'))}</h3>
+          <p id="finder-modal-caption" class="finder-modal__caption">${escapeHtml(msg('modalQualityCaption'))}</p>
+          <div class="finder-modal__table-wrapper">
+            <table class="finder-modal__table" aria-describedby="finder-modal-caption" aria-label="${escapeAttribute(msg('modalTableLabel'))}">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="finder-modal__empty" hidden>${escapeHtml(msg('modalNoData'))}</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const dialog = overlay.querySelector('.finder-modal__dialog');
+    const closeBtn = overlay.querySelector('.finder-modal__close');
+    const titleEl = overlay.querySelector('#finder-modal-title');
+    const metaEl = overlay.querySelector('#finder-modal-meta');
+    const tableHead = overlay.querySelector('thead');
+    const tableBody = overlay.querySelector('tbody');
+    const tableWrapper = overlay.querySelector('.finder-modal__table-wrapper');
+    const emptyState = overlay.querySelector('.finder-modal__empty');
+
+    const modalState = { rows: [], sortKey: 'cases', sortDirection: 'desc' };
+    const stringCollator = new Intl.Collator(activeLocale === 'en' ? 'en' : `${activeLocale}-CH`, {
+      sensitivity: 'base',
+      numeric: true
+    });
+    const columns = [
+      { key: 'code', label: msg('modalColumnCode') },
+      { key: 'procedure', label: msg('modalColumnProcedure') },
+      { key: 'cases', label: msg('modalColumnCases'), numeric: true },
+      { key: 'observedRate', label: msg('modalColumnObserved'), numeric: true },
+      { key: 'expectedRate', label: msg('modalColumnExpected'), numeric: true },
+      { key: 'smr', label: msg('modalColumnSmr'), numeric: true }
+    ];
+
+    let lastFocusedElement = null;
+    const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+    let focusableElements = [];
+
+    function updateFocusableElements() {
+      focusableElements = Array.from(
+        dialog.querySelectorAll(focusableSelector)
+      ).filter((el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true');
+    }
+
+    function formatNumberCell(value) {
+      if (!Number.isFinite(value)) {
+        return '—';
+      }
+      return value.toLocaleString();
+    }
+
+    function formatPercentCell(raw, value) {
+      const trimmed = raw?.trim();
+      if (trimmed && trimmed !== '*' && trimmed !== '-') {
+        return trimmed;
+      }
+      if (value == null || Number.isNaN(value)) {
+        return '—';
+      }
+      return `${Math.round(Number(value) * 10) / 10}%`;
+    }
+
+    function formatRatioCell(raw, value) {
+      const trimmed = raw?.trim();
+      if (trimmed && trimmed !== '*' && trimmed !== '-') {
+        return trimmed;
+      }
+      if (value == null || Number.isNaN(value)) {
+        return '—';
+      }
+      return `${Math.round(Number(value) * 10) / 10}`;
+    }
+
+    function getSortedRows() {
+      const rows = modalState.rows.slice();
+      const { sortKey, sortDirection } = modalState;
+      const direction = sortDirection === 'asc' ? 1 : -1;
+
+      rows.sort((a, b) => {
+        const valueA = a[sortKey];
+        const valueB = b[sortKey];
+        const isNullA = valueA == null || valueA === '';
+        const isNullB = valueB == null || valueB === '';
+        if (isNullA && isNullB) {
+          return 0;
+        }
+        if (isNullA) {
+          return 1;
+        }
+        if (isNullB) {
+          return -1;
+        }
+        if (typeof valueA === 'string' || typeof valueB === 'string') {
+          return stringCollator.compare(String(valueA), String(valueB)) * direction;
+        }
+        const numericA = Number(valueA);
+        const numericB = Number(valueB);
+        if (!Number.isFinite(numericA) && !Number.isFinite(numericB)) {
+          return 0;
+        }
+        if (!Number.isFinite(numericA)) {
+          return 1;
+        }
+        if (!Number.isFinite(numericB)) {
+          return -1;
+        }
+        return (numericA - numericB) * direction;
+      });
+
+      return rows;
+    }
+
+    function renderTable(options = {}) {
+      const sortedRows = getSortedRows();
+      if (!sortedRows.length) {
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+        tableWrapper.hidden = true;
+        emptyState.hidden = false;
+        updateFocusableElements();
+        return;
+      }
+
+      tableWrapper.hidden = false;
+      emptyState.hidden = true;
+
+      const headerHtml = columns
+        .map((column) => {
+          const thClasses = ['finder-modal__th'];
+          if (column.numeric) {
+            thClasses.push('finder-modal__th--numeric');
+          }
+          const label = column.label;
+          const safeLabel = escapeHtml(label);
+          const ariaSortState =
+            modalState.sortKey === column.key
+              ? modalState.sortDirection === 'asc'
+                ? 'ascending'
+                : 'descending'
+              : 'none';
+          const ariaLabel = escapeAttribute(msg('modalSort', { column: label }));
+          const directionAttr =
+            modalState.sortKey === column.key ? modalState.sortDirection : 'none';
+          return `          <th scope="col" class="${thClasses.join(' ')}"${column.numeric ? ' data-align="numeric"' : ''} aria-sort="${ariaSortState}">
+            <button type="button" class="finder-modal__sort" data-key="${column.key}" data-direction="${directionAttr}" aria-label="${ariaLabel}">
+              ${safeLabel}
+              <span class="finder-modal__sort-icon" aria-hidden="true"></span>
+            </button>
+          </th>`;
+        })
+        .join('\n');
+
+      tableHead.innerHTML = `<tr>\n${headerHtml}\n        </tr>`;
+
+      const rowsHtml = sortedRows
+        .map((row) => {
+          const observed = formatPercentCell(row.observedText, row.observedRate);
+          const expected = formatPercentCell(row.expectedText, row.expectedRate);
+          const smrValue = formatRatioCell(row.smrText, row.smr);
+          return `        <tr>
+          <td>${escapeHtml(row.code)}</td>
+          <td>${escapeHtml(row.procedure)}</td>
+          <td class="finder-modal__cell--numeric">${escapeHtml(formatNumberCell(row.cases))}</td>
+          <td class="finder-modal__cell--numeric">${escapeHtml(observed)}</td>
+          <td class="finder-modal__cell--numeric">${escapeHtml(expected)}</td>
+          <td class="finder-modal__cell--numeric">${escapeHtml(smrValue)}</td>
+        </tr>`;
+        })
+        .join('\n');
+
+      tableBody.innerHTML = `${rowsHtml}`;
+
+      const headerButtons = tableHead.querySelectorAll('.finder-modal__sort');
+      headerButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          setSort(button.dataset.key);
+        });
+      });
+
+      if (options.focusKey) {
+        const target = Array.from(headerButtons).find((btn) => btn.dataset.key === options.focusKey);
+        if (target) {
+          requestAnimationFrame(() => target.focus());
+        }
+      }
+
+      updateFocusableElements();
+    }
+
+    function setSort(key) {
+      if (modalState.sortKey === key) {
+        modalState.sortDirection = modalState.sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        modalState.sortKey = key;
+        modalState.sortDirection = key === 'code' || key === 'procedure' ? 'asc' : 'desc';
+      }
+      renderTable({ focusKey: key });
+    }
+
+    function close() {
+      if (overlay.hidden) {
+        return;
+      }
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('finder-modal-open');
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+
+    function open(hospitalName) {
+      if (!finderDataset) {
+        return;
+      }
+      const rows = finderDataset.byHospital.get(hospitalName) || [];
+      const meta = finderDataset.meta.get(hospitalName) || inferHospitalMeta(hospitalName);
+      const typeLabel = typeLabels[meta.type] || meta.type || msg('modalTypeUnknown');
+      const canton = meta.canton && meta.canton !== '??' ? meta.canton : null;
+      const metaLabel = canton
+        ? msg('modalMeta', { type: typeLabel, canton })
+        : msg('modalMetaNoCanton', { type: typeLabel || msg('modalTypeUnknown') });
+
+      const tableRows = rows.map((row) => {
+        const procedureName = getProcedureName(row.code);
+        const fallbackName = row.description ? row.description.replace(/^[-–—\s]+/, '') : '';
+        const displayName =
+          procedureName && procedureName !== row.code ? procedureName : fallbackName || row.code;
+        return {
+          code: row.code,
+          procedure: displayName,
+          cases: row.cases,
+          observedRate: row.observedRate,
+          expectedRate: row.expectedRate,
+          smr: row.smr,
+          observedText: row.observedText,
+          expectedText: row.expectedText,
+          smrText: row.smrText
+        };
+      });
+
+      modalState.rows = tableRows;
+      modalState.sortKey = 'cases';
+      modalState.sortDirection = 'desc';
+
+      titleEl.textContent = msg('modalTitle', { hospital: hospitalName });
+      metaEl.textContent = metaLabel;
+      renderTable();
+
+      overlay.hidden = false;
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('finder-modal-open');
+      lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      updateFocusableElements();
+      closeBtn.focus();
+      dialog.scrollTop = 0;
+    }
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        close();
+      }
+    });
+
+    overlay.addEventListener('keydown', (event) => {
+      if (overlay.hidden) {
+        return;
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      } else if (event.key === 'Tab') {
+        if (!focusableElements.length) {
+          event.preventDefault();
+          return;
+        }
+        const currentIndex = focusableElements.indexOf(document.activeElement);
+        if (event.shiftKey) {
+          if (currentIndex <= 0) {
+            event.preventDefault();
+            focusableElements[focusableElements.length - 1].focus();
+          }
+        } else if (currentIndex === -1 || currentIndex === focusableElements.length - 1) {
+          event.preventDefault();
+          focusableElements[0].focus();
+        }
+      }
+    });
+
+    closeBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      close();
+    });
+
+    return { open, close };
+  }
+
   function renderTopList(agg) {
     const procedureLabel = state.selectedProc
       ? `${state.selectedProc.name} (${state.selectedProc.code})`
@@ -2117,14 +2546,15 @@ if (finderRoot) {
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
         const badgeLabel = typeBadges[h.type] ?? h.type;
+        const ariaLabel = msg('openHospitalDetails', { hospital: h.hospital });
         return `
-          <div class="finder-row">
+          <div class="finder-row" role="button" tabindex="0" data-hospital="${escapeAttribute(h.hospital)}" aria-label="${escapeAttribute(ariaLabel)}">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <strong>${h.hospital}</strong>
-                <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
-                <span class="finder-badge" style="background: none; border: none; color: #6b7280;">${h.canton}</span>
+                <strong>${escapeHtml(h.hospital)}</strong>
+                <span class="finder-badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>
+                <span class="finder-badge" style="background: none; border: none; color: #6b7280;">${escapeHtml(h.canton)}</span>
               </div>
               <div class="finder-progress"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
             </div>
@@ -2136,6 +2566,21 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    finderList.querySelectorAll('.finder-row').forEach((rowEl) => {
+      const hospitalName = rowEl.dataset.hospital;
+      if (!hospitalName) {
+        return;
+      }
+      const openDetails = () => hospitalModal.open(hospitalName);
+      rowEl.addEventListener('click', openDetails);
+      rowEl.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openDetails();
+        }
+      });
+    });
   }
 
   function renderMap(agg) {

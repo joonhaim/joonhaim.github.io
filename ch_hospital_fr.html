@@ -29,19 +29,22 @@
   <a href="index.html" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Vue d’ensemble des hôpitaux suisses (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      Ce tableau de bord repose sur les Indicateurs suisses de qualité hospitalière (CH-IQI). Il présente les hôpitaux
-      où certaines interventions ont été réalisées en 2023. Les utilisateurs peuvent rechercher des procédures,
-      comparer les volumes de cas et obtenir une vue d’ensemble de la prise en charge en Suisse.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
-      <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
-    </p>
+    <div class="hero-inner">
+      <p class="hero-eyebrow fade-element">Tableau de bord CH-IQI</p>
+      <h1 class="fade-element">Vue d’ensemble des hôpitaux suisses (CH-IQI)</h1>
+      <p class="tagline fade-element">
+        Ce tableau de bord repose sur les Indicateurs suisses de qualité hospitalière (CH-IQI). Il présente les hôpitaux
+        où certaines interventions ont été réalisées en 2023. Les utilisateurs peuvent rechercher des procédures,
+        comparer les volumes de cas et obtenir une vue d’ensemble de la prise en charge en Suisse.
+      </p>
+      <div class="hero-links fade-element">
+        <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
+        <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
+      </div>
+    </div>
   </section>
 
-  <section id="procedure-finder" class="procedure-finder fade-element">
+  <section id="procedure-finder" class="procedure-finder fade-element page-shell">
     <div class="finder-intro">
       <h2>Trouver des hôpitaux par intervention</h2>
       <p>
@@ -50,7 +53,7 @@
       </p>
     </div>
 
-    <div class="finder-procedure-selector catalog-collapsed">
+    <div class="finder-procedure-selector surface-card catalog-collapsed">
       <div class="finder-selector-header">
         <div class="finder-selector-copy">
           <span class="finder-selector-step">Étape 1</span>
@@ -105,7 +108,7 @@
     <div class="finder-kpis" id="finder-kpis"></div>
 
     <div class="finder-main">
-      <div class="finder-list-card">
+      <div class="finder-list-card surface-card">
         <div class="finder-list-header">
           <div class="finder-list-heading">
             <p id="finder-list-context" class="finder-list-context">Nombre de cas par hôpital</p>
@@ -116,7 +119,7 @@
         <div id="finder-list" class="finder-list"></div>
       </div>
       <div class="finder-map-column">
-        <div class="finder-toolbar" role="group" aria-label="Filtres des hôpitaux">
+        <div class="finder-toolbar surface-card" role="group" aria-label="Filtres des hôpitaux">
           <div class="finder-toolbar-control finder-control finder-control--search">
             <label for="finder-search">Rechercher un hôpital</label>
             <input id="finder-search" type="search" placeholder="Saisir pour filtrer les hôpitaux" />
@@ -130,17 +133,17 @@
             <select id="finder-canton"></select>
           </div>
         </div>
-        <div class="finder-map-card" id="finder-map"></div>
+        <div class="finder-map-card surface-card" id="finder-map"></div>
       </div>
     </div>
 
     <div class="finder-bottom">
-      <div class="finder-canton-card">
+      <div class="finder-canton-card surface-card">
         <h3>Détails pour votre canton</h3>
         <p id="finder-canton-summary" class="finder-canton-summary"></p>
         <div id="finder-canton-list" class="finder-canton-list"></div>
       </div>
-      <div class="finder-note-card">
+      <div class="finder-note-card surface-card">
         <h3>Comment interpréter ces chiffres</h3>
         <p>
           Des volumes élevés peuvent indiquer une plus grande routine, mais les résultats dépendent aussi du cas mix et de la complexité des patients.

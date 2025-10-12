@@ -1338,6 +1338,10 @@ if (finderRoot) {
     let hospitalModalTableBody;
     let hospitalModalEmptyMessage;
     let hospitalModalBackdrop;
+    let hospitalModalSortHeaders = [];
+    let hospitalModalRows = [];
+    let hospitalModalSelectedChipLabel = '';
+    let hospitalModalSortState = { key: 'cases', direction: 'desc' };
     let lastActiveHospitalTrigger = null;
     const rootElement = document.documentElement;
     let scrollLockRestore = null;
@@ -1438,13 +1442,28 @@ if (finderRoot) {
                 <table class="finder-modal__table-grid">
                   <thead>
                     <tr>
-                      <th scope="col">${escapeHtml(modalTableHeaders.procedure ?? 'Procedure')}</th>
-                      <th scope="col" class="finder-modal__cell finder-modal__cell--number">${escapeHtml(
-                        modalTableHeaders.cases ?? 'Cases'
-                      )}</th>
-                      <th scope="col" class="finder-modal__cell finder-modal__cell--code">${escapeHtml(
-                        modalTableHeaders.code ?? 'Code'
-                      )}</th>
+                      <th scope="col" aria-sort="none">
+                        <button type="button" class="finder-modal__sort-button" data-sort="procedure">
+                          <span class="finder-modal__sort-label">${escapeHtml(modalTableHeaders.procedure ?? 'Procedure')}</span>
+                          <span class="finder-modal__sort-icon" aria-hidden="true">↕</span>
+                        </button>
+                      </th>
+                      <th scope="col" class="finder-modal__cell finder-modal__cell--number" aria-sort="descending">
+                        <button
+                          type="button"
+                          class="finder-modal__sort-button finder-modal__sort-button--number"
+                          data-sort="cases"
+                        >
+                          <span class="finder-modal__sort-label">${escapeHtml(modalTableHeaders.cases ?? 'Cases')}</span>
+                          <span class="finder-modal__sort-icon" aria-hidden="true">▼</span>
+                        </button>
+                      </th>
+                      <th scope="col" class="finder-modal__cell finder-modal__cell--code" aria-sort="none">
+                        <button type="button" class="finder-modal__sort-button" data-sort="code">
+                          <span class="finder-modal__sort-label">${escapeHtml(modalTableHeaders.code ?? 'Code')}</span>
+                          <span class="finder-modal__sort-icon" aria-hidden="true">↕</span>
+                        </button>
+                      </th>
                     </tr>
                   </thead>
                   <tbody data-modal-table></tbody>
@@ -1473,6 +1492,13 @@ if (finderRoot) {
       hospitalModalTableBody = hospitalModal.querySelector('[data-modal-table]');
       hospitalModalEmptyMessage = hospitalModal.querySelector('[data-modal-empty]');
       hospitalModalBackdrop = hospitalModal.querySelector('[data-modal-backdrop]');
+      hospitalModalSortHeaders = Array.from(hospitalModal.querySelectorAll('.finder-modal__sort-button'));
+
+      hospitalModalSortHeaders.forEach((button) => {
+        button.addEventListener('click', () => {
+          handleHospitalModalSort(button.dataset.sort);
+        });
+      });
 
       hospitalModalClose?.addEventListener('click', (event) => {
         event.preventDefault();
@@ -1583,34 +1609,14 @@ if (finderRoot) {
         ? allEntries.filter(([code]) => curatedProcedureCodes.has(code))
         : allEntries;
 
-      relevantEntries.sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0));
+      hospitalModalSelectedChipLabel = selectedChipLabel;
+      hospitalModalRows = relevantEntries.map(([code, cases]) => ({
+        code,
+        cases: Number(cases ?? 0),
+        procedure: getProcedureName(code)
+      }));
 
-      if (relevantEntries.length) {
-        hospitalModalEmptyMessage.hidden = true;
-        hospitalModalTableBody.innerHTML = relevantEntries
-          .map(([code, cases]) => {
-            const procedureName = getProcedureName(code);
-            const safeName = escapeHtml(procedureName);
-            const safeCode = escapeHtml(code);
-            const isSelected = state.selectedProc?.code === code;
-            const chip = isSelected
-              ? `<span class="finder-modal__chip">${escapeHtml(selectedChipLabel)}</span>`
-              : '';
-            return `
-              <tr class="finder-modal__row${isSelected ? ' finder-modal__row--selected' : ''}">
-                <th scope="row">
-                  <span class="finder-modal__procedure">${safeName}${chip}</span>
-                </th>
-                <td class="finder-modal__cell finder-modal__cell--number">${Number(cases ?? 0).toLocaleString()}</td>
-                <td class="finder-modal__cell finder-modal__cell--code">${safeCode}</td>
-              </tr>
-            `;
-          })
-          .join('');
-      } else {
-        hospitalModalTableBody.innerHTML = '';
-        hospitalModalEmptyMessage.hidden = false;
-      }
+      renderHospitalModalTable();
 
       if (triggerButton) {
         lastActiveHospitalTrigger = triggerButton;
@@ -1630,13 +1636,126 @@ if (finderRoot) {
       if (!finderList) {
         return;
       }
-      finderList.querySelectorAll('.finder-hospital-name').forEach((button) => {
+      finderList.querySelectorAll('.finder-hospital-trigger').forEach((button) => {
         button.addEventListener('click', () => {
           const encoded = button.getAttribute('data-hospital') || '';
           const hospitalName = decodeHtml(encoded) || button.textContent?.trim();
           openHospitalModal(hospitalName, button);
         });
       });
+    }
+
+    function handleHospitalModalSort(key) {
+      if (!key || !hospitalModalRows.length) {
+        return;
+      }
+
+      if (hospitalModalSortState.key === key) {
+        hospitalModalSortState = {
+          key,
+          direction: hospitalModalSortState.direction === 'asc' ? 'desc' : 'asc'
+        };
+      } else {
+        hospitalModalSortState = {
+          key,
+          direction: key === 'cases' ? 'desc' : 'asc'
+        };
+      }
+
+      renderHospitalModalTable();
+    }
+
+    function updateHospitalModalSortIndicators() {
+      if (!hospitalModalSortHeaders.length) {
+        return;
+      }
+
+      hospitalModalSortHeaders.forEach((header) => {
+        const key = header.dataset.sort;
+        const isActive = key === hospitalModalSortState.key;
+        const direction = isActive ? hospitalModalSortState.direction : 'none';
+        const icon = header.querySelector('.finder-modal__sort-icon');
+        header.classList.toggle('is-sorted', isActive);
+        const columnHeader = header.closest('th');
+        if (columnHeader) {
+          columnHeader.setAttribute('aria-sort', isActive ? (direction === 'asc' ? 'ascending' : 'descending') : 'none');
+        }
+        if (icon) {
+          if (!isActive) {
+            icon.textContent = '↕';
+          } else {
+            icon.textContent = direction === 'asc' ? '▲' : '▼';
+          }
+        }
+      });
+    }
+
+    function renderHospitalModalTable() {
+      if (!hospitalModalTableBody || !hospitalModalEmptyMessage) {
+        return;
+      }
+
+      if (!Array.isArray(hospitalModalRows) || !hospitalModalRows.length) {
+        hospitalModalTableBody.innerHTML = '';
+        hospitalModalEmptyMessage.hidden = false;
+        updateHospitalModalSortIndicators();
+        return;
+      }
+
+      const localeCollator = new Intl.Collator(activeLocale, { sensitivity: 'base', numeric: false });
+      const codeCollator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
+      const selectedCode = state.selectedProc?.code;
+      const sortedRows = [...hospitalModalRows].sort((a, b) => {
+        let baseComparison = 0;
+        if (hospitalModalSortState.key === 'cases') {
+          baseComparison = a.cases - b.cases;
+        } else if (hospitalModalSortState.key === 'procedure') {
+          baseComparison = localeCollator.compare(a.procedure, b.procedure);
+        } else {
+          baseComparison = codeCollator.compare(a.code, b.code);
+        }
+
+        if (baseComparison !== 0) {
+          return hospitalModalSortState.direction === 'asc' ? baseComparison : -baseComparison;
+        }
+
+        if (hospitalModalSortState.key !== 'cases') {
+          const secondary = b.cases - a.cases;
+          if (secondary !== 0) {
+            return secondary;
+          }
+        }
+
+        const tertiary = localeCollator.compare(a.procedure, b.procedure);
+        if (tertiary !== 0) {
+          return tertiary;
+        }
+
+        return codeCollator.compare(a.code, b.code);
+      });
+
+      hospitalModalEmptyMessage.hidden = true;
+      hospitalModalTableBody.innerHTML = sortedRows
+        .map((row) => {
+          const isSelected = selectedCode === row.code;
+          const safeName = escapeHtml(row.procedure);
+          const safeCode = escapeHtml(row.code);
+          const chip = isSelected
+            ? `<span class="finder-modal__chip">${escapeHtml(hospitalModalSelectedChipLabel)}</span>`
+            : '';
+          return `
+            <tr class="finder-modal__row${isSelected ? ' finder-modal__row--selected' : ''}">
+              <th scope="row">
+                <span class="finder-modal__procedure">${safeName}${chip}</span>
+              </th>
+              <td class="finder-modal__cell finder-modal__cell--number">${row.cases.toLocaleString()}</td>
+              <td class="finder-modal__cell finder-modal__cell--code">${safeCode}</td>
+            </tr>
+          `;
+        })
+        .join('');
+
+      updateHospitalModalSortIndicators();
     }
 
     function getResultsScrollAnchor() {
@@ -2557,13 +2676,11 @@ if (finderRoot) {
         const safeCanton = escapeHtml(h.canton ?? '');
         const ariaLabel = escapeAttribute(`${detailLabelBase}: ${h.hospital}`);
         return `
-          <div class="finder-row">
+          <button type="button" class="finder-row finder-hospital-trigger" data-hospital="${safeAttr}" aria-haspopup="dialog" aria-label="${ariaLabel}">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <button type="button" class="finder-hospital-name" data-hospital="${safeAttr}" aria-haspopup="dialog" aria-label="${ariaLabel}">
-                  ${safeName}
-                </button>
+                <span class="finder-hospital-name">${safeName}</span>
                 <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
                 <span class="finder-badge finder-badge--canton">${safeCanton}</span>
               </div>
@@ -2573,7 +2690,7 @@ if (finderRoot) {
               <strong>${h.cases.toLocaleString()}</strong>
               <span>${share}%</span>
             </div>
-          </div>
+          </button>
         `;
       })
       .join('');

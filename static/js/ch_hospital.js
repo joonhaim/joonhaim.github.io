@@ -102,8 +102,11 @@ if (procedureSelector && catalogToggle && catalogPanels) {
   const setCatalogExpanded = (expanded) => {
     const isExpanded = !procedureSelector.classList.contains('catalog-collapsed');
     if (expanded === isExpanded) {
+      catalogPanels.hidden = !expanded;
       if (expanded) {
         catalogPanels.style.maxHeight = 'none';
+      } else {
+        catalogPanels.style.maxHeight = '0px';
       }
       catalogToggle.setAttribute('aria-expanded', String(expanded));
       if (toggleLabel) {
@@ -113,6 +116,7 @@ if (procedureSelector && catalogToggle && catalogPanels) {
     }
 
     if (expanded) {
+      catalogPanels.hidden = false;
       procedureSelector.classList.remove('catalog-collapsed');
       catalogPanels.style.maxHeight = 'none';
       const fullHeight = catalogPanels.scrollHeight;
@@ -136,12 +140,14 @@ if (procedureSelector && catalogToggle && catalogPanels) {
 
   if (procedureSelector.classList.contains('catalog-collapsed')) {
     catalogPanels.style.maxHeight = '0px';
+    catalogPanels.hidden = true;
     catalogToggle.setAttribute('aria-expanded', 'false');
     if (toggleLabel) {
       toggleLabel.textContent = collapsedLabel;
     }
   } else {
     catalogPanels.style.maxHeight = 'none';
+    catalogPanels.hidden = false;
     catalogToggle.setAttribute('aria-expanded', 'true');
     if (toggleLabel) {
       toggleLabel.textContent = expandedLabel;
@@ -154,6 +160,10 @@ if (procedureSelector && catalogToggle && catalogPanels) {
     }
     if (!procedureSelector.classList.contains('catalog-collapsed')) {
       catalogPanels.style.maxHeight = 'none';
+      catalogPanels.hidden = false;
+    } else {
+      catalogPanels.hidden = true;
+      catalogPanels.style.maxHeight = '0px';
     }
   });
 

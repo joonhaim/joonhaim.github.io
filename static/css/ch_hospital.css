@@ -67,7 +67,7 @@ body {
   justify-content: center;
   background: #DA291C;
   border-radius: 50%;
-  box-shadow: 0 6px 16px rgba(218, 41, 28, 0.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 6px 16px rgba(218, 41, 28, 0.25);
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -78,7 +78,7 @@ body {
 }
 .back-arrow:hover {
   transform: scale(1.08);
-  box-shadow: 0 10px 24px rgba(218, 41, 28, 0.28);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(218, 41, 28, 0.28);
 }
 
 .swiss-cross {

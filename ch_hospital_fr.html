@@ -95,29 +95,22 @@
         </div>
         <div id="finder-list" class="finder-list"></div>
       </div>
-      <div class="finder-map-card" id="finder-map"></div>
-    </div>
-
-    <div class="finder-controls">
-      <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
-        <p id="finder-filter-title" class="finder-filter-title">Affiner la liste des hôpitaux</p>
-        <div class="finder-filter-row finder-filter-row--primary">
-          <div class="finder-control finder-control--search">
+      <div class="finder-map-column">
+        <div class="finder-toolbar" role="group" aria-label="Filtres des hôpitaux">
+          <div class="finder-toolbar-control finder-control finder-control--search">
             <label for="finder-search">Rechercher un hôpital</label>
             <input id="finder-search" type="search" placeholder="Saisir pour filtrer les hôpitaux" />
           </div>
-        </div>
-        <div class="finder-filter-divider" aria-hidden="true"></div>
-        <div class="finder-filter-row finder-filter-row--secondary">
-          <div class="finder-control finder-control--type">
-            <span class="finder-label">Filtrer par type d'hôpital</span>
+          <div class="finder-toolbar-control finder-control finder-control--type">
+            <span class="finder-toolbar-label finder-label">Type d'hôpital</span>
             <div class="finder-type-toggle" id="finder-type-toggle"></div>
           </div>
-          <div class="finder-control finder-control--canton">
-            <label for="finder-canton">Filtrer par canton</label>
+          <div class="finder-toolbar-control finder-control finder-control--canton">
+            <label for="finder-canton">Canton</label>
             <select id="finder-canton"></select>
           </div>
         </div>
+        <div class="finder-map-card" id="finder-map"></div>
       </div>
     </div>
 

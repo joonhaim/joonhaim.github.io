@@ -1319,6 +1319,11 @@ body {
   color: var(--brand-navy);
 }
 
+.finder-kpi-value-number--hhi {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
 .finder-kpi-hhi-label {
   display: inline-block;
   margin-left: 0.25rem;
@@ -1331,6 +1336,10 @@ body {
 .finder-kpi-value--secondary .finder-kpi-value-number {
   font-size: 1.25rem;
   color: var(--brand-navy);
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-number--hhi {
+  font-size: 1.15rem;
 }
 
 .finder-kpi-value--secondary .finder-kpi-value-label {

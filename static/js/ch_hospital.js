@@ -1115,7 +1115,7 @@ if (finderRoot) {
       kpi: {
         totalCases: 'Cas totaux (2023)',
         hospitalsPerforming: 'Hôpitaux actifs',
-        universityShare: 'Part des hôpitaux universitaires',
+        universityShare: 'Part des hôpitaux univ.',
         centralization: 'Centralisation (HHI)',
         switzerland: 'Suisse'
       },

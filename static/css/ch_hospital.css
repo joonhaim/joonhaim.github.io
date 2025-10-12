@@ -1280,6 +1280,33 @@ body {
   flex-wrap: wrap;
 }
 
+.finder-hospital-name {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.35rem;
+}
+
+.finder-hospital-name:hover,
+.finder-hospital-name:focus-visible {
+  color: #DA291C;
+  text-decoration: underline;
+}
+
+.finder-hospital-name:focus-visible {
+  outline: 2px solid rgba(218, 41, 28, 0.35);
+  outline-offset: 2px;
+}
+
 .finder-badge {
   font-size: 0.6rem;
   letter-spacing: 0.08em;
@@ -1306,6 +1333,20 @@ body {
   border-color: rgba(245, 158, 11, 0.4);
 }
 
+.badge-other {
+  background: rgba(148, 163, 184, 0.12);
+  color: #475569;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.finder-badge--canton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  padding: 0;
+  font-weight: 600;
+}
+
 .finder-progress {
   height: 6px;
   border-radius: 999px;
@@ -1316,6 +1357,225 @@ body {
 .finder-progress-bar {
   height: 100%;
   background: #DA291C;
+}
+
+body.finder-modal-open {
+  overflow: hidden;
+}
+
+.finder-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.finder-modal-overlay.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.finder-modal {
+  background: #ffffff;
+  max-width: 640px;
+  width: min(100%, 640px);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.finder-modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.finder-modal-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.finder-modal-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.finder-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.2);
+  color: #1f2937;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.finder-modal-close:hover,
+.finder-modal-close:focus-visible {
+  background: rgba(218, 41, 28, 0.18);
+  color: #b91c1c;
+  transform: scale(1.05);
+  outline: none;
+}
+
+.finder-modal-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.finder-modal-meta__item {
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.finder-modal-meta__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.finder-modal-meta__value {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.finder-modal-table-wrapper {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.finder-modal-section-title {
+  margin: 0;
+  padding: 1rem 1.25rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.finder-modal-table-container {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.finder-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.finder-modal-table thead th {
+  background: #f1f5f9;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #475569;
+  padding: 0.75rem 1.25rem;
+  border-top: none;
+}
+
+.finder-modal-table th,
+.finder-modal-table td {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.finder-modal-table tbody tr:nth-child(even) {
+  background: rgba(248, 250, 252, 0.6);
+}
+
+.finder-modal-table tr[data-selected='true'] {
+  background: rgba(218, 41, 28, 0.08);
+}
+
+.finder-modal-table tr[data-selected='true'] th {
+  color: #b91c1c;
+}
+
+.finder-modal-selected {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(218, 41, 28, 0.12);
+  color: #b91c1c;
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.finder-modal-empty {
+  margin: 0;
+  padding: 1rem 1.25rem 1.25rem;
+  font-size: 0.9rem;
+  color: #475569;
+  background: #f8fafc;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+@media (max-width: 640px) {
+  .finder-modal {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+
+  .finder-modal-close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .finder-modal-section-title {
+    padding: 0.75rem 1rem 0.5rem;
+  }
+
+  .finder-modal-table th,
+  .finder-modal-table td,
+  .finder-modal-table thead th {
+    padding: 0.65rem 1rem;
+  }
+
+  .finder-modal-meta {
+    grid-template-columns: 1fr;
+  }
 }
 
 .finder-figures {

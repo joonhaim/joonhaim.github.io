@@ -413,6 +413,69 @@ const hospitalMetadataOverrides = {
   "Zuger Kantonsspital AG": { type: "kanton", canton: "ZG" }
 };
 
+const hospitalInfoOverrides = {
+  "Les Hôpitaux Universitaires de Genève HUG": {
+    address: "Rue Gabrielle-Perret-Gentil 4\n1205 Genève",
+    locality: "Genève",
+    website: "https://www.hug.ch"
+  },
+  "CHUV Centre Hospitalier Universitaire Vaudois": {
+    address: "Rue du Bugnon 46\n1011 Lausanne",
+    locality: "Lausanne",
+    website: "https://www.chuv.ch"
+  },
+  "Insel Gruppe AG (universitär)": {
+    address: "Freiburgstrasse 18\n3010 Bern",
+    locality: "Bern",
+    website: "https://www.insel.ch"
+  },
+  "Universitätsspital Basel": {
+    address: "Spitalstrasse 21\n4031 Basel",
+    locality: "Basel",
+    website: "https://www.unispital-basel.ch"
+  },
+  "Universitätsspital Zürich": {
+    address: "Rämistrasse 100\n8091 Zürich",
+    locality: "Zürich",
+    website: "https://www.usz.ch"
+  },
+  "Universitätsklinik Balgrist": {
+    address: "Forchstrasse 340\n8008 Zürich",
+    locality: "Zürich",
+    website: "https://www.balgrist.ch"
+  },
+  "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": {
+    address: "Steinwiesstrasse 75\n8032 Zürich",
+    locality: "Zürich",
+    website: "https://www.kispi.uzh.ch"
+  },
+  "Universitäts-Kinderspital beider Basel (UKBB)": {
+    address: "Spitalstrasse 33\n4056 Basel",
+    locality: "Basel",
+    website: "https://www.ukbb.ch"
+  },
+  "LUKS Spitalbetriebe AG": {
+    address: "Spitalstrasse 16\n6000 Luzern 16",
+    locality: "Luzern",
+    website: "https://www.luks.ch"
+  },
+  "Kantonsspital St. Gallen": {
+    address: "Rorschacher Strasse 95\n9007 St. Gallen",
+    locality: "St. Gallen",
+    website: "https://www.kssg.ch"
+  },
+  "Stadtspital Zürich": {
+    address: "Birmensdorferstrasse 497\n8063 Zürich",
+    locality: "Zürich",
+    website: "https://www.stadtspital.ch"
+  },
+  "Kantonsspital Aarau AG": {
+    address: "Tellstrasse 25\n5001 Aarau",
+    locality: "Aarau",
+    website: "https://www.ksaarau.ch"
+  }
+};
+
 const hospitalDisplayNameOverrides = {
   "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": "Kinderspital Zürich (Eleonorenstiftung)",
   "Spital Thurgau AG Kantonsspitäler Frauenfeld & Münsterlingen": "Spital Thurgau – KSp Frauenfeld & Münsterlingen",
@@ -466,6 +529,27 @@ function parseInteger(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function parseFloatValue(value) {
+  if (value == null) {
+    return null;
+  }
+  const cleaned = String(value)
+    .replace(/["'\u00A0\s]/g, '')
+    .replace(/%$/, '')
+    .replace(/,/g, '.')
+    .trim();
+  if (!cleaned || cleaned === '*' || cleaned === '-') {
+    return null;
+  }
+  const parsed = Number.parseFloat(cleaned);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function parsePercentage(value) {
+  const parsed = parseFloatValue(value);
+  return parsed == null ? null : parsed;
+}
+
 function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinates) {
   const override = hospitalMetadataOverrides[name];
   const coordinateEntry = coordinatesMap?.get?.(name);
@@ -494,6 +578,7 @@ function parseHospitalCsv(text, coordinatesMap) {
   lines.shift();
 
   const byProcedure = new Map();
+  const byHospital = new Map();
   const meta = new Map();
 
   lines.forEach(line => {
@@ -525,7 +610,45 @@ function parseHospitalCsv(text, coordinatesMap) {
       meta.set(institution, inferHospitalMeta(institution, coordinatesMap));
     }
 
-    const entry = { institution, code, cases };
+    if (!byHospital.has(institution)) {
+      const infoOverride = hospitalInfoOverrides[institution];
+      byHospital.set(institution, {
+        institution,
+        displayName: getHospitalDisplayName(institution),
+        totals: { cases2023: 0, fCases2023: 0 },
+        procedures: new Map(),
+        info: infoOverride ? { ...infoOverride } : {}
+      });
+    }
+
+    const metrics = {
+      observedHistorical: parsePercentage(cols[2]),
+      expectedHistorical: parsePercentage(cols[3]),
+      smrHistorical: parseFloatValue(cols[4]),
+      casesHistorical: parseInteger(cols[5]),
+      observed2023: parsePercentage(cols[6]),
+      expected2023: parsePercentage(cols[7]),
+      smr2023: parseFloatValue(cols[8]),
+      cases2023: cases
+    };
+
+    const entry = { institution, code, cases, metrics };
+
+    const hospitalRecord = byHospital.get(institution);
+    if (hospitalRecord) {
+      hospitalRecord.totals.cases2023 += cases;
+      if (/\.F\b/.test(code)) {
+        hospitalRecord.totals.fCases2023 += cases;
+        if (!hospitalRecord.procedures.has(code)) {
+          hospitalRecord.procedures.set(code, { code, cases: 0, metrics });
+        }
+        const procedureRecord = hospitalRecord.procedures.get(code);
+        if (procedureRecord) {
+          procedureRecord.cases += cases;
+          procedureRecord.metrics = metrics;
+        }
+      }
+    }
     if (!byProcedure.has(code)) {
       byProcedure.set(code, []);
     }
@@ -535,7 +658,7 @@ function parseHospitalCsv(text, coordinatesMap) {
   const types = new Set();
   meta.forEach(details => types.add(details.type));
 
-  return { byProcedure, meta, types };
+  return { byProcedure, byHospital, meta, types };
 }
 
 function loadHospitalDataset() {
@@ -708,7 +831,46 @@ if (finderRoot) {
         mapUnavailable: 'The interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases',
         quickPicksTitle: 'Popular procedures',
-        quickPicksDescription: 'Jump straight to a CH-IQI procedure people look up most often.'
+        quickPicksDescription: 'Jump straight to a CH-IQI procedure people look up most often.',
+        hospitalDetail: {
+          title: 'Hospital details',
+          subtitle: 'Procedure: {procedure}',
+          close: 'Close',
+          type: 'Hospital type',
+          canton: 'Canton',
+          share: 'Share of selected hospitals',
+          cases2023: 'Cases 2023',
+          section2023: '2023 quality metrics',
+          observed2023: 'Observed rate 2023',
+          expected2023: 'Expected rate 2023',
+          smr2023: 'Standardized mortality ratio 2023',
+          sectionHistorical: '2018–2022 benchmark',
+          observedHistorical: 'Observed rate 2018–2022',
+          expectedHistorical: 'Expected rate 2018–2022',
+          smrHistorical: 'Standardized mortality ratio 2018–2022',
+          casesHistorical: 'Cases 2018–2022',
+          note:
+            'Rates are shown as published in CH-IQI reporting and may be suppressed when case volumes are low.',
+          noData: 'No additional metrics are available for this hospital.',
+          infoHeading: 'Hospital snapshot',
+          infoAddress: 'Address',
+          infoLocation: 'Location',
+          infoWebsite: 'Website',
+          infoWebsiteMap: 'Open map',
+          infoCoordinates: 'Coordinates',
+          infoUnavailable: 'Not available',
+          infoTotalCases: 'Total F cases (2023)',
+          infoTotalProcedures: 'Distinct F procedures',
+          proceduresTitle: 'Procedure mix',
+          proceduresDescription: 'CH-IQI tracks {count} specialized procedures here ({total} total cases in 2023).',
+          proceduresCode: 'Code',
+          proceduresName: 'Procedure',
+          proceduresCases: 'Cases 2023',
+          proceduresShare: 'Share of F volume',
+          proceduresEmpty: 'No F-coded procedures were reported for this hospital.',
+          originalName: 'Reported as {original}',
+          openAria: 'Show details for {hospital}'
+        }
       }
     },
     de: {
@@ -838,7 +1000,46 @@ if (finderRoot) {
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle',
         quickPicksTitle: 'Beliebte Behandlungen',
-        quickPicksDescription: 'Springen Sie direkt zu einer häufig nachgefragten CH-IQI-Behandlung.'
+        quickPicksDescription: 'Springen Sie direkt zu einer häufig nachgefragten CH-IQI-Behandlung.',
+        hospitalDetail: {
+          title: 'Spitaldetails',
+          subtitle: 'Leistung: {procedure}',
+          close: 'Schliessen',
+          type: 'Spitaltyp',
+          canton: 'Kanton',
+          share: 'Anteil der ausgewählten Spitäler',
+          cases2023: 'Fälle 2023',
+          section2023: 'Qualitätskennzahlen 2023',
+          observed2023: 'Beobachtete Rate 2023',
+          expected2023: 'Erwartete Rate 2023',
+          smr2023: 'Standardisierte Mortalitätsrate 2023',
+          sectionHistorical: 'Referenz 2018–2022',
+          observedHistorical: 'Beobachtete Rate 2018–2022',
+          expectedHistorical: 'Erwartete Rate 2018–2022',
+          smrHistorical: 'Standardisierte Mortalitätsrate 2018–2022',
+          casesHistorical: 'Fälle 2018–2022',
+          note:
+            'Die Kennzahlen entsprechen den CH-IQI-Veröffentlichungen und können bei kleinen Fallzahlen unterdrückt werden.',
+          noData: 'Für dieses Spital sind keine zusätzlichen Kennzahlen verfügbar.',
+          infoHeading: 'Spitalprofil',
+          infoAddress: 'Adresse',
+          infoLocation: 'Ort',
+          infoWebsite: 'Webseite',
+          infoWebsiteMap: 'Karte öffnen',
+          infoCoordinates: 'Koordinaten',
+          infoUnavailable: 'Keine Angaben',
+          infoTotalCases: 'Fälle F-Codes (2023)',
+          infoTotalProcedures: 'Anzahl F-Codes',
+          proceduresTitle: 'Leistungsspektrum',
+          proceduresDescription: 'Der CH-IQI erfasst hier {count} spezialisierte Leistungen (insgesamt {total} Fälle 2023).',
+          proceduresCode: 'Code',
+          proceduresName: 'Leistung',
+          proceduresCases: 'Fälle 2023',
+          proceduresShare: 'Anteil am F-Volumen',
+          proceduresEmpty: 'Für dieses Spital liegen keine F-Codes vor.',
+          originalName: 'Gemeldet als {original}',
+          openAria: 'Details für {hospital} anzeigen'
+        }
       }
     },
     fr: {
@@ -968,7 +1169,46 @@ if (finderRoot) {
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas',
         quickPicksTitle: 'Interventions populaires',
-        quickPicksDescription: 'Accédez directement à une intervention CH-IQI très consultée.'
+        quickPicksDescription: 'Accédez directement à une intervention CH-IQI très consultée.',
+        hospitalDetail: {
+          title: 'Détails de l’hôpital',
+          subtitle: 'Prestation : {procedure}',
+          close: 'Fermer',
+          type: 'Type d’hôpital',
+          canton: 'Canton',
+          share: 'Part des hôpitaux sélectionnés',
+          cases2023: 'Cas 2023',
+          section2023: 'Indicateurs de qualité 2023',
+          observed2023: 'Taux observé 2023',
+          expected2023: 'Taux attendu 2023',
+          smr2023: 'Rapport de mortalité standardisé 2023',
+          sectionHistorical: 'Référence 2018-2022',
+          observedHistorical: 'Taux observé 2018-2022',
+          expectedHistorical: 'Taux attendu 2018-2022',
+          smrHistorical: 'Rapport de mortalité standardisé 2018-2022',
+          casesHistorical: 'Cas 2018-2022',
+          note:
+            'Les valeurs proviennent des publications CH-IQI et peuvent être masquées lorsque les volumes sont faibles.',
+          noData: 'Aucune donnée supplémentaire n’est disponible pour cet hôpital.',
+          infoHeading: 'Aperçu de l’hôpital',
+          infoAddress: 'Adresse',
+          infoLocation: 'Localisation',
+          infoWebsite: 'Site web',
+          infoWebsiteMap: 'Voir sur la carte',
+          infoCoordinates: 'Coordonnées',
+          infoUnavailable: 'Non disponible',
+          infoTotalCases: 'Cas F totaux (2023)',
+          infoTotalProcedures: 'Nombre de codes F',
+          proceduresTitle: 'Profil des interventions',
+          proceduresDescription: 'Le CH-IQI recense ici {count} interventions spécialisées (total {total} cas en 2023).',
+          proceduresCode: 'Code',
+          proceduresName: 'Intervention',
+          proceduresCases: 'Cas 2023',
+          proceduresShare: 'Part du volume F',
+          proceduresEmpty: 'Aucun code F n’est publié pour cet hôpital.',
+          originalName: 'Déclaré comme {original}',
+          openAria: 'Afficher les détails pour {hospital}'
+        }
       }
     },
     it: {
@@ -1098,7 +1338,46 @@ if (finderRoot) {
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi',
         quickPicksTitle: 'Interventi più richiesti',
-        quickPicksDescription: 'Vai subito a un intervento CH-IQI molto consultato.'
+        quickPicksDescription: 'Vai subito a un intervento CH-IQI molto consultato.',
+        hospitalDetail: {
+          title: 'Dettagli dell’ospedale',
+          subtitle: 'Prestazione: {procedure}',
+          close: 'Chiudi',
+          type: 'Tipo di ospedale',
+          canton: 'Cantone',
+          share: 'Quota degli ospedali selezionati',
+          cases2023: 'Casi 2023',
+          section2023: 'Indicatori di qualità 2023',
+          observed2023: 'Tasso osservato 2023',
+          expected2023: 'Tasso atteso 2023',
+          smr2023: 'Rapporto di mortalità standardizzato 2023',
+          sectionHistorical: 'Confronto 2018-2022',
+          observedHistorical: 'Tasso osservato 2018-2022',
+          expectedHistorical: 'Tasso atteso 2018-2022',
+          smrHistorical: 'Rapporto di mortalità standardizzato 2018-2022',
+          casesHistorical: 'Casi 2018-2022',
+          note:
+            'I valori corrispondono alle pubblicazioni CH-IQI e possono essere nascosti con bassi volumi di casi.',
+          noData: 'Non sono disponibili ulteriori indicatori per questo ospedale.',
+          infoHeading: 'Panoramica dell’ospedale',
+          infoAddress: 'Indirizzo',
+          infoLocation: 'Località',
+          infoWebsite: 'Sito web',
+          infoWebsiteMap: 'Apri mappa',
+          infoCoordinates: 'Coordinate',
+          infoUnavailable: 'Non disponibile',
+          infoTotalCases: 'Casi totali F (2023)',
+          infoTotalProcedures: 'Numero di codici F',
+          proceduresTitle: 'Mix di interventi',
+          proceduresDescription: 'Il CH-IQI rileva qui {count} interventi specialistici (totale {total} casi nel 2023).',
+          proceduresCode: 'Codice',
+          proceduresName: 'Intervento',
+          proceduresCases: 'Casi 2023',
+          proceduresShare: 'Quota del volume F',
+          proceduresEmpty: 'Nessun codice F è pubblicato per questo ospedale.',
+          originalName: 'Registrato come {original}',
+          openAria: 'Mostra i dettagli per {hospital}'
+        }
       }
     }
   };
@@ -1373,6 +1652,602 @@ if (finderRoot) {
     const finderQuickDescription = document.getElementById('finder-quick-description');
 
     const quickPickButtons = new Map();
+
+    const detailFallbacks = {
+      title: 'Hospital details',
+      subtitle: 'Procedure: {procedure}',
+      close: 'Close',
+      type: 'Hospital type',
+      canton: 'Canton',
+      share: 'Share of selected hospitals',
+      cases2023: 'Cases 2023',
+      section2023: '2023 quality metrics',
+      observed2023: 'Observed rate 2023',
+      expected2023: 'Expected rate 2023',
+      smr2023: 'Standardized mortality ratio 2023',
+      sectionHistorical: '2018–2022 benchmark',
+      observedHistorical: 'Observed rate 2018–2022',
+      expectedHistorical: 'Expected rate 2018–2022',
+      smrHistorical: 'Standardized mortality ratio 2018–2022',
+      casesHistorical: 'Cases 2018–2022',
+      note: 'Rates are shown as reported in CH-IQI publications and may be suppressed when data volumes are low.',
+      noData: 'No additional metrics are available for this hospital.',
+      infoHeading: 'Hospital snapshot',
+      infoAddress: 'Address',
+      infoLocation: 'Location',
+      infoWebsite: 'Website',
+      infoWebsiteMap: 'Open map',
+      infoCoordinates: 'Coordinates',
+      infoUnavailable: 'Not available',
+      infoTotalCases: 'Total F cases (2023)',
+      infoTotalProcedures: 'Distinct F procedures',
+      proceduresTitle: 'Procedure mix',
+      proceduresDescription: 'CH-IQI tracks {count} specialized procedures here ({total} total cases in 2023).',
+      proceduresCode: 'Code',
+      proceduresName: 'Procedure',
+      proceduresCases: 'Cases 2023',
+      proceduresShare: 'Share of F volume',
+      proceduresEmpty: 'No F-coded procedures were reported for this hospital.',
+      originalName: 'Reported as {original}',
+      openAria: 'Show details for {hospital}'
+    };
+
+    const detailMessage = (key, replacements = {}) => {
+      const messageKey = `hospitalDetail.${key}`;
+      const translation = msg(messageKey, replacements);
+      if (typeof translation === 'string' && translation !== `messages.${messageKey}`) {
+        return translation;
+      }
+      const fallback = detailFallbacks[key];
+      if (typeof fallback === 'string') {
+        return fallback.replace(/\{(\w+)\}/g, (_, name) => replacements[name] ?? '');
+      }
+      return '';
+    };
+
+    const hospitalDetail = (() => {
+      const overlay = document.createElement('div');
+      overlay.className = 'hospital-detail-overlay';
+      overlay.hidden = true;
+      overlay.innerHTML = `
+        <div class="hospital-detail" role="dialog" aria-modal="true" aria-labelledby="hospital-detail-title" tabindex="-1">
+          <button type="button" class="hospital-detail__close"></button>
+          <div class="hospital-detail__content"></div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const dialog = overlay.querySelector('.hospital-detail');
+      const closeBtn = overlay.querySelector('.hospital-detail__close');
+      const content = overlay.querySelector('.hospital-detail__content');
+
+      let lastActiveElement = null;
+      let isOpen = false;
+
+      const updateCloseButton = () => {
+        const label = detailMessage('close') || 'Close';
+        closeBtn.textContent = label;
+        closeBtn.setAttribute('aria-label', label);
+      };
+
+      const formatInteger = (value) =>
+        Number.isFinite(value) ? value.toLocaleString() : '—';
+
+      const formatPercent = (value) =>
+        Number.isFinite(value)
+          ? `${value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+          : '—';
+
+      const formatFraction = (value) =>
+        Number.isFinite(value)
+          ? `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+          : '—';
+
+      const formatRatio = (value) =>
+        Number.isFinite(value)
+          ? value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : '—';
+
+      const formatCoordinate = (value, axis) => {
+        if (!Number.isFinite(value)) {
+          return null;
+        }
+        const absolute = Math.abs(value);
+        const direction = axis === 'lat' ? (value >= 0 ? 'N' : 'S') : value >= 0 ? 'E' : 'W';
+        return `${absolute.toFixed(3)}° ${direction}`;
+      };
+
+      const buildExternalLink = (url, label) => {
+        if (!url) {
+          return '';
+        }
+        const trimmed = url.trim();
+        if (!trimmed) {
+          return '';
+        }
+        const safeUrl = escapeAttribute(trimmed);
+        const display =
+          label && typeof label === 'string' && label.trim()
+            ? label.trim()
+            : trimmed.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        return `<a href="${safeUrl}" class="hospital-detail__link" target="_blank" rel="noopener">${escapeHtml(display)}</a>`;
+      };
+
+      const renderMetricsSection = (title, rows) => {
+        const safeTitle = escapeHtml(title);
+        const items = rows
+          .map((row) => {
+            const safeLabel = escapeHtml(row.label);
+            const safeValue = escapeHtml(row.value);
+            return `
+              <div class="hospital-detail__metric">
+                <span class="hospital-detail__metric-label">${safeLabel}</span>
+                <span class="hospital-detail__metric-value">${safeValue}</span>
+              </div>
+            `;
+          })
+          .join('');
+        return `
+          <div class="hospital-detail__metrics-section">
+            <h3>${safeTitle}</h3>
+            <div class="hospital-detail__metrics-grid">${items}</div>
+          </div>
+        `;
+      };
+
+      const buildContent = (entry, context = {}) => {
+        const procedure = context.procedure;
+        const procedureLabel = procedure ? `${procedure.name} (${procedure.code})` : '';
+        const eyebrow = detailMessage('title');
+        const subtitleRaw = procedureLabel ? detailMessage('subtitle', { procedure: procedureLabel }) : '';
+        const subtitle = subtitleRaw && subtitleRaw !== 'Procedure: ' ? subtitleRaw : subtitleRaw;
+        const typeLabel = typeBadges[entry.type] ?? entry.type;
+        const badgeClass =
+          entry.type === 'university' ? 'badge-university' : entry.type === 'kanton' ? 'badge-kanton' : 'badge-private';
+
+        const summaryItems = [
+          { label: detailMessage('cases2023'), value: formatInteger(entry.cases) },
+          { label: detailMessage('share'), value: formatFraction(entry.share) },
+          { label: detailMessage('type'), value: typeLabel },
+          { label: detailMessage('canton'), value: entry.canton }
+        ];
+
+        const summaryMarkup = summaryItems
+          .map((item) => {
+            const safeLabel = escapeHtml(item.label);
+            const safeValue = escapeHtml(item.value ?? '');
+            return `
+              <div class="hospital-detail__summary-item">
+                <span class="hospital-detail__summary-label">${safeLabel}</span>
+                <span class="hospital-detail__summary-value">${safeValue}</span>
+              </div>
+            `;
+          })
+          .join('');
+
+        const metrics = entry.metrics || {};
+        const hasCurrentMetrics =
+          Number.isFinite(metrics.observed2023) ||
+          Number.isFinite(metrics.expected2023) ||
+          Number.isFinite(metrics.smr2023);
+        const hasHistoricalMetrics =
+          Number.isFinite(metrics.observedHistorical) ||
+          Number.isFinite(metrics.expectedHistorical) ||
+          Number.isFinite(metrics.smrHistorical) ||
+          Number.isFinite(metrics.casesHistorical);
+
+        const metricsSections = [];
+
+        if (hasCurrentMetrics) {
+          metricsSections.push(
+            renderMetricsSection(detailMessage('section2023'), [
+              { label: detailMessage('observed2023'), value: formatPercent(metrics.observed2023) },
+              { label: detailMessage('expected2023'), value: formatPercent(metrics.expected2023) },
+              { label: detailMessage('smr2023'), value: formatRatio(metrics.smr2023) }
+            ])
+          );
+        }
+
+        if (hasHistoricalMetrics) {
+          metricsSections.push(
+            renderMetricsSection(detailMessage('sectionHistorical'), [
+              { label: detailMessage('observedHistorical'), value: formatPercent(metrics.observedHistorical) },
+              { label: detailMessage('expectedHistorical'), value: formatPercent(metrics.expectedHistorical) },
+              { label: detailMessage('smrHistorical'), value: formatRatio(metrics.smrHistorical) },
+              { label: detailMessage('casesHistorical'), value: formatInteger(metrics.casesHistorical) }
+            ])
+          );
+        }
+
+        const metricsMarkup = metricsSections.length
+          ? metricsSections.join('')
+          : `<p class="hospital-detail__empty">${escapeHtml(detailMessage('noData'))}</p>`;
+
+        const hospitalKey = entry.originalName ?? entry.hospital;
+        const hospitalRecord = finderDataset?.byHospital?.get(hospitalKey);
+        const recordInfo = hospitalRecord?.info ?? {};
+        const totalFcases = hospitalRecord?.totals?.fCases2023 ?? 0;
+
+        const procedures = hospitalRecord
+          ? Array.from(hospitalRecord.procedures.values()).map((proc) => ({
+              code: proc.code,
+              name: getProcedureName(proc.code),
+              cases: proc.cases,
+              share: totalFcases ? proc.cases / totalFcases : 0
+            }))
+          : [];
+        procedures.sort((a, b) => b.cases - a.cases);
+
+        let switzerlandLabel = translate('kpi.switzerland');
+        if (typeof switzerlandLabel !== 'string' || switzerlandLabel === 'kpi.switzerland') {
+          switzerlandLabel = 'Switzerland';
+        }
+
+        const locationText = recordInfo.locality
+          ? `${recordInfo.locality}, ${switzerlandLabel}`
+          : entry.canton
+          ? `${entry.canton}, ${switzerlandLabel}`
+          : '';
+
+        const coordinatesParts = [];
+        const latFormatted = formatCoordinate(entry.lat, 'lat');
+        const lonFormatted = formatCoordinate(entry.lon, 'lon');
+        if (latFormatted) {
+          coordinatesParts.push(latFormatted);
+        }
+        if (lonFormatted) {
+          coordinatesParts.push(lonFormatted);
+        }
+        const coordinatesText = coordinatesParts.join(' · ');
+
+        const infoItems = [];
+
+        if (recordInfo.address) {
+          const addressMarkup = recordInfo.address
+            .split('\n')
+            .map((line) => escapeHtml(line.trim()))
+            .join('<br />');
+          infoItems.push({
+            label: detailMessage('infoAddress'),
+            value: addressMarkup,
+            allowHtml: true
+          });
+        } else {
+          infoItems.push({
+            label: detailMessage('infoAddress'),
+            value: detailMessage('infoUnavailable')
+          });
+        }
+
+        infoItems.push({
+          label: detailMessage('infoLocation'),
+          value: locationText || detailMessage('infoUnavailable')
+        });
+
+        const websiteUrl = typeof recordInfo.website === 'string' ? recordInfo.website.trim() : '';
+        const mapUrl =
+          entry.lat != null && entry.lon != null
+            ? `https://www.openstreetmap.org/?mlat=${entry.lat}&mlon=${entry.lon}&zoom=14`
+            : '';
+        const websiteMarkup = websiteUrl
+          ? buildExternalLink(websiteUrl)
+          : mapUrl
+          ? buildExternalLink(mapUrl, detailMessage('infoWebsiteMap'))
+          : '';
+        infoItems.push({
+          label: detailMessage('infoWebsite'),
+          value: websiteMarkup || detailMessage('infoUnavailable'),
+          allowHtml: Boolean(websiteMarkup)
+        });
+
+        infoItems.push({
+          label: detailMessage('infoTotalProcedures'),
+          value: formatInteger(procedures.length)
+        });
+
+        infoItems.push({
+          label: detailMessage('infoTotalCases'),
+          value: formatInteger(totalFcases)
+        });
+
+        infoItems.push({
+          label: detailMessage('infoCoordinates'),
+          value: coordinatesText || detailMessage('infoUnavailable')
+        });
+
+        const infoHeading = detailMessage('infoHeading');
+        const infoMarkup = `
+          <section class="hospital-detail__info">
+            ${infoHeading ? `<h3>${escapeHtml(infoHeading)}</h3>` : ''}
+            <div class="hospital-detail__info-grid">
+              ${infoItems
+                .map((item) => {
+                  const safeLabel = escapeHtml(item.label);
+                  const safeValue = item.allowHtml
+                    ? item.value
+                    : escapeHtml(item.value ?? '');
+                  return `
+                    <div class="hospital-detail__info-item">
+                      <span class="hospital-detail__info-label">${safeLabel}</span>
+                      <span class="hospital-detail__info-value">${safeValue}</span>
+                    </div>
+                  `;
+                })
+                .join('')}
+            </div>
+          </section>
+        `;
+
+        const proceduresHeading = detailMessage('proceduresTitle');
+        const proceduresDescription = procedures.length
+          ? detailMessage('proceduresDescription', {
+              count: formatInteger(procedures.length),
+              total: formatInteger(totalFcases)
+            })
+          : '';
+        let proceduresMarkup = '';
+
+        if (procedures.length) {
+          const rowsMarkup = procedures
+            .map((proc) => {
+              const shareValue = Number.isFinite(proc.share) ? proc.share : 0;
+              const isActive = procedure && procedure.code === proc.code;
+              return `
+                <tr data-code="${escapeAttribute(proc.code)}" data-name="${escapeAttribute(proc.name)}" data-cases="${proc.cases}" data-share="${shareValue}"${
+                  isActive ? ' class="is-active"' : ''
+                }>
+                  <td><span class="hospital-detail__code">${escapeHtml(proc.code)}</span></td>
+                  <td>${escapeHtml(proc.name)}</td>
+                  <td class="hospital-detail__cell--numeric">${formatInteger(proc.cases)}</td>
+                  <td class="hospital-detail__cell--numeric">${formatFraction(shareValue)}</td>
+                </tr>
+              `;
+            })
+            .join('');
+          proceduresMarkup = `
+            <section class="hospital-detail__procedures">
+              <div class="hospital-detail__section-header">
+                <h3>${escapeHtml(proceduresHeading)}</h3>
+                ${proceduresDescription ? `<p>${escapeHtml(proceduresDescription)}</p>` : ''}
+              </div>
+              <div class="hospital-detail__table-wrapper">
+                <table class="hospital-detail__table" data-sort-key="cases" data-sort-direction="desc">
+                  <thead>
+                    <tr>
+                      <th scope="col" data-sort-key="code" data-default-direction="asc">
+                        <span>${escapeHtml(detailMessage('proceduresCode'))}</span>
+                        <span class="hospital-detail__sort-icon" aria-hidden="true"></span>
+                      </th>
+                      <th scope="col" data-sort-key="name" data-default-direction="asc">
+                        <span>${escapeHtml(detailMessage('proceduresName'))}</span>
+                        <span class="hospital-detail__sort-icon" aria-hidden="true"></span>
+                      </th>
+                      <th scope="col" class="hospital-detail__cell--numeric" data-sort-key="cases" data-default-direction="desc">
+                        <span>${escapeHtml(detailMessage('proceduresCases'))}</span>
+                        <span class="hospital-detail__sort-icon" aria-hidden="true"></span>
+                      </th>
+                      <th scope="col" class="hospital-detail__cell--numeric" data-sort-key="share" data-default-direction="desc">
+                        <span>${escapeHtml(detailMessage('proceduresShare'))}</span>
+                        <span class="hospital-detail__sort-icon" aria-hidden="true"></span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rowsMarkup}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          `;
+        } else {
+          proceduresMarkup = `
+            <section class="hospital-detail__procedures">
+              <div class="hospital-detail__section-header">
+                <h3>${escapeHtml(proceduresHeading)}</h3>
+              </div>
+              <p class="hospital-detail__empty">${escapeHtml(detailMessage('proceduresEmpty'))}</p>
+            </section>
+          `;
+        }
+
+        const originalNameMarkup =
+          entry.originalName && entry.originalName !== entry.hospital
+            ? `<p class="hospital-detail__original">${escapeHtml(
+                detailMessage('originalName', { original: entry.originalName })
+              )}</p>`
+            : '';
+
+        const noteText = detailMessage('note');
+
+        const eyebrowMarkup = eyebrow
+          ? `<span class="hospital-detail__eyebrow">${escapeHtml(eyebrow)}</span>`
+          : '';
+
+        const subtitleMarkup = subtitle
+          ? `<p class="hospital-detail__subtitle">${escapeHtml(subtitle)}</p>`
+          : '';
+
+        return `
+          <header class="hospital-detail__header">
+            ${eyebrowMarkup}
+            <h2 id="hospital-detail-title">${escapeHtml(entry.hospital)}</h2>
+            ${subtitleMarkup}
+            <div class="hospital-detail__tags">
+              <span class="finder-badge ${badgeClass}">${escapeHtml(typeLabel)}</span>
+              <span class="finder-badge finder-badge--neutral">${escapeHtml(entry.canton)}</span>
+            </div>
+          </header>
+          ${infoMarkup}
+          <section class="hospital-detail__summary">${summaryMarkup}</section>
+          ${proceduresMarkup}
+          <section class="hospital-detail__metrics">${metricsMarkup}</section>
+          ${originalNameMarkup}
+          <p class="hospital-detail__note">${escapeHtml(noteText)}</p>
+        `;
+      };
+
+      const enhanceContent = () => {
+        const table = content.querySelector('.hospital-detail__table');
+        if (!table) {
+          return;
+        }
+
+        const tbody = table.querySelector('tbody');
+        if (!tbody) {
+          return;
+        }
+
+        let rowsData = Array.from(tbody.querySelectorAll('tr')).map((row) => ({
+          row,
+          code: row.dataset.code ?? '',
+          name: row.dataset.name ?? '',
+          cases: Number(row.dataset.cases ?? '0'),
+          share: Number(row.dataset.share ?? '0')
+        }));
+
+        if (!rowsData.length) {
+          return;
+        }
+
+        const headers = Array.from(table.querySelectorAll('th[data-sort-key]'));
+        if (!headers.length) {
+          return;
+        }
+
+        const defaultKey = table.dataset.sortKey || 'cases';
+        const defaultDirection = table.dataset.sortDirection === 'asc' ? 'asc' : 'desc';
+        let currentSort = { key: defaultKey, direction: defaultDirection };
+
+        const getDefaultDirection = (key) => {
+          const header = headers.find((h) => h.dataset.sortKey === key);
+          return header?.dataset.defaultDirection || (key === 'cases' || key === 'share' ? 'desc' : 'asc');
+        };
+
+        const sortRows = (key, direction) => {
+          const factor = direction === 'asc' ? 1 : -1;
+          rowsData.sort((a, b) => {
+            const valueA = a[key];
+            const valueB = b[key];
+            const bothNumeric =
+              typeof valueA === 'number' && typeof valueB === 'number' && !Number.isNaN(valueA) && !Number.isNaN(valueB);
+            if (bothNumeric) {
+              if (valueA === valueB) {
+                return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }) * factor;
+              }
+              return (valueA - valueB) * factor;
+            }
+            return String(valueA).localeCompare(String(valueB), undefined, { sensitivity: 'base' }) * factor;
+          });
+        };
+
+        const updateHeaders = () => {
+          headers.forEach((header) => {
+            const isActive = header.dataset.sortKey === currentSort.key;
+            header.classList.toggle('is-sorted', isActive);
+            header.classList.toggle('is-desc', isActive && currentSort.direction === 'desc');
+            header.classList.toggle('is-asc', isActive && currentSort.direction === 'asc');
+            header.setAttribute('role', 'columnheader');
+            header.setAttribute('tabindex', '0');
+            if (isActive) {
+              header.setAttribute('aria-sort', currentSort.direction === 'asc' ? 'ascending' : 'descending');
+              header.dataset.sortDirection = currentSort.direction;
+            } else {
+              header.removeAttribute('aria-sort');
+              header.removeAttribute('data-sort-direction');
+            }
+          });
+        };
+
+        const applySort = (key, direction) => {
+          currentSort = { key, direction };
+          sortRows(key, direction);
+          const fragment = document.createDocumentFragment();
+          rowsData.forEach(({ row }) => fragment.appendChild(row));
+          tbody.appendChild(fragment);
+          updateHeaders();
+        };
+
+        applySort(currentSort.key, currentSort.direction);
+
+        headers.forEach((header) => {
+          header.addEventListener('click', () => {
+            const key = header.dataset.sortKey;
+            if (!key) {
+              return;
+            }
+            let direction;
+            if (currentSort.key === key) {
+              direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+              direction = header.dataset.defaultDirection || getDefaultDirection(key);
+            }
+            applySort(key, direction);
+          });
+          header.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              header.click();
+            }
+          });
+        });
+      };
+
+      const handleKeydown = (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          close();
+        }
+      };
+
+      const close = () => {
+        if (!isOpen) {
+          return;
+        }
+        isOpen = false;
+        overlay.classList.remove('is-visible');
+        document.removeEventListener('keydown', handleKeydown);
+        const finish = () => {
+          overlay.hidden = true;
+          overlay.removeEventListener('transitionend', finish);
+          if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+            lastActiveElement.focus();
+          }
+          lastActiveElement = null;
+        };
+        overlay.addEventListener('transitionend', finish);
+        setTimeout(finish, 220);
+      };
+
+      const open = (entry, context) => {
+        if (!entry) {
+          return;
+        }
+        updateCloseButton();
+        content.innerHTML = buildContent(entry, context);
+        enhanceContent();
+        overlay.hidden = false;
+        requestAnimationFrame(() => {
+          overlay.classList.add('is-visible');
+          dialog.focus({ preventScroll: true });
+        });
+        lastActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        document.addEventListener('keydown', handleKeydown);
+        isOpen = true;
+      };
+
+      closeBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        close();
+      });
+
+      overlay.addEventListener('mousedown', (event) => {
+        if (event.target === overlay) {
+          close();
+        }
+      });
+
+      return { open, close };
+    })();
 
     const findProcedureEntry = (code) => {
       if (!code) {
@@ -2097,7 +2972,8 @@ if (finderRoot) {
           type: meta.type,
           canton: meta.canton,
           lat: meta.lat,
-          lon: meta.lon
+          lon: meta.lon,
+          metrics: entry.metrics
         };
       });
 
@@ -2391,7 +3267,7 @@ if (finderRoot) {
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
         const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
-          <div class="finder-row">
+          <div class="finder-row finder-row--interactive">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
@@ -2409,6 +3285,27 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    const rows = finderList.querySelectorAll('.finder-row');
+    rows.forEach((row, rowIndex) => {
+      const entry = toDisplay[rowIndex];
+      if (!entry) {
+        return;
+      }
+      const ariaLabel = detailMessage('openAria', { hospital: entry.hospital });
+      row.setAttribute('role', 'button');
+      row.setAttribute('tabindex', '0');
+      row.setAttribute('aria-label', ariaLabel);
+      row.addEventListener('click', () => {
+        hospitalDetail.open(entry, { procedure: state.selectedProc });
+      });
+      row.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          hospitalDetail.open(entry, { procedure: state.selectedProc });
+        }
+      });
+    });
   }
 
   function renderMap(agg) {

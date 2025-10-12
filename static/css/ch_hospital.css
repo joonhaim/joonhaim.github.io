@@ -296,13 +296,23 @@ body {
   min-height: 13rem;
   min-width: 0;
   overflow: hidden;
-  --finder-panel-height: clamp(15rem, 35vh, 20.5rem);
+  --finder-panel-height-collapsed: clamp(14rem, 32vh, 19rem);
+  --finder-panel-height-expanded: clamp(20rem, 55vh, 28rem);
+  --finder-panel-height: var(--finder-panel-height-collapsed);
   transition: padding 0.3s ease, min-height 0.3s ease;
 }
 
 .finder-procedure-selector.catalog-collapsed {
   min-height: 12rem;
   padding-bottom: 1.35rem;
+  grid-template-rows: auto 0fr;
+}
+
+.finder-procedure-selector:not(.catalog-collapsed) {
+  --finder-panel-height: var(--finder-panel-height-expanded);
+  grid-template-rows: auto auto;
+  min-height: clamp(22rem, 60vh, 30rem);
+  padding-bottom: 1.75rem;
 }
 
 .finder-procedure-selector::after {
@@ -1744,6 +1754,14 @@ body {
     row-gap: 1rem;
     padding: 1.25rem 1.3rem 1.15rem;
     min-height: 0;
+  }
+
+  .finder-procedure-selector.catalog-collapsed {
+    grid-template-rows: auto 0fr;
+  }
+
+  .finder-procedure-selector:not(.catalog-collapsed) {
+    --finder-panel-height: var(--finder-panel-height-expanded);
   }
 
   .finder-selector-header {

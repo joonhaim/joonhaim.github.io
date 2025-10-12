@@ -297,6 +297,7 @@ body {
   min-height: 20.5rem;
   min-width: 0;
   overflow: hidden;
+  --finder-panel-height: clamp(15rem, 35vh, 20.5rem);
 }
 
 .finder-procedure-selector::after {
@@ -421,7 +422,7 @@ body {
   gap: 0.6rem;
   min-height: 0;
   align-self: stretch;
-  max-height: clamp(13rem, 34vh, 18rem);
+  height: var(--finder-panel-height);
 }
 
 .finder-category-tabs {
@@ -437,7 +438,7 @@ body {
   scrollbar-width: thin;
   min-height: 0;
   flex: 1 1 auto;
-  max-height: inherit;
+  height: 100%;
 }
 
 .finder-category-tabs::-webkit-scrollbar {
@@ -455,6 +456,7 @@ body {
   flex-direction: column;
   gap: 0.6rem;
   min-height: 0;
+  height: var(--finder-panel-height);
 }
 
 .finder-category-btn.dimmed {
@@ -479,7 +481,8 @@ body {
   border-radius: 0.85rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
   min-height: 0;
-  max-height: clamp(14rem, 36vh, 21rem);
+  flex: 1 1 auto;
+  height: 100%;
 }
 
 .finder-procedure-list::-webkit-scrollbar {
@@ -1456,6 +1459,16 @@ body {
 
   .finder-map-card {
     min-height: 360px;
+  }
+
+  .finder-category-panel,
+  .finder-procedure-panel {
+    height: auto;
+  }
+
+  .finder-category-tabs,
+  .finder-procedure-list {
+    height: auto;
   }
 
   .finder-map-view {

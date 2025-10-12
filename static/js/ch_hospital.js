@@ -2288,9 +2288,9 @@ if (finderRoot) {
     };
 
     const updateQuickPickState = () => {
-      const activeCode = state.selectedProc?.code;
+      const activeCode = state.hasUserSelection ? state.selectedProc?.code : null;
       quickPickButtons.forEach((button, code) => {
-        const isActive = code === activeCode;
+        const isActive = state.hasUserSelection && code === activeCode;
         button.classList.toggle('active', isActive);
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
@@ -2336,6 +2336,7 @@ if (finderRoot) {
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
+          state.hasUserSelection = true;
           state.shouldScrollToResults = true;
           render();
         });
@@ -2728,7 +2729,8 @@ if (finderRoot) {
       procedureQuery: '',
       typeFilter: { university: true, kanton: true, private: true },
       listPage: 0,
-      shouldScrollToResults: false
+      shouldScrollToResults: false,
+      hasUserSelection: false
     };
 
     setupQuickPicks();
@@ -2859,7 +2861,7 @@ if (finderRoot) {
           const heading = showHeading ? `<p class="finder-procedure-group-title">${group.label}</p>` : '';
           const options = group.procedures
             .map((proc) => {
-              const isActive = state.selectedProc?.code === proc.code;
+              const isActive = state.hasUserSelection && state.selectedProc?.code === proc.code;
               return `
               <button type="button" class="finder-procedure-option${
                 isActive ? ' active' : ''
@@ -2899,6 +2901,7 @@ if (finderRoot) {
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
+          state.hasUserSelection = true;
           state.shouldScrollToResults = true;
           render();
         });
@@ -3524,7 +3527,13 @@ if (finderRoot) {
     renderProcedureControls();
     renderTypeToggle();
 
-    const selectedProcedure = state.selectedProc;
+    const selectedProcedure = state.hasUserSelection ? state.selectedProc : null;
+    const hasSelection = Boolean(selectedProcedure);
+
+    if (finderRoot) {
+      finderRoot.classList.toggle('finder-awaiting-selection', !hasSelection);
+    }
+
     const procedureLabel = selectedProcedure
       ? `${selectedProcedure.name} (${selectedProcedure.code})`
       : msg('selectedProcedure');
@@ -3539,7 +3548,7 @@ if (finderRoot) {
     }
     finderListTitle.textContent = procedureLabel;
 
-    if (!selectedProcedure) {
+    if (!hasSelection) {
       finderListMeta.textContent = msg('chooseProcedure');
       finderKpis.innerHTML = `<div class="finder-empty">${msg('selectProcedureNational')}</div>`;
       finderList.innerHTML = '';

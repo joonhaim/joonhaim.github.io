@@ -1987,7 +1987,7 @@ if (finderRoot) {
     ];
 
     finderKpis.innerHTML = tiles
-      .map((tile) => {
+      .map((tile, index) => {
         const infoMarkup = tile.info
           ? (() => {
               const decoded = decodeHtml(tile.info);
@@ -2016,7 +2016,7 @@ if (finderRoot) {
             : `<strong>${tile.allowHtmlValue ? tile.value : escapeAttribute(tile.value)}</strong>`;
 
         return `
-          <div class="finder-kpi">
+          <div class="finder-kpi"${index === 0 ? ' data-finder-results-anchor' : ''}>
             ${labelMarkup}
             ${valueMarkup}
             ${tile.footnote ? `<span class="finder-kpi-footnote">${tile.footnote}</span>` : ''}

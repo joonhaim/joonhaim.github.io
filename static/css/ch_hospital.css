@@ -665,48 +665,36 @@ body {
 }
 
 
-.finder-controls {
-  margin-bottom: 1.9rem;
+
+.finder-map-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.finder-filter-card {
-  position: relative;
-  display: grid;
-  gap: 1.25rem;
-  padding: 1.4rem 1.55rem 1.5rem;
-  border-radius: 1.05rem;
+.finder-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: 0.9rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(180deg, #ffffff 0%, #fdf5f5 100%);
-  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.07);
 }
 
-.finder-filter-title {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+.finder-toolbar-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.finder-toolbar-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #6b7280;
-}
-
-.finder-filter-row {
-  display: grid;
-  gap: 1.15rem;
-  align-items: end;
-}
-
-.finder-filter-row--primary {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.finder-filter-row--secondary {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.finder-filter-divider {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.14) 50%, rgba(15, 23, 42, 0) 100%);
-  border-radius: 999px;
+  font-weight: 600;
+  color: #4b5563;
 }
 
 .finder-control {
@@ -723,13 +711,39 @@ body {
   width: 100%;
 }
 
-@media (min-width: 900px) {
-  .finder-filter-card {
-    padding: 1.6rem 1.8rem 1.7rem;
+.finder-toolbar .finder-control label,
+.finder-toolbar .finder-toolbar-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.finder-toolbar .finder-control input,
+.finder-toolbar .finder-control select {
+  padding: 0.6rem 0.9rem;
+  background-color: #f9fafb;
+}
+
+@media (min-width: 720px) {
+  .finder-toolbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.85rem;
   }
 
-  .finder-filter-row--secondary {
-    grid-template-columns: minmax(0, 0.65fr) minmax(0, 0.35fr);
+  .finder-toolbar-control {
+    flex: 1 1 200px;
+  }
+
+  .finder-toolbar-control--type {
+    flex: 0 1 260px;
+  }
+
+  .finder-toolbar-control--canton {
+    flex: 0 1 220px;
   }
 }
 
@@ -944,47 +958,51 @@ body {
 }
 
 .finder-type-toggle {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #f3f4f6;
 }
 
 .finder-type-btn {
+  border: none;
   border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.16);
-  padding: 0.45rem 1.1rem;
-  font-size: 0.83rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  background: #fff;
+  background: transparent;
   color: #1f2937;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.1rem;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.finder-type-btn.active {
-  background: #111827;
-  border-color: #111827;
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.18);
+  min-height: 2.05rem;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .finder-type-btn:hover,
 .finder-type-btn:focus-visible {
-  border-color: rgba(17, 24, 39, 0.4);
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.75);
   color: #111827;
   outline: none;
 }
 
-.finder-type-btn.active:hover,
-.finder-type-btn.active:focus-visible {
-  background: #111827;
-  border-color: #111827;
-  color: #fff;
+.finder-type-btn:focus-visible {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.45);
+}
+
+.finder-type-btn.active {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 10px 26px rgba(17, 24, 39, 0.15);
+}
+
+.finder-type-toggle .finder-type-btn.active {
+  position: relative;
 }
 
 .finder-kpis {

@@ -1521,7 +1521,6 @@ if (finderRoot) {
       map: null,
       markersLayer: null,
       container: null,
-      titleEl: null,
       messageEl: null,
       legendEls: { university: null, kanton: null, private: null }
     };
@@ -1535,7 +1534,6 @@ if (finderRoot) {
       }
       if (!mapState.ready) {
         finderMap.innerHTML = `
-          <h3 class="finder-map-title"></h3>
           <div class="finder-map-view" role="img"></div>
           <p class="finder-map-message finder-empty" hidden></p>
           <div class="finder-map-legend">
@@ -1544,7 +1542,6 @@ if (finderRoot) {
             <span data-type="private"><i style="background:#f59e0b"></i><span class="legend-label"></span></span>
           </div>
         `;
-        mapState.titleEl = finderMap.querySelector('.finder-map-title');
         mapState.container = finderMap.querySelector('.finder-map-view');
         mapState.messageEl = finderMap.querySelector('.finder-map-message');
         mapState.legendEls = {
@@ -1573,8 +1570,6 @@ if (finderRoot) {
         mapState.ready = true;
         requestAnimationFrame(() => mapState.map.invalidateSize());
       }
-
-      mapState.titleEl.textContent = msg('mapTitle');
       mapState.container.setAttribute('aria-label', msg('mapAriaLabel'));
       mapState.legendEls.university.textContent = typeLegend.university;
       mapState.legendEls.kanton.textContent = typeLegend.kanton;
@@ -1589,7 +1584,7 @@ if (finderRoot) {
         return;
       }
       if (!ensureMapStructure()) {
-        finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="${className}">${message}</p>`;
+        finderMap.innerHTML = `<p class="${className}">${message}</p>`;
         return;
       }
       mapState.markersLayer?.clearLayers();
@@ -2169,7 +2164,7 @@ if (finderRoot) {
     }
 
     if (!ensureMapStructure()) {
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-error">${msg('mapUnavailable')}</p>`;
+      finderMap.innerHTML = `<p class="finder-error">${msg('mapUnavailable')}</p>`;
       return;
     }
 

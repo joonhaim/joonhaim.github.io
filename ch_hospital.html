@@ -29,10 +29,10 @@
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
+    <h1 class="fade-element">Where Swiss hospitals perform key procedures</h1>
     <p class="tagline fade-element">
-      The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
-      performance of major hospitals. Select a procedure to explore 2023 case volumes.
+      The Swiss Inpatient Quality Indicators (CH-IQI) show how many cases each hospital reported in 2023.
+      Choose a procedure to explore hospital volumes and filter by type or canton.
     </p>
     <p class="hero-links fade-element">
       <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
@@ -42,10 +42,10 @@
 
   <section id="procedure-finder" class="procedure-finder fade-element">
     <div class="finder-intro">
-      <h2>Procedure availability across Switzerland</h2>
+      <h2>Find hospitals by procedure</h2>
       <p>
-        Explore which hospitals report higher case volumes for selected CH-IQI procedures.
-        Use the quick filters to focus on specific hospital types and cantons.
+        Browse the CH-IQI catalogue to see which hospitals reported cases for each procedure.
+        Use the filters to focus on specific hospital types or cantons.
       </p>
     </div>
 
@@ -66,11 +66,11 @@
 
     <div class="finder-controls">
       <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
-        <p id="finder-filter-title" class="finder-filter-title">Refine hospital results</p>
+        <p id="finder-filter-title" class="finder-filter-title">Narrow the hospital list</p>
         <div class="finder-filter-row finder-filter-row--primary">
           <div class="finder-control finder-control--search">
             <label for="finder-search">Search hospital</label>
-            <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
+            <input id="finder-search" type="search" placeholder="Type to filter hospitals" />
           </div>
         </div>
         <div class="finder-filter-divider" aria-hidden="true"></div>
@@ -92,7 +92,10 @@
     <div class="finder-main">
       <div class="finder-list-card">
         <div class="finder-list-header">
-          <h3 id="finder-list-title">Top hospitals</h3>
+          <div class="finder-list-heading">
+            <p id="finder-list-context" class="finder-list-context">Hospitals across Switzerland</p>
+            <h3 id="finder-list-title">Select a procedure</h3>
+          </div>
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
@@ -102,16 +105,16 @@
 
     <div class="finder-bottom">
       <div class="finder-canton-card">
-        <h3>Focus on your canton</h3>
+        <h3>See details for your canton</h3>
         <p id="finder-canton-summary" class="finder-canton-summary"></p>
         <div id="finder-canton-list" class="finder-canton-list"></div>
       </div>
       <div class="finder-note-card">
-        <h3>Reading the data</h3>
+        <h3>How to interpret these numbers</h3>
         <p>
-          Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
-          by many factors including case mix and patient complexity. Use these figures as a starting
-          point and review quality indicators alongside availability.
+          Higher case volumes can point to greater routine expertise, yet outcomes also depend on case mix
+          and patient complexity. Use these figures as a starting point and review quality indicators alongside
+          availability.
         </p>
       </div>
     </div>

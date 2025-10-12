@@ -29,10 +29,10 @@
   <a href="index.html" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Panorama des hôpitaux suisses (CH-IQI)</h1>
+    <h1 class="fade-element">Où les hôpitaux suisses réalisent des interventions clés</h1>
     <p class="tagline fade-element">
-      La base de données Swiss Inpatient Quality Indicators (CH-IQI) offre une vue sur la performance des principaux hôpitaux.
-      Sélectionnez une intervention pour explorer les volumes de cas 2023.
+      Les Swiss Inpatient Quality Indicators (CH-IQI) indiquent combien de cas chaque hôpital a déclarés en 2023.
+      Sélectionnez une intervention pour analyser les volumes de cas et filtrer par type d’hôpital ou par canton.
     </p>
     <p class="hero-links fade-element">
       <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
@@ -42,10 +42,10 @@
 
   <section id="procedure-finder" class="procedure-finder fade-element">
     <div class="finder-intro">
-      <h2>Disponibilité des interventions en Suisse</h2>
+      <h2>Trouver des hôpitaux par intervention</h2>
       <p>
-        Découvrez quels hôpitaux déclarent les volumes de cas les plus élevés pour les interventions CH-IQI sélectionnées.
-        Utilisez les filtres rapides pour vous concentrer sur certains types d'hôpitaux et cantons.
+        Parcourez le catalogue CH-IQI pour voir quels hôpitaux ont déclaré des cas pour chaque intervention.
+        Utilisez les filtres pour cibler certains types d’hôpitaux ou cantons.
       </p>
     </div>
 
@@ -66,11 +66,11 @@
 
     <div class="finder-controls">
       <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
-        <p id="finder-filter-title" class="finder-filter-title">Affiner les résultats</p>
+        <p id="finder-filter-title" class="finder-filter-title">Affiner la liste des hôpitaux</p>
         <div class="finder-filter-row finder-filter-row--primary">
           <div class="finder-control finder-control--search">
             <label for="finder-search">Rechercher un hôpital</label>
-            <input id="finder-search" type="search" placeholder="Commencez à taper pour filtrer la liste" />
+            <input id="finder-search" type="search" placeholder="Saisir pour filtrer les hôpitaux" />
           </div>
         </div>
         <div class="finder-filter-divider" aria-hidden="true"></div>
@@ -92,7 +92,10 @@
     <div class="finder-main">
       <div class="finder-list-card">
         <div class="finder-list-header">
-          <h3 id="finder-list-title">Hôpitaux principaux</h3>
+          <div class="finder-list-heading">
+            <p id="finder-list-context" class="finder-list-context">Hôpitaux en Suisse</p>
+            <h3 id="finder-list-title">Sélectionner une intervention</h3>
+          </div>
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
@@ -102,15 +105,15 @@
 
     <div class="finder-bottom">
       <div class="finder-canton-card">
-        <h3>Zoom sur votre canton</h3>
+        <h3>Détails pour votre canton</h3>
         <p id="finder-canton-summary" class="finder-canton-summary"></p>
         <div id="finder-canton-list" class="finder-canton-list"></div>
       </div>
       <div class="finder-note-card">
-        <h3>Interpréter les données</h3>
+        <h3>Comment interpréter ces chiffres</h3>
         <p>
-          Des volumes d'interventions plus élevés peuvent signaler une plus grande routine, mais les résultats dépendent de nombreux facteurs,
-          notamment le mix de cas et la complexité des patients. Utilisez ces chiffres comme point de départ et examinez les indicateurs de qualité parallèlement à la disponibilité.
+          Des volumes élevés peuvent indiquer une plus grande routine, mais les résultats dépendent aussi du cas mix et de la complexité des patients.
+          Considérez ces valeurs comme un point de départ et consultez les indicateurs de qualité en parallèle de l’offre.
         </p>
       </div>
     </div>

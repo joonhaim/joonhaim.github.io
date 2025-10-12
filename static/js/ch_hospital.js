@@ -1469,6 +1469,39 @@ if (finderRoot) {
       );
     }
 
+    function smoothWindowScrollTo(targetY, duration = 600) {
+      const startY = window.scrollY;
+      const distance = Math.max(0, targetY) - startY;
+
+      if (Math.abs(distance) < 1) {
+        return;
+      }
+
+      if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo(0, Math.max(0, targetY));
+        return;
+      }
+
+      const startTime = performance.now();
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(1, elapsed / duration);
+        const eased = easeOutCubic(progress);
+        window.scrollTo(0, startY + distance * eased);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
     function scrollToResultsIfNeeded() {
       if (!state.shouldScrollToResults) {
         return;
@@ -1482,7 +1515,7 @@ if (finderRoot) {
         }
 
         const top = anchor.getBoundingClientRect().top + window.scrollY - 24;
-        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        smoothWindowScrollTo(top);
       });
     }
 

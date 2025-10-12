@@ -512,7 +512,8 @@ if (finderRoot) {
       },
       hhi: {
         labels: { low: 'Low', moderate: 'Moderate', high: 'High' },
-        footnote: '&lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
+        footnote:
+          'The Herfindahl–Hirschman Index (HHI) sums the squared market shares of hospitals. Scores range from 0 (many providers) to 10&nbsp;000 (single provider). &lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
       },
       kpi: {
         totalCases: 'Total cases',
@@ -632,7 +633,8 @@ if (finderRoot) {
       },
       hhi: {
         labels: { low: 'Niedrig', moderate: 'Mittel', high: 'Hoch' },
-        footnote: '&lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
+        footnote:
+          'Der Herfindahl-Hirschman-Index (HHI) summiert die quadrierten Marktanteile der Spitäler. Werte reichen von 0 (viele Anbieter) bis 10&nbsp;000 (ein Anbieter). &lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
       },
       kpi: {
         totalCases: 'Fallzahlen gesamt',
@@ -752,7 +754,8 @@ if (finderRoot) {
       },
       hhi: {
         labels: { low: 'Faible', moderate: 'Modérée', high: 'Élevée' },
-        footnote: '&lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée'
+        footnote:
+          "L'indice Herfindahl-Hirschman (HHI) additionne les parts de marché au carré des hôpitaux. Les scores vont de 0 (offre dispersée) à 10&nbsp;000 (monopole). &lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée"
       },
       kpi: {
         totalCases: 'Cas totaux',
@@ -872,7 +875,8 @@ if (finderRoot) {
       },
       hhi: {
         labels: { low: 'Bassa', moderate: 'Moderata', high: 'Alta' },
-        footnote: '&lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta'
+        footnote:
+          "L'indice di Herfindahl-Hirschman (HHI) somma le quote di mercato al quadrato degli ospedali. I punteggi vanno da 0 (molti fornitori) a 10&nbsp;000 (monopolio). &lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta"
       },
       kpi: {
         totalCases: 'Casi totali',

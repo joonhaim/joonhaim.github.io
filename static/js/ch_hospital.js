@@ -59,6 +59,21 @@ const normalizeString = (value) =>
     .toLowerCase();
 
 const normalizeAlphanumeric = (value) => normalizeString(value).replace(/[^a-z0-9]/g, '');
+const decodeHtml = (html) => {
+  if (!html) {
+    return '';
+  }
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = html;
+  return textarea.value;
+};
+const escapeAttribute = (value) =>
+  (value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 const fadeObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -1835,20 +1850,43 @@ if (finderRoot) {
       {
         label: kpiLabels.centralization,
         value: `${agg.hhi} – ${agg.hhiLabel}`,
-        footnote: hhiFootnote
+        footnote: '',
+        info: hhiFootnote
       }
     ];
 
     finderKpis.innerHTML = tiles
-      .map(
-        (tile) => `
+      .map((tile) => {
+        const infoMarkup = tile.info
+          ? (() => {
+              const decoded = decodeHtml(tile.info);
+              const ariaLabel = escapeAttribute(decoded);
+              return `
+                <span class="finder-kpi-info" tabindex="0" aria-label="${ariaLabel}">
+                  <span class="finder-kpi-info-icon" aria-hidden="true">i</span>
+                  <span class="finder-kpi-tooltip" role="tooltip">${tile.info}</span>
+                </span>
+              `;
+            })()
+          : '';
+
+        const labelMarkup = tile.info
+          ? `
+              <div class="finder-kpi-header">
+                <small>${tile.label}</small>
+                ${infoMarkup}
+              </div>
+            `
+          : `<small>${tile.label}</small>`;
+
+        return `
           <div class="finder-kpi">
-            <small>${tile.label}</small>
+            ${labelMarkup}
             <strong>${tile.value}</strong>
             ${tile.footnote ? `<span>${tile.footnote}</span>` : ''}
           </div>
-        `
-      )
+        `;
+      })
       .join('');
   }
 

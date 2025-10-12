@@ -1505,7 +1505,10 @@ if (finderRoot) {
         closeHospitalModal();
       });
 
-      hospitalModalBackdrop?.addEventListener('click', (event) => {
+      hospitalModalBackdrop?.addEventListener('pointerdown', (event) => {
+        if (event.target !== hospitalModalBackdrop) {
+          return;
+        }
         event.preventDefault();
         closeHospitalModal();
       });

@@ -618,9 +618,15 @@ if (finderRoot) {
         modalMeta: '{type} hospital in canton {canton}',
         modalMetaNoCanton: '{type} hospital',
         modalTypeUnknown: 'Hospital type unknown',
+        modalInfoHeading: 'Hospital overview',
+        modalInfoType: 'Type',
+        modalInfoCanton: 'Canton',
+        modalInfoProcedures: 'Procedures reported',
+        modalInfoTotalCases: 'Total cases (2023)',
+        modalInfoUnknown: 'Not available',
         modalQualityHeading: 'Quality indicators',
         modalQualityCaption: 'Observed and expected rates are percentages; SMR denotes the standardised mortality ratio.',
-        modalNoData: 'No procedure records are available for this hospital.',
+        modalNoData: 'Procedure details are not available at this time.',
         modalColumnProcedure: 'Procedure',
         modalColumnCode: 'Code',
         modalColumnCases: 'Cases (2023)',
@@ -756,9 +762,15 @@ if (finderRoot) {
         modalMeta: '{type}-Spital im Kanton {canton}',
         modalMetaNoCanton: '{type}-Spital',
         modalTypeUnknown: 'Spitaltyp unbekannt',
+        modalInfoHeading: 'Spitalübersicht',
+        modalInfoType: 'Typ',
+        modalInfoCanton: 'Kanton',
+        modalInfoProcedures: 'Gemeldete Eingriffe',
+        modalInfoTotalCases: 'Fallzahlen gesamt (2023)',
+        modalInfoUnknown: 'Nicht verfügbar',
         modalQualityHeading: 'Qualitätsindikatoren',
         modalQualityCaption: 'Beobachtete und erwartete Raten sind Prozentwerte; der SMR steht für den standardisierten Mortalitätsindex.',
-        modalNoData: 'Für dieses Spital liegen keine Verfahrensdaten vor.',
+        modalNoData: 'Verfahrensdetails sind derzeit nicht verfügbar.',
         modalColumnProcedure: 'Eingriff',
         modalColumnCode: 'Code',
         modalColumnCases: 'Fälle (2023)',
@@ -894,9 +906,15 @@ if (finderRoot) {
         modalMeta: 'Établissement {type} dans le canton {canton}',
         modalMetaNoCanton: 'Établissement {type}',
         modalTypeUnknown: 'Type d’établissement inconnu',
+        modalInfoHeading: 'Aperçu de l’hôpital',
+        modalInfoType: 'Type',
+        modalInfoCanton: 'Canton',
+        modalInfoProcedures: 'Interventions déclarées',
+        modalInfoTotalCases: 'Total des cas (2023)',
+        modalInfoUnknown: 'Non disponible',
         modalQualityHeading: 'Indicateurs de qualité',
         modalQualityCaption: 'Les taux observés et attendus sont exprimés en pourcentage ; le SMR correspond au ratio de mortalité standardisé.',
-        modalNoData: 'Aucun enregistrement de procédure n’est disponible pour cet hôpital.',
+        modalNoData: 'Les détails des interventions ne sont pas disponibles pour le moment.',
         modalColumnProcedure: 'Procédure',
         modalColumnCode: 'Code',
         modalColumnCases: 'Cas (2023)',
@@ -1032,9 +1050,15 @@ if (finderRoot) {
         modalMeta: 'Struttura {type} nel cantone {canton}',
         modalMetaNoCanton: 'Struttura {type}',
         modalTypeUnknown: 'Tipologia di struttura sconosciuta',
+        modalInfoHeading: 'Panoramica dell’ospedale',
+        modalInfoType: 'Tipo',
+        modalInfoCanton: 'Cantone',
+        modalInfoProcedures: 'Interventi dichiarati',
+        modalInfoTotalCases: 'Totale casi (2023)',
+        modalInfoUnknown: 'Non disponibile',
         modalQualityHeading: 'Indicatori di qualità',
         modalQualityCaption: 'I tassi osservati e attesi sono percentuali; l’SMR indica il rapporto standardizzato di mortalità.',
-        modalNoData: 'Non sono disponibili dati di procedura per questo ospedale.',
+        modalNoData: 'I dettagli delle procedure non sono disponibili al momento.',
         modalColumnProcedure: 'Procedura',
         modalColumnCode: 'Codice',
         modalColumnCases: 'Casi (2023)',
@@ -2155,15 +2179,38 @@ if (finderRoot) {
           </button>
         </div>
         <div class="finder-modal__body">
-          <h3 class="finder-modal__section-title">${escapeHtml(msg('modalQualityHeading'))}</h3>
-          <p id="finder-modal-caption" class="finder-modal__caption">${escapeHtml(msg('modalQualityCaption'))}</p>
-          <div class="finder-modal__table-wrapper">
-            <table class="finder-modal__table" aria-describedby="finder-modal-caption" aria-label="${escapeAttribute(msg('modalTableLabel'))}">
-              <thead></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <p class="finder-modal__empty" hidden>${escapeHtml(msg('modalNoData'))}</p>
+          <section class="finder-modal__info" aria-labelledby="finder-modal-info-title">
+            <h3 id="finder-modal-info-title" class="finder-modal__section-title">${escapeHtml(msg('modalInfoHeading'))}</h3>
+            <dl class="finder-modal__info-grid">
+              <div class="finder-modal__info-item">
+                <dt class="finder-modal__info-label">${escapeHtml(msg('modalInfoType'))}</dt>
+                <dd class="finder-modal__info-value" data-info="type"></dd>
+              </div>
+              <div class="finder-modal__info-item">
+                <dt class="finder-modal__info-label">${escapeHtml(msg('modalInfoCanton'))}</dt>
+                <dd class="finder-modal__info-value" data-info="canton"></dd>
+              </div>
+              <div class="finder-modal__info-item">
+                <dt class="finder-modal__info-label">${escapeHtml(msg('modalInfoProcedures'))}</dt>
+                <dd class="finder-modal__info-value" data-info="procedures"></dd>
+              </div>
+              <div class="finder-modal__info-item">
+                <dt class="finder-modal__info-label">${escapeHtml(msg('modalInfoTotalCases'))}</dt>
+                <dd class="finder-modal__info-value" data-info="totalCases"></dd>
+              </div>
+            </dl>
+          </section>
+          <section class="finder-modal__section">
+            <h3 class="finder-modal__section-title">${escapeHtml(msg('modalQualityHeading'))}</h3>
+            <p id="finder-modal-caption" class="finder-modal__caption">${escapeHtml(msg('modalQualityCaption'))}</p>
+            <div class="finder-modal__table-wrapper">
+              <table class="finder-modal__table" aria-describedby="finder-modal-caption" aria-label="${escapeAttribute(msg('modalTableLabel'))}">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="finder-modal__empty" hidden>${escapeHtml(msg('modalNoData'))}</p>
+          </section>
         </div>
       </div>
     `;
@@ -2177,8 +2224,15 @@ if (finderRoot) {
     const tableBody = overlay.querySelector('tbody');
     const tableWrapper = overlay.querySelector('.finder-modal__table-wrapper');
     const emptyState = overlay.querySelector('.finder-modal__empty');
+    const infoElements = {
+      type: overlay.querySelector('[data-info="type"]'),
+      canton: overlay.querySelector('[data-info="canton"]'),
+      procedures: overlay.querySelector('[data-info="procedures"]'),
+      totalCases: overlay.querySelector('[data-info="totalCases"]')
+    };
 
     const modalState = { rows: [], sortKey: 'cases', sortDirection: 'desc' };
+    const shouldDisplayProcedureDetails = false;
     const stringCollator = new Intl.Collator(activeLocale === 'en' ? 'en' : `${activeLocale}-CH`, {
       sensitivity: 'base',
       numeric: true
@@ -2271,18 +2325,13 @@ if (finderRoot) {
     }
 
     function renderTable(options = {}) {
-      const sortedRows = getSortedRows();
-      if (!sortedRows.length) {
-        tableHead.innerHTML = '';
-        tableBody.innerHTML = '';
-        tableWrapper.hidden = true;
-        emptyState.hidden = false;
-        updateFocusableElements();
-        return;
-      }
+      const sortedRows = shouldDisplayProcedureDetails ? getSortedRows() : [];
+      const hasDisplayableRows = sortedRows.length > 0;
+      const enableSorting = shouldDisplayProcedureDetails && hasDisplayableRows;
 
       tableWrapper.hidden = false;
-      emptyState.hidden = true;
+      tableWrapper.setAttribute('aria-hidden', enableSorting ? 'false' : 'true');
+      emptyState.hidden = enableSorting;
 
       const headerHtml = columns
         .map((column) => {
@@ -2292,6 +2341,13 @@ if (finderRoot) {
           }
           const label = column.label;
           const safeLabel = escapeHtml(label);
+
+          if (!enableSorting) {
+            return `          <th scope="col" class="${thClasses.join(' ')}"${column.numeric ? ' data-align="numeric"' : ''} aria-sort="none">
+            <span class="finder-modal__heading-label">${safeLabel}</span>
+          </th>`;
+          }
+
           const ariaSortState =
             modalState.sortKey === column.key
               ? modalState.sortDirection === 'asc'
@@ -2312,12 +2368,13 @@ if (finderRoot) {
 
       tableHead.innerHTML = `<tr>\n${headerHtml}\n        </tr>`;
 
-      const rowsHtml = sortedRows
-        .map((row) => {
-          const observed = formatPercentCell(row.observedText, row.observedRate);
-          const expected = formatPercentCell(row.expectedText, row.expectedRate);
-          const smrValue = formatRatioCell(row.smrText, row.smr);
-          return `        <tr>
+      if (enableSorting) {
+        const rowsHtml = sortedRows
+          .map((row) => {
+            const observed = formatPercentCell(row.observedText, row.observedRate);
+            const expected = formatPercentCell(row.expectedText, row.expectedRate);
+            const smrValue = formatRatioCell(row.smrText, row.smr);
+            return `        <tr>
           <td>${escapeHtml(row.code)}</td>
           <td>${escapeHtml(row.procedure)}</td>
           <td class="finder-modal__cell--numeric">${escapeHtml(formatNumberCell(row.cases))}</td>
@@ -2325,23 +2382,26 @@ if (finderRoot) {
           <td class="finder-modal__cell--numeric">${escapeHtml(expected)}</td>
           <td class="finder-modal__cell--numeric">${escapeHtml(smrValue)}</td>
         </tr>`;
-        })
-        .join('\n');
+          })
+          .join('\n');
 
-      tableBody.innerHTML = `${rowsHtml}`;
+        tableBody.innerHTML = `${rowsHtml}`;
 
-      const headerButtons = tableHead.querySelectorAll('.finder-modal__sort');
-      headerButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          setSort(button.dataset.key);
+        const headerButtons = tableHead.querySelectorAll('.finder-modal__sort');
+        headerButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            setSort(button.dataset.key);
+          });
         });
-      });
 
-      if (options.focusKey) {
-        const target = Array.from(headerButtons).find((btn) => btn.dataset.key === options.focusKey);
-        if (target) {
-          requestAnimationFrame(() => target.focus());
+        if (options.focusKey) {
+          const target = Array.from(headerButtons).find((btn) => btn.dataset.key === options.focusKey);
+          if (target) {
+            requestAnimationFrame(() => target.focus());
+          }
         }
+      } else {
+        tableBody.innerHTML = '';
       }
 
       updateFocusableElements();
@@ -2405,6 +2465,25 @@ if (finderRoot) {
 
       titleEl.textContent = msg('modalTitle', { hospital: hospitalName });
       metaEl.textContent = metaLabel;
+
+      const unknownLabel = msg('modalInfoUnknown');
+      const totalCases = tableRows.reduce((sum, entry) => sum + (Number(entry.cases) || 0), 0);
+      const procedureCount = tableRows.length;
+
+      if (infoElements.type) {
+        infoElements.type.textContent = typeLabel || unknownLabel;
+      }
+      if (infoElements.canton) {
+        infoElements.canton.textContent = canton || unknownLabel;
+      }
+      if (infoElements.procedures) {
+        infoElements.procedures.textContent =
+          procedureCount > 0 ? procedureCount.toLocaleString() : unknownLabel;
+      }
+      if (infoElements.totalCases) {
+        infoElements.totalCases.textContent =
+          totalCases > 0 ? totalCases.toLocaleString() : unknownLabel;
+      }
       renderTable();
 
       overlay.hidden = false;

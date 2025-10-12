@@ -1192,6 +1192,11 @@ if (finderRoot) {
   const typeLabels = getObjectTranslation('types.labels');
   const typeBadges = getObjectTranslation('types.badges');
   const typeLegend = getObjectTranslation('types.legend');
+  const typeColors = {
+    university: '#0f766e',
+    kanton: '#2563eb',
+    private: '#ca8a04'
+  };
   const hhiLabels = getObjectTranslation('hhi.labels');
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
@@ -1537,9 +1542,9 @@ if (finderRoot) {
           <div class="finder-map-view" role="img"></div>
           <p class="finder-map-message finder-empty" hidden></p>
           <div class="finder-map-legend">
-            <span data-type="university"><i style="background:#059669"></i><span class="legend-label"></span></span>
-            <span data-type="kanton"><i style="background:#0ea5e9"></i><span class="legend-label"></span></span>
-            <span data-type="private"><i style="background:#f59e0b"></i><span class="legend-label"></span></span>
+            <span data-type="university"><i style="background:${typeColors.university}"></i><span class="legend-label"></span></span>
+            <span data-type="kanton"><i style="background:${typeColors.kanton}"></i><span class="legend-label"></span></span>
+            <span data-type="private"><i style="background:${typeColors.private}"></i><span class="legend-label"></span></span>
           </div>
         `;
         mapState.container = finderMap.querySelector('.finder-map-view');
@@ -1556,10 +1561,11 @@ if (finderRoot) {
           attributionControl: true
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attribution">CARTO</a>'
         }).addTo(mapState.map);
 
         if (mapState.map.attributionControl?.setPrefix) {
@@ -2209,15 +2215,16 @@ if (finderRoot) {
     mapState.markersLayer.clearLayers();
 
     hospitals.forEach((h) => {
-      const color = h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
-      const radius = 6 + (h.cases / maxCases) * 9;
+      const color = typeColors[h.type] ?? typeColors.private;
+      const radius = 6 + (h.cases / maxCases) * 8;
       const marker = L.circleMarker([h.lat, h.lon], {
         radius,
-        color,
+        color: '#ffffff',
         fillColor: color,
-        weight: 1,
-        opacity: 0.9,
-        fillOpacity: 0.9
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.85,
+        className: `finder-map-marker finder-map-marker--${h.type}`
       });
       marker.bindTooltip(msg('mapTooltip', { hospital: h.hospital, cases: h.cases.toLocaleString() }), {
         direction: 'top',

@@ -667,75 +667,97 @@ body {
 
 .finder-filter-card {
   position: relative;
-  display: grid;
-  gap: clamp(1.1rem, 0.85rem + 0.4vw, 1.6rem);
-  padding: clamp(1.45rem, 1.2rem + 0.6vw, 1.95rem) clamp(1.6rem, 1.3rem + 0.9vw, 2.3rem)
-    clamp(1.6rem, 1.3rem + 0.9vw, 2.35rem);
-  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 1rem + 0.4vw, 1.8rem);
+  padding: clamp(1.6rem, 1.25rem + 0.8vw, 2.3rem) clamp(1.7rem, 1.3rem + 1vw, 2.5rem)
+    clamp(1.85rem, 1.5rem + 1vw, 2.8rem);
+  border-radius: 1.1rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 228, 230, 0.75) 100%);
-  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.08);
-  min-height: 320px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 236, 240, 0.75) 55%, rgba(255, 255, 255, 0.92) 100%);
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.08);
+  min-height: 0;
+}
+
+.finder-filter-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .finder-filter-title {
   margin: 0;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #6b7280;
 }
 
-.finder-filter-row {
+.finder-filter-content {
   display: grid;
-  gap: 1rem;
-  align-items: stretch;
+  gap: clamp(1.15rem, 0.85rem + 0.8vw, 2rem);
 }
 
-.finder-filter-row--primary {
-  grid-template-columns: minmax(0, 1fr);
+.finder-filter-search {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 0.9rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: clamp(1rem, 0.8rem + 0.5vw, 1.4rem) clamp(1.05rem, 0.85rem + 0.7vw, 1.6rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-.finder-filter-row--secondary {
-  grid-template-columns: minmax(0, 1fr);
+.finder-filter-controls {
+  display: grid;
+  gap: clamp(1.1rem, 0.9rem + 0.4vw, 1.6rem);
 }
 
 .finder-filter-divider {
   height: 1px;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.14) 50%, rgba(15, 23, 42, 0) 100%);
+  width: 100%;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.16) 50%, rgba(15, 23, 42, 0) 100%);
   border-radius: 999px;
 }
 
 .finder-control {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.8rem;
+}
+
+.finder-control--type,
+.finder-control--canton {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 0.9rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: clamp(1rem, 0.8rem + 0.5vw, 1.4rem) clamp(1.05rem, 0.85rem + 0.7vw, 1.6rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .finder-control--type .finder-type-toggle {
   width: 100%;
 }
 
-.finder-control--canton {
-  width: 100%;
-}
-
-@media (min-width: 900px) {
-  .finder-filter-card {
-    padding: 1.9rem 2.2rem 2.1rem;
-    min-height: 360px;
+@media (min-width: 780px) {
+  .finder-filter-content {
+    gap: clamp(1.35rem, 0.8rem + 1vw, 2.1rem);
   }
 
-  .finder-filter-row--secondary {
-    grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.4fr);
-    gap: 1.6rem;
+  .finder-filter-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.2rem, 0.9rem + 0.7vw, 1.85rem);
   }
 }
 
 @media (min-width: 1200px) {
   .finder-filter-card {
-    min-height: 400px;
+    padding: 2.2rem 2.6rem 2.75rem;
+    gap: 2rem;
+  }
+
+  .finder-filter-controls {
+    grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
   }
 }
 
@@ -881,11 +903,11 @@ body {
 
 .finder-canton-dropdown__icon {
   margin-left: auto;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 0;
   overflow: hidden;
-  border: 1px solid rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   background: #fff;
   display: flex;
   align-items: center;
@@ -895,22 +917,18 @@ body {
 
 .finder-canton-dropdown__toggle .finder-canton-dropdown__icon {
   margin-left: 0;
-  width: 2.6rem;
-  height: 1.75rem;
-  border-radius: 0.45rem;
-  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
-  border-color: rgba(15, 23, 42, 0.12);
-}
-
-.finder-canton-dropdown__toggle .finder-canton-dropdown__icon img {
-  border-radius: inherit;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+  border-color: rgba(15, 23, 42, 0.14);
 }
 
 .finder-canton-dropdown__icon img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .finder-canton-dropdown__label {

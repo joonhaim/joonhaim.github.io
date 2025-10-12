@@ -97,22 +97,26 @@
       </div>
       <div class="finder-visual-column">
         <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
-          <p id="finder-filter-title" class="finder-filter-title">Narrow the hospital list</p>
-          <div class="finder-filter-row finder-filter-row--primary">
-            <div class="finder-control finder-control--search">
-              <label for="finder-search">Search hospital</label>
-              <input id="finder-search" type="search" placeholder="Type to filter hospitals" />
-            </div>
+          <div class="finder-filter-header">
+            <p id="finder-filter-title" class="finder-filter-title">Narrow the hospital list</p>
           </div>
-          <div class="finder-filter-divider" aria-hidden="true"></div>
-          <div class="finder-filter-row finder-filter-row--secondary">
-            <div class="finder-control finder-control--type">
-              <span class="finder-label">Filter by hospital type</span>
-              <div class="finder-type-toggle" id="finder-type-toggle"></div>
+          <div class="finder-filter-content">
+            <div class="finder-filter-search">
+              <div class="finder-control finder-control--search">
+                <label for="finder-search">Search hospital</label>
+                <input id="finder-search" type="search" placeholder="Type to filter hospitals" />
+              </div>
             </div>
-            <div class="finder-control finder-control--canton">
-              <label for="finder-canton">Filter by canton</label>
-              <select id="finder-canton"></select>
+            <div class="finder-filter-divider" aria-hidden="true"></div>
+            <div class="finder-filter-controls">
+              <div class="finder-control finder-control--type">
+                <span class="finder-label">Filter by hospital type</span>
+                <div class="finder-type-toggle" id="finder-type-toggle"></div>
+              </div>
+              <div class="finder-control finder-control--canton">
+                <label for="finder-canton">Filter by canton</label>
+                <select id="finder-canton"></select>
+              </div>
             </div>
           </div>
         </div>

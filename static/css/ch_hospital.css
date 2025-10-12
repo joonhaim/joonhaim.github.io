@@ -952,6 +952,15 @@ body {
   color: #111827;
 }
 
+.finder-kpi-hhi-label {
+  display: inline-block;
+  margin-left: 0.25rem;
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
 .finder-kpi-value--secondary .finder-kpi-value-number {
   font-size: 1.25rem;
   color: #1f2937;

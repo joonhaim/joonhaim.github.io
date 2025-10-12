@@ -1200,6 +1200,48 @@ if (finderRoot) {
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
 
+    const adjustHospitalNameSizes = () => {
+      if (!finderList) {
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        const rows = finderList.querySelectorAll('.finder-row');
+        if (!rows.length) {
+          return;
+        }
+
+        const rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const minFontPx = Math.max(11, rootFontPx * 0.72);
+        const stepPx = Math.max(0.5, rootFontPx * 0.04);
+
+        rows.forEach((row) => {
+          const name = row.querySelector('.finder-hospital-name');
+          if (!name) {
+            return;
+          }
+
+          name.style.removeProperty('font-size');
+
+          let currentSize = parseFloat(getComputedStyle(name).fontSize);
+          if (!Number.isFinite(currentSize)) {
+            return;
+          }
+
+          let attempts = 0;
+          while (name.scrollWidth > name.clientWidth && currentSize > minFontPx && attempts < 20) {
+            currentSize = Math.max(currentSize - stepPx, minFontPx);
+            name.style.fontSize = `${currentSize}px`;
+            attempts += 1;
+          }
+        });
+      });
+    };
+
+    if (finderList) {
+      window.addEventListener('resize', adjustHospitalNameSizes);
+    }
+
     let cantonDropdown;
     let cantonDropdownToggle;
     let cantonDropdownMenu;
@@ -2108,6 +2150,8 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    adjustHospitalNameSizes();
   }
 
   function renderMap(agg) {

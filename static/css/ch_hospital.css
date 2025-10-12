@@ -1207,6 +1207,12 @@ body {
   height: 100%;
   border-radius: inherit;
   font: inherit;
+  background: #f8fafc;
+}
+
+.finder-map-card .leaflet-interactive:focus-visible {
+  outline: 2px solid #0ea5e9;
+  outline-offset: 2px;
 }
 
 .finder-map-message {

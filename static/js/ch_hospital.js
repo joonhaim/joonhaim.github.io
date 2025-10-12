@@ -121,6 +121,25 @@ const SWITZERLAND_BOUNDS = {
   lonMax: 10.5
 };
 
+const CANTON_BOUNDARIES_URL = 'https://code.highcharts.com/mapdata/countries/ch/ch-all.geo.json';
+const CANTON_BOUNDARY_BASE_STYLE = {
+  color: '#6b7280',
+  weight: 1,
+  opacity: 0.55,
+  fillOpacity: 0,
+  dashArray: null,
+  lineJoin: 'round'
+};
+const CANTON_BOUNDARY_HIGHLIGHT_STYLE = {
+  color: '#0ea5e9',
+  weight: 2.5,
+  opacity: 0.9,
+  fillOpacity: 0.08,
+  fillColor: '#0ea5e9',
+  dashArray: null,
+  lineJoin: 'round'
+};
+
 // Approximate lat/lon span (in degrees) for each canton to derive custom bounds.
 const cantonSpan = {
   AG: { lat: 0.8, lon: 1.1 },
@@ -1194,6 +1213,7 @@ if (finderRoot) {
     let cantonDropdownOpen = false;
     let cantonDropdownActiveIndex = -1;
     const cantonDropdownMenuId = 'finder-canton-dropdown-menu';
+    let getSelectedCanton = () => ALL_CANTONS_OPTION;
 
     function renderCantonDropdownOption(option) {
       if (!option) {
@@ -1310,11 +1330,8 @@ if (finderRoot) {
       if (!finderCanton) {
         return;
       }
-      const option = getCantonOptionByValue(value);
-      finderCanton.value = option.value;
-      finderCanton.dispatchEvent(new Event('change', { bubbles: true }));
       closeCantonDropdown();
-      cantonDropdownToggle?.focus();
+      applyCantonSelection(value, { focusToggle: true });
     }
 
     function ensureCantonDropdown() {
@@ -1457,7 +1474,10 @@ if (finderRoot) {
       container: null,
       titleEl: null,
       messageEl: null,
-      legendEls: { university: null, kanton: null, private: null }
+      legendEls: { university: null, kanton: null, private: null },
+      cantonBoundariesLayer: null,
+      cantonLayers: new Map(),
+      boundaryPromise: null
     };
 
     function ensureMapStructure() {
@@ -1493,10 +1513,18 @@ if (finderRoot) {
           attributionControl: true
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
+        mapState.map.createPane('canton-boundaries');
+        const boundaryPane = mapState.map.getPane('canton-boundaries');
+        if (boundaryPane) {
+          boundaryPane.style.zIndex = '410';
+        }
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          subdomains: 'abcd',
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
+            '&copy; <a href="https://carto.com/attributions">CARTO</a>'
         }).addTo(mapState.map);
 
         if (mapState.map.attributionControl?.setPrefix) {
@@ -1504,6 +1532,8 @@ if (finderRoot) {
         }
 
         mapState.markersLayer = L.layerGroup().addTo(mapState.map);
+        mapState.cantonLayers.clear();
+        ensureCantonBoundaries();
         mapState.ready = true;
         requestAnimationFrame(() => mapState.map.invalidateSize());
       }
@@ -1532,6 +1562,155 @@ if (finderRoot) {
       mapState.messageEl.hidden = false;
     }
 
+    const normalizeCantonCode = (value) => {
+      if (value == null) {
+        return null;
+      }
+      const raw = String(value).trim();
+      if (!raw) {
+        return null;
+      }
+      const sanitized = raw.replace(/^CH[.-]?/i, '');
+      const segments = sanitized.split(/[.-]/);
+      const candidate = segments[segments.length - 1].toUpperCase();
+      return candidate.length === 2 ? candidate : null;
+    };
+
+    function parseCantonCodeFromFeature(feature) {
+      const props = feature?.properties ?? {};
+      const candidates = [
+        props.KURZEL,
+        props.KUERZEL,
+        props.abbr,
+        props.code,
+        props['iso-a2'],
+        props['hc-a2'],
+        props['postal-code'],
+        props['hasc'],
+        props['hc-key'],
+        props.id
+      ];
+      for (const candidate of candidates) {
+        const normalized = normalizeCantonCode(candidate);
+        if (normalized) {
+          return normalized;
+        }
+      }
+      return null;
+    }
+
+    function ensureCantonBoundaries() {
+      if (!mapState.map) {
+        return null;
+      }
+      if (mapState.cantonBoundariesLayer) {
+        return Promise.resolve(mapState.cantonBoundariesLayer);
+      }
+      if (mapState.boundaryPromise) {
+        return mapState.boundaryPromise;
+      }
+
+      mapState.boundaryPromise = fetch(CANTON_BOUNDARIES_URL)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to load canton boundaries: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((geojson) => {
+          if (!geojson || geojson.type !== 'FeatureCollection') {
+            throw new Error('Unexpected canton boundary dataset.');
+          }
+          if (mapState.cantonBoundariesLayer) {
+            mapState.map.removeLayer(mapState.cantonBoundariesLayer);
+          }
+          mapState.cantonLayers.clear();
+          mapState.cantonBoundariesLayer = L.geoJSON(geojson, {
+            pane: 'canton-boundaries',
+            style: () => ({ ...CANTON_BOUNDARY_BASE_STYLE }),
+            onEachFeature: (feature, layer) => {
+              const code = parseCantonCodeFromFeature(feature);
+              const name = feature?.properties?.name;
+              if (layer && typeof layer.bindTooltip === 'function' && name) {
+                layer.bindTooltip(name, {
+                  direction: 'auto',
+                  sticky: true,
+                  opacity: 0.85
+                });
+              }
+              if (!code) {
+                return;
+              }
+              mapState.cantonLayers.set(code, layer);
+              layer.on('click', () => applyCantonSelection(code));
+              layer.on('add', () => {
+                const element = layer.getElement?.();
+                if (!element) {
+                  return;
+                }
+                element.setAttribute('tabindex', '0');
+                element.setAttribute('role', 'button');
+                element.setAttribute('aria-label', name ? `Canton ${name}` : `Canton ${code}`);
+                element.addEventListener('keydown', (event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    applyCantonSelection(code);
+                  }
+                });
+              });
+            }
+          });
+          mapState.cantonBoundariesLayer.addTo(mapState.map);
+          updateCantonBoundaryHighlight();
+          return mapState.cantonBoundariesLayer;
+        })
+        .catch((error) => {
+          console.warn('Unable to load canton boundaries', error);
+          return null;
+        })
+        .finally(() => {
+          if (!mapState.cantonBoundariesLayer) {
+            mapState.boundaryPromise = null;
+          }
+        });
+
+      return mapState.boundaryPromise;
+    }
+
+    function updateCantonBoundaryHighlight() {
+      if (!mapState.cantonLayers.size) {
+        return;
+      }
+      const selected = getSelectedCanton();
+      mapState.cantonLayers.forEach((layer, code) => {
+        const isSelected = selected !== ALL_CANTONS_OPTION && code === selected;
+        const style = isSelected ? CANTON_BOUNDARY_HIGHLIGHT_STYLE : CANTON_BOUNDARY_BASE_STYLE;
+        if (typeof layer.setStyle === 'function') {
+          layer.setStyle({ ...style });
+        }
+        if (isSelected && typeof layer.bringToFront === 'function') {
+          layer.bringToFront();
+        }
+      });
+    }
+
+    function latLngBoundsToSpan(bounds) {
+      if (!bounds || typeof bounds.getNorthEast !== 'function' || typeof bounds.getSouthWest !== 'function') {
+        return null;
+      }
+      const northEast = bounds.getNorthEast();
+      const southWest = bounds.getSouthWest();
+      if (!northEast || !southWest) {
+        return null;
+      }
+      return {
+        latMin: Math.min(northEast.lat, southWest.lat),
+        latMax: Math.max(northEast.lat, southWest.lat),
+        lonMin: Math.min(northEast.lng, southWest.lng),
+        lonMax: Math.max(northEast.lng, southWest.lng)
+      };
+    }
+
     const defaultCategory = procedureCatalog[0] ?? null;
     const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
 
@@ -1544,6 +1723,28 @@ if (finderRoot) {
       typeFilter: { university: true, kanton: true, private: true },
       listPage: 0
     };
+
+    getSelectedCanton = () => state.selectedCanton;
+
+    function applyCantonSelection(value, { focusToggle = false } = {}) {
+      const option = getCantonOptionByValue(value);
+      const newValue = option.value;
+      const hasChanged = state.selectedCanton !== newValue;
+      state.selectedCanton = newValue;
+      state.listPage = 0;
+      if (finderCanton && finderCanton.value !== newValue) {
+        finderCanton.value = newValue;
+      }
+      updateCantonDropdownDisplay(newValue);
+      if (focusToggle) {
+        cantonDropdownToggle?.focus();
+      }
+      if (hasChanged) {
+        render();
+      } else {
+        updateCantonBoundaryHighlight();
+      }
+    }
 
     const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
@@ -2013,6 +2214,8 @@ if (finderRoot) {
       return;
     }
 
+    ensureCantonBoundaries();
+
     const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
     if (!hospitalsWithCoords.length) {
       mapState.markersLayer.clearLayers();
@@ -2030,10 +2233,15 @@ if (finderRoot) {
     const referenceHospitals = hospitals.length ? hospitals : hospitalsWithCoords;
     const maxCases = referenceHospitals[0]?.cases || 1;
 
+    const leafletBoundaryBounds =
+      state.selectedCanton === ALL_CANTONS_OPTION
+        ? null
+        : mapState.cantonLayers.get(state.selectedCanton)?.getBounds?.() ?? null;
+    const derivedBounds = leafletBoundaryBounds ? latLngBoundsToSpan(leafletBoundaryBounds) : null;
     const targetBounds =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? SWITZERLAND_BOUNDS
-        : cantonBounds[state.selectedCanton] ?? SWITZERLAND_BOUNDS;
+        : derivedBounds ?? cantonBounds[state.selectedCanton] ?? SWITZERLAND_BOUNDS;
 
     const latExtent = Math.max(0, targetBounds.latMax - targetBounds.latMin);
     const lonExtent = Math.max(0, targetBounds.lonMax - targetBounds.lonMin);
@@ -2092,6 +2300,7 @@ if (finderRoot) {
       }
     }
 
+    updateCantonBoundaryHighlight();
     mapState.map.invalidateSize();
   }
 
@@ -2215,15 +2424,7 @@ if (finderRoot) {
     updateCantonDropdownDisplay(state.selectedCanton);
 
     finderCanton.addEventListener('change', (event) => {
-      const value = event.target.value;
-      const selectedOption = getCantonOptionByValue(value);
-      if (finderCanton.value !== selectedOption.value) {
-        finderCanton.value = selectedOption.value;
-      }
-      state.selectedCanton = selectedOption.value;
-      state.listPage = 0;
-      updateCantonDropdownDisplay(state.selectedCanton);
-      render();
+      applyCantonSelection(event.target.value);
     });
 
     render();

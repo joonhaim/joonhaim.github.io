@@ -310,6 +310,27 @@ const hospitalMetadataOverrides = {
   "Zuger Kantonsspital AG": { type: "kanton", canton: "ZG" }
 };
 
+const hospitalDisplayNameOverrides = {
+  "Universitäts-Kinderspital Zürich das Spital der Eleonorenstiftung": "Kinderspital Zürich (Eleonorenstiftung)",
+  "Spital Thurgau AG Kantonsspitäler Frauenfeld & Münsterlingen": "Spital Thurgau – KSp Frauenfeld & Münsterlingen",
+  "Hôpital du Valais Centre hospitalier du Valais Romand CHVR": "Hôpital du Valais – CHVR (Valais Romand)",
+  "Etablissements Hospitaliers du Nord Vaudois (eHnv)": "eHnv – Etablissements du Nord Vaudois",
+  "Groupement Hospitalier de l'Ouest Lémanique (GHOL) SA": "GHOL – Ouest Lémanique",
+  "Center da Sanda Engiadina Bassa Ospidal d'Engiadina Bassa": "CSEB – Ospidal d’Engiadina Bassa",
+  "Pôle santé Vallée de Joux Hôpital de la Vallée de Joux": "Hôpital de la Vallée (Vallée de Joux)",
+  "Swiss Medical Network Hospitals SA Clinica Sant'Anna": "Swiss Medical Network – Clinica Sant’Anna",
+  "Gruppo ospedaliero Moncucco Clinica Santa Chiara SA": "Gruppo Moncucco – Clinica Santa Chiara",
+  "Swiss Medical Network Hospitals SA Clinica Ars Medica": "Swiss Medical Network – Clinica Ars Medica",
+  "Swiss Medical Network Hospitals SA Clinique Générale Ste-Anne": "Swiss Medical Network – Clinique Générale Ste-Anne",
+  "Swiss Medical Network Hospitals SA Clinique de Valère": "Swiss Medical Network – Clinique de Valère",
+  "Swiss Medical Network Hospitals SA Privatklinik Obach": "Swiss Medical Network – Privatklinik Obach",
+  "Swiss Medical Network Hospitals SA Privatklinik Siloah": "Swiss Medical Network – Privatklinik Siloah",
+  "Swiss Medical Network Hospitals SA Privatklinik Villa im Park": "Swiss Medical Network – Privatklinik Villa im Park",
+  "Swiss Medical Network Hospitals SA Privatklinik Belair": "Swiss Medical Network – Privatklinik Belair"
+};
+
+const getHospitalDisplayName = (name) => hospitalDisplayNameOverrides[name] ?? name;
+
 const excludedInstitutions = new Set([
   'CH',
   'Allgemeinspital, Grundversorgung (Niveau 4)',
@@ -1820,8 +1841,10 @@ if (finderRoot) {
     const enrichedAll = entries
       .map((entry) => {
         const meta = finderDataset.meta.get(entry.institution) || inferHospitalMeta(entry.institution);
+        const displayName = getHospitalDisplayName(entry.institution);
         return {
-          hospital: entry.institution,
+          hospital: displayName,
+          originalName: entry.institution,
           cases: entry.cases,
           type: meta.type,
           canton: meta.canton,
@@ -2046,9 +2069,11 @@ if (finderRoot) {
     }
 
     const searchLower = normalizeString(state.search.trim());
-    const filteredBySearch = agg.hospitals.filter((h) =>
-      normalizeString(h.hospital).includes(searchLower)
-    );
+    const filteredBySearch = agg.hospitals.filter((h) => {
+      const normalizedDisplay = normalizeString(h.hospital);
+      const normalizedOriginal = normalizeString(h.originalName ?? '');
+      return normalizedDisplay.includes(searchLower) || normalizedOriginal.includes(searchLower);
+    });
     if (!filteredBySearch.length) {
       finderListMeta.textContent = msg('noHospitalsSearch');
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;

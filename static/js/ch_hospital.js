@@ -571,7 +571,6 @@ if (finderRoot) {
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
-        mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
         mapUnavailable: 'The interactive map could not be loaded.',
@@ -692,7 +691,6 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
-        mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
@@ -813,7 +811,6 @@ if (finderRoot) {
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
-        mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
@@ -934,7 +931,6 @@ if (finderRoot) {
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
-        mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
@@ -1181,7 +1177,7 @@ if (finderRoot) {
   };
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
-  const PAGE_SIZE = 7;
+  const PAGE_SIZE = 10;
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
   function initializeFinderUi(procedureCatalog) {
@@ -1500,7 +1496,6 @@ if (finderRoot) {
       map: null,
       markersLayer: null,
       container: null,
-      titleEl: null,
       messageEl: null,
       legendEls: { university: null, kanton: null, private: null }
     };
@@ -1514,16 +1509,16 @@ if (finderRoot) {
       }
       if (!mapState.ready) {
         finderMap.innerHTML = `
-          <h3 class="finder-map-title"></h3>
-          <div class="finder-map-view" role="img"></div>
-          <p class="finder-map-message finder-empty" hidden></p>
+          <div class="finder-map-surface">
+            <div class="finder-map-view" role="img"></div>
+            <div class="finder-map-message finder-empty" hidden></div>
+          </div>
           <div class="finder-map-legend">
             <span data-type="university"><i style="background:#059669"></i><span class="legend-label"></span></span>
             <span data-type="kanton"><i style="background:#0ea5e9"></i><span class="legend-label"></span></span>
             <span data-type="private"><i style="background:#f59e0b"></i><span class="legend-label"></span></span>
           </div>
         `;
-        mapState.titleEl = finderMap.querySelector('.finder-map-title');
         mapState.container = finderMap.querySelector('.finder-map-view');
         mapState.messageEl = finderMap.querySelector('.finder-map-message');
         mapState.legendEls = {
@@ -1553,12 +1548,13 @@ if (finderRoot) {
         requestAnimationFrame(() => mapState.map.invalidateSize());
       }
 
-      mapState.titleEl.textContent = msg('mapTitle');
       mapState.container.setAttribute('aria-label', msg('mapAriaLabel'));
       mapState.legendEls.university.textContent = typeLegend.university;
       mapState.legendEls.kanton.textContent = typeLegend.kanton;
       mapState.legendEls.private.textContent = typeLegend.private;
       mapState.messageEl.hidden = true;
+      mapState.messageEl.textContent = '';
+      mapState.messageEl.className = 'finder-map-message finder-empty';
 
       return true;
     }
@@ -1568,7 +1564,7 @@ if (finderRoot) {
         return;
       }
       if (!ensureMapStructure()) {
-        finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="${className}">${message}</p>`;
+        finderMap.innerHTML = `<div class="finder-map-placeholder ${className}">${escapeHtml(message)}</div>`;
         return;
       }
       mapState.markersLayer?.clearLayers();
@@ -2144,7 +2140,9 @@ if (finderRoot) {
     }
 
     if (!ensureMapStructure()) {
-      finderMap.innerHTML = `<h3>${msg('mapTitle')}</h3><p class="finder-error">${msg('mapUnavailable')}</p>`;
+      finderMap.innerHTML = `<div class="finder-map-placeholder finder-error">${escapeHtml(
+        msg('mapUnavailable')
+      )}</div>`;
       return;
     }
 
@@ -2212,6 +2210,8 @@ if (finderRoot) {
       mapState.messageEl.hidden = false;
     } else {
       mapState.messageEl.hidden = true;
+      mapState.messageEl.textContent = '';
+      mapState.messageEl.className = 'finder-map-message finder-empty';
     }
 
     if (leafletBounds.isValid()) {

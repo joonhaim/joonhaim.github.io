@@ -2225,23 +2225,25 @@ if (finderRoot) {
       return;
     }
 
+    const selectedCanton = state.selectedCanton;
+
     const hospitals =
-      state.selectedCanton === ALL_CANTONS_OPTION
+      selectedCanton === ALL_CANTONS_OPTION
         ? hospitalsWithCoords
-        : hospitalsWithCoords.filter((h) => h.canton === state.selectedCanton);
+        : hospitalsWithCoords.filter((h) => h.canton === selectedCanton);
 
     const referenceHospitals = hospitals.length ? hospitals : hospitalsWithCoords;
     const maxCases = referenceHospitals[0]?.cases || 1;
 
     const leafletBoundaryBounds =
-      state.selectedCanton === ALL_CANTONS_OPTION
+      selectedCanton === ALL_CANTONS_OPTION
         ? null
-        : mapState.cantonLayers.get(state.selectedCanton)?.getBounds?.() ?? null;
+        : mapState.cantonLayers.get(selectedCanton)?.getBounds?.() ?? null;
     const derivedBounds = leafletBoundaryBounds ? latLngBoundsToSpan(leafletBoundaryBounds) : null;
     const targetBounds =
-      state.selectedCanton === ALL_CANTONS_OPTION
+      selectedCanton === ALL_CANTONS_OPTION
         ? SWITZERLAND_BOUNDS
-        : derivedBounds ?? cantonBounds[state.selectedCanton] ?? SWITZERLAND_BOUNDS;
+        : derivedBounds ?? cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS;
 
     const latExtent = Math.max(0, targetBounds.latMax - targetBounds.latMin);
     const lonExtent = Math.max(0, targetBounds.lonMax - targetBounds.lonMin);
@@ -2287,6 +2289,8 @@ if (finderRoot) {
       mapState.messageEl.hidden = true;
     }
 
+    const usedFallbackBounds = !leafletBoundaryBounds && selectedCanton !== ALL_CANTONS_OPTION;
+
     if (leafletBounds.isValid()) {
       const northEast = leafletBounds.getNorthEast();
       const southWest = leafletBounds.getSouthWest();
@@ -2298,6 +2302,23 @@ if (finderRoot) {
       } else {
         mapState.map.fitBounds(leafletBounds.pad(0.12), { animate: false });
       }
+    }
+
+    if (usedFallbackBounds && mapState.boundaryPromise) {
+      const expectedCanton = selectedCanton;
+      mapState.boundaryPromise
+        .then(() => {
+          if (state.selectedCanton !== expectedCanton || expectedCanton === ALL_CANTONS_OPTION) {
+            return;
+          }
+          const layer = mapState.cantonLayers.get(expectedCanton);
+          const layerBounds = layer?.getBounds?.();
+          if (!layerBounds || !layerBounds.isValid?.()) {
+            return;
+          }
+          mapState.map.fitBounds(layerBounds.pad?.(0.12) ?? layerBounds, { animate: true });
+        })
+        .catch(() => {});
     }
 
     updateCantonBoundaryHighlight();

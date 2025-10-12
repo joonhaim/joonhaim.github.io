@@ -886,9 +886,26 @@ body {
 
 .finder-kpis {
   display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.finder-kpi-group {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.finder-kpi-group__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: 0.02em;
+}
+
+.finder-kpi-grid {
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .finder-kpi {

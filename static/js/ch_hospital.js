@@ -500,10 +500,12 @@ if (finderRoot) {
         footnote: '&lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
       },
       kpi: {
-        totalCases: 'Total cases (CH)',
+        totalCases: 'Total cases',
         hospitalsPerforming: 'Hospitals performing',
         universityShare: 'Share at Univ. hospitals',
-        centralization: 'Centralization (HHI)'
+        centralization: 'Centralization (HHI)',
+        nationalScope: 'Switzerland (CH)',
+        cantonScope: 'Canton {canton}'
       },
       messages: {
         allCantons: 'All cantons',
@@ -619,10 +621,12 @@ if (finderRoot) {
         footnote: '&lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
       },
       kpi: {
-        totalCases: 'Fallzahlen gesamt (CH)',
+        totalCases: 'Fallzahlen gesamt',
         hospitalsPerforming: 'Durchführende Spitäler',
         universityShare: 'Anteil universitäre Spitäler',
-        centralization: 'Zentralisierung (HHI)'
+        centralization: 'Zentralisierung (HHI)',
+        nationalScope: 'Schweiz (CH)',
+        cantonScope: 'Kanton {canton}'
       },
       messages: {
         allCantons: 'Alle Kantone',
@@ -738,10 +742,12 @@ if (finderRoot) {
         footnote: '&lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée'
       },
       kpi: {
-        totalCases: 'Cas totaux (CH)',
+        totalCases: 'Cas totaux',
         hospitalsPerforming: 'Hôpitaux actifs',
         universityShare: 'Part des hôpitaux universitaires',
-        centralization: 'Centralisation (HHI)'
+        centralization: 'Centralisation (HHI)',
+        nationalScope: 'Suisse (CH)',
+        cantonScope: 'Canton {canton}'
       },
       messages: {
         allCantons: 'Tous les cantons',
@@ -857,10 +863,12 @@ if (finderRoot) {
         footnote: '&lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta'
       },
       kpi: {
-        totalCases: 'Casi totali (CH)',
+        totalCases: 'Casi totali',
         hospitalsPerforming: 'Ospedali attivi',
         universityShare: 'Quota ospedali universitari',
-        centralization: 'Centralizzazione (HHI)'
+        centralization: 'Centralizzazione (HHI)',
+        nationalScope: 'Svizzera (CH)',
+        cantonScope: 'Cantone {canton}'
       },
       messages: {
         allCantons: 'Tutti i cantoni',
@@ -1151,6 +1159,8 @@ if (finderRoot) {
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
   };
+  const kpiScopeNational = translate('kpi.nationalScope');
+  const getKpiScopeForCanton = (code) => translate('kpi.cantonScope', { canton: code });
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
@@ -1531,6 +1541,45 @@ if (finderRoot) {
 
     const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
+    const emptyScopeStats = () => ({
+      total: 0,
+      hospitals: [],
+      uniShare: 0,
+      hhi: 0,
+      hhiLabel: labelFromHHI(0)
+    });
+
+    const computeScopeStats = (entries) => {
+      if (!entries.length) {
+        return emptyScopeStats();
+      }
+
+      const total = entries.reduce((sum, h) => sum + h.cases, 0);
+      if (!total) {
+        return emptyScopeStats();
+      }
+
+      const hospitals = entries
+        .map((h) => ({ ...h, share: h.cases / total }))
+        .sort((a, b) => b.cases - a.cases);
+
+      const uniCases = entries
+        .filter((h) => h.type === 'university')
+        .reduce((sum, h) => sum + h.cases, 0);
+
+      const hhi = Math.round(
+        hospitals.reduce((sum, h) => sum + (h.share * 100) ** 2, 0)
+      );
+
+      return {
+        total,
+        hospitals,
+        uniShare: uniCases / total,
+        hhi,
+        hhiLabel: labelFromHHI(hhi)
+      };
+    };
+
     let finderDataset = null;
     let availableTypes = [];
 
@@ -1735,120 +1784,134 @@ if (finderRoot) {
   }
 
   function computeAggregation(procCode) {
+    const fallbackStats = emptyScopeStats();
+
     if (!finderDataset) {
       return {
-        total: 0,
-        hospitals: [],
-        uniShare: 0,
-        hhi: 0,
-        hhiLabel: labelFromHHI(0),
-        cantonHosp: []
+        total: fallbackStats.total,
+        hospitals: fallbackStats.hospitals,
+        uniShare: fallbackStats.uniShare,
+        hhi: fallbackStats.hhi,
+        hhiLabel: fallbackStats.hhiLabel,
+        cantonHosp: [],
+        metrics: {
+          national: fallbackStats,
+          canton: state.selectedCanton === ALL_CANTONS_OPTION ? null : emptyScopeStats()
+        }
       };
     }
 
     const entries = finderDataset.byProcedure.get(procCode) || [];
-    const enrichedAll = entries
-      .map((entry) => {
-        const meta = finderDataset.meta.get(entry.institution) || inferHospitalMeta(entry.institution);
-        return {
-          hospital: entry.institution,
-          cases: entry.cases,
-          type: meta.type,
-          canton: meta.canton,
-          lat: meta.lat,
-          lon: meta.lon
-        };
-      });
-
-    const totalAll = enrichedAll.reduce((sum, h) => sum + h.cases, 0);
-
-    if (!totalAll) {
+    const enrichedAll = entries.map((entry) => {
+      const meta = finderDataset.meta.get(entry.institution) || inferHospitalMeta(entry.institution);
       return {
-        total: 0,
-        hospitals: [],
-        uniShare: 0,
-        hhi: 0,
-        hhiLabel: labelFromHHI(0),
-        cantonHosp: []
+        hospital: entry.institution,
+        cases: entry.cases,
+        type: meta.type,
+        canton: meta.canton,
+        lat: meta.lat,
+        lon: meta.lon
       };
+    });
+
+    const filteredByType = enrichedAll.filter((h) => state.typeFilter[h.type] !== false);
+    const nationalMetrics = filteredByType.length ? computeScopeStats(filteredByType) : emptyScopeStats();
+
+    let cantonMetrics = null;
+    if (state.selectedCanton !== ALL_CANTONS_OPTION) {
+      const cantonEntries = filteredByType.filter((h) => h.canton === state.selectedCanton);
+      cantonMetrics = computeScopeStats(cantonEntries);
     }
 
-    const overallUniShare = enrichedAll
-      .filter((h) => h.type === 'university')
-      .reduce((sum, h) => sum + h.cases, 0) / totalAll;
-
-    const enriched = enrichedAll.filter((h) => state.typeFilter[h.type] !== false);
-
-    const total = enriched.reduce((sum, h) => sum + h.cases, 0);
-
-    if (!total) {
-      return {
-        total: 0,
-        hospitals: [],
-        uniShare: overallUniShare,
-        hhi: 0,
-        hhiLabel: labelFromHHI(0),
-        cantonHosp: []
-      };
-    }
-
-    const hospitalsWithShare = enriched
-      .map((h) => ({ ...h, share: h.cases / total }))
-      .sort((a, b) => b.cases - a.cases);
-
-    const cantonHosp =
-      state.selectedCanton === ALL_CANTONS_OPTION
-        ? hospitalsWithShare
-        : hospitalsWithShare.filter((h) => h.canton === state.selectedCanton);
-
-    const hhi = Math.round(
-      hospitalsWithShare.reduce((sum, h) => sum + (h.share * 100) ** 2, 0)
-    );
+    const displayMetrics =
+      state.selectedCanton !== ALL_CANTONS_OPTION && cantonMetrics ? cantonMetrics : nationalMetrics;
 
     return {
-      total,
-      hospitals: hospitalsWithShare,
-      uniShare: overallUniShare,
-      hhi,
-      hhiLabel: labelFromHHI(hhi),
-      cantonHosp
+      total: displayMetrics.total,
+      hospitals: displayMetrics.hospitals,
+      uniShare: displayMetrics.uniShare,
+      hhi: displayMetrics.hhi,
+      hhiLabel: displayMetrics.hhiLabel,
+      cantonHosp: cantonMetrics ? cantonMetrics.hospitals : [],
+      metrics: {
+        national: nationalMetrics,
+        canton: cantonMetrics
+      }
     };
   }
 
   function renderKpis(agg) {
-    const tiles = [
-      {
-        label: kpiLabels.totalCases,
-        value: agg.total ? agg.total.toLocaleString() : '0',
-        footnote: ''
-      },
-      {
-        label: kpiLabels.hospitalsPerforming,
-        value: agg.hospitals.length.toLocaleString(),
-        footnote: ''
-      },
-      {
-        label: kpiLabels.universityShare,
-        value: `${Math.round(agg.uniShare * 100)}%`,
-        footnote: ''
-      },
-      {
-        label: kpiLabels.centralization,
-        value: `${agg.hhi} – ${agg.hhiLabel}`,
-        footnote: hhiFootnote
-      }
-    ];
+    const groups = [];
 
-    finderKpis.innerHTML = tiles
-      .map(
-        (tile) => `
-          <div class="finder-kpi">
-            <small>${tile.label}</small>
-            <strong>${tile.value}</strong>
-            ${tile.footnote ? `<span>${tile.footnote}</span>` : ''}
+    const nationalMetrics = agg.metrics?.national ?? {
+      total: agg.total,
+      hospitals: agg.hospitals,
+      uniShare: agg.uniShare,
+      hhi: agg.hhi,
+      hhiLabel: agg.hhiLabel
+    };
+
+    groups.push({ title: kpiScopeNational, metrics: nationalMetrics });
+
+    if (state.selectedCanton !== ALL_CANTONS_OPTION) {
+      const cantonMetrics =
+        agg.metrics?.canton ?? {
+          total: 0,
+          hospitals: [],
+          uniShare: 0,
+          hhi: 0,
+          hhiLabel: labelFromHHI(0)
+        };
+      groups.push({
+        title: getKpiScopeForCanton(state.selectedCanton),
+        metrics: cantonMetrics
+      });
+    }
+
+    finderKpis.innerHTML = groups
+      .map((group, index) => {
+        const tiles = [
+          {
+            label: kpiLabels.totalCases,
+            value: group.metrics.total ? group.metrics.total.toLocaleString() : '0',
+            footnote: ''
+          },
+          {
+            label: kpiLabels.hospitalsPerforming,
+            value: (group.metrics.hospitals?.length ?? 0).toLocaleString(),
+            footnote: ''
+          },
+          {
+            label: kpiLabels.universityShare,
+            value: `${Math.round((group.metrics.uniShare ?? 0) * 100)}%`,
+            footnote: ''
+          },
+          {
+            label: kpiLabels.centralization,
+            value: `${group.metrics.hhi ?? 0} – ${group.metrics.hhiLabel ?? labelFromHHI(0)}`,
+            footnote: index === 0 ? hhiFootnote : ''
+          }
+        ];
+
+        const tilesMarkup = tiles
+          .map(
+            (tile) => `
+              <div class="finder-kpi">
+                <small>${tile.label}</small>
+                <strong>${tile.value}</strong>
+                ${tile.footnote ? `<span>${tile.footnote}</span>` : ''}
+              </div>
+            `
+          )
+          .join('');
+
+        return `
+          <div class="finder-kpi-group">
+            <div class="finder-kpi-group__title">${group.title}</div>
+            <div class="finder-kpi-grid">${tilesMarkup}</div>
           </div>
-        `
-      )
+        `;
+      })
       .join('');
   }
 
@@ -2070,7 +2133,8 @@ if (finderRoot) {
       summaryText = msg('cantonNoHospitals', { canton: state.selectedCanton });
     } else {
       const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
-      const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
+      const nationalTotal = agg.metrics?.national?.total ?? 0;
+      const nationalShare = nationalTotal ? ((leader.cases / nationalTotal) * 100).toFixed(1) : '0.0';
       const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
       summaryText = msg('cantonSummary', {
         canton: state.selectedCanton,

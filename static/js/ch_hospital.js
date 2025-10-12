@@ -74,6 +74,11 @@ const escapeAttribute = (value) =>
     .replace(/'/g, '&#39;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+const escapeHtml = (value) =>
+  (value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 const fadeObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -516,7 +521,7 @@ if (finderRoot) {
           'The Herfindahl–Hirschman Index (HHI) sums the squared market shares of hospitals. Scores range from 0 (many providers) to 10&nbsp;000 (single provider). &lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
       },
       kpi: {
-        totalCases: 'Total cases',
+        totalCases: 'Total Cases (2023)',
         hospitalsPerforming: 'Hospitals performing',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI)',
@@ -637,7 +642,7 @@ if (finderRoot) {
           'Der Herfindahl-Hirschman-Index (HHI) summiert die quadrierten Marktanteile der Spitäler. Werte reichen von 0 (viele Anbieter) bis 10&nbsp;000 (ein Anbieter). &lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
       },
       kpi: {
-        totalCases: 'Fallzahlen gesamt',
+        totalCases: 'Fallzahlen gesamt (2023)',
         hospitalsPerforming: 'Durchführende Spitäler',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI)',
@@ -758,7 +763,7 @@ if (finderRoot) {
           "L'indice Herfindahl-Hirschman (HHI) additionne les parts de marché au carré des hôpitaux. Les scores vont de 0 (offre dispersée) à 10&nbsp;000 (monopole). &lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée"
       },
       kpi: {
-        totalCases: 'Cas totaux',
+        totalCases: 'Cas totaux (2023)',
         hospitalsPerforming: 'Hôpitaux actifs',
         universityShare: 'Part des hôpitaux universitaires',
         centralization: 'Centralisation (HHI)',
@@ -879,7 +884,7 @@ if (finderRoot) {
           "L'indice di Herfindahl-Hirschman (HHI) somma le quote di mercato al quadrato degli ospedali. I punteggi vanno da 0 (molti fornitori) a 10&nbsp;000 (monopolio). &lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta"
       },
       kpi: {
-        totalCases: 'Casi totali',
+        totalCases: 'Casi totali (2023)',
         hospitalsPerforming: 'Ospedali attivi',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (HHI)',
@@ -1894,9 +1899,10 @@ if (finderRoot) {
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
 
-    const createValueMarkup = (label, value, isSecondary = false) => {
+    const createValueMarkup = (label, value, options = {}) => {
+      const { isSecondary = false, allowHtmlValue = false } = options;
       const safeLabel = escapeAttribute(label);
-      const safeValue = escapeAttribute(value);
+      const safeValue = allowHtmlValue ? value : escapeAttribute(value);
       return `
         <div class="finder-kpi-value${isSecondary ? ' finder-kpi-value--secondary' : ''}">
           <span class="finder-kpi-value-label">${safeLabel}</span>
@@ -1908,7 +1914,7 @@ if (finderRoot) {
     const createValuesBlock = (primaryValue, secondaryValue) => {
       const rows = [createValueMarkup(switzerlandLabel, primaryValue)];
       if (hasCantonSelection && secondaryValue != null) {
-        rows.push(createValueMarkup(state.selectedCanton, secondaryValue, true));
+        rows.push(createValueMarkup(state.selectedCanton, secondaryValue, { isSecondary: true }));
       }
       return `<div class="finder-kpi-values">${rows.join('')}</div>`;
     };
@@ -1938,9 +1944,10 @@ if (finderRoot) {
       {
         label: kpiLabels.centralization,
         type: 'single',
-        value: `${agg.hhi} – ${agg.hhiLabel}`,
+        value: `${escapeHtml(String(agg.hhi))} – <span class="finder-kpi-hhi-label">${escapeHtml(agg.hhiLabel)}</span>`,
         footnote: '',
-        info: hhiFootnote
+        info: hhiFootnote,
+        allowHtmlValue: true
       }
     ];
 
@@ -1971,7 +1978,7 @@ if (finderRoot) {
         const valueMarkup =
           tile.type === 'dual'
             ? createValuesBlock(tile.primary, tile.secondary)
-            : `<strong>${escapeAttribute(tile.value)}</strong>`;
+            : `<strong>${tile.allowHtmlValue ? tile.value : escapeAttribute(tile.value)}</strong>`;
 
         return `
           <div class="finder-kpi">

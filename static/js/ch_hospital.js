@@ -541,33 +541,33 @@ if (finderRoot) {
           Z: 'Specialized centers'
         },
         selectedProcedure: 'Select a procedure',
-        chooseProcedure: 'Choose a procedure to explore hospital volumes.',
-        selectProcedureNational: 'Select a procedure above to see national volumes.',
-        selectProcedureMap: 'Select a procedure to display hospital locations.',
-        selectProcedureCantonal: 'Select a procedure to view cantonal / regional details.',
+        chooseProcedure: 'Select a procedure to view hospital volumes.',
+        selectProcedureNational: 'Choose a procedure to display national case totals.',
+        selectProcedureMap: 'Choose a procedure to load the hospital map.',
+        selectProcedureCantonal: 'Choose a procedure to see canton details.',
         loadingData: 'Loading data…',
         loadingMap: 'Loading map…',
         failedToLoad: 'Failed to load data.',
         datasetError: 'Unable to load hospital dataset.',
         noHospitalsFilters: 'No hospitals match the current filters.',
-        noHospitalVolumes: 'No hospital volumes available for this selection.',
+        noHospitalVolumes: 'No case data is available for this selection.',
         noHospitalsSearch: 'No hospitals match your search.',
         noProceduresMatch: 'No procedures match your search. Try a different keyword.',
-        tryAdjustFilters: 'Try adjusting the filters or search query.',
-        paginationShowing: 'Showing {start}–{end} of {total}',
-        ariaPrevHospitals: 'Previous hospitals',
-        ariaNextHospitals: 'Next hospitals',
-        topHospitals: 'Top hospitals',
-        topHospitalsIn: 'Top hospitals in {canton}',
+        tryAdjustFilters: 'Try a different search term or adjust the filters.',
+        paginationShowing: 'Showing {start}–{end} of {total} hospitals',
+        ariaPrevHospitals: 'Previous page of hospitals',
+        ariaNextHospitals: 'Next page of hospitals',
+        topHospitals: 'Hospitals across Switzerland',
+        topHospitalsIn: 'Hospitals in canton {canton}',
         cantonSelectPrompt: 'Select a canton to view local hospital details.',
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
         cantonSummary:
-          'In canton {canton}, {count} hospitals report volumes for {procedure}. {leader} accounts for {cantonShare}% of cantonal / regional cases and {nationalShare}% nationally.',
+          'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
-        mapTitle: 'Map preview',
-        mapAriaLabel: 'Hospital locations by volume',
+        mapTitle: 'Hospital map',
+        mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
-        mapUnavailable: 'Interactive map could not be loaded.',
+        mapUnavailable: 'The interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases'
       }
     },
@@ -660,33 +660,33 @@ if (finderRoot) {
           Z: 'Spezialzentren'
         },
         selectedProcedure: 'Behandlung wählen',
-        chooseProcedure: 'Wählen Sie eine Behandlung, um Spitalvolumen zu erkunden.',
-        selectProcedureNational: 'Wählen Sie oben eine Behandlung, um nationale Fallzahlen zu sehen.',
-        selectProcedureMap: 'Wählen Sie eine Behandlung, um Spitalstandorte anzuzeigen.',
-        selectProcedureCantonal: 'Wählen Sie eine Behandlung, um kantonale / regionale Details zu sehen.',
+        chooseProcedure: 'Wählen Sie eine Behandlung, um die Spitalliste zu sehen.',
+        selectProcedureNational: 'Wählen Sie eine Behandlung, um die nationalen Fallzahlen anzuzeigen.',
+        selectProcedureMap: 'Wählen Sie eine Behandlung, um die Spitalkarte zu laden.',
+        selectProcedureCantonal: 'Wählen Sie eine Behandlung, um kantonale Details zu sehen.',
         loadingData: 'Daten werden geladen…',
         loadingMap: 'Karte wird geladen…',
         failedToLoad: 'Fehler beim Laden der Daten.',
         datasetError: 'Spitaldaten konnten nicht geladen werden.',
         noHospitalsFilters: 'Keine Spitäler passen zu den aktuellen Filtern.',
-        noHospitalVolumes: 'Für diese Auswahl liegen keine Spitalvolumen vor.',
+        noHospitalVolumes: 'Für diese Auswahl liegen keine Falldaten vor.',
         noHospitalsSearch: 'Keine Spitäler entsprechen Ihrer Suche.',
         noProceduresMatch: 'Keine Behandlungen passen zur Suche. Versuchen Sie einen anderen Begriff.',
-        tryAdjustFilters: 'Passen Sie Filter oder Suchbegriff an.',
-        paginationShowing: 'Anzeige {start}–{end} von {total}',
-        ariaPrevHospitals: 'Vorherige Spitäler',
-        ariaNextHospitals: 'Weitere Spitäler',
-        topHospitals: 'Top-Spitäler',
-        topHospitalsIn: 'Top-Spitäler im Kanton {canton}',
+        tryAdjustFilters: 'Versuchen Sie einen anderen Suchbegriff oder passen Sie die Filter an.',
+        paginationShowing: 'Anzeige {start}–{end} von {total} Spitälern',
+        ariaPrevHospitals: 'Vorherige Spitalseite',
+        ariaNextHospitals: 'Nächste Spitalseite',
+        topHospitals: 'Spitäler in der Schweiz',
+        topHospitalsIn: 'Spitäler im Kanton {canton}',
         cantonSelectPrompt: 'Wählen Sie einen Kanton, um lokale Spitaldetails zu sehen.',
-        cantonNoHospitals: 'Keine Spitäler im Kanton {canton} erfüllen die aktuelle Auswahl.',
+        cantonNoHospitals: 'Im Kanton {canton} passt kein Spital zur aktuellen Auswahl.',
         cantonSummary:
-          'Im Kanton {canton} melden {count} Spitäler Volumen für {procedure}. {leader} steht für {cantonShare}% der kantonalen / regionalen Fälle und {nationalShare}% schweizweit.',
+          'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
-        mapTitle: 'Kartenübersicht',
-        mapAriaLabel: 'Spitalstandorte nach Fallzahlen',
-        mapNoData: 'Für diese Auswahl stehen keine Kartendaten zur Verfügung.',
-        mapUnavailable: 'Interaktive Karte konnte nicht geladen werden.',
+        mapTitle: 'Spitalkarte',
+        mapAriaLabel: 'Spitalstandorte nach Fallzahl',
+        mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
+        mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle'
       }
     },
@@ -779,31 +779,31 @@ if (finderRoot) {
           Z: 'Centres spécialisés'
         },
         selectedProcedure: 'Sélectionner une intervention',
-        chooseProcedure: 'Choisissez une intervention pour explorer les volumes hospitaliers.',
-        selectProcedureNational: 'Sélectionnez une intervention ci-dessus pour voir les volumes nationaux.',
-        selectProcedureMap: 'Sélectionnez une intervention pour afficher les emplacements des hôpitaux.',
-        selectProcedureCantonal: 'Sélectionnez une intervention pour voir les détails cantonaux / régionaux.',
+        chooseProcedure: 'Sélectionnez une intervention pour afficher la liste des hôpitaux.',
+        selectProcedureNational: 'Sélectionnez une intervention pour afficher les totaux nationaux.',
+        selectProcedureMap: 'Sélectionnez une intervention pour charger la carte des hôpitaux.',
+        selectProcedureCantonal: 'Sélectionnez une intervention pour voir les détails cantonaux.',
         loadingData: 'Chargement des données…',
         loadingMap: 'Chargement de la carte…',
         failedToLoad: 'Échec du chargement des données.',
         datasetError: "Impossible de charger l’ensemble de données hospitalier.",
         noHospitalsFilters: 'Aucun hôpital ne correspond aux filtres actuels.',
-        noHospitalVolumes: 'Aucun volume hospitalier disponible pour cette sélection.',
+        noHospitalVolumes: 'Aucune donnée de cas n’est disponible pour cette sélection.',
         noHospitalsSearch: 'Aucun hôpital ne correspond à votre recherche.',
         noProceduresMatch: 'Aucune intervention ne correspond à votre recherche. Essayez un autre mot-clé.',
-        tryAdjustFilters: 'Modifiez les filtres ou la requête de recherche.',
-        paginationShowing: 'Affichage {start}–{end} sur {total}',
-        ariaPrevHospitals: 'Hôpitaux précédents',
-        ariaNextHospitals: 'Hôpitaux suivants',
-        topHospitals: 'Hôpitaux principaux',
-        topHospitalsIn: 'Hôpitaux principaux dans le canton {canton}',
+        tryAdjustFilters: 'Essayez un autre terme de recherche ou ajustez les filtres.',
+        paginationShowing: 'Affichage {start}–{end} sur {total} hôpitaux',
+        ariaPrevHospitals: 'Page précédente des hôpitaux',
+        ariaNextHospitals: 'Page suivante des hôpitaux',
+        topHospitals: 'Hôpitaux en Suisse',
+        topHospitalsIn: 'Hôpitaux dans le canton {canton}',
         cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
-        cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à la sélection actuelle.',
+        cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à cette sélection.',
         cantonSummary:
-          'Dans le canton {canton}, {count} hôpitaux déclarent des volumes pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux / régionaux et {nationalShare}% au niveau national.',
+          'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
-        mapTitle: 'Aperçu cartographique',
-        mapAriaLabel: 'Localisation des hôpitaux selon le volume',
+        mapTitle: 'Carte des hôpitaux',
+        mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas'
@@ -898,31 +898,31 @@ if (finderRoot) {
           Z: 'Centri specializzati'
         },
         selectedProcedure: 'Seleziona un intervento',
-        chooseProcedure: 'Scegli un intervento per esplorare i volumi ospedalieri.',
-        selectProcedureNational: 'Seleziona un intervento per vedere i volumi nazionali.',
-        selectProcedureMap: 'Seleziona un intervento per visualizzare le posizioni degli ospedali.',
-        selectProcedureCantonal: 'Seleziona un intervento per vedere i dettagli cantonali / regionali.',
+        chooseProcedure: 'Seleziona un intervento per visualizzare l’elenco degli ospedali.',
+        selectProcedureNational: 'Seleziona un intervento per mostrare i totali nazionali.',
+        selectProcedureMap: 'Seleziona un intervento per caricare la mappa degli ospedali.',
+        selectProcedureCantonal: 'Seleziona un intervento per vedere i dettagli cantonali.',
         loadingData: 'Caricamento dati…',
         loadingMap: 'Caricamento mappa…',
         failedToLoad: 'Errore nel caricamento dei dati.',
         datasetError: 'Impossibile caricare il dataset ospedaliero.',
         noHospitalsFilters: 'Nessun ospedale corrisponde ai filtri correnti.',
-        noHospitalVolumes: 'Nessun volume ospedaliero disponibile per questa selezione.',
+        noHospitalVolumes: 'Non sono disponibili dati di casi per questa selezione.',
         noHospitalsSearch: 'Nessun ospedale corrisponde alla ricerca.',
         noProceduresMatch: 'Nessun intervento corrisponde alla ricerca. Prova con un’altra parola chiave.',
-        tryAdjustFilters: 'Modifica filtri o termine di ricerca.',
-        paginationShowing: 'Visualizzazione {start}–{end} di {total}',
-        ariaPrevHospitals: 'Ospedali precedenti',
-        ariaNextHospitals: 'Ospedali successivi',
-        topHospitals: 'Ospedali principali',
-        topHospitalsIn: 'Ospedali principali nel cantone {canton}',
+        tryAdjustFilters: 'Prova un altro termine di ricerca o modifica i filtri.',
+        paginationShowing: 'Visualizzazione {start}–{end} di {total} ospedali',
+        ariaPrevHospitals: 'Pagina precedente di ospedali',
+        ariaNextHospitals: 'Pagina successiva di ospedali',
+        topHospitals: 'Ospedali in Svizzera',
+        topHospitalsIn: 'Ospedali nel cantone {canton}',
         cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
-        cantonNoHospitals: 'Nessun ospedale nel cantone {canton} corrisponde alla selezione corrente.',
+        cantonNoHospitals: 'Nel cantone {canton} nessun ospedale corrisponde a questa selezione.',
         cantonSummary:
-          'Nel cantone {canton}, {count} ospedali riportano volumi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali / regionali e il {nationalShare}% a livello nazionale.',
+          'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
-        mapTitle: 'Anteprima mappa',
-        mapAriaLabel: 'Posizioni ospedaliere per volume',
+        mapTitle: 'Mappa degli ospedali',
+        mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi'
@@ -1180,6 +1180,7 @@ if (finderRoot) {
     const finderCanton = document.getElementById('finder-canton');
     const finderKpis = document.getElementById('finder-kpis');
     const finderList = document.getElementById('finder-list');
+    const finderListContext = document.getElementById('finder-list-context');
     const finderListTitle = document.getElementById('finder-list-title');
     const finderListMeta = document.getElementById('finder-list-meta');
     const finderMap = document.getElementById('finder-map');
@@ -1898,7 +1899,10 @@ if (finderRoot) {
       state.selectedCanton === ALL_CANTONS_OPTION
         ? msg('topHospitals')
         : msg('topHospitalsIn', { canton: state.selectedCanton });
-    finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
+    if (finderListContext) {
+      finderListContext.textContent = listLocationLabel;
+    }
+    finderListTitle.textContent = procedureLabel;
 
     if (!agg.hospitals.length) {
       finderListMeta.textContent = msg('noHospitalsFilters');
@@ -2151,7 +2155,10 @@ if (finderRoot) {
         ? msg('topHospitals')
         : msg('topHospitalsIn', { canton: state.selectedCanton });
 
-    finderListTitle.textContent = `${listLocationLabel} — ${procedureLabel}`;
+    if (finderListContext) {
+      finderListContext.textContent = listLocationLabel;
+    }
+    finderListTitle.textContent = procedureLabel;
 
     if (!selectedProcedure) {
       finderListMeta.textContent = msg('chooseProcedure');

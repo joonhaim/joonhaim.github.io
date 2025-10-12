@@ -1005,27 +1005,48 @@ body {
   min-height: 420px;
 }
 
+
 .finder-list-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.finder-list-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.finder-list-context {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
 }
 
 .finder-list-header h3 {
   margin: 0;
   font-size: 1.1rem;
+  line-height: 1.3;
 }
 
 #finder-list-meta {
   font-size: 0.75rem;
   color: #6b7280;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
   margin-left: auto;
   flex-wrap: wrap;
   justify-content: flex-end;
+  text-align: right;
+  line-height: 1.4;
+  flex: 0 0 auto;
 }
 
 .finder-pagination {
@@ -1275,6 +1296,17 @@ body {
 
   .finder-list-card {
     min-height: 0;
+  }
+
+  .finder-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #finder-list-meta {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .finder-list {

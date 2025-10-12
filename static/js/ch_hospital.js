@@ -1935,19 +1935,19 @@ if (finderRoot) {
         footnote: ''
       },
       {
-        label: kpiLabels.universityShare,
-        type: 'dual',
-        primary: formatPercent(agg.uniShare),
-        secondary: cantonTotals ? formatPercent(cantonTotals.uniShare) : null,
-        footnote: ''
-      },
-      {
         label: kpiLabels.centralization,
         type: 'single',
         value: `${escapeHtml(String(agg.hhi))} – <span class="finder-kpi-hhi-label">${escapeHtml(agg.hhiLabel)}</span>`,
         footnote: '',
         info: hhiFootnote,
         allowHtmlValue: true
+      },
+      {
+        label: kpiLabels.universityShare,
+        type: 'dual',
+        primary: formatPercent(agg.uniShare),
+        secondary: cantonTotals ? formatPercent(cantonTotals.uniShare) : null,
+        footnote: ''
       }
     ];
 

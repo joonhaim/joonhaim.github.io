@@ -3164,9 +3164,10 @@ if (finderRoot) {
     };
 
     const createHhiValue = (value, label) => ({
-      value: `${escapeHtml(String(value ?? 0))} – <span class="finder-kpi-hhi-label">${escapeHtml(
-        label ?? labelFromHHI(value ?? 0)
-      )}</span>`,
+      value: [
+        `<span class="finder-kpi-hhi-number">${escapeHtml(String(value ?? 0))}</span>`,
+        `<span class="finder-kpi-hhi-label">${escapeHtml(label ?? labelFromHHI(value ?? 0))}</span>`
+      ].join(''),
       allowHtml: true,
       className: 'finder-kpi-value-number--hhi'
     });

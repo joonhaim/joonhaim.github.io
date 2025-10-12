@@ -1326,14 +1326,24 @@ body {
 }
 
 .finder-kpi-value-number--hhi {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.2rem;
   font-size: 1.35rem;
-  line-height: 1.2;
+  line-height: 1.1;
+  text-align: right;
+}
+
+.finder-kpi-hhi-number {
+  display: block;
 }
 
 .finder-kpi-hhi-label {
-  display: inline-block;
-  margin-left: 0.25rem;
-  font-size: 0.75em;
+  display: block;
+  margin-left: 0;
+  font-size: 0.6em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-subtle);

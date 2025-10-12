@@ -517,6 +517,13 @@ if (finderRoot) {
         'Z.4.39.F': 'Specialized spine surgery',
         'Z.4.40.F': 'Bone tumour treatments'
       },
+      quickPickLabels: {
+        'A.3.1.F': 'Heart catheter',
+        'A.7.3.F': 'Heart bypass',
+        'G.4.1.F': 'Breast cancer',
+        'Z.4.37.F': 'Hip replacement',
+        'L.5.1.F': 'Kidney transplant'
+      },
       types: {
         labels: {
           university: 'University',
@@ -596,7 +603,9 @@ if (finderRoot) {
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
         mapUnavailable: 'The interactive map could not be loaded.',
-        mapTooltip: '{hospital} — {cases} cases'
+        mapTooltip: '{hospital} — {cases} cases',
+        quickPicksTitle: 'Popular procedures',
+        quickPicksDescription: 'Jump straight to a CH-IQI procedure people look up most often.'
       }
     },
     de: {
@@ -637,6 +646,13 @@ if (finderRoot) {
         'Z.4.38.F': 'Primärprothese Knie',
         'Z.4.39.F': 'Spezialisierte Wirbelsäulenchirurgie',
         'Z.4.40.F': 'Behandlungen von Knochentumoren'
+      },
+      quickPickLabels: {
+        'A.3.1.F': 'Herzkatheter',
+        'A.7.3.F': 'Bypass-OP',
+        'G.4.1.F': 'Brustkrebs',
+        'Z.4.37.F': 'Hüftprothese',
+        'L.5.1.F': 'Nierentransplantation'
       },
       types: {
         labels: {
@@ -717,7 +733,9 @@ if (finderRoot) {
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
-        mapTooltip: '{hospital} — {cases} Fälle'
+        mapTooltip: '{hospital} — {cases} Fälle',
+        quickPicksTitle: 'Beliebte Behandlungen',
+        quickPicksDescription: 'Springen Sie direkt zu einer häufig nachgefragten CH-IQI-Behandlung.'
       }
     },
     fr: {
@@ -758,6 +776,13 @@ if (finderRoot) {
         'Z.4.38.F': 'Prothèse totale de genou primaire',
         'Z.4.39.F': 'Chirurgie spécialisée de la colonne vertébrale',
         'Z.4.40.F': 'Traitements des tumeurs osseuses'
+      },
+      quickPickLabels: {
+        'A.3.1.F': 'Cathéter cardiaque',
+        'A.7.3.F': 'Pontage cardiaque',
+        'G.4.1.F': 'Cancer du sein',
+        'Z.4.37.F': 'Prothèse de hanche',
+        'L.5.1.F': 'Transplantation rénale'
       },
       types: {
         labels: {
@@ -838,7 +863,9 @@ if (finderRoot) {
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
-        mapTooltip: '{hospital} — {cases} cas'
+        mapTooltip: '{hospital} — {cases} cas',
+        quickPicksTitle: 'Interventions populaires',
+        quickPicksDescription: 'Accédez directement à une intervention CH-IQI très consultée.'
       }
     },
     it: {
@@ -879,6 +906,13 @@ if (finderRoot) {
         'Z.4.38.F': 'Protesi di ginocchio primaria',
         'Z.4.39.F': 'Chirurgia specialistica della colonna vertebrale',
         'Z.4.40.F': 'Trattamenti dei tumori ossei'
+      },
+      quickPickLabels: {
+        'A.3.1.F': 'Catetere cardiaco',
+        'A.7.3.F': 'Bypass cardiaco',
+        'G.4.1.F': 'Tumore al seno',
+        'Z.4.37.F': 'Protesi all’anca',
+        'L.5.1.F': 'Trapianto di rene'
       },
       types: {
         labels: {
@@ -959,7 +993,9 @@ if (finderRoot) {
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
-        mapTooltip: '{hospital} — {cases} casi'
+        mapTooltip: '{hospital} — {cases} casi',
+        quickPicksTitle: 'Interventi più richiesti',
+        quickPicksDescription: 'Vai subito a un intervento CH-IQI molto consultato.'
       }
     }
   };
@@ -1011,6 +1047,8 @@ if (finderRoot) {
     { id: 'transplantation', procedures: ['L.5.1.F', 'Z.4.33.F', 'Z.4.34.F', 'Z.4.35.F', 'Z.4.36.F'] },
     { id: 'musculoskeletal', procedures: ['Z.4.37.F', 'Z.4.38.F', 'Z.4.39.F', 'Z.4.40.F'] }
   ];
+
+  const QUICK_PICK_CODES = ['A.3.1.F', 'A.7.3.F', 'G.4.1.F', 'Z.4.37.F', 'L.5.1.F'];
 
   const procedureTranslationCache = {
     promise: null,
@@ -1200,6 +1238,7 @@ if (finderRoot) {
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
   };
+  const quickPickLabels = getObjectTranslation('quickPickLabels');
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
@@ -1220,6 +1259,107 @@ if (finderRoot) {
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
+    const finderQuickPicks = document.getElementById('finder-quick-picks');
+    const finderQuickTitle = document.getElementById('finder-quick-title');
+    const finderQuickList = document.getElementById('finder-quick-list');
+    const finderQuickDescription = document.getElementById('finder-quick-description');
+
+    const quickPickButtons = new Map();
+
+    const findProcedureEntry = (code) => {
+      if (!code) {
+        return null;
+      }
+      for (const category of procedureCatalog) {
+        const match = category.procedures?.find((proc) => proc.code === code);
+        if (match) {
+          return { category, procedure: match };
+        }
+      }
+      return null;
+    };
+
+    const setQuickPickCopy = () => {
+      if (finderQuickTitle) {
+        const title = msg('quickPicksTitle');
+        finderQuickTitle.textContent =
+          typeof title === 'string' && title !== 'messages.quickPicksTitle'
+            ? title
+            : 'Popular procedures';
+      }
+      if (finderQuickDescription) {
+        const description = msg('quickPicksDescription');
+        finderQuickDescription.textContent =
+          typeof description === 'string' && description !== 'messages.quickPicksDescription'
+            ? description
+            : 'Jump straight to a CH-IQI procedure people look up most often.';
+      }
+      if (finderQuickList) {
+        const labelText = finderQuickTitle?.textContent?.trim();
+        if (labelText) {
+          finderQuickList.setAttribute('aria-label', labelText);
+        } else {
+          finderQuickList.removeAttribute('aria-label');
+        }
+      }
+    };
+
+    const updateQuickPickState = () => {
+      const activeCode = state.selectedProc?.code;
+      quickPickButtons.forEach((button, code) => {
+        const isActive = code === activeCode;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    };
+
+    const setupQuickPicks = () => {
+      if (!finderQuickPicks || !finderQuickList) {
+        return;
+      }
+
+      const picks = QUICK_PICK_CODES.map((code) => findProcedureEntry(code)).filter(Boolean);
+      if (!picks.length) {
+        finderQuickPicks.hidden = true;
+        return;
+      }
+
+      setQuickPickCopy();
+      finderQuickPicks.hidden = false;
+      quickPickButtons.clear();
+      finderQuickList.innerHTML = picks
+        .map(({ procedure }) => {
+          const safeCode = escapeAttribute(procedure.code);
+          const displayName = quickPickLabels?.[procedure.code] || procedure.name;
+          const safeName = escapeHtml(displayName);
+          return `
+            <button type="button" class="finder-quick-btn" data-code="${safeCode}" aria-pressed="false">
+              <span>${safeName}</span>
+              <span class="finder-quick-code">${safeCode}</span>
+            </button>
+          `;
+        })
+        .join('');
+
+      finderQuickList.querySelectorAll('.finder-quick-btn').forEach((btn) => {
+        quickPickButtons.set(btn.dataset.code, btn);
+        btn.addEventListener('click', () => {
+          const entry = findProcedureEntry(btn.dataset.code);
+          if (!entry) {
+            return;
+          }
+          state.selectedCategory = entry.category.id;
+          state.selectedProc = entry.procedure;
+          state.procedureQuery = '';
+          finderProcedureSearch.value = '';
+          state.listPage = 0;
+          state.shouldScrollToResults = true;
+          render();
+        });
+      });
+
+      updateQuickPickState();
+    };
 
     let cantonDropdown;
     let cantonDropdownToggle;
@@ -1607,6 +1747,8 @@ if (finderRoot) {
       shouldScrollToResults: false
     };
 
+    setupQuickPicks();
+
     const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
 
     let finderDataset = null;
@@ -1777,6 +1919,8 @@ if (finderRoot) {
           render();
         });
       });
+
+      updateQuickPickState();
     }
 
   function renderTypeToggle() {

@@ -92,14 +92,70 @@ document.querySelectorAll('.fade-element').forEach(el => fadeObserver.observe(el
 
 const procedureSelector = document.querySelector('.finder-procedure-selector');
 const catalogToggle = document.querySelector('.finder-catalog-toggle');
+const catalogPanels = document.getElementById('finder-catalog-panels');
 
-if (procedureSelector && catalogToggle) {
+if (procedureSelector && catalogToggle && catalogPanels) {
+  const toggleLabel = catalogToggle.querySelector('.finder-catalog-toggle-label');
+  const collapsedLabel = catalogToggle.dataset.labelCollapsed || 'Browse the full catalogue';
+  const expandedLabel = catalogToggle.dataset.labelExpanded || 'Hide the full catalogue';
+
   const setCatalogExpanded = (expanded) => {
-    procedureSelector.classList.toggle('catalog-collapsed', !expanded);
+    const isExpanded = !procedureSelector.classList.contains('catalog-collapsed');
+    if (expanded === isExpanded) {
+      if (expanded) {
+        catalogPanels.style.maxHeight = 'none';
+      }
+      catalogToggle.setAttribute('aria-expanded', String(expanded));
+      if (toggleLabel) {
+        toggleLabel.textContent = expanded ? expandedLabel : collapsedLabel;
+      }
+      return;
+    }
+
+    if (expanded) {
+      procedureSelector.classList.remove('catalog-collapsed');
+      catalogPanels.style.maxHeight = 'none';
+      const fullHeight = catalogPanels.scrollHeight;
+      catalogPanels.style.maxHeight = '0px';
+      // Force reflow so the browser recognises the starting height before animating.
+      void catalogPanels.offsetHeight;
+      catalogPanels.style.maxHeight = `${fullHeight}px`;
+    } else {
+      const currentHeight = catalogPanels.scrollHeight;
+      catalogPanels.style.maxHeight = `${currentHeight}px`;
+      void catalogPanels.offsetHeight;
+      procedureSelector.classList.add('catalog-collapsed');
+      catalogPanels.style.maxHeight = '0px';
+    }
+
     catalogToggle.setAttribute('aria-expanded', String(expanded));
+    if (toggleLabel) {
+      toggleLabel.textContent = expanded ? expandedLabel : collapsedLabel;
+    }
   };
 
-  setCatalogExpanded(!procedureSelector.classList.contains('catalog-collapsed'));
+  if (procedureSelector.classList.contains('catalog-collapsed')) {
+    catalogPanels.style.maxHeight = '0px';
+    catalogToggle.setAttribute('aria-expanded', 'false');
+    if (toggleLabel) {
+      toggleLabel.textContent = collapsedLabel;
+    }
+  } else {
+    catalogPanels.style.maxHeight = 'none';
+    catalogToggle.setAttribute('aria-expanded', 'true');
+    if (toggleLabel) {
+      toggleLabel.textContent = expandedLabel;
+    }
+  }
+
+  catalogPanels.addEventListener('transitionend', (event) => {
+    if (event.propertyName !== 'max-height') {
+      return;
+    }
+    if (!procedureSelector.classList.contains('catalog-collapsed')) {
+      catalogPanels.style.maxHeight = 'none';
+    }
+  });
 
   catalogToggle.addEventListener('click', () => {
     const shouldExpand = procedureSelector.classList.contains('catalog-collapsed');

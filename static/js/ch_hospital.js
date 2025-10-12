@@ -1339,6 +1339,8 @@ if (finderRoot) {
     let hospitalModalEmptyMessage;
     let hospitalModalBackdrop;
     let lastActiveHospitalTrigger = null;
+    const rootElement = document.documentElement;
+    let scrollLockRestore = null;
 
     ensureHospitalModal();
 
@@ -1346,6 +1348,34 @@ if (finderRoot) {
       if (event.key === 'Escape') {
         event.preventDefault();
         closeHospitalModal();
+      }
+    }
+
+    function lockBodyScroll() {
+      if (!scrollLockRestore) {
+        scrollLockRestore = {
+          bodyOverflow: document.body.style.overflow,
+          htmlOverflow: rootElement.style.overflow
+        };
+      }
+
+      document.body.classList.add('modal-open');
+      rootElement.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
+      rootElement.style.overflow = 'hidden';
+    }
+
+    function unlockBodyScroll() {
+      document.body.classList.remove('modal-open');
+      rootElement.classList.remove('modal-open');
+
+      if (scrollLockRestore) {
+        document.body.style.overflow = scrollLockRestore.bodyOverflow;
+        rootElement.style.overflow = scrollLockRestore.htmlOverflow;
+        scrollLockRestore = null;
+      } else {
+        document.body.style.removeProperty('overflow');
+        rootElement.style.removeProperty('overflow');
       }
     }
 
@@ -1456,13 +1486,13 @@ if (finderRoot) {
     }
 
     function closeHospitalModal() {
+      unlockBodyScroll();
+      document.removeEventListener('keydown', handleModalKeydown);
       if (!hospitalModal || hospitalModal.hidden) {
         return;
       }
 
       hospitalModal.classList.remove('is-visible');
-      document.body.classList.remove('modal-open');
-      document.removeEventListener('keydown', handleModalKeydown);
 
       const finalizeClose = () => {
         if (hospitalModal) {
@@ -1591,7 +1621,7 @@ if (finderRoot) {
         hospitalModal.classList.add('is-visible');
         hospitalModalDialog?.focus({ preventScroll: true });
       });
-      document.body.classList.add('modal-open');
+      lockBodyScroll();
       document.addEventListener('keydown', handleModalKeydown);
       hospitalModalClose?.focus({ preventScroll: true });
     }

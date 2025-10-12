@@ -1350,6 +1350,7 @@ body {
   background: #DA291C;
 }
 
+html.modal-open,
 body.modal-open {
   overflow: hidden;
 }

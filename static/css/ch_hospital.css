@@ -296,7 +296,7 @@ body {
   min-height: 13rem;
   min-width: 0;
   overflow: hidden;
-  --finder-panel-height: clamp(15rem, 35vh, 20.5rem);
+  --finder-panel-height: clamp(18rem, 60vh, 28rem);
   transition: padding 0.3s ease, min-height 0.3s ease;
 }
 

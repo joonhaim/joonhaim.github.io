@@ -1899,13 +1899,29 @@ if (finderRoot) {
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
 
+    const renderValueNumber = (value) => {
+      const safeValue = escapeAttribute(value);
+      if (typeof value === 'string' && value.includes(' – ')) {
+        const [primaryPart, ...rest] = value.split(' – ');
+        const descriptor = rest.join(' – ');
+        const safePrimary = escapeAttribute(primaryPart.trim());
+        const safeDescriptor = escapeAttribute(descriptor.trim());
+        return `
+          <span class="finder-kpi-value-number finder-kpi-value-number--split">
+            <span class="finder-kpi-value-number-main">${safePrimary}</span>
+            <span class="finder-kpi-value-number-sub">${safeDescriptor}</span>
+          </span>
+        `;
+      }
+      return `<span class="finder-kpi-value-number">${safeValue}</span>`;
+    };
+
     const createValueMarkup = (label, value, isSecondary = false) => {
       const safeLabel = escapeAttribute(label);
-      const safeValue = escapeAttribute(value);
       return `
         <div class="finder-kpi-value${isSecondary ? ' finder-kpi-value--secondary' : ''}">
           <span class="finder-kpi-value-label">${safeLabel}</span>
-          <span class="finder-kpi-value-number">${safeValue}</span>
+          ${renderValueNumber(value)}
         </div>
       `;
     };
@@ -1942,8 +1958,7 @@ if (finderRoot) {
       },
       {
         label: kpiLabels.centralization,
-        type: hasCantonSelection ? 'dual' : 'single',
-        value: `${agg.hhi} – ${agg.hhiLabel}`,
+        type: 'dual',
         primary: `${agg.hhi} – ${agg.hhiLabel}`,
         secondary: cantonTotals ? `${cantonTotals.hhi} – ${cantonTotals.hhiLabel}` : null,
         footnote: '',

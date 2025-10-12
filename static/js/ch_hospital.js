@@ -1629,7 +1629,6 @@ if (finderRoot) {
       });
       lockBodyScroll();
       document.addEventListener('keydown', handleModalKeydown);
-      hospitalModalClose?.focus({ preventScroll: true });
     }
 
     function attachHospitalModalListeners() {

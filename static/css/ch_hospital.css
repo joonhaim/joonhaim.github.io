@@ -681,6 +681,8 @@ body {
   border: 1px solid rgba(15, 23, 42, 0.08);
   background: #ffffff;
   box-shadow: 0 16px 38px rgba(15, 23, 42, 0.07);
+  position: relative;
+  z-index: 5;
 }
 
 .finder-toolbar-control {

@@ -1367,9 +1367,18 @@ body.modal-open {
   transition: opacity 0.24s ease;
 }
 
+.finder-modal[hidden] {
+  display: none !important;
+}
+
 .finder-modal.is-visible {
   opacity: 1;
   pointer-events: auto;
+}
+
+.finder-modal:not(.is-visible) .finder-modal__dialog,
+.finder-modal:not(.is-visible) .finder-modal__backdrop {
+  pointer-events: none;
 }
 
 .finder-modal__backdrop {

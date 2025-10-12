@@ -916,7 +916,8 @@ body {
   visibility: hidden;
   transform: translateY(-6px);
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-  z-index: 10;
+  /* Ensure the dropdown renders above the Leaflet map layers */
+  z-index: 1100;
 }
 
 .finder-canton-dropdown.is-open .finder-canton-dropdown__menu {

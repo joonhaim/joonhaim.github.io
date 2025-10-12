@@ -114,6 +114,49 @@ const cantonCentroids = {
   ZH: { lat: 47.37, lon: 8.54 }
 };
 
+const cantonNames = {
+  AG: 'Aargau',
+  AI: 'Appenzell Innerrhoden',
+  AR: 'Appenzell Ausserrhoden',
+  BE: 'Bern',
+  BL: 'Basel-Landschaft',
+  BS: 'Basel-Stadt',
+  FR: 'Fribourg',
+  GE: 'Geneva',
+  GL: 'Glarus',
+  GR: 'Graubünden',
+  JU: 'Jura',
+  LU: 'Lucerne',
+  NE: 'Neuchâtel',
+  NW: 'Nidwalden',
+  OW: 'Obwalden',
+  SG: 'St. Gallen',
+  SH: 'Schaffhausen',
+  SO: 'Solothurn',
+  SZ: 'Schwyz',
+  TG: 'Thurgau',
+  TI: 'Ticino',
+  UR: 'Uri',
+  VD: 'Vaud',
+  VS: 'Valais',
+  ZG: 'Zug',
+  ZH: 'Zürich'
+};
+
+function normalizeCantonCode(value) {
+  if (value == null) {
+    return null;
+  }
+  const raw = String(value).trim();
+  if (!raw) {
+    return null;
+  }
+  const sanitized = raw.replace(/^CH[.-]?/i, '');
+  const segments = sanitized.split(/[.-]/);
+  const candidate = segments[segments.length - 1].toUpperCase();
+  return candidate.length === 2 ? candidate : null;
+}
+
 const SWITZERLAND_BOUNDS = {
   latMin: 45.8,
   latMax: 47.8,
@@ -121,7 +164,6 @@ const SWITZERLAND_BOUNDS = {
   lonMax: 10.5
 };
 
-const CANTON_BOUNDARIES_URL = 'https://code.highcharts.com/mapdata/countries/ch/ch-all.geo.json';
 const CANTON_BOUNDARY_BASE_STYLE = {
   color: '#6b7280',
   weight: 1,
@@ -428,6 +470,164 @@ function parseHospitalCsv(text, coordinatesMap) {
   return { byProcedure, meta, types };
 }
 
+function clamp(value, min, max) {
+  if (!Number.isFinite(value)) {
+    return min;
+  }
+  return Math.min(Math.max(value, min), max);
+}
+
+function expandBounds(bounds, minLatSpan = 0.08, minLonSpan = 0.12) {
+  if (!bounds) {
+    return null;
+  }
+  const latSpan = Math.max((bounds.latMax ?? 0) - (bounds.latMin ?? 0), minLatSpan);
+  const lonSpan = Math.max((bounds.lonMax ?? 0) - (bounds.lonMin ?? 0), minLonSpan);
+  const latCenter = ((bounds.latMax ?? 0) + (bounds.latMin ?? 0)) / 2;
+  const lonCenter = ((bounds.lonMax ?? 0) + (bounds.lonMin ?? 0)) / 2;
+  const latMin = clamp(latCenter - latSpan / 2, SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.latMax);
+  const latMax = clamp(latCenter + latSpan / 2, SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.latMax);
+  const lonMin = clamp(lonCenter - lonSpan / 2, SWITZERLAND_BOUNDS.lonMin, SWITZERLAND_BOUNDS.lonMax);
+  const lonMax = clamp(lonCenter + lonSpan / 2, SWITZERLAND_BOUNDS.lonMin, SWITZERLAND_BOUNDS.lonMax);
+  return {
+    latMin,
+    latMax,
+    lonMin,
+    lonMax
+  };
+}
+
+function dedupePoints(points) {
+  const unique = new Map();
+  points.forEach((point) => {
+    if (!point || !Number.isFinite(point.lat) || !Number.isFinite(point.lon)) {
+      return;
+    }
+    const key = `${point.lat.toFixed(6)},${point.lon.toFixed(6)}`;
+    if (!unique.has(key)) {
+      unique.set(key, { lat: point.lat, lon: point.lon });
+    }
+  });
+  return Array.from(unique.values());
+}
+
+function computeConvexHull(points) {
+  const sorted = points
+    .slice()
+    .sort((a, b) => (a.lon === b.lon ? a.lat - b.lat : a.lon - b.lon));
+  if (sorted.length <= 1) {
+    return sorted;
+  }
+  const cross = (o, a, b) => (a.lon - o.lon) * (b.lat - o.lat) - (a.lat - o.lat) * (b.lon - o.lon);
+  const lower = [];
+  for (const point of sorted) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], point) <= 0) {
+      lower.pop();
+    }
+    lower.push(point);
+  }
+  const upper = [];
+  for (let i = sorted.length - 1; i >= 0; i -= 1) {
+    const point = sorted[i];
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], point) <= 0) {
+      upper.pop();
+    }
+    upper.push(point);
+  }
+  upper.pop();
+  lower.pop();
+  return lower.concat(upper);
+}
+
+function buildHospitalsByCantonMap(meta) {
+  const byCanton = new Map();
+  meta.forEach((details, hospital) => {
+    const code = normalizeCantonCode(details?.canton);
+    if (!code) {
+      return;
+    }
+    if (!byCanton.has(code)) {
+      byCanton.set(code, new Set());
+    }
+    byCanton.get(code).add(hospital);
+  });
+  return byCanton;
+}
+
+function buildCantonGeometry(meta) {
+  const pointsByCanton = new Map();
+  meta.forEach((details) => {
+    const code = normalizeCantonCode(details?.canton);
+    const lat = Number(details?.lat);
+    const lon = Number(details?.lon);
+    if (!code || !Number.isFinite(lat) || !Number.isFinite(lon)) {
+      return;
+    }
+    if (!pointsByCanton.has(code)) {
+      pointsByCanton.set(code, []);
+    }
+    pointsByCanton.get(code).push({ lat, lon });
+  });
+
+  const entries = new Map();
+  Object.keys(cantonCentroids).forEach((code) => {
+    const centroid = cantonCentroids[code];
+    const basePoints = dedupePoints(pointsByCanton.get(code) || []);
+    const fallback = cantonBounds[code] || SWITZERLAND_BOUNDS;
+    const fallbackCorners = [
+      { lat: fallback.latMin, lon: fallback.lonMin },
+      { lat: fallback.latMin, lon: fallback.lonMax },
+      { lat: fallback.latMax, lon: fallback.lonMax },
+      { lat: fallback.latMax, lon: fallback.lonMin }
+    ];
+    let hullPoints = basePoints.length >= 3 ? computeConvexHull(basePoints) : [];
+    if (hullPoints.length < 3) {
+      hullPoints = computeConvexHull(dedupePoints(basePoints.concat(fallbackCorners)));
+    }
+    if (hullPoints.length < 3) {
+      hullPoints = fallbackCorners;
+    }
+    const bounds = hullPoints.reduce(
+      (acc, point) => ({
+        latMin: Math.min(acc.latMin, point.lat),
+        latMax: Math.max(acc.latMax, point.lat),
+        lonMin: Math.min(acc.lonMin, point.lon),
+        lonMax: Math.max(acc.lonMax, point.lon)
+      }),
+      {
+        latMin: Number.POSITIVE_INFINITY,
+        latMax: Number.NEGATIVE_INFINITY,
+        lonMin: Number.POSITIVE_INFINITY,
+        lonMax: Number.NEGATIVE_INFINITY
+      }
+    );
+    const adjusted = expandBounds(bounds);
+    const polygon = hullPoints.map((point) => [point.lat, point.lon]);
+    const hospitalPoints = basePoints.length ? basePoints : fallbackCorners;
+    const centroidEstimate = hospitalPoints.reduce(
+      (acc, point) => ({
+        lat: acc.lat + point.lat,
+        lon: acc.lon + point.lon
+      }),
+      { lat: 0, lon: 0 }
+    );
+    const count = hospitalPoints.length || 1;
+    entries.set(code, {
+      polygon,
+      bounds: adjusted,
+      centroid: {
+        lat: centroidEstimate.lat / count,
+        lon: centroidEstimate.lon / count
+      }
+    });
+  });
+
+  return {
+    version: Date.now(),
+    entries
+  };
+}
+
 function loadHospitalDataset() {
   if (!hospitalDatasetCache.promise) {
     hospitalDatasetCache.promise = Promise.all([
@@ -448,6 +648,8 @@ function loadHospitalDataset() {
         const coordinateMap = new Map(Object.entries(coordinateData || {}));
         hospitalDatasetCache.coordinates = coordinateMap;
         const parsed = parseHospitalCsv(csvText, coordinateMap);
+        parsed.hospitalsByCanton = buildHospitalsByCantonMap(parsed.meta);
+        parsed.cantonIndex = buildCantonGeometry(parsed.meta);
         hospitalDatasetCache.data = parsed;
         return parsed;
       })
@@ -1477,7 +1679,7 @@ if (finderRoot) {
       legendEls: { university: null, kanton: null, private: null },
       cantonBoundariesLayer: null,
       cantonLayers: new Map(),
-      boundaryPromise: null
+      geometryVersion: null
     };
 
     function ensureMapStructure() {
@@ -1533,7 +1735,7 @@ if (finderRoot) {
 
         mapState.markersLayer = L.layerGroup().addTo(mapState.map);
         mapState.cantonLayers.clear();
-        ensureCantonBoundaries();
+        applyCantonGeometryToMap();
         mapState.ready = true;
         requestAnimationFrame(() => mapState.map.invalidateSize());
       }
@@ -1562,119 +1764,65 @@ if (finderRoot) {
       mapState.messageEl.hidden = false;
     }
 
-    const normalizeCantonCode = (value) => {
-      if (value == null) {
-        return null;
+    function applyCantonGeometryToMap() {
+      if (!mapState.map || !finderDataset?.cantonIndex?.entries) {
+        return;
       }
-      const raw = String(value).trim();
-      if (!raw) {
-        return null;
+      if (mapState.geometryVersion === finderDataset.cantonIndex.version) {
+        return;
       }
-      const sanitized = raw.replace(/^CH[.-]?/i, '');
-      const segments = sanitized.split(/[.-]/);
-      const candidate = segments[segments.length - 1].toUpperCase();
-      return candidate.length === 2 ? candidate : null;
-    };
 
-    function parseCantonCodeFromFeature(feature) {
-      const props = feature?.properties ?? {};
-      const candidates = [
-        props.KURZEL,
-        props.KUERZEL,
-        props.abbr,
-        props.code,
-        props['iso-a2'],
-        props['hc-a2'],
-        props['postal-code'],
-        props['hasc'],
-        props['hc-key'],
-        props.id
-      ];
-      for (const candidate of candidates) {
-        const normalized = normalizeCantonCode(candidate);
-        if (normalized) {
-          return normalized;
-        }
-      }
-      return null;
-    }
-
-    function ensureCantonBoundaries() {
-      if (!mapState.map) {
-        return null;
-      }
       if (mapState.cantonBoundariesLayer) {
-        return Promise.resolve(mapState.cantonBoundariesLayer);
-      }
-      if (mapState.boundaryPromise) {
-        return mapState.boundaryPromise;
+        mapState.map.removeLayer(mapState.cantonBoundariesLayer);
       }
 
-      mapState.boundaryPromise = fetch(CANTON_BOUNDARIES_URL)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Failed to load canton boundaries: ${response.status}`);
+      mapState.cantonLayers.clear();
+      const boundaryGroup = L.featureGroup();
+
+      finderDataset.cantonIndex.entries.forEach((entry, code) => {
+        const polygon = L.polygon(entry.polygon, {
+          ...CANTON_BOUNDARY_BASE_STYLE,
+          pane: 'canton-boundaries'
+        });
+        const tooltipLabel = cantonNames[code] ?? code;
+        if (typeof polygon.bindTooltip === 'function') {
+          polygon.bindTooltip(tooltipLabel, {
+            direction: 'auto',
+            sticky: true,
+            opacity: 0.85
+          });
+        }
+        polygon.on('click', () => applyCantonSelection(code));
+        polygon.on('add', () => {
+          const element = polygon.getElement?.();
+          if (!element) {
+            return;
           }
-          return response.json();
-        })
-        .then((geojson) => {
-          if (!geojson || geojson.type !== 'FeatureCollection') {
-            throw new Error('Unexpected canton boundary dataset.');
-          }
-          if (mapState.cantonBoundariesLayer) {
-            mapState.map.removeLayer(mapState.cantonBoundariesLayer);
-          }
-          mapState.cantonLayers.clear();
-          mapState.cantonBoundariesLayer = L.geoJSON(geojson, {
-            pane: 'canton-boundaries',
-            style: () => ({ ...CANTON_BOUNDARY_BASE_STYLE }),
-            onEachFeature: (feature, layer) => {
-              const code = parseCantonCodeFromFeature(feature);
-              const name = feature?.properties?.name;
-              if (layer && typeof layer.bindTooltip === 'function' && name) {
-                layer.bindTooltip(name, {
-                  direction: 'auto',
-                  sticky: true,
-                  opacity: 0.85
-                });
-              }
-              if (!code) {
-                return;
-              }
-              mapState.cantonLayers.set(code, layer);
-              layer.on('click', () => applyCantonSelection(code));
-              layer.on('add', () => {
-                const element = layer.getElement?.();
-                if (!element) {
-                  return;
-                }
-                element.setAttribute('tabindex', '0');
-                element.setAttribute('role', 'button');
-                element.setAttribute('aria-label', name ? `Canton ${name}` : `Canton ${code}`);
-                element.addEventListener('keydown', (event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    applyCantonSelection(code);
-                  }
-                });
-              });
+          const label = cantonNames[code]
+            ? `Canton ${cantonNames[code]} (${code})`
+            : `Canton ${code}`;
+          element.setAttribute('tabindex', '0');
+          element.setAttribute('role', 'button');
+          element.setAttribute('aria-label', label);
+          element.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              applyCantonSelection(code);
             }
           });
-          mapState.cantonBoundariesLayer.addTo(mapState.map);
-          updateCantonBoundaryHighlight();
-          return mapState.cantonBoundariesLayer;
-        })
-        .catch((error) => {
-          console.warn('Unable to load canton boundaries', error);
-          return null;
-        })
-        .finally(() => {
-          if (!mapState.cantonBoundariesLayer) {
-            mapState.boundaryPromise = null;
-          }
         });
+        boundaryGroup.addLayer(polygon);
+        mapState.cantonLayers.set(code, polygon);
+      });
 
-      return mapState.boundaryPromise;
+      if (!mapState.map.getPane('canton-boundaries')) {
+        mapState.map.createPane('canton-boundaries');
+      }
+
+      boundaryGroup.addTo(mapState.map);
+      mapState.cantonBoundariesLayer = boundaryGroup;
+      mapState.geometryVersion = finderDataset.cantonIndex.version;
+      updateCantonBoundaryHighlight();
     }
 
     function updateCantonBoundaryHighlight() {
@@ -2245,7 +2393,7 @@ if (finderRoot) {
       return;
     }
 
-    ensureCantonBoundaries();
+    applyCantonGeometryToMap();
 
     const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
     if (!hospitalsWithCoords.length) {
@@ -2258,20 +2406,25 @@ if (finderRoot) {
 
     const selectedCanton = state.selectedCanton;
 
+    const hospitalsByCantonSet =
+      selectedCanton === ALL_CANTONS_OPTION
+        ? null
+        : finderDataset?.hospitalsByCanton?.get(selectedCanton) ?? null;
+
     const hospitals =
       selectedCanton === ALL_CANTONS_OPTION
         ? hospitalsWithCoords
-        : hospitalsWithCoords.filter((h) => h.canton === selectedCanton);
+        : hospitalsWithCoords.filter((h) =>
+            hospitalsByCantonSet ? hospitalsByCantonSet.has(h.hospital) : h.canton === selectedCanton
+          );
 
     const referenceHospitals = hospitals.length ? hospitals : hospitalsWithCoords;
     const maxCases = referenceHospitals[0]?.cases || 1;
 
-    const boundaryLayer =
+    const geometryEntry =
       selectedCanton === ALL_CANTONS_OPTION
         ? null
-        : mapState.cantonLayers.get(selectedCanton) ?? null;
-    const boundaryBounds = boundaryLayer?.getBounds?.();
-    const hasValidBoundary = Boolean(boundaryBounds?.isValid?.());
+        : finderDataset?.cantonIndex?.entries?.get(selectedCanton) ?? null;
 
     const spanToBounds = (span) => {
       const sanitized = sanitizeSpanBounds(span);
@@ -2293,19 +2446,22 @@ if (finderRoot) {
       );
     };
 
-    const fallbackBounds =
-      selectedCanton === ALL_CANTONS_OPTION
-        ? L.latLngBounds(
-            [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
-            [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
-          )
-        : spanToBounds(cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS) ??
-          L.latLngBounds(
-            [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
-            [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
-          );
-
-    const targetBoundaryBounds = hasValidBoundary ? boundaryBounds : fallbackBounds;
+    const fallbackBounds = (() => {
+      if (selectedCanton === ALL_CANTONS_OPTION) {
+        return L.latLngBounds(
+          [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
+          [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
+        );
+      }
+      return (
+        spanToBounds(geometryEntry?.bounds) ||
+        spanToBounds(cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS) ||
+        L.latLngBounds(
+          [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
+          [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
+        )
+      );
+    })();
     const hospitalsBounds = L.latLngBounds([]);
 
     hospitals.forEach((h) => {
@@ -2317,17 +2473,18 @@ if (finderRoot) {
       hospitalsBounds.extend([lat, lon]);
     });
 
-    let leafletBounds = L.latLngBounds(targetBoundaryBounds.getSouthWest(), targetBoundaryBounds.getNorthEast());
+    let leafletBounds = fallbackBounds;
 
     if (selectedCanton === ALL_CANTONS_OPTION) {
       if (hospitalsBounds.isValid()) {
         leafletBounds = hospitalsBounds;
       }
     } else if (hospitalsBounds.isValid()) {
+      leafletBounds = L.latLngBounds(fallbackBounds.getSouthWest(), fallbackBounds.getNorthEast());
       leafletBounds.extend(hospitalsBounds);
     }
 
-    if (!leafletBounds.isValid()) {
+    if (!leafletBounds?.isValid?.()) {
       leafletBounds = fallbackBounds;
     }
 
@@ -2364,8 +2521,6 @@ if (finderRoot) {
       mapState.messageEl.hidden = true;
     }
 
-    const usedFallbackBounds = selectedCanton !== ALL_CANTONS_OPTION && !hasValidBoundary;
-
     if (leafletBounds.isValid()) {
       const northEast = leafletBounds.getNorthEast();
       const southWest = leafletBounds.getSouthWest();
@@ -2373,27 +2528,20 @@ if (finderRoot) {
         Math.abs(northEast.lat - southWest.lat) < 0.0001 &&
         Math.abs(northEast.lng - southWest.lng) < 0.0001;
       if (samePoint) {
-        mapState.map.setView([northEast.lat, northEast.lng], 9);
+        const centroidTarget =
+          selectedCanton === ALL_CANTONS_OPTION
+            ? {
+                lat: (SWITZERLAND_BOUNDS.latMin + SWITZERLAND_BOUNDS.latMax) / 2,
+                lon: (SWITZERLAND_BOUNDS.lonMin + SWITZERLAND_BOUNDS.lonMax) / 2
+              }
+            : geometryEntry?.centroid || cantonCentroids[selectedCanton] || {
+                lat: northEast.lat,
+                lon: northEast.lng
+              };
+        mapState.map.setView([centroidTarget.lat, centroidTarget.lon], 9);
       } else {
         mapState.map.fitBounds(leafletBounds.pad(0.12), { animate: false });
       }
-    }
-
-    if (usedFallbackBounds && mapState.boundaryPromise) {
-      const expectedCanton = selectedCanton;
-      mapState.boundaryPromise
-        .then(() => {
-          if (state.selectedCanton !== expectedCanton || expectedCanton === ALL_CANTONS_OPTION) {
-            return;
-          }
-          const layer = mapState.cantonLayers.get(expectedCanton);
-          const layerBounds = layer?.getBounds?.();
-          if (!layerBounds || !layerBounds.isValid?.()) {
-            return;
-          }
-          mapState.map.fitBounds(layerBounds.pad?.(0.12) ?? layerBounds, { animate: true });
-        })
-        .catch(() => {});
     }
 
     updateCantonBoundaryHighlight();

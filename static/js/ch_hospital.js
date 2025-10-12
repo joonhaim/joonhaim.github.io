@@ -1177,7 +1177,7 @@ if (finderRoot) {
   };
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
-  const PAGE_SIZE = 7;
+  const PAGE_SIZE = 10;
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
   function initializeFinderUi(procedureCatalog) {

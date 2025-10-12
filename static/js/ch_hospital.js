@@ -1090,10 +1090,10 @@ if (finderRoot) {
       },
       types: {
         labels: {
-          university: 'Universitaires',
-          kanton: 'Cantonaux / Régionaux',
-          private: 'Privés',
-          other: 'Autres'
+          university: 'Universitaire',
+          kanton: 'Cantonal / Régional',
+          private: 'Privé',
+          other: 'Autre'
         },
         badges: {
           university: 'Universitaire',
@@ -1102,9 +1102,9 @@ if (finderRoot) {
           other: 'Autre'
         },
         legend: {
-          university: 'Universitaires',
-          kanton: 'Cantonaux / Régionaux',
-          private: 'Privés'
+          university: 'Universitaire',
+          kanton: 'Cantonal / Régional',
+          private: 'Privé'
         }
       },
       hhi: {

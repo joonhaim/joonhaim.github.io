@@ -1711,6 +1711,25 @@ if (finderRoot) {
       };
     }
 
+    function sanitizeSpanBounds(bounds) {
+      if (!bounds) {
+        return null;
+      }
+      const latMin = Number(bounds.latMin);
+      const latMax = Number(bounds.latMax);
+      const lonMin = Number(bounds.lonMin);
+      const lonMax = Number(bounds.lonMax);
+      if (![latMin, latMax, lonMin, lonMax].every((value) => Number.isFinite(value))) {
+        return null;
+      }
+      return {
+        latMin: Math.min(latMin, latMax),
+        latMax: Math.max(latMin, latMax),
+        lonMin: Math.min(lonMin, lonMax),
+        lonMax: Math.max(lonMin, lonMax)
+      };
+    }
+
     const defaultCategory = procedureCatalog[0] ?? null;
     const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
 
@@ -2240,33 +2259,72 @@ if (finderRoot) {
         ? null
         : mapState.cantonLayers.get(selectedCanton)?.getBounds?.() ?? null;
     const derivedBounds = leafletBoundaryBounds ? latLngBoundsToSpan(leafletBoundaryBounds) : null;
-    const targetBounds =
+    const swissBounds = sanitizeSpanBounds(SWITZERLAND_BOUNDS) ?? {
+      latMin: SWITZERLAND_BOUNDS.latMin,
+      latMax: SWITZERLAND_BOUNDS.latMax,
+      lonMin: SWITZERLAND_BOUNDS.lonMin,
+      lonMax: SWITZERLAND_BOUNDS.lonMax
+    };
+    const targetBounds = sanitizeSpanBounds(
       selectedCanton === ALL_CANTONS_OPTION
         ? SWITZERLAND_BOUNDS
-        : derivedBounds ?? cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS;
+        : derivedBounds ?? cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS
+    ) ?? swissBounds;
 
     const latExtent = Math.max(0, targetBounds.latMax - targetBounds.latMin);
     const lonExtent = Math.max(0, targetBounds.lonMax - targetBounds.lonMin);
     const latPadding = Math.max(0.02, latExtent * 0.05);
     const lonPadding = Math.max(0.02, lonExtent * 0.05);
-    const bounds = {
-      latMin: Math.max(SWITZERLAND_BOUNDS.latMin, targetBounds.latMin - latPadding),
-      latMax: Math.min(SWITZERLAND_BOUNDS.latMax, targetBounds.latMax + latPadding),
-      lonMin: Math.max(SWITZERLAND_BOUNDS.lonMin, targetBounds.lonMin - lonPadding),
-      lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, targetBounds.lonMax + lonPadding)
-    };
+    const paddedBounds = sanitizeSpanBounds({
+      latMin: Math.max(swissBounds.latMin, targetBounds.latMin - latPadding),
+      latMax: Math.min(swissBounds.latMax, targetBounds.latMax + latPadding),
+      lonMin: Math.max(swissBounds.lonMin, targetBounds.lonMin - lonPadding),
+      lonMax: Math.min(swissBounds.lonMax, targetBounds.lonMax + lonPadding)
+    }) ?? swissBounds;
 
-    const leafletBounds = L.latLngBounds(
-      [bounds.latMin, bounds.lonMin],
-      [bounds.latMax, bounds.lonMax]
-    );
+    let leafletBounds = paddedBounds
+      ? L.latLngBounds(
+          [paddedBounds.latMin, paddedBounds.lonMin],
+          [paddedBounds.latMax, paddedBounds.lonMax]
+        )
+      : L.latLngBounds();
+
+    const hospitalBounds = L.latLngBounds([]);
+    referenceHospitals.forEach((h) => {
+      const lat = Number(h.lat);
+      const lon = Number(h.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return;
+      }
+      hospitalBounds.extend([lat, lon]);
+    });
+
+    if (hospitalBounds.isValid()) {
+      if (leafletBounds.isValid()) {
+        leafletBounds.extend(hospitalBounds);
+      } else {
+        leafletBounds = hospitalBounds;
+      }
+    }
+
+    if (!leafletBounds.isValid()) {
+      leafletBounds = L.latLngBounds(
+        [swissBounds.latMin, swissBounds.lonMin],
+        [swissBounds.latMax, swissBounds.lonMax]
+      );
+    }
 
     mapState.markersLayer.clearLayers();
 
     hospitals.forEach((h) => {
+      const lat = Number(h.lat);
+      const lon = Number(h.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return;
+      }
       const color = h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
       const radius = 6 + (h.cases / maxCases) * 9;
-      const marker = L.circleMarker([h.lat, h.lon], {
+      const marker = L.circleMarker([lat, lon], {
         radius,
         color,
         fillColor: color,

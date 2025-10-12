@@ -921,9 +921,44 @@ body {
   color: #111;
 }
 
-.finder-kpi span {
+.finder-kpi-footnote {
   font-size: 0.75rem;
   color: #6b7280;
+}
+
+.finder-kpi-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.finder-kpi-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.finder-kpi-value-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.finder-kpi-value-number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-number {
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-label {
+  color: #4b5563;
 }
 
 .finder-kpi-info {

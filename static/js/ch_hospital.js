@@ -699,6 +699,7 @@ function loadHospitalDataset() {
 const finderRoot = document.getElementById('procedure-finder');
 
 if (finderRoot) {
+  finderRoot.classList.add('finder-results-hidden');
   const SUPPORTED_LOCALES = ['en', 'de', 'fr', 'it'];
   const pageLocale = document.documentElement.lang?.toLowerCase() ?? 'en';
   const activeLocale = SUPPORTED_LOCALES.includes(pageLocale) ? pageLocale : 'en';
@@ -2718,11 +2719,10 @@ if (finderRoot) {
     }
 
     const defaultCategory = procedureCatalog[0] ?? null;
-    const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
 
     const state = {
       selectedCategory: defaultCategory?.id ?? null,
-      selectedProc: defaultProcedure,
+      selectedProc: null,
       selectedCanton: ALL_CANTONS_OPTION,
       search: '',
       procedureQuery: '',
@@ -2777,15 +2777,12 @@ if (finderRoot) {
       if (!activeCategory && procedureCatalog.length) {
         activeCategory = procedureCatalog[0];
         state.selectedCategory = activeCategory.id;
-        if (!state.selectedProc) {
-          state.selectedProc = activeCategory.procedures?.[0] ?? null;
-        }
       }
 
-      if (activeCategory && activeCategory.procedures && activeCategory.procedures.length) {
+      if (state.selectedProc && activeCategory?.procedures?.length) {
         const hasSelected = activeCategory.procedures.some((proc) => proc.code === state.selectedProc?.code);
-        if (!hasSelected && activeCategory.procedures[0]) {
-          state.selectedProc = activeCategory.procedures[0];
+        if (!hasSelected) {
+          state.selectedProc = null;
         }
       }
 
@@ -2817,8 +2814,13 @@ if (finderRoot) {
           if (!category) {
             return;
           }
+          const hasPreviousSelection = category.procedures?.some(
+            (proc) => proc.code === state.selectedProc?.code
+          );
           state.selectedCategory = category.id;
-          state.selectedProc = category.procedures?.[0] ?? state.selectedProc;
+          if (!hasPreviousSelection) {
+            state.selectedProc = null;
+          }
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
@@ -3525,6 +3527,7 @@ if (finderRoot) {
     renderTypeToggle();
 
     const selectedProcedure = state.selectedProc;
+    finderRoot.classList.toggle('finder-results-hidden', !selectedProcedure);
     const procedureLabel = selectedProcedure
       ? `${selectedProcedure.name} (${selectedProcedure.code})`
       : msg('selectedProcedure');

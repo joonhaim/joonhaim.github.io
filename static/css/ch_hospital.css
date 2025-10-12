@@ -350,6 +350,12 @@ body {
   width: 100%;
 }
 
+.finder-results-hidden .finder-kpis,
+.finder-results-hidden .finder-main,
+.finder-results-hidden .finder-bottom {
+  display: none;
+}
+
 .finder-intro {
   text-align: center;
   max-width: 720px;

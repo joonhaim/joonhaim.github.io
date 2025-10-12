@@ -1208,6 +1208,38 @@ if (finderRoot) {
     let cantonDropdownActiveIndex = -1;
     const cantonDropdownMenuId = 'finder-canton-dropdown-menu';
 
+    function getResultsScrollAnchor() {
+      if (finderRoot) {
+        const explicitAnchor = finderRoot.querySelector('[data-finder-results-anchor]');
+        if (explicitAnchor) {
+          return explicitAnchor;
+        }
+      }
+
+      return (
+        finderListTitle?.closest('.finder-list-card') ||
+        finderRoot?.querySelector('.finder-main') ||
+        finderList
+      );
+    }
+
+    function scrollToResultsIfNeeded() {
+      if (!state.shouldScrollToResults) {
+        return;
+      }
+
+      state.shouldScrollToResults = false;
+      requestAnimationFrame(() => {
+        const anchor = getResultsScrollAnchor();
+        if (!anchor) {
+          return;
+        }
+
+        const top = anchor.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      });
+    }
+
     function renderCantonDropdownOption(option) {
       if (!option) {
         return '';
@@ -1555,7 +1587,8 @@ if (finderRoot) {
       search: '',
       procedureQuery: '',
       typeFilter: { university: true, kanton: true, private: true },
-      listPage: 0
+      listPage: 0,
+      shouldScrollToResults: false
     };
 
     const labelFromHHI = (hhi) => (hhi < 1500 ? hhiLabels.low : hhi <= 2500 ? hhiLabels.moderate : hhiLabels.high);
@@ -1647,6 +1680,7 @@ if (finderRoot) {
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
+          state.shouldScrollToResults = false;
           render();
         });
       });
@@ -1723,6 +1757,7 @@ if (finderRoot) {
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
+          state.shouldScrollToResults = true;
           render();
         });
       });
@@ -2267,6 +2302,7 @@ if (finderRoot) {
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
+      scrollToResultsIfNeeded();
       return;
     }
 
@@ -2277,6 +2313,7 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      scrollToResultsIfNeeded();
       return;
     }
 
@@ -2285,7 +2322,8 @@ if (finderRoot) {
     renderTopList(aggregation);
     renderMap(aggregation);
     renderCantonDetails(aggregation);
-    }
+    scrollToResultsIfNeeded();
+  }
 
     finderProcedureSearch.addEventListener('input', (event) => {
       state.procedureQuery = event.target.value;

@@ -1236,6 +1236,20 @@ if (finderRoot) {
       });
     }
 
+    function renderCantonDropdownDisplay(option) {
+      if (!option) {
+        return '';
+      }
+      return `
+        <span class="finder-canton-dropdown__selection">
+          <span class="finder-canton-dropdown__selection-label">${option.label}</span>
+          <span class="finder-canton-dropdown__icon" aria-hidden="true">
+            <img src="${option.icon}" alt="" loading="lazy" />
+          </span>
+        </span>
+      `;
+    }
+
     function renderCantonDropdownOption(option) {
       if (!option) {
         return '';
@@ -1253,7 +1267,7 @@ if (finderRoot) {
         return;
       }
       const option = getCantonOptionByValue(value);
-      cantonDropdownToggle.innerHTML = renderCantonDropdownOption(option);
+      cantonDropdownToggle.innerHTML = renderCantonDropdownDisplay(option);
       cantonDropdownToggle.dataset.value = option.value;
       cantonDropdownOptions.forEach((optionEl, index) => {
         const isSelected = optionEl.dataset.value === option.value;

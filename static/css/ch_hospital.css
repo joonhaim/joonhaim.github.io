@@ -1159,9 +1159,14 @@ body {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 0.75rem;
-  align-items: flex-start;
-  padding-bottom: 0.75rem;
+  align-items: stretch;
+  padding: 0.75rem 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  min-height: 5.25rem;
+}
+
+.finder-row > * {
+  align-self: flex-start;
 }
 
 .finder-row:last-child {
@@ -1179,7 +1184,15 @@ body {
 .finder-hospital {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  justify-content: space-between;
+  gap: 0.45rem;
+  height: 100%;
+}
+
+.finder-hospital-header strong {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  word-break: break-word;
 }
 
 .finder-hospital-header {
@@ -1245,6 +1258,16 @@ body {
 .finder-figures span {
   font-size: 0.7rem;
   color: #6b7280;
+}
+
+@media (max-width: 720px) {
+  .finder-row {
+    min-height: 4.75rem;
+  }
+
+  .finder-hospital-header strong {
+    font-size: 0.9rem;
+  }
 }
 
 .finder-map-card {

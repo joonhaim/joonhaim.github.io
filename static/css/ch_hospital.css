@@ -1326,17 +1326,30 @@ body {
 }
 
 .finder-kpi-value-number--hhi {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.35rem;
   font-size: 1.35rem;
   line-height: 1.2;
+  text-align: right;
+}
+
+.finder-kpi-hhi-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.finder-kpi-hhi-separator {
+  font-size: 0.75em;
+  color: var(--text-subtle);
 }
 
 .finder-kpi-hhi-label {
-  display: inline-block;
-  margin-left: 0.25rem;
   font-size: 0.75em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-subtle);
+  white-space: nowrap;
 }
 
 .finder-kpi-value--secondary .finder-kpi-value-number {

@@ -3163,13 +3163,15 @@ if (finderRoot) {
       return `<div class="finder-kpi-values">${rows.join('')}</div>`;
     };
 
-    const createHhiValue = (value, label) => ({
-      value: `${escapeHtml(String(value ?? 0))} – <span class="finder-kpi-hhi-label">${escapeHtml(
-        label ?? labelFromHHI(value ?? 0)
-      )}</span>`,
-      allowHtml: true,
-      className: 'finder-kpi-value-number--hhi'
-    });
+    const createHhiValue = (value, label) => {
+      const safeValue = escapeHtml(String(value ?? 0));
+      const safeLabel = escapeHtml(label ?? labelFromHHI(value ?? 0));
+      return {
+        value: `<span class="finder-kpi-hhi-value">${safeValue}</span><span class="finder-kpi-hhi-separator">&ndash;</span><span class="finder-kpi-hhi-label">${safeLabel}</span>`,
+        allowHtml: true,
+        className: 'finder-kpi-value-number--hhi'
+      };
+    };
 
     const tiles = [
       {

@@ -1055,6 +1055,80 @@ body {
   color: #111827;
 }
 
+.finder-kpi-value-number--stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.finder-kpi-value-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.finder-kpi-value-line--muted {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.finder-kpi-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.finder-kpi-figure {
+  font-variant-numeric: tabular-nums;
+}
+
+.finder-delta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.finder-delta-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.finder-delta-pct {
+  font-size: 0.75em;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.finder-delta-positive {
+  color: #047857;
+}
+
+.finder-delta-negative {
+  color: #b91c1c;
+}
+
+.finder-delta-neutral {
+  color: #4b5563;
+}
+
+.finder-kpi-delta {
+  justify-content: flex-end;
+}
+
 .finder-kpi-hhi-label {
   display: inline-block;
   margin-left: 0.25rem;
@@ -1067,6 +1141,22 @@ body {
 .finder-kpi-value--secondary .finder-kpi-value-number {
   font-size: 1.25rem;
   color: #1f2937;
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-number--stacked {
+  font-size: 0.95rem;
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-line {
+  font-size: 1.1rem;
+}
+
+.finder-kpi-value--secondary .finder-kpi-value-line--muted {
+  font-size: 0.85rem;
+}
+
+.finder-kpi-value--secondary .finder-kpi-delta {
+  font-size: 0.75rem;
 }
 
 .finder-kpi-value--secondary .finder-kpi-value-label {
@@ -1319,19 +1409,90 @@ body {
 }
 
 .finder-figures {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
   text-align: right;
+  min-width: 10rem;
 }
 
-.finder-figures strong {
+.finder-figures-current strong {
   display: block;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+  color: #111827;
 }
 
-.finder-figures span {
-  font-size: 0.7rem;
+.finder-figures-current span {
+  display: block;
+  font-size: 0.72rem;
   color: #6b7280;
+}
+
+.finder-figures-history {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: #4b5563;
+}
+
+.finder-figures-history-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.finder-figures-history-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.finder-figures-delta {
+  justify-content: flex-end;
+  font-size: 0.75rem;
+}
+
+.finder-mini-bar {
+  position: relative;
+  width: 140px;
+  max-width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  margin-top: 0.1rem;
+}
+
+.finder-mini-bar-previous,
+.finder-mini-bar-current {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.finder-mini-bar-previous {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+.finder-mini-bar-current {
+  background: #1d4ed8;
+}
+
+.finder-mini-bar-current.finder-delta-positive {
+  background: #16a34a;
+}
+
+.finder-mini-bar-current.finder-delta-negative {
+  background: #dc2626;
+}
+
+.finder-mini-bar-current.finder-delta-neutral {
+  background: #64748b;
 }
 
 .finder-map-card {
@@ -1454,6 +1615,16 @@ body {
     width: 100%;
     align-items: flex-start;
     text-align: left;
+  }
+
+  .finder-figures {
+    align-items: flex-start;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .finder-mini-bar {
+    width: 100%;
   }
 
   .finder-list {

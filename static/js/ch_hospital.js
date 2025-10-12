@@ -342,6 +342,52 @@ function parseInteger(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+const percentShareFormatter = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1
+});
+
+const percentChangeFormatter = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1
+});
+
+function formatCount(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? Math.round(numeric).toLocaleString() : '0';
+}
+
+function formatDeltaCount(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric === 0) {
+    return '0';
+  }
+  const absValue = Math.abs(Math.round(numeric));
+  const formatted = absValue.toLocaleString();
+  return `${numeric > 0 ? '+' : '−'}${formatted}`;
+}
+
+function formatPercentShare(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) {
+    return '0%';
+  }
+  return `${percentShareFormatter.format(numeric * 100)}%`;
+}
+
+function formatPercentChange(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) {
+    return '–';
+  }
+  const percent = numeric * 100;
+  if (percent === 0) {
+    return '0%';
+  }
+  const formatted = percentChangeFormatter.format(Math.abs(percent));
+  return `${percent > 0 ? '+' : '−'}${formatted}%`;
+}
+
 function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinates) {
   const override = hospitalMetadataOverrides[name];
   const coordinateEntry = coordinatesMap?.get?.(name);
@@ -392,6 +438,7 @@ function parseHospitalCsv(text, coordinatesMap) {
     if (!code) {
       return;
     }
+    const historicalCases = parseInteger(cols[5]);
     const cases = parseInteger(cols[9]);
     if (cases <= 0) {
       return;
@@ -401,7 +448,7 @@ function parseHospitalCsv(text, coordinatesMap) {
       meta.set(institution, inferHospitalMeta(institution, coordinatesMap));
     }
 
-    const entry = { institution, code, cases };
+    const entry = { institution, code, cases, historicalCases };
     if (!byProcedure.has(code)) {
       byProcedure.set(code, []);
     }
@@ -521,11 +568,15 @@ if (finderRoot) {
           'The Herfindahl–Hirschman Index (HHI) sums the squared market shares of hospitals. Scores range from 0 (many providers) to 10&nbsp;000 (single provider). &lt;1500 Low · 1500–2500 Moderate · &gt;2500 High'
       },
       kpi: {
-        totalCases: 'Total Cases (2023)',
+        totalCases: 'Total cases',
         hospitalsPerforming: 'Hospitals performing',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI)',
-        switzerland: 'Switzerland'
+        switzerland: 'Switzerland',
+        periodCurrent: '2023',
+        periodHistorical: '2018–2022',
+        deltaLabel: 'Change vs 2018–2022',
+        deltaPercentLabel: 'Growth vs 2018–2022'
       },
       messages: {
         allCantons: 'All cantons',
@@ -642,11 +693,15 @@ if (finderRoot) {
           'Der Herfindahl-Hirschman-Index (HHI) summiert die quadrierten Marktanteile der Spitäler. Werte reichen von 0 (viele Anbieter) bis 10&nbsp;000 (ein Anbieter). &lt;1500 Niedrig · 1500–2500 Mittel · &gt;2500 Hoch'
       },
       kpi: {
-        totalCases: 'Fallzahlen gesamt (2023)',
+        totalCases: 'Fallzahlen gesamt',
         hospitalsPerforming: 'Durchführende Spitäler',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI)',
-        switzerland: 'Schweiz'
+        switzerland: 'Schweiz',
+        periodCurrent: '2023',
+        periodHistorical: '2018–2022',
+        deltaLabel: 'Veränderung gegenüber 2018–2022',
+        deltaPercentLabel: 'Wachstum gegenüber 2018–2022'
       },
       messages: {
         allCantons: 'Alle Kantone',
@@ -763,11 +818,15 @@ if (finderRoot) {
           "L'indice Herfindahl-Hirschman (HHI) additionne les parts de marché au carré des hôpitaux. Les scores vont de 0 (offre dispersée) à 10&nbsp;000 (monopole). &lt;1500 Faible · 1500–2500 Modérée · &gt;2500 Élevée"
       },
       kpi: {
-        totalCases: 'Cas totaux (2023)',
+        totalCases: 'Cas totaux',
         hospitalsPerforming: 'Hôpitaux actifs',
         universityShare: 'Part des hôpitaux universitaires',
         centralization: 'Centralisation (HHI)',
-        switzerland: 'Suisse'
+        switzerland: 'Suisse',
+        periodCurrent: '2023',
+        periodHistorical: '2018–2022',
+        deltaLabel: 'Variation vs 2018–2022',
+        deltaPercentLabel: 'Croissance vs 2018–2022'
       },
       messages: {
         allCantons: 'Tous les cantons',
@@ -884,11 +943,15 @@ if (finderRoot) {
           "L'indice di Herfindahl-Hirschman (HHI) somma le quote di mercato al quadrato degli ospedali. I punteggi vanno da 0 (molti fornitori) a 10&nbsp;000 (monopolio). &lt;1500 Bassa · 1500–2500 Moderata · &gt;2500 Alta"
       },
       kpi: {
-        totalCases: 'Casi totali (2023)',
+        totalCases: 'Casi totali',
         hospitalsPerforming: 'Ospedali attivi',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (HHI)',
-        switzerland: 'Svizzera'
+        switzerland: 'Svizzera',
+        periodCurrent: '2023',
+        periodHistorical: '2018–2022',
+        deltaLabel: 'Variazione vs 2018–2022',
+        deltaPercentLabel: 'Crescita vs 2018–2022'
       },
       messages: {
         allCantons: 'Tutti i cantoni',
@@ -1178,6 +1241,26 @@ if (finderRoot) {
     hospitalsPerforming: translate('kpi.hospitalsPerforming'),
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
+  };
+
+  const normalizeKpiValue = (value, fallback) => {
+    if (typeof value !== 'string') {
+      return fallback;
+    }
+    if (!value || value.startsWith('kpi.')) {
+      return fallback;
+    }
+    return value;
+  };
+
+  const kpiMeta = {
+    periodCurrent: normalizeKpiValue(translate('kpi.periodCurrent'), '2023'),
+    periodHistorical: normalizeKpiValue(translate('kpi.periodHistorical'), '2018–2022'),
+    deltaLabel: normalizeKpiValue(translate('kpi.deltaLabel'), 'Change vs 2018–2022'),
+    deltaPercentLabel: normalizeKpiValue(
+      translate('kpi.deltaPercentLabel'),
+      'Growth vs 2018–2022'
+    )
   };
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
@@ -1804,6 +1887,9 @@ if (finderRoot) {
     if (!finderDataset) {
       return {
         total: 0,
+        totalHistorical: 0,
+        deltaTotal: 0,
+        deltaPercent: null,
         hospitals: [],
         hospitalCount: 0,
         uniShare: 0,
@@ -1811,7 +1897,7 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, historicalCases: 0, delta: 0, deltaPercent: null, hospitalCount: 0, uniShare: 0 }
           : null
       };
     }
@@ -1823,6 +1909,7 @@ if (finderRoot) {
         return {
           hospital: entry.institution,
           cases: entry.cases,
+          historicalCases: entry.historicalCases ?? 0,
           type: meta.type,
           canton: meta.canton,
           lat: meta.lat,
@@ -1835,6 +1922,9 @@ if (finderRoot) {
     if (!totalAll) {
       return {
         total: 0,
+        totalHistorical: 0,
+        deltaTotal: 0,
+        deltaPercent: null,
         hospitals: [],
         hospitalCount: 0,
         uniShare: 0,
@@ -1842,7 +1932,7 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, historicalCases: 0, delta: 0, deltaPercent: null, hospitalCount: 0, uniShare: 0 }
           : null
       };
     }
@@ -1854,10 +1944,16 @@ if (finderRoot) {
     const enriched = enrichedAll.filter((h) => state.typeFilter[h.type] !== false);
 
     const total = enriched.reduce((sum, h) => sum + h.cases, 0);
+    const totalHistorical = enriched.reduce((sum, h) => sum + (h.historicalCases ?? 0), 0);
+    const deltaTotal = total - totalHistorical;
+    const deltaPercent = totalHistorical > 0 ? deltaTotal / totalHistorical : null;
 
     if (!total) {
       return {
         total: 0,
+        totalHistorical,
+        deltaTotal,
+        deltaPercent,
         hospitals: [],
         hospitalCount: 0,
         uniShare: overallUniShare,
@@ -1865,13 +1961,24 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, historicalCases: 0, delta: 0, deltaPercent: null, hospitalCount: 0, uniShare: 0 }
           : null
       };
     }
 
     const hospitalsWithShare = enriched
-      .map((h) => ({ ...h, share: h.cases / total }))
+      .map((h) => {
+        const historical = h.historicalCases ?? 0;
+        const delta = h.cases - historical;
+        const deltaPercentHospital = historical > 0 ? delta / historical : null;
+        return {
+          ...h,
+          historicalCases: historical,
+          delta,
+          deltaPercent: deltaPercentHospital,
+          share: h.cases / total
+        };
+      })
       .sort((a, b) => b.cases - a.cases);
 
     const cantonHosp =
@@ -1886,11 +1993,21 @@ if (finderRoot) {
     const cantonTotals = hasCantonSelection
       ? (() => {
           const cantonTotalCases = cantonHosp.reduce((sum, h) => sum + h.cases, 0);
+          const cantonHistoricalCases = cantonHosp.reduce(
+            (sum, h) => sum + (h.historicalCases ?? 0),
+            0
+          );
           const cantonUniCases = cantonHosp
             .filter((h) => h.type === 'university')
             .reduce((sum, h) => sum + h.cases, 0);
+          const cantonDelta = cantonTotalCases - cantonHistoricalCases;
+          const cantonDeltaPercent =
+            cantonHistoricalCases > 0 ? cantonDelta / cantonHistoricalCases : null;
           return {
             totalCases: cantonTotalCases,
+            historicalCases: cantonHistoricalCases,
+            delta: cantonDelta,
+            deltaPercent: cantonDeltaPercent,
             hospitalCount: cantonHosp.length,
             uniShare: cantonTotalCases ? cantonUniCases / cantonTotalCases : 0
           };
@@ -1899,6 +2016,9 @@ if (finderRoot) {
 
     return {
       total,
+      totalHistorical,
+      deltaTotal,
+      deltaPercent,
       hospitals: hospitalsWithShare,
       hospitalCount: hospitalsWithShare.length,
       uniShare: overallUniShare,
@@ -1919,23 +2039,65 @@ if (finderRoot) {
     const cantonTotals = hasCantonSelection
       ? {
           totalCases: agg.cantonTotals?.totalCases ?? 0,
+          historicalCases: agg.cantonTotals?.historicalCases ?? 0,
+          delta: agg.cantonTotals?.delta ?? 0,
+          deltaPercent: Number.isFinite(agg.cantonTotals?.deltaPercent)
+            ? agg.cantonTotals.deltaPercent
+            : null,
           hospitalCount: agg.cantonTotals?.hospitalCount ?? 0,
           uniShare: agg.cantonTotals?.uniShare ?? 0
         }
       : null;
-
-    const formatCount = (value) => {
-      const numeric = Number(value);
-      return Number.isFinite(numeric) ? numeric.toLocaleString() : '0';
-    };
 
     const formatPercent = (value) => {
       const numeric = Number(value);
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
 
+    const createPeriodComparisonMarkup = (label, metrics, isSecondary) => {
+      const safeLabel = escapeAttribute(label);
+      const deltaClass =
+        metrics.delta > 0
+          ? 'finder-delta-positive'
+          : metrics.delta < 0
+            ? 'finder-delta-negative'
+            : 'finder-delta-neutral';
+      const deltaTitle = escapeAttribute(kpiMeta.deltaLabel);
+      const deltaPercentTitle = escapeAttribute(kpiMeta.deltaPercentLabel);
+      const percentMarkup = Number.isFinite(metrics.deltaPercent)
+        ? `<span class="finder-delta-pct" title="${deltaPercentTitle}">(${escapeHtml(
+            formatPercentChange(metrics.deltaPercent)
+          )})</span>`
+        : '';
+      const deltaMarkup = `
+        <span class="finder-kpi-delta finder-delta ${deltaClass}" title="${deltaTitle}">
+          <span class="finder-delta-count">${escapeHtml(formatDeltaCount(metrics.delta))}</span>
+          ${percentMarkup}
+        </span>
+      `;
+      return `
+        <div class="finder-kpi-value${isSecondary ? ' finder-kpi-value--secondary' : ''}">
+          <span class="finder-kpi-value-label">${safeLabel}</span>
+          <span class="finder-kpi-value-number finder-kpi-value-number--stacked">
+            <span class="finder-kpi-value-line">
+              <span class="finder-kpi-chip">${escapeHtml(kpiMeta.periodCurrent)}</span>
+              <span class="finder-kpi-figure">${escapeHtml(formatCount(metrics.current))}</span>
+            </span>
+            <span class="finder-kpi-value-line finder-kpi-value-line--muted">
+              <span class="finder-kpi-chip">${escapeHtml(kpiMeta.periodHistorical)}</span>
+              <span class="finder-kpi-figure">${escapeHtml(formatCount(metrics.historical))}</span>
+            </span>
+            ${deltaMarkup}
+          </span>
+        </div>
+      `;
+    };
+
     const createValueMarkup = (label, value, options = {}) => {
-      const { isSecondary = false, allowHtmlValue = false } = options;
+      const { isSecondary = false, allowHtmlValue = false, valueType } = options;
+      if (valueType === 'periodComparison' && value && typeof value === 'object') {
+        return createPeriodComparisonMarkup(label, value, isSecondary);
+      }
       const safeLabel = escapeAttribute(label);
       const safeValue = allowHtmlValue ? value : escapeAttribute(value);
       return `
@@ -1946,10 +2108,15 @@ if (finderRoot) {
       `;
     };
 
-    const createValuesBlock = (primaryValue, secondaryValue) => {
-      const rows = [createValueMarkup(switzerlandLabel, primaryValue)];
+    const createValuesBlock = (primaryValue, secondaryValue, valueType) => {
+      const rows = [createValueMarkup(switzerlandLabel, primaryValue, { valueType })];
       if (hasCantonSelection && secondaryValue != null) {
-        rows.push(createValueMarkup(state.selectedCanton, secondaryValue, { isSecondary: true }));
+        rows.push(
+          createValueMarkup(state.selectedCanton, secondaryValue, {
+            isSecondary: true,
+            valueType
+          })
+        );
       }
       return `<div class="finder-kpi-values">${rows.join('')}</div>`;
     };
@@ -1958,8 +2125,21 @@ if (finderRoot) {
       {
         label: kpiLabels.totalCases,
         type: 'dual',
-        primary: formatCount(agg.total),
-        secondary: cantonTotals ? formatCount(cantonTotals.totalCases) : null,
+        valueType: 'periodComparison',
+        primary: {
+          current: agg.total,
+          historical: agg.totalHistorical,
+          delta: agg.deltaTotal,
+          deltaPercent: agg.deltaPercent
+        },
+        secondary: cantonTotals
+          ? {
+              current: cantonTotals.totalCases,
+              historical: cantonTotals.historicalCases,
+              delta: cantonTotals.delta,
+              deltaPercent: cantonTotals.deltaPercent
+            }
+          : null,
         footnote: ''
       },
       {
@@ -2012,7 +2192,7 @@ if (finderRoot) {
 
         const valueMarkup =
           tile.type === 'dual'
-            ? createValuesBlock(tile.primary, tile.secondary)
+            ? createValuesBlock(tile.primary, tile.secondary, tile.valueType)
             : `<strong>${tile.allowHtmlValue ? tile.value : escapeAttribute(tile.value)}</strong>`;
 
         return `
@@ -2067,6 +2247,10 @@ if (finderRoot) {
     }
 
     const maxCases = filteredByCanton[0]?.cases || 1;
+    const comparisonMax = filteredByCanton.reduce(
+      (max, h) => Math.max(max, h.cases || 0, h.historicalCases || 0),
+      1
+    );
 
     const totalPages = Math.max(1, Math.ceil(filteredByCanton.length / PAGE_SIZE));
     if (state.listPage >= totalPages) {
@@ -2112,11 +2296,35 @@ if (finderRoot) {
 
     finderList.innerHTML = toDisplay
       .map((h, idx) => {
-        const share = (h.share * 100).toFixed(1);
+        const shareLabel = escapeHtml(formatPercentShare(h.share));
         const width = Math.round((h.cases / maxCases) * 100);
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
         const badgeLabel = typeBadges[h.type] ?? h.type;
+        const historicalCases = h.historicalCases ?? 0;
+        const historicalLabel = escapeHtml(formatCount(historicalCases));
+        const deltaValue = h.delta ?? h.cases - historicalCases;
+        const deltaPercentValue = Number.isFinite(h.deltaPercent) ? h.deltaPercent : null;
+        const deltaClass =
+          deltaValue > 0
+            ? 'finder-delta-positive'
+            : deltaValue < 0
+              ? 'finder-delta-negative'
+              : 'finder-delta-neutral';
+        const deltaTitle = escapeAttribute(kpiMeta.deltaLabel);
+        const deltaPercentTitle = escapeAttribute(kpiMeta.deltaPercentLabel);
+        const percentMarkup =
+          deltaPercentValue != null
+            ? `<span class="finder-delta-pct" title="${deltaPercentTitle}">(${escapeHtml(
+                formatPercentChange(deltaPercentValue)
+              )})</span>`
+            : '';
+        const currentLabel = escapeHtml(formatCount(h.cases));
+        const miniBarTitle = escapeAttribute(
+          `${kpiMeta.periodCurrent}: ${formatCount(h.cases)} · ${kpiMeta.periodHistorical}: ${formatCount(historicalCases)}`
+        );
+        const previousWidth = Math.min(100, Math.round((historicalCases / comparisonMax) * 100));
+        const currentWidth = Math.min(100, Math.round((h.cases / comparisonMax) * 100));
         return `
           <div class="finder-row">
             <span class="finder-rank">${startIndex + idx + 1}</span>
@@ -2129,8 +2337,22 @@ if (finderRoot) {
               <div class="finder-progress"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
             </div>
             <div class="finder-figures">
-              <strong>${h.cases.toLocaleString()}</strong>
-              <span>${share}%</span>
+              <div class="finder-figures-current">
+                <strong>${currentLabel}</strong>
+                <span>${shareLabel}</span>
+              </div>
+              <div class="finder-figures-history">
+                <span class="finder-figures-history-label">${escapeHtml(kpiMeta.periodHistorical)}</span>
+                <span class="finder-figures-history-value">${historicalLabel}</span>
+              </div>
+              <div class="finder-delta finder-figures-delta ${deltaClass}" title="${deltaTitle}">
+                <span class="finder-delta-count">${escapeHtml(formatDeltaCount(deltaValue))}</span>
+                ${percentMarkup}
+              </div>
+              <div class="finder-mini-bar" aria-hidden="true" title="${miniBarTitle}">
+                <div class="finder-mini-bar-previous" style="width: ${previousWidth}%;"></div>
+                <div class="finder-mini-bar-current ${deltaClass}" style="width: ${currentWidth}%;"></div>
+              </div>
             </div>
           </div>
         `;

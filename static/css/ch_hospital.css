@@ -902,6 +902,12 @@ body {
   gap: 0.5rem;
 }
 
+.finder-kpi-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .finder-kpi small {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
@@ -918,6 +924,61 @@ body {
 .finder-kpi span {
   font-size: 0.75rem;
   color: #6b7280;
+}
+
+.finder-kpi-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.08);
+  color: #111827;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: help;
+}
+
+.finder-kpi-info:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+}
+
+.finder-kpi-info-icon {
+  font-style: normal;
+  line-height: 1;
+}
+
+.finder-kpi-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.6rem);
+  transform: translate(-50%, 6px);
+  background: #111827;
+  color: #fff;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+  max-width: 220px;
+  width: max-content;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.finder-kpi-info:hover .finder-kpi-tooltip,
+.finder-kpi-info:focus .finder-kpi-tooltip,
+.finder-kpi-info:focus-visible .finder-kpi-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
 }
 
 .finder-main {

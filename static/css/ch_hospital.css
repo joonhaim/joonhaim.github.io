@@ -1177,6 +1177,22 @@ body {
   flex-wrap: wrap;
 }
 
+.finder-hospital-name {
+  font-size: 1rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.finder-hospital-name--small {
+  font-size: 0.94rem;
+}
+
+.finder-hospital-name--xsmall {
+  font-size: 0.88rem;
+}
+
 .finder-badge {
   font-size: 0.6rem;
   letter-spacing: 0.08em;

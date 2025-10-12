@@ -29,10 +29,10 @@
   <a href="index.html" class="swiss-cross" aria-label="Torna alla homepage"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Panoramica degli ospedali svizzeri (CH-IQI)</h1>
+    <h1 class="fade-element">Dove gli ospedali svizzeri eseguono interventi chiave</h1>
     <p class="tagline fade-element">
-      Il database Swiss Inpatient Quality Indicators (CH-IQI) offre una panoramica delle prestazioni dei principali ospedali.
-      Seleziona un intervento per esplorare i volumi di casi 2023.
+      Gli Swiss Inpatient Quality Indicators (CH-IQI) mostrano quanti casi ogni ospedale ha segnalato nel 2023.
+      Seleziona un intervento per esaminare i volumi di casi e filtrare per tipologia di ospedale o cantone.
     </p>
     <p class="hero-links fade-element">
       <span>Fonte: <a href="https://www.bag.admin.ch/it/indicatori-di-qualita-degli-ospedali-svizzeri-di-cure-acute" target="_blank" rel="noopener">UFSP CH-IQI</a></span>
@@ -42,10 +42,10 @@
 
   <section id="procedure-finder" class="procedure-finder fade-element">
     <div class="finder-intro">
-      <h2>Disponibilità degli interventi in tutta la Svizzera</h2>
+      <h2>Trova gli ospedali per intervento</h2>
       <p>
-        Scopri quali ospedali registrano volumi di casi più elevati per gli interventi CH-IQI selezionati.
-        Usa i filtri rapidi per concentrarti su specifici tipi di ospedali e cantoni.
+        Sfoglia il catalogo CH-IQI per vedere quali ospedali hanno riportato casi per ciascun intervento.
+        Usa i filtri per concentrarti su specifiche tipologie di ospedali o cantoni.
       </p>
     </div>
 
@@ -66,11 +66,11 @@
 
     <div class="finder-controls">
       <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
-        <p id="finder-filter-title" class="finder-filter-title">Affina i risultati</p>
+        <p id="finder-filter-title" class="finder-filter-title">Restringi l’elenco degli ospedali</p>
         <div class="finder-filter-row finder-filter-row--primary">
           <div class="finder-control finder-control--search">
             <label for="finder-search">Cerca ospedale</label>
-            <input id="finder-search" type="search" placeholder="Inizia a digitare per restringere l'elenco" />
+            <input id="finder-search" type="search" placeholder="Digita per filtrare gli ospedali" />
           </div>
         </div>
         <div class="finder-filter-divider" aria-hidden="true"></div>
@@ -92,7 +92,10 @@
     <div class="finder-main">
       <div class="finder-list-card">
         <div class="finder-list-header">
-          <h3 id="finder-list-title">Ospedali principali</h3>
+          <div class="finder-list-heading">
+            <p id="finder-list-context" class="finder-list-context">Ospedali in Svizzera</p>
+            <h3 id="finder-list-title">Seleziona un intervento</h3>
+          </div>
           <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
@@ -102,15 +105,15 @@
 
     <div class="finder-bottom">
       <div class="finder-canton-card">
-        <h3>Focus sul tuo cantone</h3>
+        <h3>Dettagli per il tuo cantone</h3>
         <p id="finder-canton-summary" class="finder-canton-summary"></p>
         <div id="finder-canton-list" class="finder-canton-list"></div>
       </div>
       <div class="finder-note-card">
-        <h3>Come leggere i dati</h3>
+        <h3>Come interpretare questi numeri</h3>
         <p>
-          Volumi di intervento più elevati possono indicare una maggiore esperienza operativa, ma gli esiti dipendono da molti fattori,
-          tra cui il mix dei casi e la complessità dei pazienti. Usa queste cifre come punto di partenza e valuta gli indicatori di qualità insieme alla disponibilità.
+          Volumi di casi più elevati possono indicare una maggiore esperienza di routine, ma i risultati dipendono anche dal mix di casi
+          e dalla complessità dei pazienti. Considera questi valori come punto di partenza e consulta gli indicatori di qualità insieme alla disponibilità.
         </p>
       </div>
     </div>

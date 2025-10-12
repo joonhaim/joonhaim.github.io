@@ -350,6 +350,12 @@ body {
   width: 100%;
 }
 
+#procedure-finder.finder-awaiting-selection .finder-kpis,
+#procedure-finder.finder-awaiting-selection .finder-main,
+#procedure-finder.finder-awaiting-selection .finder-bottom {
+  display: none;
+}
+
 .finder-intro {
   text-align: center;
   max-width: 720px;

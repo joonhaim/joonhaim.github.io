@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schweizer Spitalanalyse (CH-IQI)</title>
+  <title>Schweizer Spitalüberblick (CH-IQI)</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
@@ -28,9 +29,10 @@
   <a href="index.html" class="swiss-cross" aria-label="Zur Startseite"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Schweizer Spitalanalyse (CH-IQI)</h1>
+    <h1 class="fade-element">Schweizer Spitalüberblick (CH-IQI)</h1>
     <p class="tagline fade-element">
-      Die Datenbank der Schweizer Qualitätsindikatoren (CH-IQI) bietet Einblick in die Leistung der grossen Universitätsspitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
+      Die Datenbank Swiss Inpatient Quality Indicators (CH-IQI) bietet Einblick in die
+      Leistung der grossen Spitäler. Wählen Sie ein Verfahren, um die Fallzahlen 2023 zu erkunden.
     </p>
     <p class="hero-links fade-element">
       <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
@@ -38,71 +40,83 @@
     </p>
   </section>
 
-  <section class="comparison">
-    <h2 class="fade-element">Fallzahlvergleich der Universitätsspitäler</h2>
-    <p class="dataset-info fade-element">
-      Dieser Datensatz enthält Fallzahlen der Schweizer Universitätsspitäler aus den CH‑IQI-Indikatoren.
-      Die ursprünglichen Tabellen habe ich mit R-Skripten aus dem verlinkten Repository abgerufen und aufbereitet.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
+  <section id="procedure-finder" class="procedure-finder fade-element">
+    <div class="finder-intro">
+      <h2>Verfügbarkeit von Behandlungen in der ganzen Schweiz</h2>
+      <p>
+        Erkunden Sie, welche Spitäler für ausgewählte CH-IQI-Verfahren höhere Fallzahlen melden.
+        Nutzen Sie die Schnellfilter, um bestimmte Spitaltypen und Kantone in den Fokus zu nehmen.
+      </p>
+    </div>
+
+    <div class="finder-procedure-selector">
+      <div class="finder-procedure-search">
+        <label class="finder-label" for="finder-procedure-search">Behandlung suchen</label>
+        <input id="finder-procedure-search" type="search" placeholder="Nach Name oder Code suchen" />
       </div>
-      <div class="controls fade-element">
-        <p>Verfahren auswählen:</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Kardiologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Koronarangiographie</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Herzrhythmusstörungen</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Schrittmacher/ICD-Implantation</button>
-            </div>
+      <div class="finder-category-panel" aria-labelledby="finder-category-label">
+        <p id="finder-category-label" class="finder-panel-title">Verfahrensgruppen</p>
+        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+      </div>
+      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+        <p id="finder-procedure-label" class="finder-panel-title">Behandlungen</p>
+        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+      </div>
+    </div>
+
+    <div class="finder-controls">
+      <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
+        <p id="finder-filter-title" class="finder-filter-title">Spitalsuche verfeinern</p>
+        <div class="finder-filter-row finder-filter-row--primary">
+          <div class="finder-control finder-control--search">
+            <label for="finder-search">Spital suchen</label>
+            <input id="finder-search" type="search" placeholder="Tippen, um die Liste einzugrenzen" />
           </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Schlaganfallstation – komplex</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Epilepsiebehandlungen</button>
-            </div>
+        </div>
+        <div class="finder-filter-divider" aria-hidden="true"></div>
+        <div class="finder-filter-row finder-filter-row--secondary">
+          <div class="finder-control finder-control--type">
+            <span class="finder-label">Nach Spitaltyp filtern</span>
+            <div class="finder-type-toggle" id="finder-type-toggle"></div>
           </div>
-          <div class="procedure-group">
-            <p class="group-title">Onkologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Behandlungen bei Lungenkrebs</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Behandlungen bei kolorektalem Karzinom</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Brustkrebs-Behandlungen</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Nierentransplantation</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopädie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Hüftprothese (primär)</button>
-            </div>
+          <div class="finder-control finder-control--canton">
+            <label for="finder-canton">Nach Kanton filtern</label>
+            <select id="finder-canton"></select>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="finder-kpis" id="finder-kpis"></div>
+
+    <div class="finder-main">
+      <div class="finder-list-card">
+        <div class="finder-list-header">
+          <h3 id="finder-list-title">Top-Spitäler</h3>
+          <span id="finder-list-meta"></span>
+        </div>
+        <div id="finder-list" class="finder-list"></div>
+      </div>
+      <div class="finder-map-card" id="finder-map"></div>
+    </div>
+
+    <div class="finder-bottom">
+      <div class="finder-canton-card">
+        <h3>Fokus auf Ihren Kanton</h3>
+        <p id="finder-canton-summary" class="finder-canton-summary"></p>
+        <div id="finder-canton-list" class="finder-canton-list"></div>
+      </div>
+      <div class="finder-note-card">
+        <h3>Hinweise zur Datennutzung</h3>
+        <p>
+          Höhere Fallzahlen können auf mehr Routine und Erfahrung hinweisen, dennoch werden Resultate von vielen Faktoren beeinflusst,
+          darunter der Fallmix und die Komplexität der Patientinnen und Patienten. Nutzen Sie diese Werte als Ausgangspunkt und betrachten Sie Qualitätsindikatoren zusammen mit der Verfügbarkeit.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Vergleich der Spitalleistungen</h2>
-    <p>Im Aufbau</p>
-  </section>
-
-  <section class="placeholder fade-element">
-    <h2>Vergleich von grossen, mittleren und kleinen Spitälern</h2>
-    <p>Im Aufbau</p>
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
@@ -39,71 +40,84 @@
     </p>
   </section>
 
-  <section class="comparison">
-    <h2 class="fade-element">Case Volume Comparison of University Hospitals</h2>
-    <p class="dataset-info fade-element">
-      This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
-      I retrieved and reshaped the original tables using R scripts available in the linked repository.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
+  <section id="procedure-finder" class="procedure-finder fade-element">
+    <div class="finder-intro">
+      <h2>Procedure availability across Switzerland</h2>
+      <p>
+        Explore which hospitals report higher case volumes for selected CH-IQI procedures.
+        Use the quick filters to focus on specific hospital types and cantons.
+      </p>
+    </div>
+
+    <div class="finder-procedure-selector">
+      <div class="finder-procedure-search">
+        <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
+        <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
       </div>
-      <div class="controls fade-element">
-        <p>Choose procedure:</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Cardiology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
-            </div>
+      <div class="finder-category-panel" aria-labelledby="finder-category-label">
+        <p id="finder-category-label" class="finder-panel-title">Procedure families</p>
+        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+      </div>
+      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+        <p id="finder-procedure-label" class="finder-panel-title">Procedures</p>
+        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+      </div>
+    </div>
+
+    <div class="finder-controls">
+      <div class="finder-filter-card" role="group" aria-labelledby="finder-filter-title">
+        <p id="finder-filter-title" class="finder-filter-title">Refine hospital results</p>
+        <div class="finder-filter-row finder-filter-row--primary">
+          <div class="finder-control finder-control--search">
+            <label for="finder-search">Search hospital</label>
+            <input id="finder-search" type="search" placeholder="Start typing to narrow the list" />
           </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Epilepsy treatments</button>
-            </div>
+        </div>
+        <div class="finder-filter-divider" aria-hidden="true"></div>
+        <div class="finder-filter-row finder-filter-row--secondary">
+          <div class="finder-control finder-control--type">
+            <span class="finder-label">Filter by hospital type</span>
+            <div class="finder-type-toggle" id="finder-type-toggle"></div>
           </div>
-          <div class="procedure-group">
-            <p class="group-title">Oncology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Lung cancer treatments</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Colorectal cancer treatments</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Kidney transplant</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopedics</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Primary hip prosthesis</button>
-            </div>
+          <div class="finder-control finder-control--canton">
+            <label for="finder-canton">Filter by canton</label>
+            <select id="finder-canton"></select>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="finder-kpis" id="finder-kpis"></div>
+
+    <div class="finder-main">
+      <div class="finder-list-card">
+        <div class="finder-list-header">
+          <h3 id="finder-list-title">Top hospitals</h3>
+          <span id="finder-list-meta"></span>
+        </div>
+        <div id="finder-list" class="finder-list"></div>
+      </div>
+      <div class="finder-map-card" id="finder-map"></div>
+    </div>
+
+    <div class="finder-bottom">
+      <div class="finder-canton-card">
+        <h3>Focus on your canton</h3>
+        <p id="finder-canton-summary" class="finder-canton-summary"></p>
+        <div id="finder-canton-list" class="finder-canton-list"></div>
+      </div>
+      <div class="finder-note-card">
+        <h3>Reading the data</h3>
+        <p>
+          Higher procedure volumes can indicate more routine expertise, yet outcomes are influenced
+          by many factors including case mix and patient complexity. Use these figures as a starting
+          point and review quality indicators alongside availability.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Hospital Performance Comparison</h2>
-    <p>Under construction</p>
-  </section>
-
-  <section class="placeholder fade-element">
-    <h2>Comparison of Large, Medium and Small Hospitals</h2>
-    <p>Under construction</p>
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

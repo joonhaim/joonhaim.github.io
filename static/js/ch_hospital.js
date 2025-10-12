@@ -2956,7 +2956,9 @@ if (finderRoot) {
         cantonHosp: [],
         cantonTotals: hasCantonSelection
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
-          : null
+          : null,
+        cantonHhi: hasCantonSelection ? 0 : null,
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
       };
     }
 
@@ -2990,7 +2992,9 @@ if (finderRoot) {
         cantonHosp: [],
         cantonTotals: hasCantonSelection
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
-          : null
+          : null,
+        cantonHhi: hasCantonSelection ? 0 : null,
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
       };
     }
 
@@ -3013,7 +3017,9 @@ if (finderRoot) {
         cantonHosp: [],
         cantonTotals: hasCantonSelection
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
-          : null
+          : null,
+        cantonHhi: hasCantonSelection ? 0 : null,
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
       };
     }
 
@@ -3044,6 +3050,22 @@ if (finderRoot) {
         })()
       : null;
 
+    const cantonHhiData = hasCantonSelection
+      ? (() => {
+          const cantonTotalCases = cantonTotals?.totalCases ?? 0;
+          if (!cantonTotalCases) {
+            return { hhi: 0, label: labelFromHHI(0) };
+          }
+          const cantonHhiValue = Math.round(
+            cantonHosp.reduce((sum, h) => {
+              const share = (h.cases / cantonTotalCases) * 100;
+              return sum + share ** 2;
+            }, 0)
+          );
+          return { hhi: cantonHhiValue, label: labelFromHHI(cantonHhiValue) };
+        })()
+      : null;
+
     return {
       total,
       hospitals: hospitalsWithShare,
@@ -3052,7 +3074,9 @@ if (finderRoot) {
       hhi,
       hhiLabel: labelFromHHI(hhi),
       cantonHosp,
-      cantonTotals
+      cantonTotals,
+      cantonHhi: cantonHhiData?.hhi ?? null,
+      cantonHhiLabel: cantonHhiData?.label ?? null
     };
   }
 
@@ -3082,24 +3106,67 @@ if (finderRoot) {
     };
 
     const createValueMarkup = (label, value, options = {}) => {
-      const { isSecondary = false, allowHtmlValue = false } = options;
+      const {
+        isSecondary = false,
+        allowHtmlValue = false,
+        valueClassName = ''
+      } = options;
       const safeLabel = escapeAttribute(label);
       const safeValue = allowHtmlValue ? value : escapeAttribute(value);
+      const valueClass = valueClassName ? ` ${valueClassName}` : '';
       return `
         <div class="finder-kpi-value${isSecondary ? ' finder-kpi-value--secondary' : ''}">
           <span class="finder-kpi-value-label">${safeLabel}</span>
-          <span class="finder-kpi-value-number">${safeValue}</span>
+          <span class="finder-kpi-value-number${valueClass}">${safeValue}</span>
         </div>
       `;
     };
 
-    const createValuesBlock = (primaryValue, secondaryValue) => {
-      const rows = [createValueMarkup(switzerlandLabel, primaryValue)];
+    const valueConfig = (input) =>
+      input && typeof input === 'object' && 'value' in input
+        ? {
+            value: input.value,
+            allowHtml: Boolean(input.allowHtml),
+            className: typeof input.className === 'string' ? input.className : ''
+          }
+        : { value: input, allowHtml: false, className: '' };
+
+    const createValuesBlock = (primaryValue, secondaryValue, options = {}) => {
+      const primary = valueConfig(primaryValue);
+      const primaryLabel =
+        typeof options.primaryLabel === 'string' && options.primaryLabel.trim()
+          ? options.primaryLabel
+          : switzerlandLabel;
+      const rows = [
+        createValueMarkup(primaryLabel, primary.value, {
+          allowHtmlValue: primary.allowHtml,
+          valueClassName: primary.className
+        })
+      ];
       if (hasCantonSelection && secondaryValue != null) {
-        rows.push(createValueMarkup(state.selectedCanton, secondaryValue, { isSecondary: true }));
+        const secondary = valueConfig(secondaryValue);
+        const secondaryLabel =
+          typeof options.secondaryLabel === 'string' && options.secondaryLabel.trim()
+            ? options.secondaryLabel
+            : state.selectedCanton;
+        rows.push(
+          createValueMarkup(secondaryLabel, secondary.value, {
+            isSecondary: true,
+            allowHtmlValue: secondary.allowHtml,
+            valueClassName: secondary.className
+          })
+        );
       }
       return `<div class="finder-kpi-values">${rows.join('')}</div>`;
     };
+
+    const createHhiValue = (value, label) => ({
+      value: `${escapeHtml(String(value ?? 0))} – <span class="finder-kpi-hhi-label">${escapeHtml(
+        label ?? labelFromHHI(value ?? 0)
+      )}</span>`,
+      allowHtml: true,
+      className: 'finder-kpi-value-number--hhi'
+    });
 
     const tiles = [
       {
@@ -3118,11 +3185,17 @@ if (finderRoot) {
       },
       {
         label: kpiLabels.centralization,
-        type: 'single',
-        value: `${escapeHtml(String(agg.hhi))} – <span class="finder-kpi-hhi-label">${escapeHtml(agg.hhiLabel)}</span>`,
+        type: 'dual',
+        primary: createHhiValue(agg.hhi, agg.hhiLabel),
+        secondary: hasCantonSelection
+          ? createHhiValue(agg.cantonHhi, agg.cantonHhiLabel)
+          : null,
         footnote: '',
         info: hhiFootnote,
-        allowHtmlValue: true
+        valueOptions: {
+          primaryLabel: 'CH',
+          secondaryLabel: state.selectedCanton
+        }
       },
       {
         label: kpiLabels.universityShare,
@@ -3159,7 +3232,7 @@ if (finderRoot) {
 
         const valueMarkup =
           tile.type === 'dual'
-            ? createValuesBlock(tile.primary, tile.secondary)
+            ? createValuesBlock(tile.primary, tile.secondary, tile.valueOptions)
             : `<strong>${tile.allowHtmlValue ? tile.value : escapeAttribute(tile.value)}</strong>`;
 
         return `

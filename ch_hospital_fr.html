@@ -50,7 +50,7 @@
       </p>
     </div>
 
-    <div class="finder-procedure-selector">
+    <div class="finder-procedure-selector catalog-collapsed">
       <div class="finder-selector-header">
         <div class="finder-selector-copy">
           <span class="finder-selector-step">Étape 1</span>
@@ -76,14 +76,29 @@
           <div class="finder-quick-list" id="finder-quick-list" role="group"></div>
           <p class="finder-quick-description" id="finder-quick-description"></p>
         </div>
+        <button
+          class="finder-catalog-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="finder-catalog-panels"
+          data-label-collapsed="Afficher le catalogue complet"
+          data-label-expanded="Masquer le catalogue complet"
+        >
+          <span class="finder-catalog-toggle-label">Afficher le catalogue complet</span>
+          <svg class="finder-catalog-toggle-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M5.5 7.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
       </div>
-      <div class="finder-category-panel" aria-labelledby="finder-category-label">
-        <p id="finder-category-label" class="finder-panel-title">Familles de procédures</p>
-        <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-      </div>
-      <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
-        <p id="finder-procedure-label" class="finder-panel-title">Procédures</p>
-        <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+      <div class="finder-catalog-panels" id="finder-catalog-panels">
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Familles de procédures</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Procédures</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
       </div>
     </div>
 

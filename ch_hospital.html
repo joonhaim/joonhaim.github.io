@@ -39,19 +39,22 @@
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      This dashboard is based on the Swiss Inpatient Quality Indicators (CH-IQI). It presents the hospitals where
-      selected procedures were performed in 2023. Users can search for procedures, compare case volumes, and gain an
-      overview of care across Switzerland.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
-      <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
-    </p>
+    <div class="hero-inner">
+      <p class="hero-eyebrow fade-element">CH-IQI Dashboard</p>
+      <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
+      <p class="tagline fade-element">
+        This dashboard is based on the Swiss Inpatient Quality Indicators (CH-IQI). It presents the hospitals where
+        selected procedures were performed in 2023. Users can search for procedures, compare case volumes, and gain an
+        overview of care across Switzerland.
+      </p>
+      <div class="hero-links fade-element">
+        <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
+        <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
+      </div>
+    </div>
   </section>
 
-  <section id="procedure-finder" class="procedure-finder fade-element">
+  <section id="procedure-finder" class="procedure-finder fade-element page-shell">
     <div class="finder-intro">
       <h2>Find hospitals by procedure</h2>
       <p>
@@ -60,7 +63,7 @@
       </p>
     </div>
 
-    <div class="finder-procedure-selector catalog-collapsed">
+    <div class="finder-procedure-selector surface-card catalog-collapsed">
       <div class="finder-selector-header">
         <div class="finder-selector-copy">
           <span class="finder-selector-step">Step 1</span>
@@ -115,7 +118,7 @@
     <div class="finder-kpis" id="finder-kpis"></div>
 
     <div class="finder-main">
-      <div class="finder-list-card">
+      <div class="finder-list-card surface-card">
         <div class="finder-list-header">
           <div class="finder-list-heading">
             <p id="finder-list-context" class="finder-list-context">Number of cases by hospital</p>
@@ -126,7 +129,7 @@
         <div id="finder-list" class="finder-list"></div>
       </div>
       <div class="finder-map-column">
-        <div class="finder-toolbar" role="group" aria-label="Hospital filters">
+        <div class="finder-toolbar surface-card" role="group" aria-label="Hospital filters">
           <div class="finder-toolbar-control finder-control finder-control--search">
             <label for="finder-search">Search hospital</label>
             <input id="finder-search" type="search" placeholder="Type to filter hospitals" />
@@ -140,17 +143,17 @@
             <select id="finder-canton"></select>
           </div>
         </div>
-        <div class="finder-map-card" id="finder-map"></div>
+        <div class="finder-map-card surface-card" id="finder-map"></div>
       </div>
     </div>
 
     <div class="finder-bottom">
-      <div class="finder-canton-card">
+      <div class="finder-canton-card surface-card">
         <h3>See details for your canton</h3>
         <p id="finder-canton-summary" class="finder-canton-summary"></p>
         <div id="finder-canton-list" class="finder-canton-list"></div>
       </div>
-      <div class="finder-note-card">
+      <div class="finder-note-card surface-card">
         <h3>How to interpret these numbers</h3>
         <p>
           Higher case volumes can point to greater routine expertise, yet outcomes also depend on case mix

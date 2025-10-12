@@ -105,26 +105,26 @@ body {
 }
 
 .hero {
-  background: linear-gradient(135deg, #DA291C 0%, #A70000 100%);
+  background: linear-gradient(135deg, #da291c 0%, #a70000 100%);
   color: #fff;
-  padding: 4rem 2rem;
+  padding: clamp(3rem, 8vw, 4rem) 1.5rem 3rem;
   text-align: center;
 }
 .hero h1 {
-  font-size: 1.8rem;
+  font-size: clamp(1.75rem, 4vw, 2.1rem);
   margin-bottom: 0.5rem;
 }
 .hero .tagline {
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .hero .hero-links {
-  margin-top: 1rem;
+  margin-top: 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
   font-size: 0.9rem;
   align-items: center;
 }
@@ -255,8 +255,8 @@ body {
 
 .procedure-finder {
   max-width: 1080px;
-  margin: 3rem auto 4.5rem;
-  padding: 0 1.5rem 3.5rem;
+  margin: 2.75rem auto 4rem;
+  padding: 0 1.25rem 3rem;
 }
 
 .finder-intro {
@@ -279,45 +279,30 @@ body {
 
 .finder-procedure-selector {
   position: relative;
-  background: linear-gradient(135deg, #ffffff 70%, #f5f7fb 100%);
-  border-radius: 1.1rem;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
-  padding: 1.6rem 1.8rem 1.6rem;
-  margin-bottom: 1.45rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.35rem;
   display: grid;
-  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2.1fr);
+  grid-template-columns: minmax(200px, 0.9fr) minmax(0, 2.1fr);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     'header header'
     'categories list';
-  column-gap: 1.65rem;
-  row-gap: 1.15rem;
+  column-gap: 1.35rem;
+  row-gap: 1rem;
   align-items: start;
-  min-height: 20.5rem;
+  min-height: 18.5rem;
   min-width: 0;
   overflow: hidden;
-  --finder-panel-height: clamp(15rem, 35vh, 20.5rem);
+  --finder-panel-height: clamp(14rem, 32vh, 19rem);
 }
 
+.finder-procedure-selector::before,
 .finder-procedure-selector::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-}
-
-.finder-procedure-selector::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #da291c, #f97316);
-  opacity: 0.8;
+  content: none;
 }
 
 .finder-selector-header {
@@ -672,12 +657,12 @@ body {
 .finder-filter-card {
   position: relative;
   display: grid;
-  gap: 1.25rem;
-  padding: 1.4rem 1.55rem 1.5rem;
-  border-radius: 1.05rem;
+  gap: 1.15rem;
+  padding: 1.25rem 1.45rem 1.35rem;
+  border-radius: 1rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(180deg, #ffffff 0%, #fdf5f5 100%);
-  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
 }
 
 .finder-filter-title {
@@ -725,7 +710,7 @@ body {
 
 @media (min-width: 900px) {
   .finder-filter-card {
-    padding: 1.6rem 1.8rem 1.7rem;
+    padding: 1.45rem 1.65rem 1.55rem;
   }
 
   .finder-filter-row--secondary {
@@ -1140,8 +1125,8 @@ body {
   background: #ffffff;
   border-radius: 0.9rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  padding: 1.4rem;
-  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.05);
+  padding: 1.2rem;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
   align-self: stretch;
 }
 
@@ -1281,32 +1266,42 @@ body {
 }
 
 .finder-hospital-name {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.35rem 0.65rem;
+  margin: -0.2rem 0;
   font: inherit;
   font-weight: 600;
   color: inherit;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: flex-start;
+  gap: 0.35rem;
   text-align: left;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  flex: 1 1 auto;
+  min-height: 2.1rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 0.6rem;
+  max-width: 100%;
+  line-height: 1.3;
+  white-space: normal;
 }
 
 .finder-hospital-name:hover,
 .finder-hospital-name:focus-visible {
   color: #0f172a;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+  background: #f3f4f6;
+  border-color: rgba(15, 23, 42, 0.14);
+  text-decoration: none;
 }
 
 .finder-hospital-name:focus-visible {
-  outline: 3px solid rgba(220, 38, 38, 0.35);
-  outline-offset: 3px;
-  border-radius: 0.35rem;
+  box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.25);
+  outline: none;
 }
 
 .finder-badge {
@@ -1679,8 +1674,8 @@ body.modal-open {
   background: #ffffff;
   border-radius: 0.9rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  padding: 1.5rem;
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.05);
+  padding: 1.35rem;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
 }
 
 .finder-canton-summary {
@@ -1874,6 +1869,37 @@ body.modal-open {
 }
 
 @media (max-width: 768px) {
+  .header-left {
+    position: static;
+    top: auto;
+    left: auto;
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.25rem 0;
+    gap: 0.75rem;
+  }
+
+  .header-left .language-switcher {
+    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.12);
+  }
+
+  .swiss-cross {
+    display: none;
+  }
+
+  .hero {
+    padding: 2.75rem 1.25rem 2.4rem;
+  }
+
+  .hero .tagline {
+    font-size: 0.95rem;
+  }
+
+  .procedure-finder {
+    margin: 2.25rem auto 3rem;
+    padding: 0 1rem 2.5rem;
+  }
+
   #procedure-groups {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }

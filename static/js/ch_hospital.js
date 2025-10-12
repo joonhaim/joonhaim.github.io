@@ -1680,7 +1680,7 @@ if (finderRoot) {
           state.procedureQuery = '';
           finderProcedureSearch.value = '';
           state.listPage = 0;
-          state.shouldScrollToResults = true;
+          state.shouldScrollToResults = false;
           render();
         });
       });

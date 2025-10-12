@@ -888,7 +888,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .finder-kpi {
@@ -1025,11 +1024,23 @@ body {
   transform: translate(-50%, 0);
 }
 
-.finder-main {
+.finder-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
   gap: 1.5rem;
+  align-items: start;
   margin-bottom: 2rem;
+}
+
+.finder-primary,
+.finder-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.finder-secondary {
+  align-items: stretch;
 }
 
 .finder-list-card,
@@ -1148,7 +1159,7 @@ body {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 0.75rem;
-  align-items: center;
+  align-items: flex-start;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -1162,6 +1173,7 @@ body {
   color: #6b7280;
   width: 1.5rem;
   text-align: right;
+  padding-top: 0.15rem;
 }
 
 .finder-hospital {
@@ -1217,6 +1229,10 @@ body {
 
 .finder-figures {
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
 }
 
 .finder-figures strong {
@@ -1287,12 +1303,6 @@ body {
   border-radius: 50%;
 }
 
-.finder-bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 1.5rem;
-}
-
 .finder-canton-card,
 .finder-note-card {
   background: #ffffff;
@@ -1334,8 +1344,13 @@ body {
 }
 
 @media (max-width: 960px) {
-  .finder-main {
+  .finder-layout {
     grid-template-columns: 1fr;
+  }
+
+  .finder-primary,
+  .finder-secondary {
+    gap: 1.25rem;
   }
 
   .finder-list-card {
@@ -1364,10 +1379,6 @@ body {
   .finder-map-view {
     min-height: 320px;
     flex-basis: 320px;
-  }
-
-  .finder-bottom {
-    grid-template-columns: 1fr;
   }
 
   .finder-procedure-selector {

@@ -90,6 +90,30 @@ const fadeObserver = new IntersectionObserver((entries, observer) => {
 
 document.querySelectorAll('.fade-element').forEach(el => fadeObserver.observe(el));
 
+const procedureSelector = document.querySelector('.finder-procedure-selector');
+const catalogToggle = document.querySelector('.finder-catalog-toggle');
+
+if (procedureSelector && catalogToggle) {
+  const setCatalogExpanded = (expanded) => {
+    procedureSelector.classList.toggle('catalog-collapsed', !expanded);
+    catalogToggle.setAttribute('aria-expanded', String(expanded));
+  };
+
+  setCatalogExpanded(!procedureSelector.classList.contains('catalog-collapsed'));
+
+  catalogToggle.addEventListener('click', () => {
+    const shouldExpand = procedureSelector.classList.contains('catalog-collapsed');
+    setCatalogExpanded(shouldExpand);
+  });
+
+  const procedureSearch = document.getElementById('finder-procedure-search');
+  if (procedureSearch) {
+    const autoExpand = () => setCatalogExpanded(true);
+    procedureSearch.addEventListener('focus', autoExpand);
+    procedureSearch.addEventListener('input', autoExpand);
+  }
+}
+
 const cantonCentroids = {
   AG: { lat: 47.39, lon: 8.16 },
   AI: { lat: 47.32, lon: 9.41 },

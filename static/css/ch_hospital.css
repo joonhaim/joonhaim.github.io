@@ -286,15 +286,11 @@ body {
   padding: 1.6rem 1.8rem 1.6rem;
   margin-bottom: 1.45rem;
   display: grid;
-  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2.1fr);
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
-  grid-template-areas:
-    'header header'
-    'categories list';
-  column-gap: 1.65rem;
-  row-gap: 1.15rem;
+  row-gap: 1.25rem;
   align-items: start;
-  min-height: 20.5rem;
+  min-height: 12rem;
   min-width: 0;
   overflow: hidden;
   --finder-panel-height: clamp(15rem, 35vh, 20.5rem);
@@ -328,6 +324,60 @@ body {
   padding-bottom: 1.1rem;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   flex-wrap: wrap;
+}
+
+.finder-catalog-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.finder-catalog-toggle:hover,
+.finder-catalog-toggle:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(218, 41, 28, 0.35);
+  box-shadow: 0 20px 32px rgba(218, 41, 28, 0.18);
+  outline: none;
+}
+
+.finder-catalog-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+}
+
+.finder-catalog-toggle-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: transform 0.25s ease;
+}
+
+.finder-catalog-toggle[aria-expanded="true"] .finder-catalog-toggle-icon {
+  transform: rotate(-180deg);
+}
+
+.finder-catalog-panels {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.95fr) minmax(0, 2.05fr);
+  column-gap: 1.65rem;
+  row-gap: 1.15rem;
+  align-items: start;
+}
+
+.catalog-collapsed .finder-catalog-panels {
+  display: none;
 }
 
 .finder-selector-copy {
@@ -483,7 +533,6 @@ body {
 }
 
 .finder-category-panel {
-  grid-area: categories;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -518,7 +567,6 @@ body {
 }
 
 .finder-procedure-panel {
-  grid-area: list;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -1594,11 +1642,7 @@ body {
   }
 
   .finder-procedure-selector {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'header'
-      'categories'
-      'list';
+    grid-template-rows: auto auto;
     row-gap: 1rem;
     padding: 1.25rem 1.3rem 1.15rem;
     min-height: 0;
@@ -1608,6 +1652,17 @@ body {
     flex-direction: column;
     gap: 1rem;
     padding-bottom: 0.9rem;
+  }
+
+  .finder-catalog-toggle {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .finder-catalog-panels {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1rem;
   }
 
   .finder-selector-copy,

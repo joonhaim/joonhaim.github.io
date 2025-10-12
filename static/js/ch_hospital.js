@@ -1529,7 +1529,7 @@ if (finderRoot) {
         optionEl.classList.toggle('is-focused', isActive);
         if (isActive) {
           optionEl.focus();
-          optionEl.scrollIntoView({ block: 'nearest' });
+          optionEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
           if (cantonDropdownMenu) {
             cantonDropdownMenu.setAttribute('aria-activedescendant', optionEl.id);
           }

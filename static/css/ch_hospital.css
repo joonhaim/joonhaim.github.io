@@ -1280,12 +1280,49 @@ body {
   flex-wrap: wrap;
 }
 
+.finder-hospital-name {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: left;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.finder-hospital-name:hover,
+.finder-hospital-name:focus-visible {
+  color: #0f172a;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.finder-hospital-name:focus-visible {
+  outline: 3px solid rgba(220, 38, 38, 0.35);
+  outline-offset: 3px;
+  border-radius: 0.35rem;
+}
+
 .finder-badge {
   font-size: 0.6rem;
   letter-spacing: 0.08em;
   padding: 0.2rem 0.45rem;
   border-radius: 999px;
   border: 1px solid transparent;
+}
+
+.finder-badge--canton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  padding: 0;
+  letter-spacing: 0.06em;
 }
 
 .badge-university {
@@ -1316,6 +1353,247 @@ body {
 .finder-progress-bar {
   height: 100%;
   background: #DA291C;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.finder-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+.finder-modal.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.finder-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.finder-modal__dialog {
+  position: relative;
+  pointer-events: auto;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 1rem;
+  width: min(100%, 720px);
+  max-height: calc(100vh - 3rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.25);
+  transform: translateY(18px) scale(0.97);
+  transition: transform 0.28s ease;
+}
+
+.finder-modal.is-visible .finder-modal__dialog {
+  transform: translateY(0) scale(1);
+}
+
+.finder-modal__body {
+  padding: 1.75rem;
+  overflow-y: auto;
+}
+
+.finder-modal__close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.06);
+  color: #0f172a;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.finder-modal__close:hover,
+.finder-modal__close:focus-visible {
+  background: rgba(15, 23, 42, 0.12);
+  color: #111827;
+  outline: none;
+}
+
+.finder-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.finder-modal__header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.finder-modal__badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.finder-modal__meta {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.finder-modal__meta-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.3rem;
+}
+
+.finder-modal__meta-value {
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.finder-modal__stats {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.finder-modal__stat {
+  background: #f8fafc;
+  border-radius: 0.9rem;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.finder-modal__stat-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.finder-modal__stat-value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.finder-modal__table {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.finder-modal__section-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.finder-modal__table-wrapper {
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.9rem;
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.finder-modal__table-grid {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.finder-modal__table-grid thead {
+  position: sticky;
+  top: 0;
+  background: #f1f5f9;
+  z-index: 1;
+}
+
+.finder-modal__table-grid th,
+.finder-modal__table-grid td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.finder-modal__table-grid tbody tr:last-child td,
+.finder-modal__table-grid tbody tr:last-child th {
+  border-bottom: none;
+}
+
+.finder-modal__cell--number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.finder-modal__cell--code {
+  font-family: 'Source Code Pro', 'Fira Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+.finder-modal__procedure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.finder-modal__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.18);
+  color: #b45309;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.finder-modal__row--selected th,
+.finder-modal__row--selected td {
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.finder-modal__empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+  padding: 0 0.5rem 0.5rem;
 }
 
 .finder-figures {
@@ -1602,5 +1880,26 @@ body {
 
   .procedure-buttons {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finder-modal {
+    padding: 1rem;
+  }
+
+  .finder-modal__dialog {
+    max-height: calc(100vh - 1.5rem);
+  }
+
+  .finder-modal__body {
+    padding: 1.3rem;
+  }
+
+  .finder-modal__stats,
+  .finder-modal__meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finder-modal__section-title {
+    font-size: 0.95rem;
   }
 }

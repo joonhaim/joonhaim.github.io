@@ -355,7 +355,8 @@ function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinat
     type,
     canton,
     lat: coordinateEntry?.lat ?? fallback?.lat ?? null,
-    lon: coordinateEntry?.lon ?? fallback?.lon ?? null
+    lon: coordinateEntry?.lon ?? fallback?.lon ?? null,
+    address: override?.address ?? coordinateEntry?.address ?? null
   };
 }
 
@@ -370,6 +371,7 @@ function parseHospitalCsv(text, coordinatesMap) {
   lines.shift();
 
   const byProcedure = new Map();
+  const byHospital = new Map();
   const meta = new Map();
 
   lines.forEach(line => {
@@ -406,12 +408,20 @@ function parseHospitalCsv(text, coordinatesMap) {
       byProcedure.set(code, []);
     }
     byProcedure.get(code).push(entry);
+
+    if (!byHospital.has(institution)) {
+      byHospital.set(institution, { totalCases: 0, procedures: new Map() });
+    }
+    const hospitalRecord = byHospital.get(institution);
+    hospitalRecord.totalCases += cases;
+    const existingCases = hospitalRecord.procedures.get(code) ?? 0;
+    hospitalRecord.procedures.set(code, existingCases + cases);
   });
 
   const types = new Set();
   meta.forEach(details => types.add(details.type));
 
-  return { byProcedure, meta, types };
+  return { byProcedure, byHospital, meta, types };
 }
 
 function loadHospitalDataset() {
@@ -576,6 +586,25 @@ if (finderRoot) {
         mapNoData: 'No map data available for this selection.',
         mapUnavailable: 'The interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases'
+      },
+      modal: {
+        title: 'Hospital details',
+        address: 'Address',
+        addressUnknown: 'Address not available',
+        canton: 'Canton',
+        type: 'Hospital type',
+        proceduresReported: 'Procedures reported',
+        totalCases: 'Total cases',
+        selectedProcedureCases: 'Cases for selected procedure',
+        casesByProcedure: 'Cases by procedure',
+        tableHeaders: {
+          procedure: 'Procedure',
+          cases: 'Cases',
+          code: 'Code'
+        },
+        empty: 'No case data is available for the featured procedures.',
+        close: 'Close dialog',
+        selected: 'Selected'
       }
     },
     de: {
@@ -697,6 +726,25 @@ if (finderRoot) {
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle'
+      },
+      modal: {
+        title: 'Spitaldetails',
+        address: 'Adresse',
+        addressUnknown: 'Adresse nicht verfügbar',
+        canton: 'Kanton',
+        type: 'Spitaltyp',
+        proceduresReported: 'Gemeldete Behandlungen',
+        totalCases: 'Fälle gesamt',
+        selectedProcedureCases: 'Fälle für die gewählte Behandlung',
+        casesByProcedure: 'Fälle nach Behandlung',
+        tableHeaders: {
+          procedure: 'Behandlung',
+          cases: 'Fälle',
+          code: 'Code'
+        },
+        empty: 'Keine Falldaten für die ausgewählten Behandlungen verfügbar.',
+        close: 'Dialog schliessen',
+        selected: 'Ausgewählt'
       }
     },
     fr: {
@@ -818,6 +866,25 @@ if (finderRoot) {
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas'
+      },
+      modal: {
+        title: "Détails de l’hôpital",
+        address: 'Adresse',
+        addressUnknown: 'Adresse non disponible',
+        canton: 'Canton',
+        type: 'Type d’hôpital',
+        proceduresReported: 'Interventions déclarées',
+        totalCases: 'Cas totaux',
+        selectedProcedureCases: 'Cas pour l’intervention sélectionnée',
+        casesByProcedure: 'Cas par intervention',
+        tableHeaders: {
+          procedure: 'Intervention',
+          cases: 'Cas',
+          code: 'Code'
+        },
+        empty: 'Aucune donnée de cas disponible pour ces interventions.',
+        close: 'Fermer la fenêtre',
+        selected: 'Sélectionné'
       }
     },
     it: {
@@ -939,6 +1006,25 @@ if (finderRoot) {
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi'
+      },
+      modal: {
+        title: "Dettagli dell’ospedale",
+        address: 'Indirizzo',
+        addressUnknown: 'Indirizzo non disponibile',
+        canton: 'Cantone',
+        type: 'Tipo di ospedale',
+        proceduresReported: 'Interventi registrati',
+        totalCases: 'Casi totali',
+        selectedProcedureCases: 'Casi per l’intervento selezionato',
+        casesByProcedure: 'Casi per intervento',
+        tableHeaders: {
+          procedure: 'Intervento',
+          cases: 'Casi',
+          code: 'Codice'
+        },
+        empty: 'Nessun dato di casi disponibile per questi interventi.',
+        close: 'Chiudi finestra',
+        selected: 'Selezionato'
       }
     }
   };
@@ -1171,6 +1257,21 @@ if (finderRoot) {
   const typeLabels = getObjectTranslation('types.labels');
   const typeBadges = getObjectTranslation('types.badges');
   const typeLegend = getObjectTranslation('types.legend');
+  const modalLabels = {
+    title: translate('modal.title'),
+    address: translate('modal.address'),
+    addressUnknown: translate('modal.addressUnknown'),
+    canton: translate('modal.canton'),
+    type: translate('modal.type'),
+    proceduresReported: translate('modal.proceduresReported'),
+    totalCases: translate('modal.totalCases'),
+    selectedProcedureCases: translate('modal.selectedProcedureCases'),
+    casesByProcedure: translate('modal.casesByProcedure'),
+    empty: translate('modal.empty'),
+    close: translate('modal.close'),
+    selected: translate('modal.selected')
+  };
+  const modalTableHeaders = getObjectTranslation('modal.tableHeaders');
   const hhiLabels = getObjectTranslation('hhi.labels');
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
@@ -1183,6 +1284,7 @@ if (finderRoot) {
 
   const PAGE_SIZE = 7;
   const typeOrder = ['university', 'kanton', 'private', 'other'];
+  let curatedProcedureCodes = new Set();
 
   function initializeFinderUi(procedureCatalog) {
     const finderProcedureSearch = document.getElementById('finder-procedure-search');
@@ -1200,6 +1302,18 @@ if (finderRoot) {
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
 
+    const procedureCodes = (procedureCatalog ?? []).reduce((acc, group) => {
+      if (group?.procedures) {
+        group.procedures.forEach((proc) => {
+          if (proc?.code) {
+            acc.push(proc.code);
+          }
+        });
+      }
+      return acc;
+    }, []);
+    curatedProcedureCodes = new Set(procedureCodes);
+
     let cantonDropdown;
     let cantonDropdownToggle;
     let cantonDropdownMenu;
@@ -1207,6 +1321,293 @@ if (finderRoot) {
     let cantonDropdownOpen = false;
     let cantonDropdownActiveIndex = -1;
     const cantonDropdownMenuId = 'finder-canton-dropdown-menu';
+
+    let hospitalModal;
+    let hospitalModalDialog;
+    let hospitalModalClose;
+    let hospitalModalTitleEl;
+    let hospitalModalBadgeEl;
+    let hospitalModalAddressEl;
+    let hospitalModalCantonEl;
+    let hospitalModalTypeEl;
+    let hospitalModalProceduresEl;
+    let hospitalModalTotalEl;
+    let hospitalModalSelectedWrapper;
+    let hospitalModalSelectedLabelEl;
+    let hospitalModalSelectedValueEl;
+    let hospitalModalTableBody;
+    let hospitalModalEmptyMessage;
+    let hospitalModalBackdrop;
+    let lastActiveHospitalTrigger = null;
+
+    ensureHospitalModal();
+
+    function handleModalKeydown(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeHospitalModal();
+      }
+    }
+
+    function ensureHospitalModal() {
+      if (hospitalModal) {
+        return;
+      }
+
+      hospitalModal = document.createElement('div');
+      hospitalModal.className = 'finder-modal';
+      hospitalModal.hidden = true;
+      const closeLabel =
+        modalLabels.close && modalLabels.close !== 'modal.close' ? modalLabels.close : 'Close dialog';
+      hospitalModal.innerHTML = `
+        <div class="finder-modal__backdrop" data-modal-backdrop></div>
+        <div class="finder-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="finder-modal-title" tabindex="-1">
+          <button type="button" class="finder-modal__close" data-modal-close aria-label="${escapeAttribute(
+            closeLabel
+          )}">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="finder-modal__body">
+            <header class="finder-modal__header">
+              <h2 id="finder-modal-title"></h2>
+              <span class="finder-modal__badge finder-badge"></span>
+            </header>
+            <div class="finder-modal__meta">
+              <div class="finder-modal__meta-item">
+                <span class="finder-modal__meta-label">${escapeHtml(modalLabels.address)}</span>
+                <span class="finder-modal__meta-value" data-modal-address></span>
+              </div>
+              <div class="finder-modal__meta-item">
+                <span class="finder-modal__meta-label">${escapeHtml(modalLabels.canton)}</span>
+                <span class="finder-modal__meta-value" data-modal-canton></span>
+              </div>
+              <div class="finder-modal__meta-item">
+                <span class="finder-modal__meta-label">${escapeHtml(modalLabels.type)}</span>
+                <span class="finder-modal__meta-value" data-modal-type></span>
+              </div>
+            </div>
+            <div class="finder-modal__stats">
+              <div class="finder-modal__stat">
+                <span class="finder-modal__stat-label">${escapeHtml(modalLabels.proceduresReported)}</span>
+                <strong class="finder-modal__stat-value" data-modal-procedures>0</strong>
+              </div>
+              <div class="finder-modal__stat">
+                <span class="finder-modal__stat-label">${escapeHtml(modalLabels.totalCases)}</span>
+                <strong class="finder-modal__stat-value" data-modal-total>0</strong>
+              </div>
+              <div class="finder-modal__stat" data-modal-selected-wrapper hidden>
+                <span class="finder-modal__stat-label" data-modal-selected-label>${escapeHtml(
+                  modalLabels.selectedProcedureCases
+                )}</span>
+                <strong class="finder-modal__stat-value" data-modal-selected>0</strong>
+              </div>
+            </div>
+            <div class="finder-modal__table">
+              <h3 class="finder-modal__section-title">${escapeHtml(modalLabels.casesByProcedure)}</h3>
+              <div class="finder-modal__table-wrapper">
+                <table class="finder-modal__table-grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">${escapeHtml(modalTableHeaders.procedure ?? 'Procedure')}</th>
+                      <th scope="col" class="finder-modal__cell finder-modal__cell--number">${escapeHtml(
+                        modalTableHeaders.cases ?? 'Cases'
+                      )}</th>
+                      <th scope="col" class="finder-modal__cell finder-modal__cell--code">${escapeHtml(
+                        modalTableHeaders.code ?? 'Code'
+                      )}</th>
+                    </tr>
+                  </thead>
+                  <tbody data-modal-table></tbody>
+                </table>
+              </div>
+              <p class="finder-modal__empty" data-modal-empty hidden>${escapeHtml(modalLabels.empty)}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(hospitalModal);
+
+      hospitalModalDialog = hospitalModal.querySelector('.finder-modal__dialog');
+      hospitalModalClose = hospitalModal.querySelector('[data-modal-close]');
+      hospitalModalTitleEl = hospitalModal.querySelector('#finder-modal-title');
+      hospitalModalBadgeEl = hospitalModal.querySelector('.finder-modal__badge');
+      hospitalModalAddressEl = hospitalModal.querySelector('[data-modal-address]');
+      hospitalModalCantonEl = hospitalModal.querySelector('[data-modal-canton]');
+      hospitalModalTypeEl = hospitalModal.querySelector('[data-modal-type]');
+      hospitalModalProceduresEl = hospitalModal.querySelector('[data-modal-procedures]');
+      hospitalModalTotalEl = hospitalModal.querySelector('[data-modal-total]');
+      hospitalModalSelectedWrapper = hospitalModal.querySelector('[data-modal-selected-wrapper]');
+      hospitalModalSelectedLabelEl = hospitalModal.querySelector('[data-modal-selected-label]');
+      hospitalModalSelectedValueEl = hospitalModal.querySelector('[data-modal-selected]');
+      hospitalModalTableBody = hospitalModal.querySelector('[data-modal-table]');
+      hospitalModalEmptyMessage = hospitalModal.querySelector('[data-modal-empty]');
+      hospitalModalBackdrop = hospitalModal.querySelector('[data-modal-backdrop]');
+
+      hospitalModalClose?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeHospitalModal();
+      });
+
+      hospitalModalBackdrop?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeHospitalModal();
+      });
+    }
+
+    function closeHospitalModal() {
+      if (!hospitalModal || hospitalModal.hidden) {
+        return;
+      }
+
+      hospitalModal.classList.remove('is-visible');
+      document.body.classList.remove('modal-open');
+      document.removeEventListener('keydown', handleModalKeydown);
+
+      const finalizeClose = () => {
+        if (hospitalModal) {
+          hospitalModal.hidden = true;
+        }
+        if (lastActiveHospitalTrigger) {
+          lastActiveHospitalTrigger.focus({ preventScroll: true });
+          lastActiveHospitalTrigger = null;
+        }
+      };
+
+      hospitalModal.addEventListener(
+        'transitionend',
+        (event) => {
+          if (event.target === hospitalModal) {
+            finalizeClose();
+          }
+        },
+        { once: true }
+      );
+
+      window.setTimeout(finalizeClose, 220);
+    }
+
+    function openHospitalModal(hospitalName, triggerButton) {
+      if (!hospitalName || !finderDataset) {
+        return;
+      }
+
+      ensureHospitalModal();
+
+      const meta = finderDataset.meta.get(hospitalName) || inferHospitalMeta(hospitalName);
+      const record = finderDataset.byHospital?.get(hospitalName);
+      const proceduresMap = record?.procedures instanceof Map ? record.procedures : new Map();
+      const totalCases = Number(record?.totalCases ?? 0);
+      const proceduresCount = proceduresMap.size;
+      const fallbackAddressLabel =
+        modalLabels.addressUnknown && modalLabels.addressUnknown !== 'modal.addressUnknown'
+          ? modalLabels.addressUnknown
+          : '—';
+      const addressText = (meta.address && String(meta.address).trim()) || fallbackAddressLabel;
+      const selectedChipLabel =
+        modalLabels.selected && modalLabels.selected !== 'modal.selected'
+          ? modalLabels.selected
+          : 'Selected';
+
+      const badgeLabel = typeBadges[meta.type] ?? typeLabels[meta.type] ?? meta.type ?? '';
+      hospitalModalBadgeEl.className = 'finder-modal__badge finder-badge';
+      if (meta.type === 'university') {
+        hospitalModalBadgeEl.classList.add('badge-university');
+      } else if (meta.type === 'kanton') {
+        hospitalModalBadgeEl.classList.add('badge-kanton');
+      } else if (meta.type === 'private') {
+        hospitalModalBadgeEl.classList.add('badge-private');
+      }
+
+      hospitalModalTitleEl.textContent = hospitalName;
+      hospitalModalBadgeEl.textContent = badgeLabel;
+      hospitalModalAddressEl.textContent = addressText;
+      hospitalModalCantonEl.textContent = meta.canton ?? '';
+      hospitalModalTypeEl.textContent = typeLabels[meta.type] ?? meta.type ?? '';
+      hospitalModalProceduresEl.textContent = proceduresCount
+        ? proceduresCount.toLocaleString()
+        : '0';
+      hospitalModalTotalEl.textContent = totalCases ? totalCases.toLocaleString() : '0';
+
+      if (state.selectedProc?.code) {
+        const selectedCode = state.selectedProc.code;
+        const selectedCases = proceduresMap.get(selectedCode) ?? 0;
+        const selectedName = state.selectedProc.name || getProcedureName(selectedCode);
+        const baseSelectedLabel =
+          modalLabels.selectedProcedureCases &&
+          modalLabels.selectedProcedureCases !== 'modal.selectedProcedureCases'
+            ? modalLabels.selectedProcedureCases
+            : 'Selected procedure cases';
+        const labelText = `${baseSelectedLabel} — ${selectedName} (${selectedCode})`;
+        hospitalModalSelectedLabelEl.textContent = labelText;
+        hospitalModalSelectedValueEl.textContent = selectedCases
+          ? selectedCases.toLocaleString()
+          : '0';
+        hospitalModalSelectedWrapper.hidden = false;
+      } else if (hospitalModalSelectedWrapper) {
+        hospitalModalSelectedWrapper.hidden = true;
+      }
+
+      const allEntries = Array.from(proceduresMap.entries());
+      const relevantEntries = curatedProcedureCodes.size
+        ? allEntries.filter(([code]) => curatedProcedureCodes.has(code))
+        : allEntries;
+
+      relevantEntries.sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0));
+
+      if (relevantEntries.length) {
+        hospitalModalEmptyMessage.hidden = true;
+        hospitalModalTableBody.innerHTML = relevantEntries
+          .map(([code, cases]) => {
+            const procedureName = getProcedureName(code);
+            const safeName = escapeHtml(procedureName);
+            const safeCode = escapeHtml(code);
+            const isSelected = state.selectedProc?.code === code;
+            const chip = isSelected
+              ? `<span class="finder-modal__chip">${escapeHtml(selectedChipLabel)}</span>`
+              : '';
+            return `
+              <tr class="finder-modal__row${isSelected ? ' finder-modal__row--selected' : ''}">
+                <th scope="row">
+                  <span class="finder-modal__procedure">${safeName}${chip}</span>
+                </th>
+                <td class="finder-modal__cell finder-modal__cell--number">${Number(cases ?? 0).toLocaleString()}</td>
+                <td class="finder-modal__cell finder-modal__cell--code">${safeCode}</td>
+              </tr>
+            `;
+          })
+          .join('');
+      } else {
+        hospitalModalTableBody.innerHTML = '';
+        hospitalModalEmptyMessage.hidden = false;
+      }
+
+      if (triggerButton) {
+        lastActiveHospitalTrigger = triggerButton;
+      }
+
+      hospitalModal.hidden = false;
+      requestAnimationFrame(() => {
+        hospitalModal.classList.add('is-visible');
+        hospitalModalDialog?.focus({ preventScroll: true });
+      });
+      document.body.classList.add('modal-open');
+      document.addEventListener('keydown', handleModalKeydown);
+      hospitalModalClose?.focus({ preventScroll: true });
+    }
+
+    function attachHospitalModalListeners() {
+      if (!finderList) {
+        return;
+      }
+      finderList.querySelectorAll('.finder-hospital-name').forEach((button) => {
+        button.addEventListener('click', () => {
+          const encoded = button.getAttribute('data-hospital') || '';
+          const hospitalName = decodeHtml(encoded) || button.textContent?.trim();
+          openHospitalModal(hospitalName, button);
+        });
+      });
+    }
 
     function getResultsScrollAnchor() {
       if (finderRoot) {
@@ -2030,6 +2431,10 @@ if (finderRoot) {
     const procedureLabel = state.selectedProc
       ? `${state.selectedProc.name} (${state.selectedProc.code})`
       : msg('selectedProcedure');
+    const detailLabelBase =
+      modalLabels.title && modalLabels.title !== 'modal.title'
+        ? modalLabels.title
+        : 'Hospital details';
     const listLocationLabel =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? msg('topHospitals')
@@ -2116,15 +2521,21 @@ if (finderRoot) {
         const width = Math.round((h.cases / maxCases) * 100);
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
-        const badgeLabel = typeBadges[h.type] ?? h.type;
+        const badgeLabel = escapeHtml(typeBadges[h.type] ?? h.type ?? '');
+        const safeName = escapeHtml(h.hospital);
+        const safeAttr = escapeAttribute(h.hospital);
+        const safeCanton = escapeHtml(h.canton ?? '');
+        const ariaLabel = escapeAttribute(`${detailLabelBase}: ${h.hospital}`);
         return `
           <div class="finder-row">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <strong>${h.hospital}</strong>
+                <button type="button" class="finder-hospital-name" data-hospital="${safeAttr}" aria-haspopup="dialog" aria-label="${ariaLabel}">
+                  ${safeName}
+                </button>
                 <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
-                <span class="finder-badge" style="background: none; border: none; color: #6b7280;">${h.canton}</span>
+                <span class="finder-badge finder-badge--canton">${safeCanton}</span>
               </div>
               <div class="finder-progress"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
             </div>
@@ -2136,6 +2547,8 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    attachHospitalModalListeners();
   }
 
   function renderMap(agg) {

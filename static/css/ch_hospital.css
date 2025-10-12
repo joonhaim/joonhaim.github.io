@@ -1619,6 +1619,68 @@ body {
   color: #374151;
 }
 
+.letter-glossary {
+  max-width: 1100px;
+  margin: 3rem auto 4rem;
+  padding: 2.5rem 2.75rem;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.letter-glossary-header {
+  max-width: 720px;
+  margin-bottom: 1.75rem;
+}
+
+.letter-glossary-header h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.letter-glossary-header p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.letter-glossary-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.letter-glossary-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0.5rem 0.75rem;
+  align-items: baseline;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.letter-glossary-item dt {
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #da291c;
+  margin: 0;
+}
+
+.letter-glossary-item dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
 @media (max-width: 960px) {
   .finder-main {
     grid-template-columns: 1fr;
@@ -1728,6 +1790,21 @@ body {
   .finder-procedure-list {
     padding: 0.55rem 0.4rem 0.55rem 0.55rem;
   }
+
+  .letter-glossary {
+    margin: 2.5rem 1.25rem 3.5rem;
+    padding: 2rem 2.25rem;
+  }
+
+  .letter-glossary-list {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .letter-glossary-item {
+    grid-template-columns: 2.75rem 1fr;
+    padding: 0.85rem 1rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1777,6 +1854,23 @@ body {
 
   .finder-procedure-list {
     padding: 0.55rem 0.4rem 0.55rem 0.55rem;
+  }
+
+  .letter-glossary {
+    margin: 2.25rem 1rem 3rem;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .letter-glossary-header h2 {
+    font-size: 1.35rem;
+  }
+
+  .letter-glossary-header p {
+    font-size: 0.9rem;
+  }
+
+  .letter-glossary-item {
+    grid-template-columns: 2.5rem 1fr;
   }
 
 }

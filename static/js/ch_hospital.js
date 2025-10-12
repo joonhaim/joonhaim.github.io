@@ -1767,7 +1767,7 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, hospitalCount: 0, uniShare: 0, hhi: 0, hhiLabel: labelFromHHI(0) }
           : null
       };
     }
@@ -1798,7 +1798,7 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, hospitalCount: 0, uniShare: 0, hhi: 0, hhiLabel: labelFromHHI(0) }
           : null
       };
     }
@@ -1821,7 +1821,7 @@ if (finderRoot) {
         hhiLabel: labelFromHHI(0),
         cantonHosp: [],
         cantonTotals: hasCantonSelection
-          ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
+          ? { totalCases: 0, hospitalCount: 0, uniShare: 0, hhi: 0, hhiLabel: labelFromHHI(0) }
           : null
       };
     }
@@ -1845,10 +1845,17 @@ if (finderRoot) {
           const cantonUniCases = cantonHosp
             .filter((h) => h.type === 'university')
             .reduce((sum, h) => sum + h.cases, 0);
+          const cantonHhi = cantonTotalCases
+            ? Math.round(
+                cantonHosp.reduce((sum, h) => sum + ((h.cases / cantonTotalCases) * 100) ** 2, 0)
+              )
+            : 0;
           return {
             totalCases: cantonTotalCases,
             hospitalCount: cantonHosp.length,
-            uniShare: cantonTotalCases ? cantonUniCases / cantonTotalCases : 0
+            uniShare: cantonTotalCases ? cantonUniCases / cantonTotalCases : 0,
+            hhi: cantonHhi,
+            hhiLabel: labelFromHHI(cantonHhi)
           };
         })()
       : null;
@@ -1876,7 +1883,9 @@ if (finderRoot) {
       ? {
           totalCases: agg.cantonTotals?.totalCases ?? 0,
           hospitalCount: agg.cantonTotals?.hospitalCount ?? 0,
-          uniShare: agg.cantonTotals?.uniShare ?? 0
+          uniShare: agg.cantonTotals?.uniShare ?? 0,
+          hhi: agg.cantonTotals?.hhi ?? 0,
+          hhiLabel: agg.cantonTotals?.hhiLabel ?? labelFromHHI(0)
         }
       : null;
 
@@ -1933,8 +1942,10 @@ if (finderRoot) {
       },
       {
         label: kpiLabels.centralization,
-        type: 'single',
+        type: hasCantonSelection ? 'dual' : 'single',
         value: `${agg.hhi} – ${agg.hhiLabel}`,
+        primary: `${agg.hhi} – ${agg.hhiLabel}`,
+        secondary: cantonTotals ? `${cantonTotals.hhi} – ${cantonTotals.hhiLabel}` : null,
         footnote: '',
         info: hhiFootnote
       }

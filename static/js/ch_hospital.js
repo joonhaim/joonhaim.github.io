@@ -174,8 +174,21 @@ if (procedureSelector && catalogToggle && catalogPanels) {
 
   const procedureSearch = document.getElementById('finder-procedure-search');
   if (procedureSearch) {
+    let userInteracted = false;
+    const markUserInteracted = () => {
+      userInteracted = true;
+    };
+
+    window.addEventListener('pointerdown', markUserInteracted, { once: true });
+    window.addEventListener('keydown', markUserInteracted, { once: true });
+
     const autoExpand = () => setCatalogExpanded(true);
-    procedureSearch.addEventListener('focus', autoExpand);
+
+    procedureSearch.addEventListener('focus', () => {
+      if (userInteracted) {
+        autoExpand();
+      }
+    });
     procedureSearch.addEventListener('input', autoExpand);
   }
 }

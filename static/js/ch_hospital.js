@@ -1730,6 +1730,18 @@ if (finderRoot) {
       };
     }
 
+    function isWithinSwissBounds(lat, lon, margin = 0.5) {
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return false;
+      }
+      return (
+        lat >= SWITZERLAND_BOUNDS.latMin - margin &&
+        lat <= SWITZERLAND_BOUNDS.latMax + margin &&
+        lon >= SWITZERLAND_BOUNDS.lonMin - margin &&
+        lon <= SWITZERLAND_BOUNDS.lonMax + margin
+      );
+    }
+
     const defaultCategory = procedureCatalog[0] ?? null;
     const defaultProcedure = defaultCategory?.procedures?.[0] ?? null;
 
@@ -2254,64 +2266,69 @@ if (finderRoot) {
     const referenceHospitals = hospitals.length ? hospitals : hospitalsWithCoords;
     const maxCases = referenceHospitals[0]?.cases || 1;
 
-    const leafletBoundaryBounds =
+    const boundaryLayer =
       selectedCanton === ALL_CANTONS_OPTION
         ? null
-        : mapState.cantonLayers.get(selectedCanton)?.getBounds?.() ?? null;
-    const derivedBounds = leafletBoundaryBounds ? latLngBoundsToSpan(leafletBoundaryBounds) : null;
-    const swissBounds = sanitizeSpanBounds(SWITZERLAND_BOUNDS) ?? {
-      latMin: SWITZERLAND_BOUNDS.latMin,
-      latMax: SWITZERLAND_BOUNDS.latMax,
-      lonMin: SWITZERLAND_BOUNDS.lonMin,
-      lonMax: SWITZERLAND_BOUNDS.lonMax
+        : mapState.cantonLayers.get(selectedCanton) ?? null;
+    const boundaryBounds = boundaryLayer?.getBounds?.();
+    const hasValidBoundary = Boolean(boundaryBounds?.isValid?.());
+
+    const spanToBounds = (span) => {
+      const sanitized = sanitizeSpanBounds(span);
+      if (!sanitized) {
+        return null;
+      }
+      const clamped = {
+        latMin: Math.max(SWITZERLAND_BOUNDS.latMin, sanitized.latMin),
+        latMax: Math.min(SWITZERLAND_BOUNDS.latMax, sanitized.latMax),
+        lonMin: Math.max(SWITZERLAND_BOUNDS.lonMin, sanitized.lonMin),
+        lonMax: Math.min(SWITZERLAND_BOUNDS.lonMax, sanitized.lonMax)
+      };
+      if (clamped.latMax <= clamped.latMin || clamped.lonMax <= clamped.lonMin) {
+        return null;
+      }
+      return L.latLngBounds(
+        [clamped.latMin, clamped.lonMin],
+        [clamped.latMax, clamped.lonMax]
+      );
     };
-    const targetBounds = sanitizeSpanBounds(
+
+    const fallbackBounds =
       selectedCanton === ALL_CANTONS_OPTION
-        ? SWITZERLAND_BOUNDS
-        : derivedBounds ?? cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS
-    ) ?? swissBounds;
+        ? L.latLngBounds(
+            [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
+            [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
+          )
+        : spanToBounds(cantonBounds[selectedCanton] ?? SWITZERLAND_BOUNDS) ??
+          L.latLngBounds(
+            [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
+            [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
+          );
 
-    const latExtent = Math.max(0, targetBounds.latMax - targetBounds.latMin);
-    const lonExtent = Math.max(0, targetBounds.lonMax - targetBounds.lonMin);
-    const latPadding = Math.max(0.02, latExtent * 0.05);
-    const lonPadding = Math.max(0.02, lonExtent * 0.05);
-    const paddedBounds = sanitizeSpanBounds({
-      latMin: Math.max(swissBounds.latMin, targetBounds.latMin - latPadding),
-      latMax: Math.min(swissBounds.latMax, targetBounds.latMax + latPadding),
-      lonMin: Math.max(swissBounds.lonMin, targetBounds.lonMin - lonPadding),
-      lonMax: Math.min(swissBounds.lonMax, targetBounds.lonMax + lonPadding)
-    }) ?? swissBounds;
+    const targetBoundaryBounds = hasValidBoundary ? boundaryBounds : fallbackBounds;
+    const hospitalsBounds = L.latLngBounds([]);
 
-    let leafletBounds = paddedBounds
-      ? L.latLngBounds(
-          [paddedBounds.latMin, paddedBounds.lonMin],
-          [paddedBounds.latMax, paddedBounds.lonMax]
-        )
-      : L.latLngBounds();
-
-    const hospitalBounds = L.latLngBounds([]);
-    referenceHospitals.forEach((h) => {
+    hospitals.forEach((h) => {
       const lat = Number(h.lat);
       const lon = Number(h.lon);
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+      if (!isWithinSwissBounds(lat, lon)) {
         return;
       }
-      hospitalBounds.extend([lat, lon]);
+      hospitalsBounds.extend([lat, lon]);
     });
 
-    if (hospitalBounds.isValid()) {
-      if (leafletBounds.isValid()) {
-        leafletBounds.extend(hospitalBounds);
-      } else {
-        leafletBounds = hospitalBounds;
+    let leafletBounds = L.latLngBounds(targetBoundaryBounds.getSouthWest(), targetBoundaryBounds.getNorthEast());
+
+    if (selectedCanton === ALL_CANTONS_OPTION) {
+      if (hospitalsBounds.isValid()) {
+        leafletBounds = hospitalsBounds;
       }
+    } else if (hospitalsBounds.isValid()) {
+      leafletBounds.extend(hospitalsBounds);
     }
 
     if (!leafletBounds.isValid()) {
-      leafletBounds = L.latLngBounds(
-        [swissBounds.latMin, swissBounds.lonMin],
-        [swissBounds.latMax, swissBounds.lonMax]
-      );
+      leafletBounds = fallbackBounds;
     }
 
     mapState.markersLayer.clearLayers();
@@ -2319,7 +2336,7 @@ if (finderRoot) {
     hospitals.forEach((h) => {
       const lat = Number(h.lat);
       const lon = Number(h.lon);
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+      if (!isWithinSwissBounds(lat, lon)) {
         return;
       }
       const color = h.type === 'university' ? '#059669' : h.type === 'kanton' ? '#0ea5e9' : '#f59e0b';
@@ -2347,7 +2364,7 @@ if (finderRoot) {
       mapState.messageEl.hidden = true;
     }
 
-    const usedFallbackBounds = !leafletBoundaryBounds && selectedCanton !== ALL_CANTONS_OPTION;
+    const usedFallbackBounds = selectedCanton !== ALL_CANTONS_OPTION && !hasValidBoundary;
 
     if (leafletBounds.isValid()) {
       const northEast = leafletBounds.getNorthEast();

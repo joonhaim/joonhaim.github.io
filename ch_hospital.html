@@ -51,9 +51,26 @@
     </div>
 
     <div class="finder-procedure-selector">
-      <div class="finder-procedure-search">
-        <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
-        <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
+      <div class="finder-selector-header">
+        <div class="finder-selector-copy">
+          <span class="finder-selector-step">Step 1</span>
+          <h3 class="finder-selector-title">Choose a procedure focus</h3>
+          <p class="finder-selector-subtitle">
+            Start with a quick search or browse the curated procedure families to explore available data.
+          </p>
+        </div>
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
+          <div class="finder-search-field">
+            <svg class="finder-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path
+                d="M13.854 12.439l3.854 3.853a1 1 0 01-1.414 1.415l-3.853-3.854a7 7 0 111.413-1.414zM9 14a5 5 0 100-10 5 5 0 000 10z"
+                fill="currentColor"
+              />
+            </svg>
+            <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
+          </div>
+        </div>
       </div>
       <div class="finder-category-panel" aria-labelledby="finder-category-label">
         <p id="finder-category-label" class="finder-panel-title">Procedure families</p>

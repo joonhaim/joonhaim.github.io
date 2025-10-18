@@ -827,9 +827,21 @@ if (finderRoot) {
         cantonRowCases: '{cases} cases',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
+        mapAriaLabelHospitals: 'Hospital locations by case volume',
+        mapAriaLabelCantons: 'Canton totals by hospital case volume',
         mapNoData: 'No map data available for this selection.',
         mapUnavailable: 'The interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases',
+        mapTooltipCanton: '{canton} — {cases} cases · HHI {hhi} ({hhiLabel})',
+        mapTooltipCantonEmpty: '{canton} — No reported cases',
+        mapModeLabel: 'Map view',
+        mapModeHospitals: 'Hospitals',
+        mapModeCantons: 'Cantons',
+        mapModeMessageHospitals: 'Circles show hospitals that reported cases in 2023.',
+        mapModeMessageCantons:
+          'Shading aggregates the selected hospitals by canton and highlights total cases and HHI.',
+        mapLegendCantonsTitle: 'Canton totals (cases)',
+        mapLegendCantonsEmpty: 'No canton case totals available',
         quickPicksTitle: 'Popular procedures',
         quickPicksDescription: 'Jump straight to a CH-IQI procedure people look up most often.',
         hospitalDetail: {
@@ -996,9 +1008,21 @@ if (finderRoot) {
         cantonRowCases: '{cases} Fälle',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
+        mapAriaLabelHospitals: 'Spitalstandorte nach Fallzahl',
+        mapAriaLabelCantons: 'Kantonale Fallzahlen nach Spitälern',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle',
+        mapTooltipCanton: '{canton} — {cases} Fälle · HHI {hhi} ({hhiLabel})',
+        mapTooltipCantonEmpty: '{canton} — Keine gemeldeten Fälle',
+        mapModeLabel: 'Kartenansicht',
+        mapModeHospitals: 'Spitäler',
+        mapModeCantons: 'Kantone',
+        mapModeMessageHospitals: 'Kreise zeigen Spitäler mit gemeldeten Fällen im Jahr 2023.',
+        mapModeMessageCantons:
+          'Farbtöne aggregieren die ausgewählten Spitäler nach Kanton und zeigen Fallzahlen sowie HHI.',
+        mapLegendCantonsTitle: 'Kantonale Summe (Fälle)',
+        mapLegendCantonsEmpty: 'Keine kantonalen Fallzahlen verfügbar',
         quickPicksTitle: 'Beliebte Behandlungen',
         quickPicksDescription: 'Springen Sie direkt zu einer häufig nachgefragten CH-IQI-Behandlung.',
         hospitalDetail: {
@@ -1165,9 +1189,21 @@ if (finderRoot) {
         cantonRowCases: '{cases} cas',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
+        mapAriaLabelHospitals: 'Localisation des hôpitaux par volume de cas',
+        mapAriaLabelCantons: 'Totals cantonaux des cas hospitaliers',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas',
+        mapTooltipCanton: '{canton} — {cases} cas · IHH {hhi} ({hhiLabel})',
+        mapTooltipCantonEmpty: '{canton} — Aucun cas déclaré',
+        mapModeLabel: 'Vue de la carte',
+        mapModeHospitals: 'Hôpitaux',
+        mapModeCantons: 'Cantons',
+        mapModeMessageHospitals: 'Les cercles indiquent les hôpitaux ayant déclaré des cas en 2023.',
+        mapModeMessageCantons:
+          'Les aplats agrègent les hôpitaux sélectionnés par canton et affichent le total des cas et l’IHH.',
+        mapLegendCantonsTitle: 'Totals cantonaux (cas)',
+        mapLegendCantonsEmpty: 'Aucun total cantonal disponible',
         quickPicksTitle: 'Interventions populaires',
         quickPicksDescription: 'Accédez directement à une intervention CH-IQI très consultée.',
         hospitalDetail: {
@@ -1334,9 +1370,21 @@ if (finderRoot) {
         cantonRowCases: '{cases} casi',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
+        mapAriaLabelHospitals: 'Posizione degli ospedali per volume di casi',
+        mapAriaLabelCantons: 'Totali cantonali dei casi ospedalieri',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi',
+        mapTooltipCanton: '{canton} — {cases} casi · HHI {hhi} ({hhiLabel})',
+        mapTooltipCantonEmpty: '{canton} — Nessun caso registrato',
+        mapModeLabel: 'Vista mappa',
+        mapModeHospitals: 'Ospedali',
+        mapModeCantons: 'Cantoni',
+        mapModeMessageHospitals: 'I cerchi mostrano gli ospedali con casi registrati nel 2023.',
+        mapModeMessageCantons:
+          'La colorazione aggrega gli ospedali selezionati per cantone e mostra i casi totali e l’HHI.',
+        mapLegendCantonsTitle: 'Totali cantonali (casi)',
+        mapLegendCantonsEmpty: 'Nessun totale cantonale disponibile',
         quickPicksTitle: 'Interventi più richiesti',
         quickPicksDescription: 'Vai subito a un intervento CH-IQI molto consultato.',
         hospitalDetail: {
@@ -1617,6 +1665,8 @@ if (finderRoot) {
     kanton: '#2563eb',
     private: '#ca8a04'
   };
+  const MAP_MODES = { HOSPITALS: 'hospitals', CANTONS: 'cantons' };
+  const choroplethColors = ['#e1efff', '#bfd8ff', '#8fb6f6', '#598fdd', '#3267bb'];
   const hhiLabels = getObjectTranslation('hhi.labels');
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
@@ -1644,6 +1694,10 @@ if (finderRoot) {
     const finderListTitle = document.getElementById('finder-list-title');
     const finderListMeta = document.getElementById('finder-list-meta');
     const finderMap = document.getElementById('finder-map');
+    const finderMapMode = document.getElementById('finder-map-mode');
+    const mapModeLabel = document.getElementById('finder-map-mode-label');
+    const mapModeMessage = document.getElementById('finder-map-mode-message');
+    const mapModeToggle = finderMapMode?.querySelector('[data-map-mode-toggle]') ?? null;
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
     const finderQuickPicks = document.getElementById('finder-quick-picks');
@@ -1652,6 +1706,7 @@ if (finderRoot) {
     const finderQuickDescription = document.getElementById('finder-quick-description');
 
     const quickPickButtons = new Map();
+    const mapModeButtons = mapModeToggle ? Array.from(mapModeToggle.querySelectorAll('.map-mode-btn')) : [];
 
     const detailFallbacks = {
       title: 'Hospital details',
@@ -2644,9 +2699,17 @@ if (finderRoot) {
       ready: false,
       map: null,
       markersLayer: null,
+      cantonLayer: null,
+      cantonGeojson: null,
+      cantonGeojsonPromise: null,
+      cantonLayerInitialized: false,
+      cantonStyleByCode: new Map(),
       container: null,
       messageEl: null,
-      legendEls: { university: null, kanton: null, private: null }
+      legendEls: {
+        hospital: { container: null, university: null, kanton: null, private: null },
+        canton: { container: null, title: null, scale: null }
+      }
     };
 
     function ensureMapStructure() {
@@ -2660,18 +2723,34 @@ if (finderRoot) {
         finderMap.innerHTML = `
           <div class="finder-map-view" role="img"></div>
           <p class="finder-map-message finder-empty" hidden></p>
-          <div class="finder-map-legend">
-            <span data-type="university"><i style="background:${typeColors.university}"></i><span class="legend-label"></span></span>
-            <span data-type="kanton"><i style="background:${typeColors.kanton}"></i><span class="legend-label"></span></span>
-            <span data-type="private"><i style="background:${typeColors.private}"></i><span class="legend-label"></span></span>
+          <div class="finder-map-legends">
+            <div class="finder-map-legend" data-legend="hospitals">
+              <span data-type="university"><i style="background:${typeColors.university}"></i><span class="legend-label"></span></span>
+              <span data-type="kanton"><i style="background:${typeColors.kanton}"></i><span class="legend-label"></span></span>
+              <span data-type="private"><i style="background:${typeColors.private}"></i><span class="legend-label"></span></span>
+            </div>
+            <div class="finder-map-legend" data-legend="cantons" hidden>
+              <span class="legend-title"></span>
+              <div class="legend-scale"></div>
+            </div>
           </div>
         `;
         mapState.container = finderMap.querySelector('.finder-map-view');
         mapState.messageEl = finderMap.querySelector('.finder-map-message');
+        const hospitalLegend = finderMap.querySelector('[data-legend="hospitals"]');
+        const cantonLegend = finderMap.querySelector('[data-legend="cantons"]');
         mapState.legendEls = {
-          university: finderMap.querySelector('[data-type="university"] .legend-label'),
-          kanton: finderMap.querySelector('[data-type="kanton"] .legend-label'),
-          private: finderMap.querySelector('[data-type="private"] .legend-label')
+          hospital: {
+            container: hospitalLegend,
+            university: hospitalLegend?.querySelector('[data-type="university"] .legend-label') ?? null,
+            kanton: hospitalLegend?.querySelector('[data-type="kanton"] .legend-label') ?? null,
+            private: hospitalLegend?.querySelector('[data-type="private"] .legend-label') ?? null
+          },
+          canton: {
+            container: cantonLegend,
+            title: cantonLegend?.querySelector('.legend-title') ?? null,
+            scale: cantonLegend?.querySelector('.legend-scale') ?? null
+          }
         };
 
         mapState.map = L.map(mapState.container, {
@@ -2692,16 +2771,69 @@ if (finderRoot) {
         }
 
         mapState.markersLayer = L.layerGroup().addTo(mapState.map);
+        mapState.cantonLayer = L.geoJSON(null, {
+          onEachFeature: (feature, layer) => {
+            layer.on({
+              mouseover: (event) => {
+                const code = feature?.properties?.code;
+                const base = mapState.cantonStyleByCode?.get(code);
+                const highlight = base
+                  ? { ...base, weight: (base.weight ?? 1.2) + 0.6, color: '#1f2937' }
+                  : { weight: 1.6, color: '#1f2937' };
+                event.target.setStyle(highlight);
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                  event.target.bringToFront();
+                }
+              },
+              mouseout: (event) => {
+                const code = feature?.properties?.code;
+                const base = mapState.cantonStyleByCode?.get(code);
+                if (base) {
+                  event.target.setStyle(base);
+                }
+              }
+            });
+          }
+        });
         mapState.ready = true;
         requestAnimationFrame(() => mapState.map.invalidateSize());
       }
-      mapState.container.setAttribute('aria-label', msg('mapAriaLabel'));
-      mapState.legendEls.university.textContent = typeLegend.university;
-      mapState.legendEls.kanton.textContent = typeLegend.kanton;
-      mapState.legendEls.private.textContent = typeLegend.private;
+      const hospitalAria = msg('mapAriaLabelHospitals');
+      const fallbackAria = msg('mapAriaLabel');
+      const appliedAria =
+        typeof hospitalAria === 'string' && hospitalAria !== 'messages.mapAriaLabelHospitals'
+          ? hospitalAria
+          : fallbackAria;
+      if (typeof appliedAria === 'string') {
+        mapState.container.setAttribute('aria-label', appliedAria);
+      }
+      mapState.legendEls.hospital.university &&
+        (mapState.legendEls.hospital.university.textContent = typeLegend.university);
+      mapState.legendEls.hospital.kanton &&
+        (mapState.legendEls.hospital.kanton.textContent = typeLegend.kanton);
+      mapState.legendEls.hospital.private &&
+        (mapState.legendEls.hospital.private.textContent = typeLegend.private);
+      if (mapState.legendEls.canton.title) {
+        mapState.legendEls.canton.title.textContent = msg('mapLegendCantonsTitle');
+      }
+      if (mapState.legendEls.canton.scale) {
+        mapState.legendEls.canton.scale.innerHTML = '';
+      }
+      mapState.cantonStyleByCode.clear();
       mapState.messageEl.hidden = true;
 
       return true;
+    }
+
+    function setLegendMode(mode) {
+      const hospitalLegend = mapState.legendEls?.hospital?.container;
+      const cantonLegend = mapState.legendEls?.canton?.container;
+      if (hospitalLegend) {
+        hospitalLegend.hidden = mode !== MAP_MODES.HOSPITALS;
+      }
+      if (cantonLegend) {
+        cantonLegend.hidden = mode !== MAP_MODES.CANTONS;
+      }
     }
 
     function displayMapMessage(message, className = 'finder-empty') {
@@ -2712,10 +2844,44 @@ if (finderRoot) {
         finderMap.innerHTML = `<p class="${className}">${message}</p>`;
         return;
       }
+      setLegendMode(state.mapMode ?? MAP_MODES.HOSPITALS);
+      updateMapAria(state.mapMode ?? MAP_MODES.HOSPITALS);
       mapState.markersLayer?.clearLayers();
+      if (mapState.cantonLayer && mapState.map?.hasLayer(mapState.cantonLayer)) {
+        mapState.map.removeLayer(mapState.cantonLayer);
+      }
       mapState.messageEl.className = `finder-map-message ${className}`;
       mapState.messageEl.textContent = message;
       mapState.messageEl.hidden = false;
+    }
+
+    function ensureCantonGeojson() {
+      if (mapState.cantonGeojson) {
+        return Promise.resolve(mapState.cantonGeojson);
+      }
+      if (!mapState.cantonGeojsonPromise) {
+        mapState.cantonGeojsonPromise = fetch('static/data/cantons.geojson')
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Failed to fetch cantons.geojson: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            mapState.cantonGeojson = data;
+            mapState.cantonLayerInitialized = false;
+            return data;
+          })
+          .catch((error) => {
+            console.error('Unable to load canton GeoJSON', error);
+            mapState.cantonGeojson = null;
+            throw error;
+          })
+          .finally(() => {
+            mapState.cantonGeojsonPromise = null;
+          });
+      }
+      return mapState.cantonGeojsonPromise;
     }
 
     const defaultCategory = procedureCatalog[0] ?? null;
@@ -2730,7 +2896,8 @@ if (finderRoot) {
       typeFilter: { university: true, kanton: true, private: true },
       listPage: 0,
       shouldScrollToResults: false,
-      hasUserSelection: false
+      hasUserSelection: false,
+      mapMode: MAP_MODES.HOSPITALS
     };
 
     setupQuickPicks();
@@ -3030,6 +3197,53 @@ if (finderRoot) {
       .map((h) => ({ ...h, share: h.cases / total }))
       .sort((a, b) => b.cases - a.cases);
 
+    const cantonAggregates = (() => {
+      if (!hospitalsWithShare.length) {
+        return [];
+      }
+      const byCanton = new Map();
+      hospitalsWithShare.forEach((h) => {
+        const entry = byCanton.get(h.canton) ?? {
+          canton: h.canton,
+          totalCases: 0,
+          hospitalCount: 0,
+          uniCases: 0,
+          hospitals: []
+        };
+        entry.totalCases += h.cases;
+        entry.hospitalCount += 1;
+        if (h.type === 'university') {
+          entry.uniCases += h.cases;
+        }
+        entry.hospitals.push(h);
+        byCanton.set(h.canton, entry);
+      });
+      return Array.from(byCanton.values())
+        .map((entry) => {
+          const totalCases = entry.totalCases;
+          const hhi = totalCases
+            ? Math.round(
+                entry.hospitals.reduce((sum, hosp) => {
+                  const share = (hosp.cases / totalCases) * 100;
+                  return sum + share ** 2;
+                }, 0)
+              )
+            : 0;
+          return {
+            canton: entry.canton,
+            totalCases,
+            hospitalCount: entry.hospitalCount,
+            uniShare: totalCases ? entry.uniCases / totalCases : 0,
+            hhi,
+            hhiLabel: labelFromHHI(hhi),
+            hospitals: entry.hospitals
+          };
+        })
+        .sort((a, b) => b.totalCases - a.totalCases);
+    })();
+
+    const cantonAggregatesMap = new Map(cantonAggregates.map((entry) => [entry.canton, entry]));
+
     const cantonHosp =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? hospitalsWithShare
@@ -3079,7 +3293,9 @@ if (finderRoot) {
       cantonHosp,
       cantonTotals,
       cantonHhi: cantonHhiData?.hhi ?? null,
-      cantonHhiLabel: cantonHhiData?.label ?? null
+      cantonHhiLabel: cantonHhiData?.label ?? null,
+      cantons: cantonAggregates,
+      cantonsByCode: cantonAggregatesMap
     };
   }
 
@@ -3385,14 +3601,68 @@ if (finderRoot) {
     });
   }
 
-  function renderMap(agg) {
-    if (!finderMap) {
+  function renderMapModeControls() {
+    if (!finderMapMode) {
       return;
     }
 
-    if (!ensureMapStructure()) {
-      finderMap.innerHTML = `<p class="finder-error">${msg('mapUnavailable')}</p>`;
+    if (mapModeLabel) {
+      const labelText = msg('mapModeLabel');
+      mapModeLabel.textContent =
+        typeof labelText === 'string' && labelText !== 'messages.mapModeLabel'
+          ? labelText
+          : 'Map view';
+    }
+
+    if (mapModeMessage) {
+      const messageKey = state.mapMode === MAP_MODES.CANTONS ? 'mapModeMessageCantons' : 'mapModeMessageHospitals';
+      const messageText = msg(messageKey);
+      mapModeMessage.textContent =
+        typeof messageText === 'string' && messageText !== `messages.${messageKey}`
+          ? messageText
+          : state.mapMode === MAP_MODES.CANTONS
+          ? 'Shading aggregates the selected hospitals by canton and highlights total cases and HHI.'
+          : 'Circles show hospitals that reported cases in 2023.';
+    }
+
+    mapModeButtons.forEach((button) => {
+      const mode = button.dataset.mapMode;
+      const isActive = mode === state.mapMode;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+      button.disabled = isActive;
+      if (mode === MAP_MODES.HOSPITALS) {
+        const text = msg('mapModeHospitals');
+        button.textContent =
+          typeof text === 'string' && text !== 'messages.mapModeHospitals' ? text : 'Hospitals';
+      } else if (mode === MAP_MODES.CANTONS) {
+        const text = msg('mapModeCantons');
+        button.textContent =
+          typeof text === 'string' && text !== 'messages.mapModeCantons' ? text : 'Cantons';
+      }
+    });
+  }
+
+  function updateMapAria(mode) {
+    if (!mapState.container) {
       return;
+    }
+    const key = mode === MAP_MODES.CANTONS ? 'mapAriaLabelCantons' : 'mapAriaLabelHospitals';
+    const ariaLabel = msg(key);
+    if (typeof ariaLabel === 'string' && ariaLabel !== `messages.${key}`) {
+      mapState.container.setAttribute('aria-label', ariaLabel);
+      return;
+    }
+    const fallback = msg('mapAriaLabel');
+    if (typeof fallback === 'string') {
+      mapState.container.setAttribute('aria-label', fallback);
+    }
+  }
+
+  function renderHospitalMarkers(agg) {
+    setLegendMode(MAP_MODES.HOSPITALS);
+    if (mapState.cantonLayer && mapState.map?.hasLayer(mapState.cantonLayer)) {
+      mapState.map.removeLayer(mapState.cantonLayer);
     }
 
     const hospitalsWithCoords = agg.hospitals.filter((h) => h.lat != null && h.lon != null);
@@ -3478,6 +3748,170 @@ if (finderRoot) {
     mapState.map.invalidateSize();
   }
 
+  function renderCantonChoropleth(agg) {
+    setLegendMode(MAP_MODES.CANTONS);
+    mapState.markersLayer?.clearLayers();
+
+    if (!mapState.cantonGeojson) {
+      displayMapMessage(msg('loadingMap'), 'finder-loading');
+      if (mapState.legendEls.canton.scale) {
+        mapState.legendEls.canton.scale.innerHTML = '';
+      }
+      ensureCantonGeojson()
+        .then(() => {
+          if (state.mapMode === MAP_MODES.CANTONS) {
+            render();
+          }
+        })
+        .catch(() => {
+          if (state.mapMode === MAP_MODES.CANTONS) {
+            displayMapMessage(msg('mapUnavailable'), 'finder-error');
+          }
+        });
+      return;
+    }
+
+    if (!mapState.cantonLayerInitialized) {
+      mapState.cantonLayer.clearLayers();
+      mapState.cantonLayer.addData(mapState.cantonGeojson);
+      mapState.cantonLayerInitialized = true;
+    }
+
+    if (mapState.cantonLayer && !mapState.map.hasLayer(mapState.cantonLayer)) {
+      mapState.cantonLayer.addTo(mapState.map);
+    }
+
+    const cantons = agg.cantons ?? [];
+    const hasData = cantons.some((entry) => entry.totalCases > 0);
+
+    if (!cantons.length || !hasData) {
+      displayMapMessage(msg('mapNoData'));
+      if (mapState.legendEls.canton.scale) {
+        const emptyRaw = msg('mapLegendCantonsEmpty');
+        const emptyLabel =
+          typeof emptyRaw === 'string' && emptyRaw !== 'messages.mapLegendCantonsEmpty'
+            ? emptyRaw
+            : 'No canton case totals available';
+        mapState.legendEls.canton.scale.innerHTML = `<span>${emptyLabel}</span>`;
+      }
+      return;
+    }
+
+    mapState.messageEl.hidden = true;
+
+    const legendRaw = msg('mapLegendCantonsTitle');
+    const legendTitle =
+      typeof legendRaw === 'string' && legendRaw !== 'messages.mapLegendCantonsTitle'
+        ? legendRaw
+        : 'Canton totals (cases)';
+    if (mapState.legendEls.canton.title) {
+      mapState.legendEls.canton.title.textContent = legendTitle;
+    }
+
+    const dataByCanton = new Map(cantons.map((entry) => [entry.canton, entry]));
+    const values = cantons.map((entry) => entry.totalCases);
+    const maxCases = Math.max(...values);
+    const thresholds = [];
+    if (maxCases > 0) {
+      const step = maxCases / choroplethColors.length;
+      for (let i = 1; i < choroplethColors.length; i += 1) {
+        thresholds.push(step * i);
+      }
+    }
+
+    const getColor = (value) => {
+      if (!value) {
+        return '#e2e8f0';
+      }
+      for (let i = thresholds.length - 1; i >= 0; i -= 1) {
+        if (value >= thresholds[i]) {
+          return choroplethColors[Math.min(i + 1, choroplethColors.length - 1)];
+        }
+      }
+      return choroplethColors[0];
+    };
+
+    const segments = [];
+    if (maxCases === 0) {
+      segments.push({ color: '#e2e8f0', label: '0' });
+    } else {
+      for (let i = 0; i < choroplethColors.length; i += 1) {
+        const start = i === 0 ? 0 : Math.round(thresholds[i - 1]);
+        const end =
+          i < thresholds.length ? Math.round(thresholds[i]) : Math.round(maxCases);
+        const label = start === end ? `${end.toLocaleString()}` : `${start.toLocaleString()}–${end.toLocaleString()}`;
+        segments.push({ color: choroplethColors[i], label });
+      }
+    }
+
+    if (mapState.legendEls.canton.scale) {
+      mapState.legendEls.canton.scale.innerHTML = segments
+        .map((segment) => `<span><i style="background:${segment.color}"></i>${segment.label}</span>`)
+        .join('');
+    }
+
+    mapState.cantonStyleByCode = new Map();
+
+    mapState.cantonLayer.eachLayer((layer) => {
+      const code = layer.feature?.properties?.code;
+      const entry = code ? dataByCanton.get(code) : null;
+      const totalCases = entry?.totalCases ?? 0;
+      const fillColor = getColor(totalCases);
+      const style = {
+        color: totalCases ? '#1e3a8a' : '#94a3b8',
+        weight: totalCases ? 1.2 : 1,
+        fillColor,
+        fillOpacity: totalCases ? 0.68 : 0.2,
+        dashArray: totalCases ? null : '4 3'
+      };
+      layer.setStyle(style);
+      if (code) {
+        mapState.cantonStyleByCode.set(code, style);
+      }
+      const tooltipKey = totalCases ? 'mapTooltipCanton' : 'mapTooltipCantonEmpty';
+      const tooltipText = totalCases
+        ? msg(tooltipKey, {
+            canton: code,
+            cases: entry.totalCases.toLocaleString(),
+            hhi: entry.hhi.toLocaleString(),
+            hhiLabel: entry.hhiLabel
+          })
+        : msg(tooltipKey, { canton: code });
+      layer.bindTooltip(tooltipText, {
+        direction: 'auto',
+        sticky: true,
+        opacity: 0.9
+      });
+    });
+
+    const bounds = L.latLngBounds(
+      [SWITZERLAND_BOUNDS.latMin, SWITZERLAND_BOUNDS.lonMin],
+      [SWITZERLAND_BOUNDS.latMax, SWITZERLAND_BOUNDS.lonMax]
+    );
+    mapState.map.fitBounds(bounds.pad(0.05), { animate: false });
+    mapState.map.invalidateSize();
+  }
+
+  function renderMap(agg) {
+    if (!finderMap) {
+      return;
+    }
+
+    if (!ensureMapStructure()) {
+      finderMap.innerHTML = `<p class="finder-error">${msg('mapUnavailable')}</p>`;
+      return;
+    }
+
+    const mode = state.mapMode ?? MAP_MODES.HOSPITALS;
+    updateMapAria(mode);
+
+    if (mode === MAP_MODES.CANTONS) {
+      renderCantonChoropleth(agg);
+    } else {
+      renderHospitalMarkers(agg);
+    }
+  }
+
   function renderCantonDetails(agg) {
     const cantonHosp = agg.cantonHosp;
 
@@ -3527,6 +3961,7 @@ if (finderRoot) {
   function render() {
     renderProcedureControls();
     renderTypeToggle();
+    renderMapModeControls();
 
     const selectedProcedure = state.hasUserSelection ? state.selectedProc : null;
     const hasSelection = Boolean(selectedProcedure);
@@ -3596,6 +4031,16 @@ if (finderRoot) {
       state.search = event.target.value;
       state.listPage = 0;
       render();
+    });
+
+    mapModeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const mode = button.dataset.mapMode;
+        if (mode && mode !== state.mapMode) {
+          state.mapMode = mode;
+          render();
+        }
+      });
     });
 
     finderCanton.innerHTML = cantonOptions

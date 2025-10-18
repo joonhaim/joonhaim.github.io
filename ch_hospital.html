@@ -143,6 +143,21 @@
             <select id="finder-canton"></select>
           </div>
         </div>
+        <div class="finder-map-mode" id="finder-map-mode">
+          <div class="finder-map-mode__header">
+            <span class="finder-map-mode__label" id="finder-map-mode-label"></span>
+            <div
+              class="finder-map-mode__toggle"
+              role="group"
+              aria-labelledby="finder-map-mode-label"
+              data-map-mode-toggle
+            >
+              <button type="button" class="map-mode-btn is-active" data-map-mode="hospitals"></button>
+              <button type="button" class="map-mode-btn" data-map-mode="cantons"></button>
+            </div>
+          </div>
+          <p class="finder-map-mode__message" id="finder-map-mode-message"></p>
+        </div>
         <div class="finder-map-card surface-card" id="finder-map"></div>
       </div>
     </div>

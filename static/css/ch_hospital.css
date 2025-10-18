@@ -2164,28 +2164,144 @@ body {
   color: #b91c1c;
 }
 
+.finder-map-legends {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .finder-map-legend {
   display: flex;
-  gap: 1.1rem;
+  align-items: center;
+  gap: 1rem;
   font-size: 0.7rem;
   color: var(--text-muted);
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 
-.finder-map-legend span {
+.finder-map-legend[data-legend="hospitals"] span {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   text-transform: uppercase;
 }
 
-.finder-map-legend i {
+.finder-map-legend[data-legend="hospitals"] i {
   display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+.finder-map-legend[data-legend="cantons"] {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  text-transform: none;
+}
+
+.finder-map-legend[data-legend="cantons"] .legend-title {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-navy);
+}
+
+.finder-map-legend[data-legend="cantons"] .legend-scale {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.finder-map-legend[data-legend="cantons"] .legend-scale span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.35);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.finder-map-legend[data-legend="cantons"] .legend-scale i {
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  border-radius: 0.35rem;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+}
+
+.finder-map-mode {
+  margin: 1rem 0 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.finder-map-mode__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.finder-map-mode__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.finder-map-mode__toggle {
+  display: inline-flex;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.05);
+  gap: 0.2rem;
+}
+
+.map-mode-btn {
+  border: none;
+  background: transparent;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.map-mode-btn:hover,
+.map-mode-btn:focus-visible {
+  background: rgba(148, 163, 184, 0.18);
+  color: var(--brand-navy);
+  outline: none;
+}
+
+.map-mode-btn.is-active {
+  background: #1d4ed8;
+  color: #fff;
+  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.35);
+}
+
+.map-mode-btn:disabled {
+  opacity: 0.75;
+  cursor: default;
+  box-shadow: none;
+}
+
+.finder-map-mode__message {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
 .finder-map-card .finder-map-marker {
@@ -2239,6 +2355,25 @@ body {
 @media (max-width: 960px) {
   .finder-main {
     grid-template-columns: 1fr;
+  }
+
+  .finder-map-mode__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .finder-map-mode__toggle {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .map-mode-btn {
+    flex: 1 1 0;
+    text-align: center;
+  }
+
+  .finder-map-mode__message {
+    font-size: 0.78rem;
   }
 
   .finder-list-card {

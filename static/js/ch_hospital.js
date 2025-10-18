@@ -1629,6 +1629,7 @@ if (finderRoot) {
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
+  const COMPARISON_LIMIT = 4;
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
   function initializeFinderUi(procedureCatalog) {
@@ -1650,6 +1651,11 @@ if (finderRoot) {
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
     const finderQuickDescription = document.getElementById('finder-quick-description');
+    const finderComparePanel = document.getElementById('finder-compare');
+    const finderCompareGrid = document.getElementById('finder-compare-grid');
+    const finderCompareEmpty = document.getElementById('finder-compare-empty');
+    const finderCompareCount = document.getElementById('finder-compare-count');
+    const finderCompareClear = document.getElementById('finder-compare-clear');
 
     const quickPickButtons = new Map();
 
@@ -1704,6 +1710,46 @@ if (finderRoot) {
       }
       return '';
     };
+
+    const comparisonFallbacks = {
+      heading: 'Compare hospitals',
+      eyebrow: 'Comparison',
+      empty: 'Select hospitals to compare.',
+      add: 'Compare',
+      selected: 'Selected',
+      remove: 'Remove',
+      clear: 'Clear all',
+      count: '{count} of {limit} selected',
+      limit: 'You can compare up to {limit} hospitals.'
+    };
+
+    const comparisonMessage = (key, replacements = {}) => {
+      const messageKey = `comparison.${key}`;
+      const translation = msg(messageKey, replacements);
+      if (typeof translation === 'string' && translation !== `messages.${messageKey}`) {
+        return translation;
+      }
+      const fallback = comparisonFallbacks[key];
+      if (typeof fallback === 'string') {
+        return fallback.replace(/\{(\w+)\}/g, (_, name) => replacements[name] ?? '');
+      }
+      return '';
+    };
+
+    const formatIntegerValue = (value) =>
+      Number.isFinite(value) ? value.toLocaleString() : '—';
+    const formatPercentValue = (value) =>
+      Number.isFinite(value)
+        ? `${value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+        : '—';
+    const formatFractionValue = (value) =>
+      Number.isFinite(value)
+        ? `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+        : '—';
+    const formatRatioValue = (value) =>
+      Number.isFinite(value)
+        ? value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : '—';
 
     const hospitalDetail = (() => {
       const overlay = document.createElement('div');
@@ -2730,8 +2776,19 @@ if (finderRoot) {
       typeFilter: { university: true, kanton: true, private: true },
       listPage: 0,
       shouldScrollToResults: false,
-      hasUserSelection: false
+      hasUserSelection: false,
+      selectedHospitals: []
     };
+
+    if (finderCompareClear) {
+      finderCompareClear.addEventListener('click', () => {
+        if (!state.selectedHospitals.length) {
+          return;
+        }
+        state.selectedHospitals = [];
+        render();
+      });
+    }
 
     setupQuickPicks();
 
@@ -2739,6 +2796,9 @@ if (finderRoot) {
 
     let finderDataset = null;
     let availableTypes = [];
+    let currentHospitalLookup = new Map();
+
+    const getHospitalKey = (entry) => entry.originalName ?? entry.hospital;
 
     function ensureTypeFilter() {
       availableTypes.forEach((type) => {
@@ -2746,6 +2806,244 @@ if (finderRoot) {
           state.typeFilter[type] = true;
         }
       });
+    }
+
+    function syncSelectedHospitalsWithLookup() {
+      if (!state.selectedHospitals.length) {
+        return false;
+      }
+      const updated = [];
+      let changed = false;
+      state.selectedHospitals.forEach((item) => {
+        const latest = currentHospitalLookup.get(item.key);
+        if (latest) {
+          if (item.data !== latest) {
+            changed = true;
+          }
+          updated.push({ key: item.key, data: latest });
+        } else {
+          changed = true;
+        }
+      });
+      if (changed) {
+        state.selectedHospitals = updated;
+      }
+      return changed;
+    }
+
+    function renderComparison() {
+      if (!finderComparePanel) {
+        return;
+      }
+
+      const comparisonEntries = [];
+      const refreshedSelection = [];
+      state.selectedHospitals.forEach((item) => {
+        const latest = currentHospitalLookup.get(item.key) || item.data;
+        if (latest) {
+          comparisonEntries.push({ key: item.key, entry: latest });
+          refreshedSelection.push({ key: item.key, data: latest });
+        }
+      });
+
+      state.selectedHospitals = refreshedSelection;
+
+      const selectionCount = state.selectedHospitals.length;
+
+      if (finderCompareClear) {
+        finderCompareClear.textContent = comparisonMessage('clear');
+        finderCompareClear.disabled = selectionCount === 0;
+      }
+
+      if (finderCompareEmpty) {
+        finderCompareEmpty.textContent = comparisonMessage('empty');
+        finderCompareEmpty.hidden = selectionCount > 0;
+      }
+
+      if (finderCompareCount) {
+        const countText = comparisonMessage('count', {
+          count: selectionCount,
+          limit: COMPARISON_LIMIT
+        });
+        finderCompareCount.textContent = countText;
+        finderCompareCount.classList.toggle(
+          'finder-compare-count--limit',
+          selectionCount >= COMPARISON_LIMIT
+        );
+      }
+
+      const eyebrowEl = finderComparePanel.querySelector('.finder-compare-eyebrow');
+      if (eyebrowEl) {
+        eyebrowEl.textContent = comparisonMessage('eyebrow');
+      }
+
+      const titleEl = finderComparePanel.querySelector('#finder-compare-title');
+      if (titleEl) {
+        titleEl.textContent = comparisonMessage('heading');
+      }
+
+      finderComparePanel.classList.toggle('finder-compare-panel--active', selectionCount > 0);
+
+      if (!finderCompareGrid) {
+        return;
+      }
+
+      if (!selectionCount || !comparisonEntries.length) {
+        finderCompareGrid.innerHTML = '';
+        return;
+      }
+
+      finderCompareGrid.innerHTML = comparisonEntries
+        .map(({ key, entry }) => {
+          const badgeClass =
+            entry.type === 'university'
+              ? 'badge-university'
+              : entry.type === 'kanton'
+              ? 'badge-kanton'
+              : 'badge-private';
+          const badgeLabel = typeBadges[entry.type] ?? entry.type;
+          const summaryRows = [
+            { label: detailMessage('cases2023'), value: formatIntegerValue(entry.cases) },
+            { label: detailMessage('share'), value: formatFractionValue(entry.share) },
+            { label: detailMessage('type'), value: badgeLabel },
+            { label: detailMessage('canton'), value: entry.canton ?? '—' }
+          ];
+
+          const summaryMarkup = summaryRows
+            .map((row) => {
+              const safeLabel = escapeHtml(row.label);
+              const safeValue = escapeHtml(row.value ?? '');
+              return `
+                <div class="finder-compare-summary-row">
+                  <span class="finder-compare-summary-label">${safeLabel}</span>
+                  <span class="finder-compare-summary-value">${safeValue}</span>
+                </div>
+              `;
+            })
+            .join('');
+
+          const metrics = entry.metrics || {};
+          const metricsSections = [];
+
+          const hasCurrentMetrics =
+            Number.isFinite(metrics.observed2023) ||
+            Number.isFinite(metrics.expected2023) ||
+            Number.isFinite(metrics.smr2023);
+
+          if (hasCurrentMetrics) {
+            metricsSections.push({
+              title: detailMessage('section2023'),
+              rows: [
+                { label: detailMessage('observed2023'), value: formatPercentValue(metrics.observed2023) },
+                { label: detailMessage('expected2023'), value: formatPercentValue(metrics.expected2023) },
+                { label: detailMessage('smr2023'), value: formatRatioValue(metrics.smr2023) }
+              ]
+            });
+          }
+
+          const hasHistoricalMetrics =
+            Number.isFinite(metrics.observedHistorical) ||
+            Number.isFinite(metrics.expectedHistorical) ||
+            Number.isFinite(metrics.smrHistorical) ||
+            Number.isFinite(metrics.casesHistorical);
+
+          if (hasHistoricalMetrics) {
+            metricsSections.push({
+              title: detailMessage('sectionHistorical'),
+              rows: [
+                { label: detailMessage('observedHistorical'), value: formatPercentValue(metrics.observedHistorical) },
+                { label: detailMessage('expectedHistorical'), value: formatPercentValue(metrics.expectedHistorical) },
+                { label: detailMessage('smrHistorical'), value: formatRatioValue(metrics.smrHistorical) },
+                { label: detailMessage('casesHistorical'), value: formatIntegerValue(metrics.casesHistorical) }
+              ]
+            });
+          }
+
+          const metricsMarkup = metricsSections.length
+            ? metricsSections
+                .map((section) => {
+                  const safeTitle = escapeHtml(section.title);
+                  const rowsMarkup = section.rows
+                    .map((row) => {
+                      const safeLabel = escapeHtml(row.label);
+                      const safeValue = escapeHtml(row.value ?? '');
+                      return `
+                        <div class="finder-compare-metric">
+                          <span class="finder-compare-metric-label">${safeLabel}</span>
+                          <span class="finder-compare-metric-value">${safeValue}</span>
+                        </div>
+                      `;
+                    })
+                    .join('');
+                  return `
+                    <div class="finder-compare-metrics">
+                      <h5>${safeTitle}</h5>
+                      <div class="finder-compare-metrics-grid">${rowsMarkup}</div>
+                    </div>
+                  `;
+                })
+                .join('')
+            : `<p class="finder-compare-empty finder-compare-empty--inline">${escapeHtml(
+                detailMessage('noData')
+              )}</p>`;
+
+          const safeName = escapeHtml(entry.hospital ?? '');
+          const safeCanton = escapeHtml(entry.canton ?? '');
+
+          return `
+            <article class="finder-compare-column" data-hospital-key="${escapeAttribute(key)}">
+              <header class="finder-compare-column-header">
+                <h4>${safeName}</h4>
+                <div class="finder-compare-tags">
+                  <span class="finder-badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>
+                  ${safeCanton ? `<span class="finder-badge finder-compare-badge-muted">${safeCanton}</span>` : ''}
+                </div>
+              </header>
+              <div class="finder-compare-summary">${summaryMarkup}</div>
+              ${metricsMarkup}
+              <button type="button" class="finder-compare-remove" data-hospital-key="${escapeAttribute(
+                key
+              )}">${escapeHtml(comparisonMessage('remove'))}</button>
+            </article>
+          `;
+        })
+        .join('');
+
+      finderCompareGrid.querySelectorAll('.finder-compare-remove').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.hospitalKey;
+          if (!key) {
+            return;
+          }
+          const index = state.selectedHospitals.findIndex((item) => item.key === key);
+          if (index >= 0) {
+            state.selectedHospitals.splice(index, 1);
+            render();
+          }
+        });
+      });
+    }
+
+    function toggleHospitalSelection(key) {
+      if (!key) {
+        return;
+      }
+      const existingIndex = state.selectedHospitals.findIndex((item) => item.key === key);
+      if (existingIndex >= 0) {
+        state.selectedHospitals.splice(existingIndex, 1);
+        render();
+        return;
+      }
+      if (state.selectedHospitals.length >= COMPARISON_LIMIT) {
+        renderComparison();
+        return;
+      }
+      const latest = currentHospitalLookup.get(key);
+      if (!latest) {
+        return;
+      }
+      state.selectedHospitals = [...state.selectedHospitals, { key, data: latest }];
+      render();
     }
 
     function matchesProcedure(procedure, query) {
@@ -3266,8 +3564,14 @@ if (finderRoot) {
     if (!agg.hospitals.length) {
       finderListMeta.textContent = msg('noHospitalsFilters');
       finderList.innerHTML = `<p class="finder-empty">${msg('noHospitalVolumes')}</p>`;
+      state.selectedHospitals = [];
+      currentHospitalLookup = new Map();
+      renderComparison();
       return;
     }
+
+    currentHospitalLookup = new Map(agg.hospitals.map((entry) => [getHospitalKey(entry), entry]));
+    syncSelectedHospitalsWithLookup();
 
     const searchLower = normalizeString(state.search.trim());
     const filteredBySearch = agg.hospitals.filter((h) => {
@@ -3278,6 +3582,7 @@ if (finderRoot) {
     if (!filteredBySearch.length) {
       finderListMeta.textContent = msg('noHospitalsSearch');
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
+      renderComparison();
       return;
     }
 
@@ -3289,6 +3594,7 @@ if (finderRoot) {
     if (!filteredByCanton.length) {
       finderListMeta.textContent = msg('cantonNoHospitals', { canton: state.selectedCanton });
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
+      renderComparison();
       return;
     }
 
@@ -3336,6 +3642,9 @@ if (finderRoot) {
       });
     });
 
+    const selectedKeys = new Set(state.selectedHospitals.map((item) => item.key));
+    const limitReached = state.selectedHospitals.length >= COMPARISON_LIMIT;
+
     finderList.innerHTML = toDisplay
       .map((h, idx) => {
         const share = (h.share * 100).toFixed(1);
@@ -3343,8 +3652,28 @@ if (finderRoot) {
         const badgeClass =
           h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
         const badgeLabel = typeBadges[h.type] ?? h.type;
+        const hospitalKey = getHospitalKey(h);
+        const isSelected = selectedKeys.has(hospitalKey);
+        const disabled = !isSelected && limitReached;
+        const buttonLabel = isSelected ? comparisonMessage('selected') : comparisonMessage('add');
+        const buttonIcon = isSelected ? '&#10003;' : '&#43;';
+        const limitMessage = !isSelected && disabled ? comparisonMessage('limit', { limit: COMPARISON_LIMIT }) : '';
+        const rowClasses = ['finder-row', 'finder-row--interactive'];
+        if (isSelected) {
+          rowClasses.push('finder-row--selected');
+        }
+        const titleAttr = limitMessage ? ` title="${escapeAttribute(limitMessage)}"` : '';
+        const buttonAttrs = [
+          'type="button"',
+          `class="finder-select-btn${isSelected ? ' is-selected' : ''}"`,
+          `data-hospital-key="${escapeAttribute(hospitalKey)}"`,
+          `aria-pressed="${isSelected ? 'true' : 'false'}"`
+        ];
+        if (disabled) {
+          buttonAttrs.push('disabled');
+        }
         return `
-          <div class="finder-row finder-row--interactive">
+          <div class="${rowClasses.join(' ')}" data-hospital-key="${escapeAttribute(hospitalKey)}">
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
@@ -3358,10 +3687,24 @@ if (finderRoot) {
               <strong>${h.cases.toLocaleString()}</strong>
               <span>${share}%</span>
             </div>
+            <div class="finder-select">
+              <button ${buttonAttrs.join(' ')}${titleAttr}>
+                <span class="finder-select-btn-icon" aria-hidden="true">${buttonIcon}</span>
+                <span class="finder-select-btn-text">${escapeHtml(buttonLabel)}</span>
+              </button>
+            </div>
           </div>
         `;
       })
       .join('');
+
+    finderList.querySelectorAll('.finder-select-btn').forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const key = btn.dataset.hospitalKey;
+        toggleHospitalSelection(key);
+      });
+    });
 
     const rows = finderList.querySelectorAll('.finder-row');
     rows.forEach((row, rowIndex) => {
@@ -3373,16 +3716,24 @@ if (finderRoot) {
       row.setAttribute('role', 'button');
       row.setAttribute('tabindex', '0');
       row.setAttribute('aria-label', ariaLabel);
-      row.addEventListener('click', () => {
+      row.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('.finder-select')) {
+          return;
+        }
         hospitalDetail.open(entry, { procedure: state.selectedProc });
       });
       row.addEventListener('keydown', (event) => {
+        if (event.target !== row) {
+          return;
+        }
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
           hospitalDetail.open(entry, { procedure: state.selectedProc });
         }
       });
     });
+
+    renderComparison();
   }
 
   function renderMap(agg) {
@@ -3556,6 +3907,9 @@ if (finderRoot) {
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
+      state.selectedHospitals = [];
+      currentHospitalLookup = new Map();
+      renderComparison();
       scrollToResultsIfNeeded();
       return;
     }
@@ -3567,6 +3921,7 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      renderComparison();
       scrollToResultsIfNeeded();
       return;
     }

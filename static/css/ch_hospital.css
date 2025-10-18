@@ -1987,7 +1987,7 @@ body {
 .hospital-detail__metrics-grid {
   display: grid;
   gap: 0.9rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .hospital-detail__metric {
@@ -1998,6 +1998,13 @@ body {
   border-radius: 0.85rem;
   border: 1px solid rgba(148, 163, 184, 0.3);
   background: rgba(255, 255, 255, 0.9);
+}
+
+.hospital-detail__metric-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .hospital-detail__metric-label {
@@ -2011,6 +2018,109 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--brand-navy);
+}
+
+.hospital-detail__metric-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.hospital-detail__metric--comparison {
+  --metric-track-color: rgba(148, 163, 184, 0.22);
+  --metric-expected-color: #1f2937;
+  --metric-color: #2563eb;
+  gap: 0.6rem;
+}
+
+.hospital-detail__metric--comparison.is-above {
+  --metric-color: #dc2626;
+}
+
+.hospital-detail__metric--comparison.is-below {
+  --metric-color: #0f766e;
+}
+
+.hospital-detail__metric--comparison.is-equal {
+  --metric-color: #2563eb;
+}
+
+.hospital-detail__metric-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--metric-color);
+}
+
+.hospital-detail__metric-chart {
+  width: 100%;
+}
+
+.hospital-detail__metric-track {
+  position: relative;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: var(--metric-track-color);
+  overflow: hidden;
+}
+
+.hospital-detail__metric-bar {
+  position: absolute;
+  inset: 0;
+  width: var(--observed-percent, 0%);
+  max-width: 100%;
+  background: var(--metric-color);
+  border-radius: inherit;
+}
+
+.hospital-detail__metric-expected {
+  position: absolute;
+  top: -0.35rem;
+  bottom: -0.35rem;
+  width: 2px;
+  left: var(--expected-percent, 0%);
+  transform: translateX(-50%);
+  background: var(--metric-expected-color);
+}
+
+.hospital-detail__metric-legend {
+  margin: 0;
+  display: grid;
+  gap: 0.4rem 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.hospital-detail__legend-item {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.hospital-detail__legend-item dt {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.hospital-detail__legend-item dd {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--brand-navy);
+}
+
+.hospital-detail__legend-marker {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--metric-color);
+}
+
+.hospital-detail__legend-marker--expected {
+  background: var(--metric-expected-color);
 }
 
 .hospital-detail__empty {

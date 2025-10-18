@@ -844,11 +844,27 @@ if (finderRoot) {
           observed2023: 'Observed rate 2023',
           expected2023: 'Expected rate 2023',
           smr2023: 'Standardized mortality ratio 2023',
+          observedVsExpected2023: 'Observed vs expected rate (2023)',
           sectionHistorical: '2018–2022 benchmark',
           observedHistorical: 'Observed rate 2018–2022',
           expectedHistorical: 'Expected rate 2018–2022',
           smrHistorical: 'Standardized mortality ratio 2018–2022',
           casesHistorical: 'Cases 2018–2022',
+          observedVsExpectedHistorical: 'Observed vs expected rate (2018–2022)',
+          chartObserved: 'Observed',
+          chartExpected: 'Expected',
+          chartStatus: 'Status',
+          chartDifference: 'Difference',
+          chartRatio: 'Observed/expected',
+          chartDifferenceUnit: 'pp',
+          chartDifferenceUnitLong: 'percentage points',
+          chartAbove: 'Above expectations',
+          chartBelow: 'Below expectations',
+          chartEqual: 'In line with expectations',
+          chartAria:
+            '{label}: observed {observed} compared with expected {expected}. {status}{difference}{ratio}',
+          chartAriaDifference: ' by {difference}',
+          chartAriaRatio: ' ({ratio} of expected)',
           note:
             'Rates are shown as published in CH-IQI reporting and may be suppressed when case volumes are low.',
           noData: 'No additional metrics are available for this hospital.',
@@ -1013,11 +1029,27 @@ if (finderRoot) {
           observed2023: 'Beobachtete Rate 2023',
           expected2023: 'Erwartete Rate 2023',
           smr2023: 'Standardisierte Mortalitätsrate 2023',
+          observedVsExpected2023: 'Beobachtet vs. erwartet (2023)',
           sectionHistorical: 'Referenz 2018–2022',
           observedHistorical: 'Beobachtete Rate 2018–2022',
           expectedHistorical: 'Erwartete Rate 2018–2022',
           smrHistorical: 'Standardisierte Mortalitätsrate 2018–2022',
           casesHistorical: 'Fälle 2018–2022',
+          observedVsExpectedHistorical: 'Beobachtet vs. erwartet (2018–2022)',
+          chartObserved: 'Beobachtet',
+          chartExpected: 'Erwartet',
+          chartStatus: 'Status',
+          chartDifference: 'Differenz',
+          chartRatio: 'Beobachtet/Erwartet',
+          chartDifferenceUnit: 'PP',
+          chartDifferenceUnitLong: 'Prozentpunkte',
+          chartAbove: 'Über den Erwartungen',
+          chartBelow: 'Unter den Erwartungen',
+          chartEqual: 'Im Rahmen der Erwartungen',
+          chartAria:
+            '{label}: beobachteter Wert {observed}, erwarteter Wert {expected}. {status}{difference}{ratio}',
+          chartAriaDifference: ' um {difference}',
+          chartAriaRatio: ' ({ratio} des Erwartungswerts)',
           note:
             'Die Kennzahlen entsprechen den CH-IQI-Veröffentlichungen und können bei kleinen Fallzahlen unterdrückt werden.',
           noData: 'Für dieses Spital sind keine zusätzlichen Kennzahlen verfügbar.',
@@ -1182,11 +1214,27 @@ if (finderRoot) {
           observed2023: 'Taux observé 2023',
           expected2023: 'Taux attendu 2023',
           smr2023: 'Rapport de mortalité standardisé 2023',
+          observedVsExpected2023: 'Taux observé vs attendu (2023)',
           sectionHistorical: 'Référence 2018-2022',
           observedHistorical: 'Taux observé 2018-2022',
           expectedHistorical: 'Taux attendu 2018-2022',
           smrHistorical: 'Rapport de mortalité standardisé 2018-2022',
           casesHistorical: 'Cas 2018-2022',
+          observedVsExpectedHistorical: 'Taux observé vs attendu (2018-2022)',
+          chartObserved: 'Observé',
+          chartExpected: 'Attendu',
+          chartStatus: 'Statut',
+          chartDifference: 'Écart',
+          chartRatio: 'Observé/attendu',
+          chartDifferenceUnit: 'pp',
+          chartDifferenceUnitLong: 'points de pourcentage',
+          chartAbove: 'Au-dessus des attentes',
+          chartBelow: 'En dessous des attentes',
+          chartEqual: 'Conforme aux attentes',
+          chartAria:
+            '{label} : taux observé {observed} comparé au taux attendu {expected}. {status}{difference}{ratio}',
+          chartAriaDifference: ' de {difference}',
+          chartAriaRatio: ' ({ratio} de la valeur attendue)',
           note:
             'Les valeurs proviennent des publications CH-IQI et peuvent être masquées lorsque les volumes sont faibles.',
           noData: 'Aucune donnée supplémentaire n’est disponible pour cet hôpital.',
@@ -1351,11 +1399,27 @@ if (finderRoot) {
           observed2023: 'Tasso osservato 2023',
           expected2023: 'Tasso atteso 2023',
           smr2023: 'Rapporto di mortalità standardizzato 2023',
+          observedVsExpected2023: 'Tasso osservato vs atteso (2023)',
           sectionHistorical: 'Confronto 2018-2022',
           observedHistorical: 'Tasso osservato 2018-2022',
           expectedHistorical: 'Tasso atteso 2018-2022',
           smrHistorical: 'Rapporto di mortalità standardizzato 2018-2022',
           casesHistorical: 'Casi 2018-2022',
+          observedVsExpectedHistorical: 'Tasso osservato vs atteso (2018-2022)',
+          chartObserved: 'Osservato',
+          chartExpected: 'Atteso',
+          chartStatus: 'Stato',
+          chartDifference: 'Scostamento',
+          chartRatio: 'Osservato/atteso',
+          chartDifferenceUnit: 'pp',
+          chartDifferenceUnitLong: 'punti percentuali',
+          chartAbove: 'Sopra le attese',
+          chartBelow: 'Sotto le attese',
+          chartEqual: 'In linea con le attese',
+          chartAria:
+            '{label}: valore osservato {observed} rispetto a quello atteso {expected}. {status}{difference}{ratio}',
+          chartAriaDifference: ' di {difference}',
+          chartAriaRatio: ' ({ratio} rispetto all’atteso)',
           note:
             'I valori corrispondono alle pubblicazioni CH-IQI e possono essere nascosti con bassi volumi di casi.',
           noData: 'Non sono disponibili ulteriori indicatori per questo ospedale.',
@@ -1665,11 +1729,26 @@ if (finderRoot) {
       observed2023: 'Observed rate 2023',
       expected2023: 'Expected rate 2023',
       smr2023: 'Standardized mortality ratio 2023',
+      observedVsExpected2023: 'Observed vs expected rate (2023)',
       sectionHistorical: '2018–2022 benchmark',
       observedHistorical: 'Observed rate 2018–2022',
       expectedHistorical: 'Expected rate 2018–2022',
       smrHistorical: 'Standardized mortality ratio 2018–2022',
       casesHistorical: 'Cases 2018–2022',
+      observedVsExpectedHistorical: 'Observed vs expected rate (2018–2022)',
+      chartObserved: 'Observed',
+      chartExpected: 'Expected',
+      chartStatus: 'Status',
+      chartDifference: 'Difference',
+      chartRatio: 'Observed/expected',
+      chartDifferenceUnit: 'pp',
+      chartDifferenceUnitLong: 'percentage points',
+      chartAbove: 'Above expectations',
+      chartBelow: 'Below expectations',
+      chartEqual: 'In line with expectations',
+      chartAria: '{label}: observed {observed} compared with expected {expected}. {status}{difference}{ratio}',
+      chartAriaDifference: ' by {difference}',
+      chartAriaRatio: ' ({ratio} of expected)',
       note: 'Rates are shown as reported in CH-IQI publications and may be suppressed when data volumes are low.',
       noData: 'No additional metrics are available for this hospital.',
       infoHeading: 'Hospital snapshot',
@@ -1748,6 +1827,26 @@ if (finderRoot) {
           ? value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
           : '—';
 
+      const formatDifference = (value, { long = false } = {}) => {
+        if (!Number.isFinite(value)) {
+          return '—';
+        }
+        const unitKey = long ? 'chartDifferenceUnitLong' : 'chartDifferenceUnit';
+        const unit = detailMessage(unitKey) || (long ? 'percentage points' : 'pp');
+        const absValue = Math.abs(value);
+        const formatted = absValue.toLocaleString(undefined, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        });
+        const sign = value > 0 ? '+' : value < 0 ? '−' : '';
+        return `${sign}${formatted} ${unit}`.trim();
+      };
+
+      const formatMultiplier = (value) =>
+        Number.isFinite(value)
+          ? `${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}×`
+          : '—';
+
       const formatCoordinate = (value, axis) => {
         if (!Number.isFinite(value)) {
           return null;
@@ -1773,16 +1872,125 @@ if (finderRoot) {
         return `<a href="${safeUrl}" class="hospital-detail__link" target="_blank" rel="noopener">${escapeHtml(display)}</a>`;
       };
 
+      const renderComparisonMetric = ({ label, observed, expected }) => {
+        const safeLabel = escapeHtml(label);
+        const observedFormatted = formatPercent(observed);
+        const expectedFormatted = formatPercent(expected);
+        if (!Number.isFinite(observed) || !Number.isFinite(expected)) {
+          return `
+            <div class="hospital-detail__metric">
+              <div class="hospital-detail__metric-header">
+                <span class="hospital-detail__metric-label">${safeLabel}</span>
+                <span class="hospital-detail__metric-value">${escapeHtml(observedFormatted)}</span>
+              </div>
+              <div class="hospital-detail__metric-note">${escapeHtml(expectedFormatted)}</div>
+            </div>
+          `;
+        }
+
+        const difference = observed - expected;
+        const ratio = expected > 0 ? observed / expected : null;
+        const ratioIsFinite = Number.isFinite(ratio);
+        const differenceFormatted = formatDifference(difference);
+        const differenceFormattedLong = formatDifference(difference, { long: true });
+        const ratioFormatted = ratioIsFinite ? formatMultiplier(ratio) : '—';
+        const status = difference > 0 ? 'Above' : difference < 0 ? 'Below' : 'Equal';
+        const statusLabel = detailMessage(`chart${status}`);
+        const statusClass = difference > 0 ? ' is-above' : difference < 0 ? ' is-below' : ' is-equal';
+        const scale = Math.max(observed, expected, 0.0001);
+        const observedPercent = Math.max(0, Math.min(100, (observed / scale) * 100));
+        const expectedPercent = Math.max(0, Math.min(100, (expected / scale) * 100));
+        const chartStyle = `style="--observed-percent:${observedPercent.toFixed(1)}%; --expected-percent:${expectedPercent.toFixed(1)}%;"`;
+        const differencePart =
+          Number.isFinite(difference) && Math.abs(difference) > 1e-6
+            ? detailMessage('chartAriaDifference', { difference: differenceFormattedLong })
+            : '';
+        const ratioPart =
+          ratioIsFinite ? detailMessage('chartAriaRatio', { ratio: ratioFormatted }) : '';
+        const ariaLabel = detailMessage('chartAria', {
+          label,
+          observed: observedFormatted,
+          expected: expectedFormatted,
+          status: statusLabel,
+          difference: differencePart,
+          ratio: ratioPart
+        });
+
+        const legendItems = [
+          {
+            label: detailMessage('chartObserved'),
+            value: observedFormatted,
+            marker: 'observed'
+          },
+          {
+            label: detailMessage('chartExpected'),
+            value: expectedFormatted,
+            marker: 'expected'
+          },
+          {
+            label: detailMessage('chartStatus'),
+            value: statusLabel
+          },
+          {
+            label: detailMessage('chartDifference'),
+            value: differenceFormatted
+          }
+        ];
+
+        legendItems.push({
+          label: detailMessage('chartRatio'),
+          value: ratioFormatted
+        });
+
+        const legendMarkup = legendItems
+          .map((item) => {
+            const safeLegendLabel = escapeHtml(item.label);
+            const safeLegendValue = escapeHtml(item.value ?? '—');
+            const marker = item.marker
+              ? `<span class="hospital-detail__legend-marker hospital-detail__legend-marker--${item.marker}" aria-hidden="true"></span>`
+              : '';
+            return `
+              <div class="hospital-detail__legend-item">
+                <dt>${safeLegendLabel}</dt>
+                <dd>${marker}${safeLegendValue}</dd>
+              </div>
+            `;
+          })
+          .join('');
+
+        return `
+          <div class="hospital-detail__metric hospital-detail__metric--comparison${statusClass}">
+            <div class="hospital-detail__metric-header">
+              <span class="hospital-detail__metric-label">${safeLabel}</span>
+              <span class="hospital-detail__metric-value">${escapeHtml(observedFormatted)}</span>
+            </div>
+            <span class="hospital-detail__metric-status">${escapeHtml(statusLabel)}</span>
+            <div class="hospital-detail__metric-chart" role="img" aria-label="${escapeAttribute(ariaLabel)}" ${chartStyle}>
+              <div class="hospital-detail__metric-track" aria-hidden="true">
+                <div class="hospital-detail__metric-bar"></div>
+                <div class="hospital-detail__metric-expected"></div>
+              </div>
+            </div>
+            <dl class="hospital-detail__metric-legend">${legendMarkup}</dl>
+          </div>
+        `;
+      };
+
       const renderMetricsSection = (title, rows) => {
         const safeTitle = escapeHtml(title);
         const items = rows
           .map((row) => {
+            if (row?.type === 'comparison') {
+              return renderComparisonMetric(row);
+            }
             const safeLabel = escapeHtml(row.label);
             const safeValue = escapeHtml(row.value);
             return `
               <div class="hospital-detail__metric">
-                <span class="hospital-detail__metric-label">${safeLabel}</span>
-                <span class="hospital-detail__metric-value">${safeValue}</span>
+                <div class="hospital-detail__metric-header">
+                  <span class="hospital-detail__metric-label">${safeLabel}</span>
+                  <span class="hospital-detail__metric-value">${safeValue}</span>
+                </div>
               </div>
             `;
           })
@@ -1839,24 +2047,59 @@ if (finderRoot) {
         const metricsSections = [];
 
         if (hasCurrentMetrics) {
-          metricsSections.push(
-            renderMetricsSection(detailMessage('section2023'), [
-              { label: detailMessage('observed2023'), value: formatPercent(metrics.observed2023) },
-              { label: detailMessage('expected2023'), value: formatPercent(metrics.expected2023) },
-              { label: detailMessage('smr2023'), value: formatRatio(metrics.smr2023) }
-            ])
-          );
+          const currentRows = [];
+          if (Number.isFinite(metrics.observed2023) && Number.isFinite(metrics.expected2023)) {
+            currentRows.push({
+              type: 'comparison',
+              label: detailMessage('observedVsExpected2023'),
+              observed: metrics.observed2023,
+              expected: metrics.expected2023
+            });
+          } else {
+            currentRows.push({
+              label: detailMessage('observed2023'),
+              value: formatPercent(metrics.observed2023)
+            });
+            currentRows.push({
+              label: detailMessage('expected2023'),
+              value: formatPercent(metrics.expected2023)
+            });
+          }
+          currentRows.push({
+            label: detailMessage('smr2023'),
+            value: formatRatio(metrics.smr2023)
+          });
+          metricsSections.push(renderMetricsSection(detailMessage('section2023'), currentRows));
         }
 
         if (hasHistoricalMetrics) {
-          metricsSections.push(
-            renderMetricsSection(detailMessage('sectionHistorical'), [
-              { label: detailMessage('observedHistorical'), value: formatPercent(metrics.observedHistorical) },
-              { label: detailMessage('expectedHistorical'), value: formatPercent(metrics.expectedHistorical) },
-              { label: detailMessage('smrHistorical'), value: formatRatio(metrics.smrHistorical) },
-              { label: detailMessage('casesHistorical'), value: formatInteger(metrics.casesHistorical) }
-            ])
-          );
+          const historicalRows = [];
+          if (Number.isFinite(metrics.observedHistorical) && Number.isFinite(metrics.expectedHistorical)) {
+            historicalRows.push({
+              type: 'comparison',
+              label: detailMessage('observedVsExpectedHistorical'),
+              observed: metrics.observedHistorical,
+              expected: metrics.expectedHistorical
+            });
+          } else {
+            historicalRows.push({
+              label: detailMessage('observedHistorical'),
+              value: formatPercent(metrics.observedHistorical)
+            });
+            historicalRows.push({
+              label: detailMessage('expectedHistorical'),
+              value: formatPercent(metrics.expectedHistorical)
+            });
+          }
+          historicalRows.push({
+            label: detailMessage('smrHistorical'),
+            value: formatRatio(metrics.smrHistorical)
+          });
+          historicalRows.push({
+            label: detailMessage('casesHistorical'),
+            value: formatInteger(metrics.casesHistorical)
+          });
+          metricsSections.push(renderMetricsSection(detailMessage('sectionHistorical'), historicalRows));
         }
 
         const metricsMarkup = metricsSections.length

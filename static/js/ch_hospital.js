@@ -825,6 +825,10 @@ if (finderRoot) {
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
+        cantonRowShare: '{share} of canton total',
+        cantonRowAria: '{hospital}: {cases} cases, {share} of canton total',
+        cantonChartTitle: 'Canton share by hospital',
+        cantonChartDescription: '{procedure} cases in canton {canton} shown as share of total volume by hospital.',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
@@ -994,6 +998,10 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
+        cantonRowShare: '{share} des Kantonsvolumens',
+        cantonRowAria: '{hospital}: {cases} Fälle, {share} des Kantonsvolumens',
+        cantonChartTitle: 'Anteil nach Spital',
+        cantonChartDescription: '{procedure}-Fälle im Kanton {canton} als Anteil am Gesamtvolumen je Spital.',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
@@ -1163,6 +1171,10 @@ if (finderRoot) {
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
+        cantonRowShare: '{share} du total cantonal',
+        cantonRowAria: '{hospital} : {cases} cas, {share} du total cantonal',
+        cantonChartTitle: 'Part cantonale par hôpital',
+        cantonChartDescription: 'Cas de {procedure} dans le canton {canton} en part du total par hôpital.',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
@@ -1332,6 +1344,10 @@ if (finderRoot) {
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
+        cantonRowShare: '{share} del totale cantonale',
+        cantonRowAria: '{hospital}: {cases} casi, {share} del totale cantonale',
+        cantonChartTitle: 'Quota cantonale per ospedale',
+        cantonChartDescription: 'Casi di {procedure} nel cantone {canton} come quota del totale per ospedale.',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
@@ -1646,6 +1662,16 @@ if (finderRoot) {
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
+    const finderCantonChart = document.createElement('div');
+    finderCantonChart.id = 'finder-canton-chart';
+    finderCantonChart.className = 'finder-canton-chart';
+    finderCantonChart.hidden = true;
+    if (finderCantonList?.parentNode) {
+      finderCantonList.parentNode.insertBefore(finderCantonChart, finderCantonList);
+    }
+    if (finderCantonList) {
+      finderCantonList.setAttribute('role', 'list');
+    }
     const finderQuickPicks = document.getElementById('finder-quick-picks');
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
@@ -3484,6 +3510,10 @@ if (finderRoot) {
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
       finderCantonSummary.textContent = msg('cantonSelectPrompt');
       finderCantonList.innerHTML = '';
+      if (finderCantonChart) {
+        finderCantonChart.innerHTML = '';
+        finderCantonChart.hidden = true;
+      }
       return;
     }
 
@@ -3509,19 +3539,90 @@ if (finderRoot) {
 
     finderCantonSummary.textContent = summaryText;
 
-    finderCantonList.innerHTML = cantonHosp
+    const hospitalsWithShare = cantonHosp.map((h) => ({
+      entry: h,
+      cantonShare: totalCanton ? h.cases / totalCanton : 0
+    }));
+
+    const formatShare = (value) =>
+      `${(value * 100).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+
+    finderCantonList.innerHTML = hospitalsWithShare
       .map((h) => {
+        const { entry, cantonShare } = h;
         const badgeClass =
-          h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
-        const badgeLabel = typeBadges[h.type] ?? h.type;
+          entry.type === 'university'
+            ? 'badge-university'
+            : entry.type === 'kanton'
+              ? 'badge-kanton'
+              : 'badge-private';
+        const badgeLabel = typeBadges[entry.type] ?? entry.type;
+        const shareText = formatShare(cantonShare);
+        const shareLabel = msg('cantonRowShare', { share: shareText });
+        const safeShareLabel = escapeHtml(shareLabel);
+        const ariaLabel = msg('cantonRowAria', {
+          hospital: entry.hospital,
+          cases: entry.cases.toLocaleString(),
+          share: shareText
+        });
         return `
-          <div class="finder-canton-row">
-            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span>${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+          <div class="finder-canton-row" role="listitem" aria-label="${escapeAttribute(ariaLabel)}">
+            <div class="finder-canton-row__meta">
+              <strong>${entry.hospital}</strong>
+              <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+            <div class="finder-canton-row__figures">
+              <span class="finder-canton-row__cases">${msg('cantonRowCases', { cases: entry.cases.toLocaleString() })}</span>
+              <span class="finder-canton-row__share">${safeShareLabel}</span>
+            </div>
           </div>
         `;
       })
       .join('');
+
+    if (finderCantonChart) {
+      if (!hospitalsWithShare.length || !totalCanton) {
+        finderCantonChart.innerHTML = '';
+        finderCantonChart.hidden = true;
+      } else {
+        const chartTitleId = 'finder-canton-chart-title';
+        const chartDescId = 'finder-canton-chart-desc';
+        const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
+        const chartTitle = msg('cantonChartTitle');
+        const chartDescription = msg('cantonChartDescription', {
+          canton: state.selectedCanton,
+          procedure: procedureLabel
+        });
+        const barHeight = 14;
+        const barGap = 8;
+        const chartHeight = hospitalsWithShare.length * barHeight + (hospitalsWithShare.length - 1) * barGap;
+        const bars = hospitalsWithShare
+          .map((item, index) => {
+            const { entry, cantonShare } = item;
+            const width = Math.min(100, Math.max(0, cantonShare * 100));
+            const y = index * (barHeight + barGap);
+            const shareText = formatShare(cantonShare);
+            const colorClass = `finder-canton-chart__fill--${entry.type ?? 'other'}`;
+            return `
+              <g transform="translate(0, ${y})">
+                <title>${escapeHtml(`${entry.hospital}: ${shareText}`)}</title>
+                <rect class="finder-canton-chart__track" width="100" height="${barHeight}" rx="4"></rect>
+                <rect class="finder-canton-chart__fill ${colorClass}" width="${width}" height="${barHeight}" rx="4"></rect>
+              </g>
+            `;
+          })
+          .join('');
+
+        finderCantonChart.innerHTML = `
+          <svg viewBox="0 0 100 ${chartHeight}" role="img" aria-labelledby="${chartTitleId} ${chartDescId}">
+            <title id="${chartTitleId}">${escapeHtml(chartTitle)}</title>
+            <desc id="${chartDescId}">${escapeHtml(chartDescription)}</desc>
+            ${bars}
+          </svg>
+        `;
+        finderCantonChart.hidden = false;
+      }
+    }
   }
 
   function render() {

@@ -2211,6 +2211,40 @@ body {
   color: var(--text-muted);
 }
 
+.finder-canton-chart {
+  margin-top: 1.25rem;
+}
+
+.finder-canton-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.finder-canton-chart__track {
+  fill: rgba(148, 163, 184, 0.25);
+}
+
+.finder-canton-chart__fill {
+  fill: #2563eb;
+}
+
+.finder-canton-chart__fill--university {
+  fill: #0f766e;
+}
+
+.finder-canton-chart__fill--kanton {
+  fill: #2563eb;
+}
+
+.finder-canton-chart__fill--private {
+  fill: #ca8a04;
+}
+
+.finder-canton-chart__fill--other {
+  fill: #6b7280;
+}
+
 .finder-canton-list {
   margin-top: 1rem;
   display: grid;
@@ -2224,6 +2258,26 @@ body {
   font-size: 0.85rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border-soft);
+}
+
+.finder-canton-row__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.finder-canton-row__figures {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+.finder-canton-row__share {
+  color: var(--text-subtle);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .finder-canton-row:last-child {

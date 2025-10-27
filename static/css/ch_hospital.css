@@ -1701,7 +1701,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.75rem;
+  padding: clamp(1.25rem, 5vw, 3rem);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -1719,13 +1719,13 @@ body {
 
 .hospital-detail {
   position: relative;
-  width: min(720px, 100%);
-  max-height: min(90vh, 760px);
+  width: min(960px, calc(100% - 2rem));
+  max-height: min(92vh, 880px);
   overflow-y: auto;
   background: #ffffff;
-  border-radius: 1.25rem;
-  padding: 2rem 2.25rem 2.5rem;
-  box-shadow: 0 40px 70px rgba(15, 23, 42, 0.45);
+  border-radius: 1.5rem;
+  padding: clamp(1.75rem, 2vw + 1.75rem, 3rem);
+  box-shadow: 0 45px 90px rgba(15, 23, 42, 0.45);
   transform: translateY(16px);
   transition: transform 0.25s ease;
 }
@@ -1798,13 +1798,13 @@ body {
 
 .hospital-detail__summary {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-bottom: 1.75rem;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-bottom: 2rem;
 }
 
 .hospital-detail__info {
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
 }
 
 .hospital-detail__info h3 {
@@ -1816,8 +1816,8 @@ body {
 
 .hospital-detail__info-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 
 .hospital-detail__info-item {

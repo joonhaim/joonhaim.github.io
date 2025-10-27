@@ -1284,10 +1284,26 @@ body {
   gap: 0.5rem;
 }
 
+.finder-kpi > small,
+.finder-kpi-header {
+  min-height: 2.5rem;
+}
+
+.finder-kpi > small {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
 .finder-kpi-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.4rem;
+}
+
+.finder-kpi-header small {
+  flex: 1;
 }
 
 .finder-kpi small {
@@ -1295,6 +1311,7 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-subtle);
+  line-height: 1.35;
 }
 
 .finder-kpi strong {
@@ -1309,16 +1326,15 @@ body {
 }
 
 .finder-kpi-values {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  row-gap: 0.35rem;
+  column-gap: 0.75rem;
+  align-items: end;
 }
 
 .finder-kpi-value {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
+  display: contents;
 }
 
 .finder-kpi-value-label {
@@ -1326,19 +1342,23 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-subtle);
+  align-self: end;
 }
 
 .finder-kpi-value-number {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--brand-navy);
+  align-self: end;
+  justify-self: end;
+  text-align: right;
 }
 
 .finder-kpi-value-number--hhi {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 0.2rem;
   font-size: 1.35rem;
   line-height: 1.1;
@@ -1384,6 +1404,8 @@ body {
   font-size: 0.7rem;
   font-weight: 600;
   cursor: help;
+  align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .finder-kpi-info:focus-visible {

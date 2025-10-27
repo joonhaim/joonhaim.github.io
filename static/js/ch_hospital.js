@@ -2380,7 +2380,17 @@ if (finderRoot) {
           return;
         }
 
-        const top = anchor.getBoundingClientRect().top + window.scrollY - 24;
+        let offset = 24;
+        const header = document.querySelector('.header-left');
+        if (header) {
+          const rect = header.getBoundingClientRect();
+          const headerOffset = rect.bottom + 16;
+          if (!Number.isNaN(headerOffset)) {
+            offset = Math.max(offset, headerOffset);
+          }
+        }
+
+        const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
       });
     }

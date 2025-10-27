@@ -203,19 +203,6 @@ body {
   line-height: 1.6;
 }
 
-.hero .hero-note {
-  max-width: 720px;
-  margin: 0.5rem 0 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.92);
-  background: rgba(15, 23, 42, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 0.85rem;
-  padding: 0.85rem 1.1rem;
-  backdrop-filter: blur(12px);
-}
-
 .hero .hero-links {
   margin-top: 1.35rem;
   display: flex;
@@ -249,6 +236,15 @@ body {
   color: #fff;
   border-bottom-color: #fff;
   outline: none;
+}
+
+.finder-note-card .data-disclaimer {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-subtle);
 }
 
 .comparison {

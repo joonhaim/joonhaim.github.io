@@ -674,9 +674,10 @@ body {
 }
 
 .btn-compact {
-  padding: 0.35rem 0.95rem;
-  font-size: 0.85rem;
-  box-shadow: 0 6px 16px rgba(17, 17, 17, 0.12);
+  padding: 0.45rem 1.15rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 18px rgba(17, 17, 17, 0.12);
 }
 
 .btn-compact:hover,
@@ -707,8 +708,10 @@ body {
 }
 
 .btn {
-  display: inline-block;
-  padding: 0.6rem 1.0rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.35rem;
   border-radius: 9999px;
   text-decoration: none;
   font-weight: 600;

@@ -776,9 +776,9 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Total Cases (2023)',
-        hospitalsPerforming: 'Hospitals performing',
+        hospitalsPerforming: 'Hospitals performing this procedure',
         universityShare: 'Share at Univ. hospitals',
-        centralization: 'Centralization (HHI)',
+        centralization: 'Centralization (HHI Index)',
         switzerland: 'Switzerland'
       },
       messages: {
@@ -818,7 +818,7 @@ if (finderRoot) {
         paginationShowing: 'Showing {start}–{end} of {total} hospitals',
         ariaPrevHospitals: 'Previous page of hospitals',
         ariaNextHospitals: 'Next page of hospitals',
-        topHospitals: 'Number of cases by hospital',
+        topHospitals: 'Cases by hospital (2023)',
         topHospitalsIn: 'Hospitals in canton {canton}',
         cantonSelectPrompt: 'Select a canton to view local hospital details.',
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
@@ -830,7 +830,7 @@ if (finderRoot) {
         mapNoData: 'No map data available for this selection.',
         mapUnavailable: 'The interactive map could not be loaded.',
         mapTooltip: '{hospital} — {cases} cases',
-        quickPicksTitle: 'Popular procedures',
+        quickPicksTitle: 'Most searched procedures',
         quickPicksDescription: 'Jump straight to a CH-IQI procedure people look up most often.',
         hospitalDetail: {
           title: 'Hospital details',
@@ -945,9 +945,9 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Fallzahlen gesamt (2023)',
-        hospitalsPerforming: 'Durchführende Spitäler',
+        hospitalsPerforming: 'Spitäler mit diesem Eingriff',
         universityShare: 'Anteil universitäre Spitäler',
-        centralization: 'Zentralisierung (HHI)',
+        centralization: 'Zentralisierung (HHI-Index)',
         switzerland: 'Schweiz'
       },
       messages: {
@@ -987,7 +987,7 @@ if (finderRoot) {
         paginationShowing: 'Anzeige {start}–{end} von {total} Spitälern',
         ariaPrevHospitals: 'Vorherige Spitalseite',
         ariaNextHospitals: 'Nächste Spitalseite',
-        topHospitals: 'Fallzahlen nach Spital',
+        topHospitals: 'Fälle nach Spital (2023)',
         topHospitalsIn: 'Spitäler im Kanton {canton}',
         cantonSelectPrompt: 'Wählen Sie einen Kanton, um lokale Spitaldetails zu sehen.',
         cantonNoHospitals: 'Im Kanton {canton} passt kein Spital zur aktuellen Auswahl.',
@@ -999,7 +999,7 @@ if (finderRoot) {
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
         mapUnavailable: 'Die interaktive Karte konnte nicht geladen werden.',
         mapTooltip: '{hospital} — {cases} Fälle',
-        quickPicksTitle: 'Beliebte Behandlungen',
+        quickPicksTitle: 'Meistgesuchte Behandlungen',
         quickPicksDescription: 'Springen Sie direkt zu einer häufig nachgefragten CH-IQI-Behandlung.',
         hospitalDetail: {
           title: 'Spitaldetails',
@@ -1114,9 +1114,9 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Cas totaux (2023)',
-        hospitalsPerforming: 'Hôpitaux actifs',
+        hospitalsPerforming: 'Hôpitaux réalisant cette intervention',
         universityShare: 'Part des hôpitaux univ.',
-        centralization: 'Centralisation (HHI)',
+        centralization: 'Centralisation (indice HHI)',
         switzerland: 'Suisse'
       },
       messages: {
@@ -1156,7 +1156,7 @@ if (finderRoot) {
         paginationShowing: 'Affichage {start}–{end} sur {total} hôpitaux',
         ariaPrevHospitals: 'Page précédente des hôpitaux',
         ariaNextHospitals: 'Page suivante des hôpitaux',
-        topHospitals: 'Nombre de cas par hôpital',
+        topHospitals: 'Cas par hôpital (2023)',
         topHospitalsIn: 'Hôpitaux dans le canton {canton}',
         cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
         cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à cette sélection.',
@@ -1168,7 +1168,7 @@ if (finderRoot) {
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
         mapUnavailable: 'La carte interactive n’a pas pu être chargée.',
         mapTooltip: '{hospital} — {cases} cas',
-        quickPicksTitle: 'Interventions populaires',
+        quickPicksTitle: 'Interventions les plus recherchées',
         quickPicksDescription: 'Accédez directement à une intervention CH-IQI très consultée.',
         hospitalDetail: {
           title: 'Détails de l’hôpital',
@@ -1283,9 +1283,9 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Casi totali (2023)',
-        hospitalsPerforming: 'Ospedali attivi',
+        hospitalsPerforming: 'Ospedali che eseguono questa procedura',
         universityShare: 'Quota ospedali universitari',
-        centralization: 'Centralizzazione (HHI)',
+        centralization: 'Centralizzazione (indice HHI)',
         switzerland: 'Svizzera'
       },
       messages: {
@@ -1325,7 +1325,7 @@ if (finderRoot) {
         paginationShowing: 'Visualizzazione {start}–{end} di {total} ospedali',
         ariaPrevHospitals: 'Pagina precedente di ospedali',
         ariaNextHospitals: 'Pagina successiva di ospedali',
-        topHospitals: 'Numero di casi per ospedale',
+        topHospitals: 'Casi per ospedale (2023)',
         topHospitalsIn: 'Ospedali nel cantone {canton}',
         cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
         cantonNoHospitals: 'Nel cantone {canton} nessun ospedale corrisponde a questa selezione.',
@@ -1337,7 +1337,7 @@ if (finderRoot) {
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
         mapUnavailable: 'Impossibile caricare la mappa interattiva.',
         mapTooltip: '{hospital} — {cases} casi',
-        quickPicksTitle: 'Interventi più richiesti',
+        quickPicksTitle: 'Interventi più cercati',
         quickPicksDescription: 'Vai subito a un intervento CH-IQI molto consultato.',
         hospitalDetail: {
           title: 'Dettagli dell’ospedale',

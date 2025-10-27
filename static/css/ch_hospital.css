@@ -238,6 +238,15 @@ body {
   outline: none;
 }
 
+.finder-note-card .data-disclaimer {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-subtle);
+}
+
 .comparison {
   max-width: 900px;
   margin: 2rem auto;

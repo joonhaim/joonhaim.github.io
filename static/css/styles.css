@@ -584,19 +584,20 @@ body {
   pointer-events: none;
 }
 
-.promo-left .badge {
+.promo-status {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 9999px;
   font-weight: 600;
-  font-size: 0.85rem;
-  color: #fff;
-  background: var(--color-accent);
+  font-size: 0.8rem;
+  color: #444;
+  background: rgba(17, 17, 17, 0.08);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 0.6rem;
 }
-
-.promo-left .badge svg { color: #fff; }
 
 .promo-banner h2 {
   font-size: 1.75rem;

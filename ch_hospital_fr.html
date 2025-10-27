@@ -3,12 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analyse des hôpitaux suisses (CH-IQI)</title>
+  <meta
+    name="description"
+    content="Ce tableau de bord repose sur les Indicateurs suisses de qualité hospitalière (CH-IQI). Il présente les hôpitaux où certaines interventions ont été réalisées en 2023 et aide les utilisateurs à rechercher des procédures, comparer les volumes de cas et obtenir une vue d’ensemble de la prise en charge en Suisse."
+  >
+  <title>Interventions hospitalières en Suisse</title>
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_CH">
+  <meta property="og:title" content="Vue d’ensemble des hôpitaux suisses (CH-IQI)">
+  <meta
+    property="og:description"
+    content="Ce tableau de bord repose sur les Indicateurs suisses de qualité hospitalière (CH-IQI). Il présente les hôpitaux où certaines interventions ont été réalisées en 2023 et aide les utilisateurs à rechercher des procédures, comparer les volumes de cas et obtenir une vue d’ensemble de la prise en charge en Suisse."
+  >
+  <meta property="og:url" content="https://joonhaim.github.io/ch_hospital_fr.html">
+  <meta property="og:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vue d’ensemble des hôpitaux suisses (CH-IQI)">
+  <meta
+    name="twitter:description"
+    content="Ce tableau de bord repose sur les Indicateurs suisses de qualité hospitalière (CH-IQI). Il présente les hôpitaux où certaines interventions ont été réalisées en 2023 et aide les utilisateurs à rechercher des procédures, comparer les volumes de cas et obtenir une vue d’ensemble de la prise en charge en Suisse."
+  >
+  <meta name="twitter:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
@@ -28,81 +49,130 @@
   <a href="index.html" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Analyse des hôpitaux suisses (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      La base de données des Indicateurs de qualité hospitaliers (CH-IQI) offre un aperçu des performances des principaux hôpitaux universitaires. Sélectionnez une intervention pour explorer les volumes de cas 2023.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
-      <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
-    </p>
-  </section>
-
-  <section class="comparison">
-    <h2 class="fade-element">Comparaison du volume des cas des hôpitaux universitaires</h2>
-    <p class="dataset-info fade-element">
-      Cet ensemble de données réunit les nombres de cas des hôpitaux universitaires suisses à partir des indicateurs CH‑IQI.
-      J'ai extrait et restructuré les tableaux originaux à l'aide de scripts R disponibles dans le dépôt lié.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
-      </div>
-      <div class="controls fade-element">
-        <p>Choisir une intervention :</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Cardiologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Cathétérisme coronarien</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Troubles du rythme cardiaque</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Implantation de pacemaker/DIC</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Unité AVC – traitement complexe</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Traitements de l'épilepsie</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Oncologie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Traitements du cancer du poumon</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Traitements du cancer colorectal</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Traitements du cancer du sein</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Transplantation rénale</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopédie</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Prothèse totale de hanche</button>
-            </div>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow fade-element">Tableau de bord CH-IQI 2023</p>
+      <h1 class="fade-element">Interventions hospitalières en Suisse</h1>
+      <p class="tagline fade-element">
+        À quelle fréquence une opération est-elle pratiquée dans les hôpitaux suisses ? Avec ce tableau de bord, explorez les données officielles CH-IQI 2023 de l’Office fédéral de la santé publique (OFSP), recherchez des traitements, comparez les établissements et consultez les détails par canton.
+      </p>
+      <div class="hero-links fade-element">
+        <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
+        <span>Méthodologie : <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">repo GitHub</a></span>
       </div>
     </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Comparaison des performances des hôpitaux</h2>
-    <p>En construction</p>
+  <section id="procedure-finder" class="procedure-finder fade-element page-shell finder-awaiting-selection">
+    <div class="finder-procedure-selector surface-card catalog-collapsed">
+      <div class="finder-selector-header">
+        <div class="finder-selector-copy">
+          <span class="finder-selector-step">Étape 1</span>
+          <h3 class="finder-selector-title">Sélectionnez une intervention</h3>
+          <p class="finder-selector-subtitle">
+            Utilisez l’un des raccourcis ci-dessous ou recherchez dans le catalogue complet de plus de 150 interventions pour explorer les données.
+          </p>
+        </div>
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Trouver une intervention</label>
+          <div class="finder-search-field">
+            <svg class="finder-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path
+                d="M13.854 12.439l3.854 3.853a1 1 0 01-1.414 1.415l-3.853-3.854a7 7 0 111.413-1.414zM9 14a5 5 0 100-10 5 5 0 000 10z"
+                fill="currentColor"
+              />
+            </svg>
+            <input id="finder-procedure-search" type="search" placeholder="Rechercher par nom ou code" />
+          </div>
+        </div>
+        <div class="finder-quick-picks" id="finder-quick-picks">
+          <p class="finder-quick-title" id="finder-quick-title"></p>
+          <div class="finder-quick-list" id="finder-quick-list" role="group"></div>
+          <p class="finder-quick-description" id="finder-quick-description"></p>
+        </div>
+        <button
+          class="finder-catalog-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="finder-catalog-panels"
+          data-label-collapsed="Afficher le catalogue complet"
+          data-label-expanded="Masquer le catalogue complet"
+        >
+          <span class="finder-catalog-toggle-label">Afficher le catalogue complet</span>
+          <svg class="finder-catalog-toggle-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M5.5 7.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="finder-catalog-panels" id="finder-catalog-panels">
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Spécialités</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Procédures</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="finder-results-divider" data-finder-results-anchor>
+      <span class="finder-results-label">Résultats</span>
+    </div>
+
+    <div class="finder-kpis" id="finder-kpis"></div>
+
+    <div class="finder-main">
+      <div class="finder-list-card surface-card">
+        <div class="finder-list-header">
+          <div class="finder-list-heading">
+            <p id="finder-list-context" class="finder-list-context">Cas par hôpital (2023)</p>
+            <h3 id="finder-list-title">Sélectionner une intervention</h3>
+          </div>
+          <span id="finder-list-meta"></span>
+        </div>
+        <div id="finder-list" class="finder-list"></div>
+      </div>
+      <div class="finder-map-column">
+        <div class="finder-toolbar surface-card" role="group" aria-label="Filtres des hôpitaux">
+          <div class="finder-toolbar-control finder-control finder-control--search">
+            <label for="finder-search">Rechercher un hôpital</label>
+            <input id="finder-search" type="search" placeholder="Saisir pour filtrer les hôpitaux" />
+          </div>
+          <div class="finder-toolbar-control finder-control finder-control--type">
+            <span class="finder-toolbar-label finder-label">Filtrer par type d’hôpital</span>
+            <div class="finder-type-toggle" id="finder-type-toggle"></div>
+          </div>
+          <div class="finder-toolbar-control finder-control finder-control--canton">
+            <label for="finder-canton">Filtrer par canton</label>
+            <select id="finder-canton"></select>
+          </div>
+        </div>
+        <div class="finder-map-card surface-card" id="finder-map"></div>
+      </div>
+    </div>
+
+    <div class="finder-bottom">
+      <div class="finder-canton-card surface-card">
+        <h3>Canton</h3>
+        <p id="finder-canton-summary" class="finder-canton-summary"></p>
+        <div id="finder-canton-list" class="finder-canton-list"></div>
+      </div>
+      <div class="finder-note-card surface-card">
+        <h3>Comment interpréter ces chiffres</h3>
+        <p>
+          Un volume élevé peut témoigner d’une plus grande expérience, mais les résultats dépendent aussi du profil des cas et de la complexité des patients. Considérez ces chiffres comme un point de départ et consultez parallèlement les indicateurs de qualité et l’offre de soins. Ces informations n’ont pas valeur de conseil médical et sont fournies uniquement à titre indicatif.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Comparaison des grands, moyens et petits hôpitaux</h2>
-    <p>En construction</p>
-  </section>
+  <footer class="site-footer" role="contentinfo">
+    <p>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="contact.html">Contact</a>
+    </p>
+  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

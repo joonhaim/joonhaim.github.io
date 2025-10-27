@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swiss Hospital Insights (CH-IQI)</title>
+  <meta name="description" content="Interactive CH-IQI dashboard showing Swiss hospital procedure volumes, comparisons, and canton-level insights for 2023.">
+  <meta property="og:title" content="Swiss Hospital Insights (CH-IQI)">
+  <meta property="og:description" content="Explore Swiss hospital performance with the CH-IQI dashboard, search procedures, compare case volumes, and review canton-level trends for 2023.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://joonhaim.github.io/ch_hospital.html">
+  <meta property="og:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Swiss Hospital Insights (CH-IQI)">
+  <meta name="twitter:description" content="Explore Swiss hospital performance with the CH-IQI dashboard, search procedures, compare case volumes, and review canton-level trends for 2023.">
+  <meta name="twitter:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
+  <title>Hospital Procedures in Switzerland</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
@@ -28,82 +39,134 @@
   <a href="index.html" class="swiss-cross" aria-label="Back to homepage"></a>
 
   <section class="hero">
-    <h1 class="fade-element">Swiss Hospital Insights (CH-IQI)</h1>
-    <p class="tagline fade-element">
-      The Swiss Inpatient Quality Indicators (CH-IQI) database offers insight into the
-      performance of major hospitals. Select a procedure to explore 2023 case volumes.
-    </p>
-    <p class="hero-links fade-element">
-      <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
-      <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
-    </p>
-  </section>
-
-  <section class="comparison">
-    <h2 class="fade-element">Case Volume Comparison of University Hospitals</h2>
-    <p class="dataset-info fade-element">
-      This dataset compiles case counts for Swiss university hospitals from the CH‑IQI indicators.
-      I retrieved and reshaped the original tables using R scripts available in the linked repository.
-    </p>
-    <div class="chart-controls">
-      <div id="procedure-description" class="procedure-description fade-element"></div>
-      <div class="chart-container fade-element">
-        <canvas id="casesChart"></canvas>
-      </div>
-      <div class="controls fade-element">
-        <p>Choose procedure:</p>
-        <div id="procedure-groups">
-          <div class="procedure-group">
-            <p class="group-title">Cardiology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn active" data-code="A.3.1.F">Coronary catheterization</button>
-              <button class="procedure-btn" data-code="A.4.1.F">Cardiac rhythm disorders</button>
-              <button class="procedure-btn" data-code="A.5.1.F">Pacemaker/ICD implantation</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Neurology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="B.2.3.F">Stroke unit – complex treatment</button>
-              <button class="procedure-btn" data-code="B.4.1.F">Epilepsy treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Oncology</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="D.3.1.F">Lung cancer treatments</button>
-              <button class="procedure-btn" data-code="E.4.11.F">Colorectal cancer treatments</button>
-              <button class="procedure-btn" data-code="G.4.1.F">Breast cancer treatments</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Transplantation</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="L.5.1.F">Kidney transplant</button>
-            </div>
-          </div>
-          <div class="procedure-group">
-            <p class="group-title">Orthopedics</p>
-            <div class="procedure-buttons">
-              <button class="procedure-btn" data-code="Z.4.37.F">Primary hip prosthesis</button>
-            </div>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
+      <h1 class="fade-element">Hospital Procedures in Switzerland</h1>
+      <p class="tagline fade-element">
+        How many times is a procedure performed in each Swiss hospital? This dashboard lets you explore official 2023
+        CH-IQI data from the Federal Office of Public Health (FOPH). Search procedures, compare hospitals, and see
+        details by canton.
+      </p>
+      <div class="hero-links fade-element">
+        <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
+        <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
       </div>
     </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Hospital Performance Comparison</h2>
-    <p>Under construction</p>
+  <section id="procedure-finder" class="procedure-finder fade-element page-shell finder-awaiting-selection">
+    <div class="finder-procedure-selector surface-card catalog-collapsed">
+      <div class="finder-selector-header">
+        <div class="finder-selector-copy">
+          <span class="finder-selector-step">Step 1</span>
+          <h3 class="finder-selector-title">Select a procedure</h3>
+          <p class="finder-selector-subtitle">
+            Use a quick pick below or search the full catalogue of 150+ procedures to explore the data.
+          </p>
+        </div>
+        <div class="finder-procedure-search">
+          <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
+          <div class="finder-search-field">
+            <svg class="finder-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path
+                d="M13.854 12.439l3.854 3.853a1 1 0 01-1.414 1.415l-3.853-3.854a7 7 0 111.413-1.414zM9 14a5 5 0 100-10 5 5 0 000 10z"
+                fill="currentColor"
+              />
+            </svg>
+            <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
+          </div>
+        </div>
+        <div class="finder-quick-picks" id="finder-quick-picks">
+          <p class="finder-quick-title" id="finder-quick-title"></p>
+          <div class="finder-quick-list" id="finder-quick-list" role="group"></div>
+          <p class="finder-quick-description" id="finder-quick-description"></p>
+        </div>
+        <button
+          class="finder-catalog-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="finder-catalog-panels"
+          data-label-collapsed="Browse the full catalogue"
+          data-label-expanded="Hide the full catalogue"
+        >
+          <span class="finder-catalog-toggle-label">Browse the full catalogue</span>
+          <svg class="finder-catalog-toggle-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M5.5 7.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="finder-catalog-panels" id="finder-catalog-panels">
+        <div class="finder-category-panel" aria-labelledby="finder-category-label">
+          <p id="finder-category-label" class="finder-panel-title">Specialties</p>
+          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
+        </div>
+        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
+          <p id="finder-procedure-label" class="finder-panel-title">Procedures</p>
+          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="finder-results-divider" data-finder-results-anchor>
+      <span class="finder-results-label">Results</span>
+    </div>
+
+    <div class="finder-kpis" id="finder-kpis"></div>
+
+    <div class="finder-main">
+      <div class="finder-list-card surface-card">
+        <div class="finder-list-header">
+          <div class="finder-list-heading">
+            <p id="finder-list-context" class="finder-list-context">Cases by hospital (2023)</p>
+            <h3 id="finder-list-title">Select a procedure</h3>
+          </div>
+          <span id="finder-list-meta"></span>
+        </div>
+        <div id="finder-list" class="finder-list"></div>
+      </div>
+      <div class="finder-map-column">
+        <div class="finder-toolbar surface-card" role="group" aria-label="Hospital filters">
+          <div class="finder-toolbar-control finder-control finder-control--search">
+            <label for="finder-search">Search hospital</label>
+            <input id="finder-search" type="search" placeholder="Type to filter hospitals" />
+          </div>
+          <div class="finder-toolbar-control finder-control finder-control--type">
+            <span class="finder-toolbar-label finder-label">Filter by hospital type</span>
+            <div class="finder-type-toggle" id="finder-type-toggle"></div>
+          </div>
+          <div class="finder-toolbar-control finder-control finder-control--canton">
+            <label for="finder-canton">Filter by canton</label>
+            <select id="finder-canton"></select>
+          </div>
+        </div>
+        <div class="finder-map-card surface-card" id="finder-map"></div>
+      </div>
+    </div>
+
+    <div class="finder-bottom">
+      <div class="finder-canton-card surface-card">
+        <h3>Canton</h3>
+        <p id="finder-canton-summary" class="finder-canton-summary"></p>
+        <div id="finder-canton-list" class="finder-canton-list"></div>
+      </div>
+      <div class="finder-note-card surface-card">
+        <h3>How to interpret these numbers</h3>
+        <p>
+          Higher case volumes can point to greater routine expertise, yet outcomes also depend on case mix
+          and patient complexity. Use these figures as a starting point and review quality indicators alongside
+          availability. This is not medical advice but provided for reference only.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section class="placeholder fade-element">
-    <h2>Comparison of Large, Medium and Small Hospitals</h2>
-    <p>Under construction</p>
-  </section>
+  <footer class="site-footer" role="contentinfo">
+    <p>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="contact.html">Contact</a>
+    </p>
+  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="static/js/ch_hospital.js"></script>
 </body>
 </html>

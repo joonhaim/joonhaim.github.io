@@ -672,12 +672,17 @@ body {
 }
 
 .promo-meta-text {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
-.promo-meta-text a {
+.promo-meta-text span {
+  line-height: 1.4;
+}
+
+.promo-meta-text a:not(.btn) {
   color: inherit;
   font-weight: 600;
   text-decoration: underline;
@@ -685,9 +690,18 @@ body {
   text-underline-offset: 3px;
 }
 
-.promo-meta-text a:focus,
-.promo-meta-text a:hover {
+.promo-meta-text a:not(.btn):focus,
+.promo-meta-text a:not(.btn):hover {
   color: var(--color-accent);
+}
+
+.promo-meta-button {
+  box-shadow: 0 10px 25px rgba(17, 17, 17, 0.1);
+}
+
+.promo-meta-button:hover,
+.promo-meta-button:focus-visible {
+  box-shadow: 0 12px 28px rgba(17, 17, 17, 0.15);
 }
 
 .promo-meta .icon {

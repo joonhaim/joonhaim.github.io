@@ -1321,7 +1321,7 @@ if (finderRoot) {
         noHospitalVolumes: 'Non sono disponibili dati di casi per questa selezione.',
         noHospitalsSearch: 'Nessun ospedale corrisponde alla ricerca.',
         noProceduresMatch: 'Nessun intervento corrisponde alla ricerca. Prova con un’altra parola chiave.',
-        tryAdjustFilters: 'Prova un'altra procedura o modifica i filtri.',
+        tryAdjustFilters: 'Prova un’altra procedura o modifica i filtri.',
         paginationShowing: 'Visualizzazione {start}–{end} di {total} ospedali',
         ariaPrevHospitals: 'Pagina precedente di ospedali',
         ariaNextHospitals: 'Pagina successiva di ospedali',

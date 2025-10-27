@@ -659,11 +659,17 @@ body {
 }
 
 
+.promo-left {
+  display: flex;
+  flex-direction: column;
+}
+
 .promo-meta {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   margin-top: 0.9rem;
+  margin-left: auto;
   font-size: 0.9rem;
   font-weight: 500;
   color: #2a2a2a;
@@ -753,5 +759,8 @@ body {
   .promo-banner { grid-template-columns: 1fr; }
   .promo-right { order: -1; } /* put illustration on top on mobile */
   .promo-highlights { margin-top: 0.8rem; }
-  .promo-meta { align-self: flex-start; }
+  .promo-meta {
+    align-self: flex-start;
+    margin-left: 0;
+  }
 }

@@ -2380,18 +2380,45 @@ if (finderRoot) {
           return;
         }
 
-        let offset = 24;
+        let preferredOffset = 24;
         const header = document.querySelector('.header-left');
         if (header) {
           const rect = header.getBoundingClientRect();
-          const headerOffset = rect.bottom + 16;
+          const headerOffset = rect.bottom + 8;
           if (!Number.isNaN(headerOffset)) {
-            offset = Math.max(offset, headerOffset);
+            preferredOffset = Math.max(preferredOffset, headerOffset);
           }
         }
 
-        const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        const anchorRect = anchor.getBoundingClientRect();
+        const anchorTop = anchorRect.top + window.scrollY;
+
+        let minimumTop = 0;
+        if (finderRoot) {
+          const selector = finderRoot.querySelector('.finder-procedure-selector');
+          if (selector) {
+            const selectorRect = selector.getBoundingClientRect();
+            const selectorBottom = selectorRect.bottom + window.scrollY;
+            if (!Number.isNaN(selectorBottom)) {
+              minimumTop = selectorBottom + 24;
+            }
+          }
+        }
+
+        let effectiveOffset = preferredOffset;
+        const availableClearance = anchorTop - minimumTop;
+        if (!Number.isFinite(availableClearance) || availableClearance <= 0) {
+          effectiveOffset = 0;
+        } else {
+          effectiveOffset = Math.min(effectiveOffset, availableClearance);
+        }
+
+        let targetTop = anchorTop - effectiveOffset;
+        if (targetTop < minimumTop) {
+          targetTop = minimumTop;
+        }
+
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
       });
     }
 

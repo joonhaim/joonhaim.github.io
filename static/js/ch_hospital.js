@@ -2730,7 +2730,7 @@ if (finderRoot) {
       typeFilter: { university: true, kanton: true, private: true },
       listPage: 0,
       shouldScrollToResults: false,
-      hasUserSelection: false
+      hasUserSelection: true
     };
 
     setupQuickPicks();

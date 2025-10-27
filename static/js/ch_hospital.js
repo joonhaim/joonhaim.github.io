@@ -3197,7 +3197,7 @@ if (finderRoot) {
         footnote: '',
         info: hhiFootnote,
         valueOptions: {
-          primaryLabel: 'CH',
+          primaryLabel: switzerlandLabel,
           secondaryLabel: state.selectedCanton
         }
       },

@@ -389,23 +389,6 @@ body {
   display: none;
 }
 
-.finder-intro {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto 2rem;
-}
-
-.finder-intro h2 {
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-}
-
-.finder-intro p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #444;
-}
-
 
 .finder-procedure-selector {
   position: relative;

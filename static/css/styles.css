@@ -605,6 +605,18 @@ body {
   color: #111;
 }
 
+.promo-banner h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.promo-banner h2 a:hover,
+.promo-banner h2 a:focus {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
 .promo-kicker {
   max-width: 60ch;
   color: #444;
@@ -656,6 +668,25 @@ body {
   color: #222;
   font-weight: 500;
   font-size: 0.9rem;
+}
+
+.promo-meta-text {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.promo-meta-text a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.promo-meta-text a:focus,
+.promo-meta-text a:hover {
+  color: var(--color-accent);
 }
 
 .promo-meta .icon {

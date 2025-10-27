@@ -2400,7 +2400,7 @@ if (finderRoot) {
             const selectorRect = selector.getBoundingClientRect();
             const selectorBottom = selectorRect.bottom + window.scrollY;
             if (!Number.isNaN(selectorBottom)) {
-              minimumTop = selectorBottom + 12;
+              minimumTop = selectorBottom + 24;
             }
           }
         }

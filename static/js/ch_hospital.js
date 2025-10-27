@@ -515,10 +515,13 @@ const hospitalDatasetCache = {
 };
 
 function parseInteger(value) {
-  if (!value) {
+  if (value == null) {
     return 0;
   }
-  const cleaned = value
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? Math.trunc(value) : 0;
+  }
+  const cleaned = String(value)
     .replace(/['\u00A0\s]/g, '')
     .replace(/%$/, '')
     .trim();
@@ -532,6 +535,9 @@ function parseInteger(value) {
 function parseFloatValue(value) {
   if (value == null) {
     return null;
+  }
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : null;
   }
   const cleaned = String(value)
     .replace(/["'\u00A0\s]/g, '')
@@ -567,41 +573,30 @@ function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinat
   };
 }
 
-function parseHospitalCsv(text, coordinatesMap) {
-  const lines = text.split(/\r?\n/);
-  if (!lines.length) {
-    return { byProcedure: new Map(), meta: new Map(), types: new Set() };
-  }
-  if (lines[0] && lines[0].charCodeAt(0) === 0xfeff) {
-    lines[0] = lines[0].slice(1);
-  }
-  lines.shift();
-
+function buildHospitalDataset(entries, coordinatesMap) {
   const byProcedure = new Map();
   const byHospital = new Map();
   const meta = new Map();
 
-  lines.forEach(line => {
-    if (!line.trim()) {
+  entries.forEach(rawEntry => {
+    if (!rawEntry) {
       return;
     }
-    const cols = line.split(';');
-    if (cols.length < 10) {
-      return;
-    }
-    const institution = cols[0].trim();
+    const institution = typeof rawEntry.institution === 'string'
+      ? rawEntry.institution.trim()
+      : String(rawEntry.institution ?? '').trim();
     if (!institution || excludedInstitutions.has(institution)) {
       return;
     }
-    const indicator = cols[1].trim();
-    if (!indicator) {
-      return;
-    }
-    const code = indicator.split(' ', 1)[0].trim();
+
+    const code = typeof rawEntry.code === 'string'
+      ? rawEntry.code.trim()
+      : String(rawEntry.code ?? '').trim();
     if (!code) {
       return;
     }
-    const cases = parseInteger(cols[9]);
+
+    const cases = parseInteger(rawEntry.cases2023);
     if (cases <= 0) {
       return;
     }
@@ -622,13 +617,13 @@ function parseHospitalCsv(text, coordinatesMap) {
     }
 
     const metrics = {
-      observedHistorical: parsePercentage(cols[2]),
-      expectedHistorical: parsePercentage(cols[3]),
-      smrHistorical: parseFloatValue(cols[4]),
-      casesHistorical: parseInteger(cols[5]),
-      observed2023: parsePercentage(cols[6]),
-      expected2023: parsePercentage(cols[7]),
-      smr2023: parseFloatValue(cols[8]),
+      observedHistorical: parsePercentage(rawEntry.observedHistorical),
+      expectedHistorical: parsePercentage(rawEntry.expectedHistorical),
+      smrHistorical: parseFloatValue(rawEntry.smrHistorical),
+      casesHistorical: parseInteger(rawEntry.casesHistorical),
+      observed2023: parsePercentage(rawEntry.observed2023),
+      expected2023: parsePercentage(rawEntry.expected2023),
+      smr2023: parseFloatValue(rawEntry.smr2023),
       cases2023: cases
     };
 
@@ -670,17 +665,22 @@ function loadHospitalDataset() {
         }
         return response.json();
       }),
-      fetch('static/data/qip23_tabdaten.csv').then(response => {
+      fetch('static/data/qip23_f_procedures.json').then(response => {
         if (!response.ok) {
           throw new Error(`Failed to load dataset (${response.status})`);
         }
-        return response.text();
+        return response.json();
       })
     ])
-      .then(([coordinateData, csvText]) => {
+      .then(([coordinateData, dataset]) => {
         const coordinateMap = new Map(Object.entries(coordinateData || {}));
         hospitalDatasetCache.coordinates = coordinateMap;
-        const parsed = parseHospitalCsv(csvText, coordinateMap);
+        const rows = Array.isArray(dataset?.rows)
+          ? dataset.rows
+          : Array.isArray(dataset)
+            ? dataset
+            : [];
+        const parsed = buildHospitalDataset(rows, coordinateMap);
         hospitalDatasetCache.data = parsed;
         return parsed;
       })

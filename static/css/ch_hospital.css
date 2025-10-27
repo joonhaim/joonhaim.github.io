@@ -1284,10 +1284,24 @@ body {
   gap: 0.5rem;
 }
 
+.finder-kpi > small,
 .finder-kpi-header {
+  min-height: 2.5rem;
+}
+
+.finder-kpi > small {
   display: flex;
   align-items: center;
+}
+
+.finder-kpi-header {
+  display: flex;
+  align-items: flex-start;
   gap: 0.4rem;
+}
+
+.finder-kpi-header small {
+  flex: 1;
 }
 
 .finder-kpi small {
@@ -1295,6 +1309,7 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-subtle);
+  line-height: 1.35;
 }
 
 .finder-kpi strong {
@@ -1384,6 +1399,8 @@ body {
   font-size: 0.7rem;
   font-weight: 600;
   cursor: help;
+  align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .finder-kpi-info:focus-visible {

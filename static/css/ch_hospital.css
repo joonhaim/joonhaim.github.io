@@ -326,13 +326,14 @@ body {
 
 .procedure-btn {
   padding: 0.5rem 0.75rem;
-  border: 2px solid #DA291C;
+  border: 1px solid rgba(218, 41, 28, 0.28);
   border-radius: 9999px;
-  background: #fff;
-  color: #DA291C;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.12), rgba(218, 41, 28, 0.02));
+  color: var(--brand-navy);
   cursor: pointer;
   font-size: 0.85rem;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   width: 100%;
@@ -341,21 +342,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(6px);
+}
+
+.procedure-btn:hover,
+.procedure-btn:focus-visible {
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.18), rgba(218, 41, 28, 0.06));
+  border-color: rgba(218, 41, 28, 0.45);
+  color: var(--brand-red-dark);
+  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.18);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .procedure-btn.active {
-  background: #DA291C;
-  color: #fff;
-}
-
-.procedure-btn:not(.active):hover {
-  background: #DA291C;
-  color: #fff;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.22), rgba(218, 41, 28, 0.1));
+  border-color: rgba(218, 41, 28, 0.5);
+  color: var(--brand-red-dark);
+  box-shadow: 0 14px 30px rgba(218, 41, 28, 0.2);
 }
 
 .procedure-btn.no-hover:hover {
-  background: #fff;
-  color: #DA291C;
+  background: inherit;
+  color: inherit;
+  border-color: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transform: none;
 }
 
 #casesChart {
@@ -611,13 +624,16 @@ body {
   gap: 0.4rem;
   padding: 0.55rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  background: var(--surface-default);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.65);
   color: var(--brand-navy);
   font-size: 0.85rem;
   font-weight: 500;
   line-height: 1;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
 }
 
 .finder-quick-code {
@@ -628,16 +644,19 @@ body {
 
 .finder-quick-btn:hover,
 .finder-quick-btn:focus-visible {
-  border-color: rgba(218, 41, 28, 0.4);
-  color: #b91c1c;
-  box-shadow: 0 8px 18px rgba(218, 41, 28, 0.18);
+  border-color: rgba(218, 41, 28, 0.38);
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.16), rgba(218, 41, 28, 0.05));
+  color: var(--brand-red-dark);
+  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.18);
   outline: none;
+  transform: translateY(-1px);
 }
 
 .finder-quick-btn.active {
-  background: rgba(218, 41, 28, 0.08);
-  border-color: rgba(218, 41, 28, 0.45);
-  color: #b91c1c;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.2), rgba(218, 41, 28, 0.08));
+  border-color: rgba(218, 41, 28, 0.42);
+  color: var(--brand-red-dark);
+  box-shadow: 0 10px 24px rgba(218, 41, 28, 0.16);
 }
 
 .finder-search-field {
@@ -1242,27 +1261,33 @@ body {
   min-height: 2.05rem;
   padding: 0.45rem 1rem;
   border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  background: var(--surface-default);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--brand-navy);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
 }
 
 .finder-type-btn:hover,
 .finder-type-btn:focus-visible {
-  border-color: rgba(218, 41, 28, 0.4);
-  color: #b91c1c;
-  box-shadow: 0 8px 18px rgba(218, 41, 28, 0.18);
+  border-color: rgba(218, 41, 28, 0.38);
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.16), rgba(218, 41, 28, 0.05));
+  color: var(--brand-red-dark);
+  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.18);
   outline: none;
+  transform: translateY(-1px);
 }
 
 .finder-type-btn.active {
-  background: rgba(218, 41, 28, 0.08);
-  border-color: rgba(218, 41, 28, 0.45);
-  color: #b91c1c;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.2), rgba(218, 41, 28, 0.08));
+  border-color: rgba(218, 41, 28, 0.42);
+  color: var(--brand-red-dark);
+  box-shadow: 0 10px 24px rgba(218, 41, 28, 0.16);
 }
 
 .finder-kpis {
@@ -1506,24 +1531,31 @@ body {
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 999px;
-  border: none;
-  background: transparent;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
 }
 
 .finder-page-btn:hover:not(:disabled) {
-  background: #f3f4f6;
-  color: #111827;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.16), rgba(218, 41, 28, 0.05));
+  border-color: rgba(218, 41, 28, 0.35);
+  color: var(--brand-red-dark);
+  box-shadow: 0 8px 20px rgba(218, 41, 28, 0.16);
+  transform: translateY(-1px);
 }
 
 .finder-page-btn:disabled {
   opacity: 0.35;
   cursor: default;
+  box-shadow: none;
 }
 
 .finder-list {

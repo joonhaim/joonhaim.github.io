@@ -165,12 +165,19 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  padding-left: 2.25rem;
   box-sizing: border-box;
   display: grid;
   gap: 0.85rem;
   justify-items: start;
   align-items: start;
   text-align: left;
+}
+
+@media (max-width: 640px) {
+  .hero-inner {
+    padding-left: 1.5rem;
+  }
 }
 
 .hero-eyebrow {

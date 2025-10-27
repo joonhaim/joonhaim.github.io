@@ -2390,40 +2390,8 @@ if (finderRoot) {
           }
         }
 
-<<<<<<< Updated upstream
         const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-=======
-        const anchorRect = anchor.getBoundingClientRect();
-        const anchorTop = anchorRect.top + window.scrollY;
-
-        let minimumTop = 0;
-        if (finderRoot) {
-          const selector = finderRoot.querySelector('.finder-procedure-selector');
-          if (selector) {
-            const selectorRect = selector.getBoundingClientRect();
-            const selectorBottom = selectorRect.bottom + window.scrollY;
-            if (!Number.isNaN(selectorBottom)) {
-              minimumTop = selectorBottom + 12;
-            }
-          }
-        }
-
-        let effectiveOffset = preferredOffset;
-        const availableClearance = anchorTop - minimumTop;
-        if (!Number.isFinite(availableClearance) || availableClearance <= 0) {
-          effectiveOffset = 0;
-        } else {
-          effectiveOffset = Math.min(effectiveOffset, availableClearance);
-        }
-
-        let targetTop = anchorTop - effectiveOffset;
-        if (targetTop < minimumTop) {
-          targetTop = minimumTop;
-        }
-
-        window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
->>>>>>> Stashed changes
       });
     }
 

@@ -2471,14 +2471,17 @@ body {
 
   .hero .hero-links span {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
-    flex-wrap: wrap;
-    row-gap: 0.2rem;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 
   .hero .hero-links span a {
     flex: 0 1 auto;
+    width: 100%;
+    word-break: break-word;
+    white-space: normal;
   }
 
   .finder-kpi strong {

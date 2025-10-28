@@ -2445,13 +2445,12 @@ body {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 3.4rem 1.05rem 2.6rem;
+    padding: 3.4rem 1.5rem 2.6rem;
   }
 
   .hero-inner {
     gap: 0.75rem;
     padding: 0;
-    padding-right: 1.5rem;
   }
 
   .hero h1 {
@@ -2467,8 +2466,10 @@ body {
     width: 100%;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.45rem;
-    padding: 0.75rem 1rem;
+    gap: 0.55rem;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
   }
 
   .hero .hero-links span {
@@ -2476,7 +2477,10 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
   }
 
   .hero .hero-links span a {
@@ -2636,8 +2640,8 @@ body {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     width: 100vw;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .hero-inner {

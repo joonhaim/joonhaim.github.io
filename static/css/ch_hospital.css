@@ -2444,6 +2444,46 @@ body {
 }
 
 @media (max-width: 640px) {
+  .hero {
+    padding: 3.4rem 1.05rem 2.6rem;
+  }
+
+  .hero-inner {
+    gap: 0.75rem;
+    padding: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 7vw, 2.2rem);
+    line-height: 1.15;
+  }
+
+  .hero .tagline {
+    font-size: 0.95rem;
+  }
+
+  .hero .hero-links {
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .hero .hero-links span {
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .hero .hero-links span a {
+    flex: 0 1 auto;
+    width: 100%;
+    word-break: break-word;
+    white-space: normal;
+  }
+
   .finder-kpi strong {
     font-size: 1.4rem;
   }
@@ -2533,17 +2573,43 @@ body {
 
   .finder-figures {
     grid-area: figures;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
     width: 100%;
     text-align: left;
-    padding-top: 0.4rem;
+    padding-top: 0.5rem;
     border-top: 1px solid rgba(15, 23, 42, 0.08);
   }
 
   .finder-figures span {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .finder-figures strong {
+    font-size: 1.18rem;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hospital-detail-overlay {
+    align-items: flex-start;
+    padding: 1rem 0.9rem;
+  }
+
+  .hospital-detail {
+    width: 100%;
+    max-height: calc(100vh - 1.5rem);
+    border-radius: 1.15rem;
+    padding: calc(env(safe-area-inset-top, 0px) + 1.2rem) 1.25rem
+      calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hospital-detail__close {
+    top: 0.75rem;
+    right: 0.75rem;
   }
 }
 

@@ -2113,9 +2113,15 @@ body {
 }
 
 @media (max-width: 720px) {
+  .hospital-detail-overlay {
+    align-items: flex-start;
+    padding: 1.25rem 1rem;
+  }
+
   .hospital-detail {
     padding: 1.5rem 1.5rem 2rem;
-    max-height: 95vh;
+    max-height: 80vh;
+    margin-top: 2rem;
   }
 
   .hospital-detail__close {

@@ -2132,6 +2132,30 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  .hospital-detail-overlay {
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .hospital-detail {
+    width: 100%;
+    max-height: none;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 1.25rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+    box-shadow: none;
+    overscroll-behavior: contain;
+  }
+
+  .hospital-detail__close {
+    top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
+    right: 0.75rem;
+  }
+}
+
 .finder-map-card {
   display: flex;
   flex-direction: column;

@@ -170,6 +170,22 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .header-left,
+  .swiss-cross {
+    transition: transform 0.35s ease-in-out, opacity 0.2s ease;
+    transform: translateY(0);
+    will-change: transform, opacity;
+  }
+
+  .header-left.is-hidden-mobile,
+  .swiss-cross.is-hidden-mobile {
+    opacity: 0;
+    transform: translateY(calc(-100% - 1.25rem));
+    pointer-events: none;
+  }
+}
+
 .hero::after {
   content: '';
   position: absolute;

@@ -52,6 +52,60 @@ if (languageSwitcher) {
   }
 }
 
+const scrollHideElements = document.querySelectorAll('.header-left, .swiss-cross');
+if (scrollHideElements.length) {
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+  let lastScrollY = window.scrollY;
+  let isHidden = false;
+  const hideThreshold = 120;
+
+  const setHidden = (shouldHide) => {
+    if (shouldHide === isHidden) {
+      return;
+    }
+    scrollHideElements.forEach((element) => {
+      element.classList.toggle('is-hidden-mobile', shouldHide);
+    });
+    isHidden = shouldHide;
+  };
+
+  const handleScroll = () => {
+    const currentY = window.scrollY;
+
+    if (!mobileQuery.matches) {
+      setHidden(false);
+      lastScrollY = currentY;
+      return;
+    }
+
+    const isScrollingDown = currentY > lastScrollY;
+
+    if (isScrollingDown && currentY > hideThreshold) {
+      setHidden(true);
+    } else if (!isScrollingDown || currentY <= hideThreshold) {
+      setHidden(false);
+    }
+
+    lastScrollY = currentY;
+  };
+
+  const handleViewportChange = (event) => {
+    if (!event.matches) {
+      setHidden(false);
+    }
+    lastScrollY = window.scrollY;
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  if (mobileQuery.addEventListener) {
+    mobileQuery.addEventListener('change', handleViewportChange);
+  } else if (mobileQuery.addListener) {
+    mobileQuery.addListener(handleViewportChange);
+  }
+
+  handleScroll();
+}
+
 const normalizeString = (value) =>
   (value || '')
     .normalize('NFD')

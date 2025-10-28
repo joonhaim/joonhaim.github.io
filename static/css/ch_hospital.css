@@ -2472,6 +2472,13 @@ body {
   .hero .hero-links span {
     width: 100%;
     justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    row-gap: 0.2rem;
+  }
+
+  .hero .hero-links span a {
+    flex: 0 1 auto;
   }
 
   .finder-kpi strong {

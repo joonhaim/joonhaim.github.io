@@ -2473,7 +2473,7 @@ body {
   }
 
   .hero .hero-links span {
-    width: 100%;
+    width: clamp(0px, 100%, 22rem);
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
@@ -2481,6 +2481,7 @@ body {
     padding: 0.75rem 1rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.14);
+    align-self: flex-start;
   }
 
   .hero .hero-links span a {

@@ -122,6 +122,15 @@ p {
 .tagline {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   margin-top: 1rem;
+  max-width: min(38ch, 100%);
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .tagline {
+    max-width: 100%;
+    text-wrap: pretty;
+  }
 }
 .section {
   min-height: 100vh;

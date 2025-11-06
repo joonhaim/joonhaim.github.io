@@ -2587,6 +2587,7 @@ body {
 .finder-comparison-card {
   --comparison-gutter: 2.25rem;
   --comparison-axis-right: 1.25rem;
+  --comparison-content-offset: 0.85rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -2648,6 +2649,7 @@ body {
   font-weight: 600;
   color: var(--brand-navy);
   align-self: flex-start;
+  margin-left: var(--comparison-content-offset);
 }
 
 .finder-comparison-difference::before {
@@ -2663,6 +2665,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-left: var(--comparison-content-offset);
 }
 
 .finder-comparison-card--empty .finder-comparison-chart {
@@ -2855,6 +2858,7 @@ body {
   .finder-comparison-card {
     gap: 1rem;
     --comparison-axis-right: 0.85rem;
+    --comparison-content-offset: 0.7rem;
   }
 
   .finder-comparison-caption,

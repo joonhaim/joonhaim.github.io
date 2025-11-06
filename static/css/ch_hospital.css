@@ -3044,7 +3044,7 @@ body {
 
 .finder-canton-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, auto) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(7.5rem, auto) auto;
   grid-template-areas: 'hospital type cases';
   align-items: center;
   column-gap: 1rem;
@@ -3063,9 +3063,13 @@ body {
 
 .finder-canton-type {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: stretch;
+  text-align: right;
   grid-area: type;
   min-width: 0;
+  width: 100%;
 }
 
 .finder-canton-cases {

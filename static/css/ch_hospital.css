@@ -2645,9 +2645,10 @@ body {
 }
 
 .finder-canton-flag {
-  width: 3.5rem;
-  aspect-ratio: 1;
-  border-radius: 0.85rem;
+  --canton-flag-size: 3.5rem;
+  width: var(--canton-flag-size);
+  height: var(--canton-flag-size);
+  border-radius: 50%;
   overflow: hidden;
   background: linear-gradient(145deg, rgba(226, 232, 240, 0.9), rgba(248, 250, 252, 0.95));
   box-shadow: 0 18px 36px rgba(15, 23, 42, 0.18);
@@ -2655,6 +2656,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-left: auto;
+  box-sizing: border-box;
 }
 
 .finder-canton-flag[hidden] {
@@ -2665,7 +2667,7 @@ body {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .finder-comparison-card {
@@ -2980,7 +2982,7 @@ body {
   }
 
   .finder-canton-flag {
-    width: 3rem;
+    --canton-flag-size: 3rem;
   }
 
   .finder-canton-card__comparison {
@@ -3146,7 +3148,7 @@ body {
   }
 
   .finder-canton-flag {
-    width: 3.25rem;
+    --canton-flag-size: 3.25rem;
   }
 
   .finder-canton-card__comparison {

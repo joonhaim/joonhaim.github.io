@@ -2079,9 +2079,7 @@ if (finderRoot) {
 
         const summaryItems = [
           { label: detailMessage('cases2023'), value: formatInteger(entry.cases) },
-          { label: detailMessage('share'), value: formatFraction(entry.share) },
-          { label: detailMessage('type'), value: typeLabel },
-          { label: detailMessage('canton'), value: entry.canton }
+          { label: detailMessage('share'), value: formatFraction(entry.share) }
         ];
 
         const summaryMarkup = summaryItems
@@ -2227,6 +2225,11 @@ if (finderRoot) {
           value: coordinatesText || detailMessage('infoUnavailable')
         });
 
+        infoItems.push({
+          label: detailMessage('type'),
+          value: typeLabel || detailMessage('infoUnavailable')
+        });
+
         const infoHeading = detailMessage('infoHeading');
         const infoMarkup = `
           <section class="hospital-detail__info">
@@ -2343,11 +2346,11 @@ if (finderRoot) {
           <header class="hospital-detail__header">
             ${eyebrowMarkup}
             <h2 id="hospital-detail-title">${escapeHtml(entry.hospital)}</h2>
-            ${subtitleMarkup}
             <div class="hospital-detail__tags">
               <span class="finder-badge ${badgeClass}">${escapeHtml(typeLabel)}</span>
               <span class="finder-badge finder-badge--neutral">${escapeHtml(entry.canton)}</span>
             </div>
+            ${subtitleMarkup}
           </header>
           ${infoMarkup}
           <section class="hospital-detail__summary">${summaryMarkup}</section>

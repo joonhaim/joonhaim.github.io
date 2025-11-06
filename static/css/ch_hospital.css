@@ -2731,16 +2731,16 @@ body {
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-muted);
-  text-align: left;
 }
 
 .finder-comparison-caption {
   font-weight: 500;
   color: var(--text-muted);
   margin: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   width: min(100%, var(--comparison-content-max-width));
   margin-inline: auto;
+  text-align: center;
 }
 
 .finder-comparison-difference {
@@ -2752,13 +2752,13 @@ body {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-muted);
-  align-self: stretch;
-  margin-top: 0.5rem;
-  margin-bottom: 0.75rem;
-  margin-inline: 0;
+  align-self: center;
+  margin-top: 0.35rem;
+  margin-bottom: 0.6rem;
+  margin-inline: auto;
   width: min(100%, var(--comparison-content-max-width));
   max-width: 100%;
-  text-align: left;
+  text-align: center;
   line-height: 1.55;
 }
 
@@ -2785,7 +2785,7 @@ body {
 }
 
 .finder-canton-card__comparison .finder-comparison-difference {
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
 
 .finder-canton-card__comparison .finder-comparison-chart {
@@ -2987,25 +2987,20 @@ body {
     --comparison-content-offset: 0.7rem;
   }
 
-  .finder-comparison-caption,
-  .finder-comparison-difference {
-    font-size: 0.9rem;
-  }
-
   .finder-comparison-caption {
     margin-left: 0;
     margin-top: 0;
-    margin-bottom: 0.65rem;
-    margin-inline: 0;
-    text-align: left;
+    margin-bottom: 0.45rem;
+    margin-inline: auto;
+    text-align: center;
     width: min(100%, var(--comparison-content-max-width));
   }
 
   .finder-comparison-difference {
-    margin-inline: 0;
-    align-self: stretch;
-    justify-content: flex-start;
-    text-align: left;
+    margin-inline: auto;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
     width: min(100%, var(--comparison-content-max-width));
   }
 
@@ -3208,7 +3203,7 @@ body {
 
   .finder-comparison-chart,
   .finder-comparison-difference {
-    width: 100%;
+    width: min(100%, var(--comparison-content-max-width));
   }
 
   .finder-procedure-selector {

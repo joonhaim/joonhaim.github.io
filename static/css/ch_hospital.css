@@ -1942,7 +1942,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  --overlay-vertical-gap: clamp(2rem, 8vh, 5rem);
+  --overlay-vertical-gap: clamp(1.75rem, 6vh, 3.5rem);
   --overlay-bottom-gap: var(--overlay-vertical-gap);
   --overlay-horizontal-gap: clamp(1.25rem, 5vw, 3.5rem);
   padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)

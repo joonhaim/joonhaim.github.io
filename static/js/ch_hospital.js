@@ -890,6 +890,7 @@ if (finderRoot) {
         cantonComparisonEven: '{canton} is on par with the Swiss average.',
         cantonComparisonLabelNational: 'Switzerland',
         cantonComparisonLabelCanton: 'Canton {canton}',
+        cantonComparisonAxisLabel: 'Cases per 100k residents',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
@@ -1070,6 +1071,7 @@ if (finderRoot) {
         cantonComparisonEven: '{canton} entspricht dem Schweizer Durchschnitt.',
         cantonComparisonLabelNational: 'Schweiz',
         cantonComparisonLabelCanton: 'Kanton {canton}',
+        cantonComparisonAxisLabel: 'Fälle pro 100 000 Einwohner',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
@@ -1250,6 +1252,7 @@ if (finderRoot) {
         cantonComparisonEven: '{canton} est aligné sur la moyenne suisse.',
         cantonComparisonLabelNational: 'Suisse',
         cantonComparisonLabelCanton: 'Canton {canton}',
+        cantonComparisonAxisLabel: 'Cas pour 100 000 habitants',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
@@ -1430,6 +1433,7 @@ if (finderRoot) {
         cantonComparisonEven: '{canton} è in linea con la media svizzera.',
         cantonComparisonLabelNational: 'Svizzera',
         cantonComparisonLabelCanton: 'Cantone {canton}',
+        cantonComparisonAxisLabel: 'Casi per 100 000 abitanti',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
@@ -3823,23 +3827,88 @@ if (finderRoot) {
     const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
     const safeMax = maxValue > 0 ? maxValue : 1;
 
-    const chartMarkup = rows
-      .map((row) => {
-        const width = Math.max(0, Math.min(100, (row.value / safeMax) * 100));
-        const widthValue = width.toFixed(1);
-        const safeLabel = escapeHtml(row.label);
-        const safeValue = escapeHtml(formatRate(row.value));
+    const getNiceCeiling = (value) => {
+      if (!Number.isFinite(value) || value <= 0) {
+        return 1;
+      }
+      const exponent = Math.floor(Math.log10(value));
+      const base = 10 ** exponent;
+      const fraction = value / base;
+      let niceFraction;
+      if (fraction <= 1) {
+        niceFraction = 1;
+      } else if (fraction <= 2) {
+        niceFraction = 2;
+      } else if (fraction <= 5) {
+        niceFraction = 5;
+      } else {
+        niceFraction = 10;
+      }
+      return niceFraction * base;
+    };
+
+    const axisMax = getNiceCeiling(safeMax * 1.05);
+    const tickSteps = 4;
+    const tickValues = Array.from({ length: tickSteps }, (_, index) => (axisMax / (tickSteps - 1)) * index);
+
+    const tickMarkup = tickValues
+      .map((tickValue) => {
+        const position = axisMax > 0 ? (tickValue / axisMax) * 100 : 0;
+        const safePosition = Math.max(0, Math.min(100, position));
+        const safeLabel = escapeHtml(formatRate(tickValue));
         return `
-          <div class="finder-comparison-row">
-            <span class="finder-comparison-label">${safeLabel}</span>
-            <div class="finder-comparison-track">
-              <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-width: ${widthValue}%;"></span>
-            </div>
-            <span class="finder-comparison-value">${safeValue}</span>
+          <div class="finder-comparison-tick" style="--tick-position: ${safePosition}%;">
+            <span class="finder-comparison-tick-label">${safeLabel}</span>
+            <span class="finder-comparison-tick-line" aria-hidden="true"></span>
           </div>
         `;
       })
       .join('');
+
+    const barsMarkup = rows
+      .map((row) => {
+        const height = axisMax > 0 ? (row.value / axisMax) * 100 : 0;
+        const heightValue = Math.max(0, Math.min(100, height)).toFixed(1);
+        return `
+          <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
+            <div class="finder-comparison-bar-outer">
+              <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+    const legendMarkup = rows
+      .map((row) => {
+        const safeLabel = escapeHtml(row.label);
+        const safeValue = escapeHtml(formatRate(row.value));
+        return `
+          <div class="finder-comparison-bar-meta finder-comparison-bar-meta--${row.key}">
+            <span class="finder-comparison-bar-label">${safeLabel}</span>
+            <span class="finder-comparison-bar-value">${safeValue}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    const axisLabel = escapeHtml(msg('cantonComparisonAxisLabel'));
+    const chartMarkup = `
+      <div class="finder-comparison-plot">
+        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(
+          msg('cantonComparisonLead', {
+            cantonRate: formatRate(cantonRate),
+            nationalRate: formatRate(nationalRate),
+            canton: cantonLabel
+          })
+        )}">
+          <div class="finder-comparison-grid">${tickMarkup}</div>
+          <div class="finder-comparison-bars">${barsMarkup}</div>
+        </div>
+        <div class="finder-comparison-bar-legend">${legendMarkup}</div>
+        <div class="finder-comparison-axis-caption">${axisLabel}</div>
+      </div>
+    `;
 
     finderCantonComparisonChart.innerHTML = chartMarkup;
   }

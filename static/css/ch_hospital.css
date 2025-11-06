@@ -1877,11 +1877,18 @@ body {
 }
 
 .finder-hospital-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
-  column-gap: 0.75rem;
-  row-gap: 0.35rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.finder-hospital-ident {
+  display: flex;
+  align-items: baseline;
+  flex: 1 1 auto;
+  gap: 0.6rem;
+  min-width: 0;
 }
 
 .finder-hospital-name {
@@ -1889,12 +1896,22 @@ body {
   line-height: 1.2;
 }
 
+.finder-hospital-name,
 .finder-hospital-type {
-  justify-self: end;
+  white-space: nowrap;
+}
+
+.finder-hospital-ident .finder-hospital-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.finder-hospital-type {
+  flex-shrink: 0;
 }
 
 .finder-hospital-canton {
-  justify-self: start;
+  flex-shrink: 0;
 }
 
 .finder-badge {
@@ -1943,24 +1960,30 @@ body {
   }
 
   .finder-hospital-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.15rem 0.4rem;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .finder-hospital-ident {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 
   .finder-hospital-name {
-    flex: 1 1 100%;
     font-size: 0.95rem;
     line-height: 1.25;
   }
 
   .finder-hospital-type,
   .finder-hospital-canton {
-    align-self: flex-start;
     padding: 0.18rem 0.5rem;
     font-size: 0.72rem;
     line-height: 1.2;
+  }
+
+  .finder-hospital-type {
+    order: 2;
   }
 
 }

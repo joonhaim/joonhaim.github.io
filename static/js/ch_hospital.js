@@ -3556,8 +3556,10 @@ if (finderRoot) {
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <strong class="finder-hospital-name">${h.hospital}</strong>
-                <span class="finder-badge finder-hospital-type ${badgeClass}">${badgeLabel}</span>
+                <div class="finder-hospital-ident">
+                  <strong class="finder-hospital-name">${h.hospital}</strong>
+                  <span class="finder-badge finder-hospital-type ${badgeClass}">${badgeLabel}</span>
+                </div>
                 <span class="finder-badge finder-badge--canton finder-hospital-canton">${h.canton}</span>
               </div>
               <div class="finder-progress" aria-hidden="true">

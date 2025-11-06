@@ -213,8 +213,13 @@ body {
 }
 
 @media (max-width: 640px) {
+  .hero {
+    padding: 3.75rem 1rem 3rem;
+  }
+
   .hero-inner {
-    padding-left: 1.5rem;
+    margin: 0;
+    padding: 0;
   }
 }
 

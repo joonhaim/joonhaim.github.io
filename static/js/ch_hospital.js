@@ -3737,16 +3737,19 @@ if (finderRoot) {
 
     const setEmptyState = (captionMessage, differenceMessage = '') => {
       finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
-      finderCantonComparisonCaption.textContent = captionMessage;
-      finderCantonComparisonCaption.hidden = false;
+      const hasCaption = Boolean(captionMessage);
+      finderCantonComparisonCaption.textContent = captionMessage ?? '';
+      finderCantonComparisonCaption.hidden = !hasCaption;
       if (finderCantonComparisonDifference) {
-        finderCantonComparisonDifference.textContent = differenceMessage;
+        const hasDifference = Boolean(differenceMessage);
+        finderCantonComparisonDifference.textContent = differenceMessage ?? '';
+        finderCantonComparisonDifference.hidden = !hasDifference;
       }
       finderCantonComparisonChart.innerHTML = '';
     };
 
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
-      setEmptyState(msg('cantonComparisonPrompt'));
+      setEmptyState('');
       return;
     }
 
@@ -3820,6 +3823,7 @@ if (finderRoot) {
 
     if (finderCantonComparisonDifference) {
       finderCantonComparisonDifference.textContent = differenceMessage;
+      finderCantonComparisonDifference.hidden = false;
     }
 
     const rows = [
@@ -3969,10 +3973,12 @@ if (finderRoot) {
       finderCantonList.innerHTML = '';
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
-        finderCantonComparisonCaption.textContent = msg('selectProcedureComparison');
+        finderCantonComparisonCaption.textContent = '';
+        finderCantonComparisonCaption.hidden = true;
         finderCantonComparisonChart.innerHTML = '';
         if (finderCantonComparisonDifference) {
           finderCantonComparisonDifference.textContent = '';
+          finderCantonComparisonDifference.hidden = true;
         }
       }
       scrollToResultsIfNeeded();
@@ -3989,9 +3995,11 @@ if (finderRoot) {
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = msg('loadingData');
+        finderCantonComparisonCaption.hidden = false;
         finderCantonComparisonChart.innerHTML = '';
         if (finderCantonComparisonDifference) {
           finderCantonComparisonDifference.textContent = '';
+          finderCantonComparisonDifference.hidden = true;
         }
       }
       scrollToResultsIfNeeded();
@@ -4074,9 +4082,11 @@ if (finderRoot) {
         if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
           finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
           finderCantonComparisonCaption.textContent = msg('datasetError');
+          finderCantonComparisonCaption.hidden = false;
           finderCantonComparisonChart.innerHTML = '';
           if (finderCantonComparisonDifference) {
             finderCantonComparisonDifference.textContent = '';
+            finderCantonComparisonDifference.hidden = true;
           }
         }
       });

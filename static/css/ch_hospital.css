@@ -3064,11 +3064,12 @@ body {
 .finder-canton-type {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  justify-self: start;
-  text-align: left;
+  justify-content: flex-end;
+  justify-self: stretch;
+  text-align: right;
   grid-area: type;
   min-width: 0;
+  width: 100%;
 }
 
 .finder-canton-cases {

@@ -1774,12 +1774,12 @@ body {
 
 .hospital-detail {
   position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   width: min(960px, calc(100% - 2rem));
   max-height: min(92vh, 880px);
-  overflow-y: auto;
+  overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
   padding: clamp(1.75rem, 2vw + 1.75rem, 3rem);
@@ -1797,8 +1797,7 @@ body {
 }
 
 .hospital-detail__close {
-  position: sticky;
-  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  align-self: flex-end;
   margin-left: auto;
   display: inline-flex;
   align-items: center;
@@ -1812,6 +1811,7 @@ body {
   color: #1f2937;
   font-size: 1.5rem;
   line-height: 1;
+  flex-shrink: 0;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   z-index: 5;
@@ -1823,6 +1823,13 @@ body {
   color: #ffffff;
   outline: none;
   transform: translateY(-1px);
+}
+
+.hospital-detail__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hospital-detail__header {
@@ -2696,7 +2703,6 @@ body {
     border-radius: 1.15rem;
     padding: calc(env(safe-area-inset-top, 0px) + 1.2rem) 1.25rem
       calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
-    -webkit-overflow-scrolling: touch;
   }
 
 }

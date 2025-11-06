@@ -2490,7 +2490,7 @@ body {
 
 .finder-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.75fr);
   gap: 1.5rem;
 }
 

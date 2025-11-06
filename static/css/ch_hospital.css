@@ -2741,7 +2741,7 @@ body {
   color: var(--text-muted);
   align-self: flex-start;
   margin-left: var(--comparison-content-offset);
-  max-width: min(100%, 18rem);
+  width: min(100%, clamp(18rem, 60vw, 24rem));
 }
 
 .finder-comparison-difference::before {

@@ -2697,6 +2697,8 @@ body {
 .finder-canton-card__comparison.finder-comparison-card {
   padding: 0;
   padding-left: var(--comparison-gutter);
+  padding-top: 0.75rem;
+  gap: 0;
   justify-content: flex-start;
   background: transparent;
   box-shadow: none;
@@ -2732,8 +2734,12 @@ body {
 }
 
 .finder-comparison-caption {
-  font-weight: 600;
-  color: var(--brand-navy);
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
+  margin-left: var(--comparison-content-offset);
+  margin-bottom: 0.75rem;
+  max-width: var(--comparison-content-max-width);
 }
 
 .finder-comparison-difference {
@@ -2748,7 +2754,7 @@ body {
   font-weight: 500;
   color: var(--text-muted);
   align-self: flex-start;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   margin-left: var(--comparison-content-offset);
   margin-bottom: 0.75rem;
   width: 100%;
@@ -2971,6 +2977,14 @@ body {
   .finder-comparison-caption,
   .finder-comparison-difference {
     font-size: 0.9rem;
+  }
+
+  .finder-comparison-caption {
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .finder-comparison-difference {

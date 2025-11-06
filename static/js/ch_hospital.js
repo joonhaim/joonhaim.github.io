@@ -3926,6 +3926,11 @@ if (finderRoot) {
     }
 
     const cantonLabel = getCantonLabel(state.selectedCanton);
+    const cantonCode =
+      typeof state.selectedCanton === 'string'
+        ? state.selectedCanton.toUpperCase()
+        : '';
+    const cantonMessageValue = cantonCode || cantonLabel;
     const cantonPopulation = REGION_POPULATION[state.selectedCanton];
     const nationalPopulation = REGION_POPULATION.CH;
     const cantonCases = agg.cantonTotals?.totalCases ?? 0;
@@ -3966,7 +3971,7 @@ if (finderRoot) {
     const comparisonLead = msg('cantonComparisonLead', {
       cantonRate: formatRate(cantonRate),
       nationalRate: formatRate(nationalRate),
-      canton: cantonLabel
+      canton: cantonMessageValue
     });
 
     const difference = cantonRate - nationalRate;
@@ -3974,15 +3979,15 @@ if (finderRoot) {
     const differenceThreshold = 0.1;
     let differenceMessage;
     if (absDifference < differenceThreshold) {
-      differenceMessage = msg('cantonComparisonEven', { canton: cantonLabel });
+      differenceMessage = msg('cantonComparisonEven', { canton: cantonMessageValue });
     } else if (difference > 0) {
       differenceMessage = msg('cantonComparisonHigher', {
-        canton: cantonLabel,
+        canton: cantonMessageValue,
         difference: formatRate(absDifference)
       });
     } else {
       differenceMessage = msg('cantonComparisonLower', {
-        canton: cantonLabel,
+        canton: cantonMessageValue,
         difference: formatRate(absDifference)
       });
     }

@@ -2730,8 +2730,8 @@ body {
 }
 
 .finder-comparison-caption {
-  font-weight: 600;
-  color: var(--brand-navy);
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .finder-comparison-difference {

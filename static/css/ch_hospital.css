@@ -2725,45 +2725,16 @@ body {
   color: var(--text-muted);
 }
 
-.finder-comparison-caption,
-.finder-comparison-difference {
+.finder-comparison-caption {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--text-muted);
-}
-
-.finder-comparison-caption {
   font-weight: 500;
   color: var(--text-muted);
-  margin: 0;
   margin-bottom: 0.5rem;
   width: min(100%, var(--comparison-content-max-width));
   margin-inline: auto;
   text-align: center;
-}
-
-.finder-comparison-difference {
-  display: block;
-  padding: 0.85rem 1rem;
-  border-radius: 0.6rem;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  background: rgba(15, 23, 42, 0.02);
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  align-self: center;
-  margin-top: 0.35rem;
-  margin-bottom: 0.6rem;
-  margin-inline: auto;
-  width: min(100%, var(--comparison-content-max-width));
-  max-width: 100%;
-  text-align: center;
-  line-height: 1.55;
-}
-
-.finder-comparison-difference::before {
-  display: none;
 }
 
 .finder-comparison-chart {
@@ -2778,14 +2749,9 @@ body {
 }
 
 .finder-canton-card__comparison .finder-comparison-caption,
-.finder-canton-card__comparison .finder-comparison-difference,
 .finder-canton-card__comparison .finder-comparison-chart {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-.finder-canton-card__comparison .finder-comparison-difference {
-  margin-top: 0.2rem;
 }
 
 .finder-canton-card__comparison .finder-comparison-chart {
@@ -2996,14 +2962,6 @@ body {
     width: min(100%, var(--comparison-content-max-width));
   }
 
-  .finder-comparison-difference {
-    margin-inline: auto;
-    align-self: center;
-    justify-content: center;
-    text-align: center;
-    width: min(100%, var(--comparison-content-max-width));
-  }
-
   .finder-canton-card__primary {
     gap: 1.05rem;
   }
@@ -3051,10 +3009,6 @@ body {
 .finder-comparison-card--empty .finder-comparison-caption {
   color: var(--text-muted);
   font-weight: 500;
-}
-
-.finder-comparison-card--empty .finder-comparison-difference {
-  display: none;
 }
 
 .finder-comparison-card--empty {
@@ -3201,8 +3155,7 @@ body {
     justify-content: flex-start;
   }
 
-  .finder-comparison-chart,
-  .finder-comparison-difference {
+  .finder-comparison-chart {
     width: min(100%, var(--comparison-content-max-width));
   }
 

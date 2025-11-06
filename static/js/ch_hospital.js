@@ -1918,7 +1918,6 @@ if (finderRoot) {
     const finderCantonComparisonCard = document.getElementById('finder-canton-comparison-card');
     const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
     const finderCantonComparisonChart = document.getElementById('finder-canton-comparison-chart');
-    const finderCantonComparisonDifference = document.getElementById('finder-canton-comparison-difference');
     const finderCantonFlag = document.getElementById('finder-canton-flag');
     const finderCantonFlagImage = finderCantonFlag ? finderCantonFlag.querySelector('img') : null;
     const finderQuickPicks = document.getElementById('finder-quick-picks');
@@ -3894,16 +3893,11 @@ if (finderRoot) {
       return;
     }
 
-    const setEmptyState = (captionMessage, differenceMessage = '') => {
+    const setEmptyState = (captionMessage) => {
       finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
       const hasCaption = Boolean(captionMessage);
       finderCantonComparisonCaption.textContent = captionMessage ?? '';
       finderCantonComparisonCaption.hidden = !hasCaption;
-      if (finderCantonComparisonDifference) {
-        const hasDifference = Boolean(differenceMessage);
-        finderCantonComparisonDifference.textContent = differenceMessage ?? '';
-        finderCantonComparisonDifference.hidden = !hasDifference;
-      }
       finderCantonComparisonChart.innerHTML = '';
     };
 
@@ -3944,7 +3938,7 @@ if (finderRoot) {
 
     if (!Number.isFinite(cantonRate) || !Number.isFinite(nationalRate)) {
       const message = msg('cantonComparisonNoData', { canton: cantonLabel });
-      setEmptyState(message, message);
+      setEmptyState(message);
       return;
     }
 
@@ -3969,29 +3963,6 @@ if (finderRoot) {
       nationalRate: formatRate(nationalRate),
       canton: cantonMessageValue
     });
-
-    const difference = cantonRate - nationalRate;
-    const absDifference = Math.abs(difference);
-    const differenceThreshold = 0.1;
-    let differenceMessage;
-    if (absDifference < differenceThreshold) {
-      differenceMessage = msg('cantonComparisonEven', { canton: cantonMessageValue });
-    } else if (difference > 0) {
-      differenceMessage = msg('cantonComparisonHigher', {
-        canton: cantonMessageValue,
-        difference: formatRate(absDifference)
-      });
-    } else {
-      differenceMessage = msg('cantonComparisonLower', {
-        canton: cantonMessageValue,
-        difference: formatRate(absDifference)
-      });
-    }
-
-    if (finderCantonComparisonDifference) {
-      finderCantonComparisonDifference.textContent = differenceMessage;
-      finderCantonComparisonDifference.hidden = false;
-    }
 
     const rows = [
       { key: 'national', label: nationalLabel, value: nationalRate, abbr: 'CH' },
@@ -4144,10 +4115,6 @@ if (finderRoot) {
         finderCantonComparisonCaption.textContent = '';
         finderCantonComparisonCaption.hidden = true;
         finderCantonComparisonChart.innerHTML = '';
-        if (finderCantonComparisonDifference) {
-          finderCantonComparisonDifference.textContent = '';
-          finderCantonComparisonDifference.hidden = true;
-        }
       }
       scrollToResultsIfNeeded();
       return;
@@ -4166,10 +4133,6 @@ if (finderRoot) {
         finderCantonComparisonCaption.textContent = msg('loadingData');
         finderCantonComparisonCaption.hidden = false;
         finderCantonComparisonChart.innerHTML = '';
-        if (finderCantonComparisonDifference) {
-          finderCantonComparisonDifference.textContent = '';
-          finderCantonComparisonDifference.hidden = true;
-        }
       }
       scrollToResultsIfNeeded();
       return;
@@ -4254,10 +4217,6 @@ if (finderRoot) {
           finderCantonComparisonCaption.textContent = msg('datasetError');
           finderCantonComparisonCaption.hidden = false;
           finderCantonComparisonChart.innerHTML = '';
-          if (finderCantonComparisonDifference) {
-            finderCantonComparisonDifference.textContent = '';
-            finderCantonComparisonDifference.hidden = true;
-          }
         }
       });
   }

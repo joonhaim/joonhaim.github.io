@@ -2350,6 +2350,16 @@ body {
   border-bottom: none;
 }
 
+.finder-canton-insight {
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-soft);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
 .finder-note-card p {
   font-size: 0.9rem;
   line-height: 1.6;

@@ -1950,6 +1950,8 @@ body {
   font-size: 1.35rem;
   font-weight: 600;
   color: var(--brand-navy);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .hospital-detail__procedures {
@@ -2158,6 +2160,14 @@ body {
     max-height: 80vh;
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+  }
+
+  .hospital-detail__summary {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .hospital-detail__summary-value {
+    font-size: 1.2rem;
   }
 
   .hospital-detail__info-grid {

@@ -3908,9 +3908,15 @@ if (finderRoot) {
       finderCantonComparisonCaption.textContent = captionMessage ?? '';
       finderCantonComparisonCaption.hidden = !hasCaption;
       if (finderCantonComparisonDifference) {
+        const differenceClasses = [
+          'finder-comparison-difference--higher',
+          'finder-comparison-difference--lower',
+          'finder-comparison-difference--even'
+        ];
         const hasDifference = Boolean(differenceMessage);
         finderCantonComparisonDifference.textContent = differenceMessage ?? '';
         finderCantonComparisonDifference.hidden = !hasDifference;
+        finderCantonComparisonDifference.classList.remove(...differenceClasses);
       }
       finderCantonComparisonChart.innerHTML = '';
     };
@@ -3981,23 +3987,38 @@ if (finderRoot) {
     const absDifference = Math.abs(difference);
     const differenceThreshold = 0.1;
     let differenceMessage;
+    let differenceState;
     if (absDifference < differenceThreshold) {
       differenceMessage = msg('cantonComparisonEven', { canton: cantonMessageValue });
+      differenceState = 'even';
     } else if (difference > 0) {
       differenceMessage = msg('cantonComparisonHigher', {
         canton: cantonMessageValue,
         difference: formatRate(absDifference)
       });
+      differenceState = 'higher';
     } else {
       differenceMessage = msg('cantonComparisonLower', {
         canton: cantonMessageValue,
         difference: formatRate(absDifference)
       });
+      differenceState = 'lower';
     }
 
     if (finderCantonComparisonDifference) {
+      const differenceClasses = [
+        'finder-comparison-difference--higher',
+        'finder-comparison-difference--lower',
+        'finder-comparison-difference--even'
+      ];
       finderCantonComparisonDifference.textContent = differenceMessage;
       finderCantonComparisonDifference.hidden = false;
+      finderCantonComparisonDifference.classList.remove(...differenceClasses);
+      if (differenceState) {
+        finderCantonComparisonDifference.classList.add(
+          `finder-comparison-difference--${differenceState}`
+        );
+      }
     }
 
     const rows = [
@@ -4073,11 +4094,20 @@ if (finderRoot) {
       .map((row) => {
         const height = axisMax > 0 ? (row.value / axisMax) * 100 : 0;
         const heightValue = Math.max(0, Math.min(100, height)).toFixed(1);
+        const numericHeight = Number(heightValue);
         const safeAbbr = escapeHtml(row.abbr ?? '');
+        const safeValueLabel = escapeHtml(formatRate(row.value));
+        const labelPlacement = numericHeight >= 18 ? 'inside' : 'outside';
+        const labelClasses = [
+          'finder-comparison-bar-value-marker',
+          `finder-comparison-bar-value-marker--${row.key}`,
+          `finder-comparison-bar-value-marker--${labelPlacement}`
+        ].join(' ');
         return `
           <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
             <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
-            <div class="finder-comparison-bar-outer">
+            <div class="finder-comparison-bar-outer" style="--bar-height: ${heightValue}%;">
+              <span class="${labelClasses}" style="--label-position: ${heightValue};" aria-hidden="true">${safeValueLabel}</span>
               <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
             </div>
           </div>

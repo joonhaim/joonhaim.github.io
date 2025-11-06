@@ -2,6 +2,8 @@
   --brand-red: #da291c;
   --brand-red-dark: #a70000;
   --brand-navy: #0f172a;
+  --brand-positive: #0f766e;
+  --brand-neutral: #64748b;
   --page-background: #f5f7fb;
   --surface-default: #ffffff;
   --surface-muted: #f8fafc;
@@ -2760,6 +2762,36 @@ body {
   background: rgba(15, 23, 42, 0.35);
 }
 
+.finder-comparison-difference--higher {
+  border-color: rgba(218, 41, 28, 0.25);
+  background: rgba(218, 41, 28, 0.08);
+  color: var(--brand-red);
+}
+
+.finder-comparison-difference--higher::before {
+  background: var(--brand-red);
+}
+
+.finder-comparison-difference--lower {
+  border-color: rgba(15, 118, 110, 0.25);
+  background: rgba(15, 118, 110, 0.08);
+  color: var(--brand-positive);
+}
+
+.finder-comparison-difference--lower::before {
+  background: var(--brand-positive);
+}
+
+.finder-comparison-difference--even {
+  border-color: rgba(100, 116, 139, 0.22);
+  background: rgba(100, 116, 139, 0.08);
+  color: var(--brand-neutral);
+}
+
+.finder-comparison-difference--even::before {
+  background: var(--brand-neutral);
+}
+
 .finder-comparison-chart {
   display: flex;
   flex-direction: column;
@@ -2879,6 +2911,7 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  position: relative;
 }
 
 .finder-comparison-bar-key {
@@ -2895,6 +2928,51 @@ body {
   height: var(--bar-height, 0%);
   border-radius: 0.35rem 0.35rem 0 0;
   transition: height 0.35s ease;
+}
+
+.finder-comparison-bar-value-marker {
+  position: absolute;
+  left: 50%;
+  bottom: calc((var(--label-position, 0) * 1%) + 0.35rem);
+  transform: translate(-50%, 0);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--brand-navy);
+  white-space: nowrap;
+  transition: bottom 0.35s ease, transform 0.35s ease;
+}
+
+.finder-comparison-bar-value-marker--inside {
+  bottom: calc((var(--label-position, 0) * 1%) - 0.4rem);
+  color: #ffffff;
+  transform: translate(-50%, 0);
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.finder-comparison-bar-value-marker--outside {
+  transform: translate(-50%, 0);
+}
+
+.finder-comparison-bar-value-marker--national {
+  background: rgba(148, 163, 184, 0.2);
+  color: var(--brand-neutral);
+}
+
+.finder-comparison-bar-value-marker--canton {
+  background: rgba(218, 41, 28, 0.16);
+  color: var(--brand-red);
+}
+
+.finder-comparison-bar-value-marker--inside.finder-comparison-bar-value-marker--national {
+  background: rgba(148, 163, 184, 0.75);
+}
+
+.finder-comparison-bar-value-marker--inside.finder-comparison-bar-value-marker--canton {
+  background: rgba(218, 41, 28, 0.85);
 }
 
 .finder-comparison-bar--national {

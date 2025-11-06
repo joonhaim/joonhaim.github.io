@@ -2752,13 +2752,13 @@ body {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-muted);
-  align-self: center;
+  align-self: stretch;
   margin-top: 0.5rem;
   margin-bottom: 0.75rem;
-  margin-inline: auto;
+  margin-inline: 0;
   width: 100%;
-  max-width: var(--comparison-content-max-width);
-  text-align: center;
+  max-width: 100%;
+  text-align: left;
   line-height: 1.55;
 }
 

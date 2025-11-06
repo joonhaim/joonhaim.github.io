@@ -946,7 +946,6 @@ if (finderRoot) {
           casesHistorical: 'Cases 2018–2022',
           note:
             'Rates are shown as published in CH-IQI reporting and may be suppressed when case volumes are low.',
-          noData: 'No additional metrics are available for this hospital.',
           infoHeading: 'Hospital snapshot',
           infoAddress: 'Address',
           infoLocation: 'Location',
@@ -1156,7 +1155,6 @@ if (finderRoot) {
           casesHistorical: 'Fälle 2018–2022',
           note:
             'Die Kennzahlen entsprechen den CH-IQI-Veröffentlichungen und können bei kleinen Fallzahlen unterdrückt werden.',
-          noData: 'Für dieses Spital sind keine zusätzlichen Kennzahlen verfügbar.',
           infoHeading: 'Spitalprofil',
           infoAddress: 'Adresse',
           infoLocation: 'Ort',
@@ -1366,7 +1364,6 @@ if (finderRoot) {
           casesHistorical: 'Cas 2018-2022',
           note:
             'Les valeurs proviennent des publications CH-IQI et peuvent être masquées lorsque les volumes sont faibles.',
-          noData: 'Aucune donnée supplémentaire n’est disponible pour cet hôpital.',
           infoHeading: 'Aperçu de l’hôpital',
           infoAddress: 'Adresse',
           infoLocation: 'Localisation',
@@ -1576,7 +1573,6 @@ if (finderRoot) {
           casesHistorical: 'Casi 2018-2022',
           note:
             'I valori corrispondono alle pubblicazioni CH-IQI e possono essere nascosti con bassi volumi di casi.',
-          noData: 'Non sono disponibili ulteriori indicatori per questo ospedale.',
           infoHeading: 'Panoramica dell’ospedale',
           infoAddress: 'Indirizzo',
           infoLocation: 'Località',
@@ -1946,7 +1942,6 @@ if (finderRoot) {
       smrHistorical: 'Standardized mortality ratio 2018–2022',
       casesHistorical: 'Cases 2018–2022',
       note: 'Rates are shown as reported in CH-IQI publications and may be suppressed when data volumes are low.',
-      noData: 'No additional metrics are available for this hospital.',
       infoHeading: 'Hospital snapshot',
       infoAddress: 'Address',
       infoLocation: 'Location',
@@ -2117,9 +2112,12 @@ if (finderRoot) {
           );
         }
 
+        const noDataMessage = detailMessage('noData');
         const metricsMarkup = metricsSections.length
           ? metricsSections.join('')
-          : `<p class="hospital-detail__empty">${escapeHtml(detailMessage('noData'))}</p>`;
+          : noDataMessage
+              ? `<p class="hospital-detail__empty">${escapeHtml(noDataMessage)}</p>`
+              : '';
 
         const hospitalKey = entry.originalName ?? entry.hospital;
         const hospitalRecord = finderDataset?.byHospital?.get(hospitalKey);

@@ -1986,6 +1986,7 @@ body {
   justify-content: center;
   --overlay-vertical-gap: clamp(1.25rem, 4.5vh, 2.75rem);
   --overlay-bottom-gap: clamp(1rem, 5vh, 2.75rem);
+  --overlay-viewport-height: 100vh;
   --overlay-horizontal-gap: clamp(1.25rem, 5vw, 3.5rem);
   padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
     var(--overlay-bottom-gap);
@@ -2004,23 +2005,42 @@ body {
   display: none;
 }
 
+@supports (height: 100svh) {
+  .hospital-detail-overlay {
+    --overlay-viewport-height: 100svh;
+  }
+}
+
+@supports (height: 100dvh) {
+  .hospital-detail-overlay {
+    --overlay-viewport-height: 100dvh;
+  }
+}
+
 .hospital-detail {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  --hospital-padding-top: clamp(1.75rem, 2vw + 1.75rem, 3rem);
+  --hospital-padding-bottom: var(--hospital-padding-top);
+  --hospital-padding-inline: clamp(1.75rem, 2vw + 1.75rem, 3rem);
   width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
   max-height: min(
     calc(
-      100vh -
-        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 1.25rem)
+      var(--overlay-viewport-height) -
+        (
+          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+            var(--hospital-padding-top) + var(--hospital-padding-bottom)
+        )
     ),
     880px
   );
   overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
-  padding: clamp(1.75rem, 2vw + 1.75rem, 3rem);
+  padding: var(--hospital-padding-top) var(--hospital-padding-inline)
+    var(--hospital-padding-bottom);
   box-shadow: 0 45px 90px rgba(15, 23, 42, 0.45);
   transform: translateY(16px);
   transition: transform 0.25s ease;
@@ -2388,20 +2408,23 @@ body {
 
 @media (max-width: 720px) {
   .hospital-detail-overlay {
-    align-items: flex-start;
-    --overlay-vertical-gap: clamp(1rem, 3.75vh, 1.75rem);
-    --overlay-bottom-gap: clamp(0.85rem, 4vh, 1.5rem);
-    --overlay-horizontal-gap: 1rem;
-    padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
-      var(--overlay-bottom-gap);
+    --overlay-vertical-gap: clamp(0.75rem, 3.5vh, 1.25rem);
+    --overlay-bottom-gap: var(--overlay-vertical-gap);
+    --overlay-horizontal-gap: clamp(0.9rem, 4vw, 1.25rem);
+    padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap);
   }
 
   .hospital-detail {
-    padding: 1.5rem 1.5rem 2rem;
+    --hospital-padding-top: clamp(1.35rem, 2vw + 1.1rem, 1.75rem);
+    --hospital-padding-bottom: clamp(1.45rem, 2vw + 1.2rem, 1.95rem);
+    --hospital-padding-inline: clamp(1.25rem, 4vw, 1.5rem);
     width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
     max-height: calc(
-      100vh -
-        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 1rem)
+      var(--overlay-viewport-height) -
+        (
+          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+            var(--hospital-padding-top) + var(--hospital-padding-bottom)
+        )
     );
   }
 
@@ -3178,9 +3201,14 @@ body {
   }
 
   .hospital-detail-overlay {
-    align-items: flex-start;
-    --overlay-vertical-gap: calc(env(safe-area-inset-top, 0px) + 0.85rem);
-    --overlay-bottom-gap: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    --overlay-vertical-gap: max(
+      0.75rem,
+      calc(env(safe-area-inset-top, 0px) + 0.75rem)
+    );
+    --overlay-bottom-gap: max(
+      0.75rem,
+      calc(env(safe-area-inset-bottom, 0px) + 0.75rem)
+    );
     --overlay-horizontal-gap: 0.9rem;
     padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
       var(--overlay-bottom-gap);
@@ -3188,13 +3216,23 @@ body {
 
   .hospital-detail {
     width: calc(100% - (var(--overlay-horizontal-gap) * 2));
-    max-height: calc(
-      100vh -
-        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 0.75rem)
-    );
     border-radius: 1.15rem;
-    padding: calc(env(safe-area-inset-top, 0px) + 1.2rem) 1.25rem
-      calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+    --hospital-padding-top: max(
+      1.15rem,
+      calc(env(safe-area-inset-top, 0px) + 1.15rem)
+    );
+    --hospital-padding-bottom: max(
+      1.35rem,
+      calc(env(safe-area-inset-bottom, 0px) + 1.35rem)
+    );
+    --hospital-padding-inline: 1.25rem;
+    max-height: calc(
+      var(--overlay-viewport-height) -
+        (
+          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+            var(--hospital-padding-top) + var(--hospital-padding-bottom)
+        )
+    );
   }
 
 }

@@ -240,10 +240,14 @@ body {
 }
 
 .hero .tagline {
-  max-width: 720px;
+  width: 100%;
   margin: 0;
   font-size: 1rem;
   line-height: 1.6;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .hero .hero-links {
@@ -3262,7 +3266,7 @@ body {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 3.4rem 1.5rem 2.6rem;
+    padding: 3.4rem 1.5rem 2.6rem 0;
   }
 
   .hero-inner {
@@ -3270,7 +3274,8 @@ body {
     padding: 0;
     max-width: 22rem;
     width: min(100%, 22rem);
-    margin-inline: auto;
+    margin-inline: 0;
+    padding-inline-start: 0;
   }
 
   .hero h1 {
@@ -3287,6 +3292,7 @@ body {
     font-size: 0.92rem;
     max-width: 100%;
     width: 100%;
+    text-wrap: pretty;
     overflow-wrap: anywhere;
     word-break: break-word;
     hyphens: auto;

@@ -2617,6 +2617,7 @@ body {
 .finder-canton-card__layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-areas: 'primary comparison';
   gap: 1.75rem;
   align-items: stretch;
 }
@@ -2626,6 +2627,7 @@ body {
   flex-direction: column;
   gap: 1.35rem;
   min-width: 0;
+  grid-area: primary;
 }
 
 .finder-canton-header {
@@ -2679,6 +2681,7 @@ body {
 
 .finder-canton-card__comparison {
   min-width: 0;
+  grid-area: comparison;
   --comparison-gutter: 3rem;
   border-left: 1px solid var(--border-soft);
 }
@@ -2729,16 +2732,16 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 0.95rem;
+  padding: 0.7rem 0.9rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-muted);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.04);
   font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--brand-navy);
+  font-weight: 500;
+  color: var(--text-muted);
   align-self: flex-start;
   margin-left: var(--comparison-content-offset);
-  width: min(100%, 19rem);
+  width: min(100%, clamp(18rem, 60vw, 24rem));
 }
 
 .finder-comparison-difference::before {
@@ -2747,7 +2750,7 @@ body {
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 999px;
-  background: var(--brand-red);
+  background: rgba(15, 23, 42, 0.35);
 }
 
 .finder-comparison-chart {
@@ -2957,6 +2960,13 @@ body {
     font-size: 0.9rem;
   }
 
+  .finder-comparison-difference {
+    margin-inline: auto;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+  }
+
   .finder-canton-card__primary {
     gap: 1.05rem;
   }
@@ -3120,6 +3130,9 @@ body {
 
   .finder-canton-card__layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'primary'
+      'comparison';
     gap: 1.5rem;
   }
 
@@ -3240,6 +3253,16 @@ body {
 
   .finder-canton-type {
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 540px) {
+  .finder-canton-card__comparison {
+    --comparison-gutter: 1.5rem;
+  }
+
+  .finder-canton-card__comparison.finder-comparison-card {
+    padding: 1.35rem 0 0;
   }
 }
 

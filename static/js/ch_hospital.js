@@ -3670,6 +3670,19 @@ if (finderRoot) {
         state.procedureQuery = '';
         finderProcedureSearch.value = '';
         renderProcedureControls();
+        return;
+      }
+
+      if (event.key === 'Enter') {
+        const shouldAutoScroll =
+          typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+            ? window.matchMedia('(max-width: 768px)').matches
+            : false;
+
+        if (shouldAutoScroll) {
+          state.shouldScrollToProcedures = true;
+          renderProcedureControls();
+        }
       }
     });
 

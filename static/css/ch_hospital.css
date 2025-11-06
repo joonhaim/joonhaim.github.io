@@ -2703,6 +2703,10 @@ body {
   background: transparent;
   box-shadow: none;
   height: 100%;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: stretch;
+  row-gap: 1rem;
 }
 
 .finder-note-card {
@@ -2778,6 +2782,8 @@ body {
   margin-left: var(--comparison-content-offset);
   width: 100%;
   max-width: var(--comparison-content-max-width);
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .finder-comparison-card--empty .finder-comparison-chart {
@@ -2789,15 +2795,19 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .finder-comparison-axis {
   position: relative;
-  height: 180px;
+  height: auto;
   padding: 0.25rem var(--comparison-axis-right) 0 calc(var(--comparison-gutter) + 1rem);
   display: flex;
   align-items: stretch;
   justify-content: center;
+  flex: 1 1 auto;
+  min-height: 170px;
 }
 
 .finder-comparison-axis::before {
@@ -2886,7 +2896,7 @@ body {
 .finder-comparison-bar-outer {
   width: 100%;
   height: 100%;
-  max-height: 160px;
+  max-height: none;
   display: flex;
   align-items: flex-end;
   justify-content: center;

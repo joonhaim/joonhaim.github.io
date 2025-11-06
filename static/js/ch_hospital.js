@@ -881,6 +881,11 @@ if (finderRoot) {
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
+        cantonMetricHospitalsLabel: 'Hospitals reporting',
+        cantonMetricCasesLabel: 'Cases (2023)',
+        cantonMetricTopHospitalLabel: 'Top hospital',
+        cantonMetricTopHospitalShare: '{share}% of canton cases',
+        cantonMetricEmpty: 'No hospital metrics available for this canton.',
         cantonComparisonPrompt: 'Select a canton to compare against the Swiss average.',
         selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
         cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
@@ -1062,6 +1067,11 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
+        cantonMetricHospitalsLabel: 'Spitäler mit Fällen',
+        cantonMetricCasesLabel: 'Fälle (2023)',
+        cantonMetricTopHospitalLabel: 'Spital mit den meisten Fällen',
+        cantonMetricTopHospitalShare: '{share}% der Kantonsfälle',
+        cantonMetricEmpty: 'Keine Kantonskennzahlen verfügbar.',
         cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem Schweizer Durchschnitt zu vergleichen.',
         selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
         cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
@@ -1243,6 +1253,11 @@ if (finderRoot) {
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
+        cantonMetricHospitalsLabel: 'Hôpitaux déclarants',
+        cantonMetricCasesLabel: 'Cas (2023)',
+        cantonMetricTopHospitalLabel: 'Établissement principal',
+        cantonMetricTopHospitalShare: '{share}% des cas du canton',
+        cantonMetricEmpty: 'Aucun indicateur cantonal disponible.',
         cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne suisse.',
         selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
         cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
@@ -1424,6 +1439,11 @@ if (finderRoot) {
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
+        cantonMetricHospitalsLabel: 'Ospedali con casi segnalati',
+        cantonMetricCasesLabel: 'Casi (2023)',
+        cantonMetricTopHospitalLabel: 'Ospedale principale',
+        cantonMetricTopHospitalShare: '{share}% dei casi cantonali',
+        cantonMetricEmpty: 'Nessuna metrica cantonale disponibile.',
         cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media svizzera.',
         selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
         cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
@@ -1777,6 +1797,8 @@ if (finderRoot) {
     const finderListMeta = document.getElementById('finder-list-meta');
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
+    const finderCantonMetrics = document.getElementById('finder-canton-metrics');
+    const finderCantonTag = document.getElementById('finder-canton-tag');
     const finderCantonList = document.getElementById('finder-canton-list');
     const finderCantonComparisonCard = document.getElementById('finder-canton-comparison-card');
     const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
@@ -3687,14 +3709,46 @@ if (finderRoot) {
   }
 
   function renderCantonDetails(agg) {
-    const cantonHosp = agg.cantonHosp;
+    if (finderCantonMetrics) {
+      finderCantonMetrics.innerHTML = '';
+    }
 
-    if (state.selectedCanton === ALL_CANTONS_OPTION) {
-      finderCantonSummary.textContent = msg('cantonSelectPrompt');
+    if (finderCantonTag) {
+      finderCantonTag.textContent = '';
+      finderCantonTag.hidden = true;
+      finderCantonTag.removeAttribute('title');
+    }
+
+    if (!agg) {
+      finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      finderCantonList.classList.add('finder-canton-list--empty');
       return;
     }
 
+    const isAllCantons = state.selectedCanton === ALL_CANTONS_OPTION;
+    const cantonOption = getCantonOptionByValue(state.selectedCanton);
+
+    if (!isAllCantons && finderCantonTag) {
+      const tagText = cantonOption?.value ?? '';
+      const tagTitle = cantonOption?.label ?? '';
+      if (tagText) {
+        finderCantonTag.textContent = tagText;
+        if (tagTitle && tagTitle !== tagText) {
+          finderCantonTag.title = tagTitle;
+        }
+        finderCantonTag.hidden = false;
+      }
+    }
+
+    if (isAllCantons) {
+      finderCantonSummary.textContent = msg('cantonSelectPrompt');
+      finderCantonList.innerHTML = '';
+      finderCantonList.classList.add('finder-canton-list--empty');
+      return;
+    }
+
+    const cantonHosp = Array.isArray(agg.cantonHosp) ? agg.cantonHosp : [];
     const totalCanton = cantonHosp.reduce((sum, h) => sum + h.cases, 0);
     const leader = cantonHosp[0];
     let summaryText;
@@ -3704,7 +3758,9 @@ if (finderRoot) {
     } else {
       const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
       const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
-      const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
+      const procName = state.selectedProc?.name ?? '';
+      const procCode = state.selectedProc?.code ?? '';
+      const procedureLabel = procName && procCode ? `${procName} (${procCode})` : procName || procCode;
       summaryText = msg('cantonSummary', {
         canton: state.selectedCanton,
         count: cantonHosp.length,
@@ -3713,6 +3769,38 @@ if (finderRoot) {
         cantonShare,
         nationalShare
       });
+
+      if (finderCantonMetrics) {
+        const hospitalsLabel = escapeHtml(msg('cantonMetricHospitalsLabel'));
+        const casesLabel = escapeHtml(msg('cantonMetricCasesLabel'));
+        const leaderLabel = escapeHtml(msg('cantonMetricTopHospitalLabel'));
+        const leaderShareLabel = escapeHtml(msg('cantonMetricTopHospitalShare', { share: cantonShare }));
+        const hospitalsValue = escapeHtml(cantonHosp.length.toLocaleString());
+        const casesValue = escapeHtml(totalCanton.toLocaleString());
+        const leaderName = escapeHtml(leader.hospital);
+
+        finderCantonMetrics.innerHTML = `
+          <div class="finder-canton-metric">
+            <span class="finder-canton-metric__label">${hospitalsLabel}</span>
+            <span class="finder-canton-metric__value">${hospitalsValue}</span>
+          </div>
+          <div class="finder-canton-metric">
+            <span class="finder-canton-metric__label">${casesLabel}</span>
+            <span class="finder-canton-metric__value">${casesValue}</span>
+          </div>
+          <div class="finder-canton-metric finder-canton-metric--highlight">
+            <span class="finder-canton-metric__label">${leaderLabel}</span>
+            <span class="finder-canton-metric__value finder-canton-metric__value--compact">${leaderName}</span>
+            <span class="finder-canton-metric__sublabel">${leaderShareLabel}</span>
+          </div>
+        `;
+      }
+    }
+
+    if (!leader && finderCantonMetrics) {
+      finderCantonMetrics.innerHTML = `<div class="finder-canton-metric finder-canton-metric--empty">${escapeHtml(
+        msg('cantonMetricEmpty')
+      )}</div>`;
     }
 
     finderCantonSummary.textContent = summaryText;
@@ -3730,6 +3818,8 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    finderCantonList.classList.toggle('finder-canton-list--empty', cantonHosp.length === 0);
   }
 
   function renderCantonComparison(agg) {
@@ -3994,6 +4084,14 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      if (finderCantonMetrics) {
+        finderCantonMetrics.innerHTML = '';
+      }
+      if (finderCantonTag) {
+        finderCantonTag.textContent = '';
+        finderCantonTag.hidden = true;
+        finderCantonTag.removeAttribute('title');
+      }
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = msg('loadingData');

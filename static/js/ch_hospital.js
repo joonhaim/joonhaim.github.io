@@ -912,6 +912,7 @@ if (finderRoot) {
         cantonComparisonPrompt: 'Select a canton to compare against the national average.',
         selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
         cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
+        cantonComparisonTitle: 'Case frequency per 100k residents',
         cantonComparisonLead: 'Cases per 100k residents: {cantonRate} in {canton} vs {nationalRate} nationwide.',
         cantonComparisonHigher: '{canton} is {difference} per 100k higher than the national average.',
         cantonComparisonLower: '{canton} is {difference} per 100k lower than the national average.',
@@ -1121,6 +1122,7 @@ if (finderRoot) {
         cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem nationalen Durchschnitt zu vergleichen.',
         selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
         cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
+        cantonComparisonTitle: 'Fallhäufigkeit pro 100 000 Einwohner',
         cantonComparisonLead: 'Fälle pro 100 000 Einwohner: {cantonRate} in {canton} vs {nationalRate} schweizweit.',
         cantonComparisonHigher: '{canton} liegt um {difference} pro 100 000 über dem nationalen Durchschnitt.',
         cantonComparisonLower: '{canton} liegt um {difference} pro 100 000 unter dem nationalen Durchschnitt.',
@@ -1330,6 +1332,7 @@ if (finderRoot) {
         cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne nationale.',
         selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
         cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
+        cantonComparisonTitle: 'Fréquence des cas pour 100 000 habitants',
         cantonComparisonLead: 'Cas pour 100 000 habitants : {cantonRate} dans {canton} contre {nationalRate} au niveau suisse.',
         cantonComparisonHigher: '{canton} dépasse la moyenne nationale de {difference} pour 100 000.',
         cantonComparisonLower: '{canton} est inférieur de {difference} pour 100 000 à la moyenne nationale.',
@@ -1539,6 +1542,7 @@ if (finderRoot) {
         cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media nazionale.',
         selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
         cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
+        cantonComparisonTitle: 'Frequenza dei casi per 100 000 abitanti',
         cantonComparisonLead: 'Casi per 100 000 abitanti: {cantonRate} in {canton} rispetto a {nationalRate} a livello svizzero.',
         cantonComparisonHigher: '{canton} è superiore di {difference} ogni 100 000 rispetto alla media nazionale.',
         cantonComparisonLower: '{canton} è inferiore di {difference} ogni 100 000 rispetto alla media nazionale.',
@@ -3957,8 +3961,9 @@ if (finderRoot) {
     }
 
     finderCantonComparisonCard.classList.remove('finder-comparison-card--empty');
-    finderCantonComparisonCaption.textContent = '';
-    finderCantonComparisonCaption.hidden = true;
+    const comparisonTitle = msg('cantonComparisonTitle');
+    finderCantonComparisonCaption.textContent = comparisonTitle ?? '';
+    finderCantonComparisonCaption.hidden = !comparisonTitle;
 
     const formatRate = (value) =>
       Number(value).toLocaleString(undefined, {

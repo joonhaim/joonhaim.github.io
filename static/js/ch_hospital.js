@@ -3930,6 +3930,7 @@ if (finderRoot) {
       typeof state.selectedCanton === 'string'
         ? state.selectedCanton.toUpperCase()
         : '';
+    const cantonShortLabel = getCantonShortLabel(state.selectedCanton);
     const cantonMessageValue = cantonCode || cantonLabel;
     const cantonPopulation = REGION_POPULATION[state.selectedCanton];
     const nationalPopulation = REGION_POPULATION.CH;
@@ -3966,7 +3967,9 @@ if (finderRoot) {
       });
 
     const nationalLabel = msg('cantonComparisonLabelNational');
-    const cantonChartLabel = msg('cantonComparisonLabelCanton', { canton: cantonLabel });
+    const cantonChartLabel = msg('cantonComparisonLabelCanton', {
+      canton: cantonShortLabel || cantonLabel
+    });
 
     const comparisonLead = msg('cantonComparisonLead', {
       cantonRate: formatRate(cantonRate),

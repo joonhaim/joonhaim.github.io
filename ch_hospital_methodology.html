@@ -215,23 +215,39 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    (() => {
+      const toArray = (collection) => Array.prototype.slice.call(collection);
+      const addFadeClass = (element) => {
+        if (element && !element.classList.contains('fade-element')) {
+          element.classList.add('fade-element');
+        }
+      };
+
       const autoFadeSelectors = [
         '.header-left',
         '.swiss-cross',
+        '.hero-inner > *',
+        '.methodology-main',
+        '.methodology-grid',
         '.methodology-grid > *',
+        '.methodology-card',
+        '.methodology-card > *',
         '.site-footer'
       ];
 
       autoFadeSelectors.forEach((selector) => {
-        document.querySelectorAll(selector).forEach((element) => {
-          if (!element.classList.contains('fade-element')) {
-            element.classList.add('fade-element');
-          }
-        });
+        toArray(document.querySelectorAll(selector)).forEach(addFadeClass);
       });
 
-      const fadeElements = document.querySelectorAll('.fade-element');
+      const methodologyMain = document.querySelector('.methodology-main');
+      if (methodologyMain) {
+        toArray(methodologyMain.querySelectorAll('*')).forEach(addFadeClass);
+      }
+
+      const fadeElements = toArray(document.querySelectorAll('.fade-element'));
+      if (!fadeElements.length) {
+        return;
+      }
 
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries, intersectionObserver) => {
@@ -249,7 +265,7 @@
           element.classList.add('visible');
         });
       }
-    });
+    })();
   </script>
 </body>
 </html>

@@ -2388,10 +2388,10 @@ body {
 
 @media (max-width: 720px) {
   .hospital-detail-overlay {
-    align-items: flex-start;
-    --overlay-vertical-gap: clamp(1rem, 3.75vh, 1.75rem);
-    --overlay-bottom-gap: clamp(0.85rem, 4vh, 1.5rem);
-    --overlay-horizontal-gap: 1rem;
+    align-items: center;
+    --overlay-vertical-gap: clamp(0.75rem, 3.5vh, 1.25rem);
+    --overlay-bottom-gap: var(--overlay-vertical-gap);
+    --overlay-horizontal-gap: clamp(0.9rem, 4vw, 1.25rem);
     padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
       var(--overlay-bottom-gap);
   }
@@ -2401,7 +2401,7 @@ body {
     width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
     max-height: calc(
       100vh -
-        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 1rem)
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 0.5rem)
     );
   }
 

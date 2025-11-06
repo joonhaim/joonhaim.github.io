@@ -2100,11 +2100,6 @@ if (finderRoot) {
           Number.isFinite(metrics.observed2023) ||
           Number.isFinite(metrics.expected2023) ||
           Number.isFinite(metrics.smr2023);
-        const hasHistoricalMetrics =
-          Number.isFinite(metrics.observedHistorical) ||
-          Number.isFinite(metrics.expectedHistorical) ||
-          Number.isFinite(metrics.smrHistorical) ||
-          Number.isFinite(metrics.casesHistorical);
 
         const metricsSections = [];
 
@@ -2114,17 +2109,6 @@ if (finderRoot) {
               { label: detailMessage('observed2023'), value: formatPercent(metrics.observed2023) },
               { label: detailMessage('expected2023'), value: formatPercent(metrics.expected2023) },
               { label: detailMessage('smr2023'), value: formatRatio(metrics.smr2023) }
-            ])
-          );
-        }
-
-        if (hasHistoricalMetrics) {
-          metricsSections.push(
-            renderMetricsSection(detailMessage('sectionHistorical'), [
-              { label: detailMessage('observedHistorical'), value: formatPercent(metrics.observedHistorical) },
-              { label: detailMessage('expectedHistorical'), value: formatPercent(metrics.expectedHistorical) },
-              { label: detailMessage('smrHistorical'), value: formatRatio(metrics.smrHistorical) },
-              { label: detailMessage('casesHistorical'), value: formatInteger(metrics.casesHistorical) }
             ])
           );
         }
@@ -2350,9 +2334,9 @@ if (finderRoot) {
               <span class="finder-badge ${badgeClass}">${escapeHtml(typeLabel)}</span>
               <span class="finder-badge finder-badge--neutral">${escapeHtml(entry.canton)}</span>
             </div>
-            ${subtitleMarkup}
           </header>
           ${infoMarkup}
+          ${subtitleMarkup}
           <section class="hospital-detail__summary">${summaryMarkup}</section>
           ${proceduresMarkup}
           <section class="hospital-detail__metrics">${metricsMarkup}</section>

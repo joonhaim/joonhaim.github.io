@@ -216,9 +216,24 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-element').forEach((element) => {
-        element.classList.add('visible');
-      });
+      const fadeElements = document.querySelectorAll('.fade-element');
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, intersectionObserver) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              intersectionObserver.unobserve(entry.target);
+            }
+          });
+        });
+
+        fadeElements.forEach((element) => observer.observe(element));
+      } else {
+        fadeElements.forEach((element) => {
+          element.classList.add('visible');
+        });
+      }
     });
   </script>
 </body>

@@ -3389,6 +3389,14 @@ if (finderRoot) {
       switzerlandLabel = 'Switzerland';
     }
 
+    const isMobileViewport =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 768px)').matches;
+    if (isMobileViewport) {
+      switzerlandLabel = 'CH';
+    }
+
     const hasCantonSelection = state.selectedCanton !== ALL_CANTONS_OPTION;
     const cantonTotals = hasCantonSelection
       ? {

@@ -167,13 +167,22 @@
             <div id="finder-canton-list" class="finder-canton-list"></div>
           </div>
           <div class="finder-canton-card__comparison finder-comparison-card" id="finder-canton-comparison-card">
-            <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
-            <p id="finder-canton-comparison-difference" class="finder-comparison-difference"></p>
-            <div
-              id="finder-canton-comparison-chart"
-              class="finder-comparison-chart"
-              aria-hidden="true"
-            ></div>
+            <div class="finder-comparison-header">
+              <div class="finder-comparison-caption-group">
+                <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
+              </div>
+              <div class="finder-comparison-difference-group" aria-live="polite">
+                <span class="finder-comparison-difference-label">Différence</span>
+                <p id="finder-canton-comparison-difference" class="finder-comparison-difference"></p>
+              </div>
+            </div>
+            <div class="finder-comparison-chart-container">
+              <div
+                id="finder-canton-comparison-chart"
+                class="finder-comparison-chart"
+                aria-hidden="true"
+              ></div>
+            </div>
           </div>
         </div>
       </div>

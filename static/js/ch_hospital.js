@@ -3881,8 +3881,9 @@ if (finderRoot) {
         const position = axisMax > 0 ? (tickValue / axisMax) * 100 : 0;
         const safePosition = Math.max(0, Math.min(100, position));
         const safeLabel = escapeHtml(formatRate(tickValue));
+        const tickClass = tickValue === 0 ? ' finder-comparison-tick--zero' : '';
         return `
-          <div class="finder-comparison-tick" style="--tick-position: ${safePosition}%;">
+          <div class="finder-comparison-tick${tickClass}" style="--tick-position: ${safePosition}%;">
             <span class="finder-comparison-tick-label">${safeLabel}</span>
             <span class="finder-comparison-tick-line" aria-hidden="true"></span>
           </div>
@@ -3897,10 +3898,10 @@ if (finderRoot) {
         const safeAbbr = escapeHtml(row.abbr ?? '');
         return `
           <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
+            <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
             <div class="finder-comparison-bar-outer">
               <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
             </div>
-            <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
           </div>
         `;
       })

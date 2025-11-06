@@ -2490,7 +2490,7 @@ body {
 
 .finder-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.75fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
   gap: 1.5rem;
 }
 
@@ -2500,28 +2500,10 @@ body {
 }
 
 .finder-comparison-card {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
-  padding: 1.75rem;
-  overflow: hidden;
-}
-
-.finder-comparison-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.1) 0%, rgba(218, 41, 28, 0) 65%);
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.finder-comparison-card > * {
-  position: relative;
-  z-index: 1;
+  padding: 1.5rem;
 }
 
 .finder-note-card {
@@ -2552,10 +2534,6 @@ body {
 }
 
 .finder-comparison-caption {
-  padding: 0.85rem 1.05rem;
-  border: 1px solid var(--border-soft);
-  border-radius: 0.85rem;
-  background: rgba(15, 23, 42, 0.04);
   font-weight: 600;
   color: var(--brand-navy);
 }
@@ -2564,10 +2542,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.9rem 1.1rem;
-  border-radius: 0.85rem;
-  border: 1px solid rgba(218, 41, 28, 0.2);
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.14) 0%, rgba(218, 41, 28, 0.06) 100%);
+  padding: 0.75rem 0.95rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-muted);
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--brand-navy);
@@ -2577,31 +2555,16 @@ body {
 .finder-comparison-difference::before {
   content: '';
   display: inline-block;
-  width: 0.65rem;
-  height: 0.65rem;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 999px;
   background: var(--brand-red);
-  box-shadow: 0 4px 8px rgba(218, 41, 28, 0.25);
 }
-
-.finder-comparison-card--empty .finder-comparison-caption {
-  background: rgba(15, 23, 42, 0.02);
-}
-
-.finder-comparison-card--empty .finder-comparison-difference {
-  display: none;
-}
-
 
 .finder-comparison-chart {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  border-radius: 1rem;
-  background: rgba(248, 250, 252, 0.9);
-  border: 1px solid var(--border-soft);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  gap: 0.75rem;
 }
 
 .finder-comparison-card--empty .finder-comparison-chart {
@@ -2621,8 +2584,6 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.04) 0%, rgba(15, 23, 42, 0) 70%);
-  border-radius: 0.8rem;
 }
 
 .finder-comparison-axis::before {
@@ -2632,7 +2593,7 @@ body {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(15, 23, 42, 0.15);
+  background: rgba(15, 23, 42, 0.1);
 }
 
 .finder-comparison-grid {
@@ -2718,8 +2679,7 @@ body {
   align-items: flex-start;
   gap: 2rem;
   width: 100%;
-  padding: 0.75rem 0 0 3.25rem;
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 0.35rem 0 0 3.25rem;
 }
 
 .finder-comparison-bar-meta {
@@ -2750,7 +2710,7 @@ body {
   color: var(--text-subtle);
   text-align: left;
   padding-left: 3.25rem;
-  margin-top: 0.35rem;
+  margin-top: 0.2rem;
 }
 
 .finder-comparison-card--empty .finder-comparison-axis-caption {
@@ -2759,12 +2719,8 @@ body {
 
 @media (max-width: 1024px) {
   .finder-comparison-card {
-    padding: 1.5rem;
+    padding: 1.35rem;
     gap: 1.1rem;
-  }
-
-  .finder-comparison-chart {
-    padding: 1.1rem 1.25rem;
   }
 }
 
@@ -2777,10 +2733,6 @@ body {
   .finder-comparison-caption,
   .finder-comparison-difference {
     font-size: 0.9rem;
-  }
-
-  .finder-comparison-chart {
-    padding: 1rem 1.1rem;
   }
 
   .finder-comparison-axis {
@@ -2799,7 +2751,7 @@ body {
 
   .finder-comparison-bar-legend {
     gap: 1.5rem;
-    padding: 0.65rem 0 0 3rem;
+    padding: 0.35rem 0 0 3rem;
   }
 }
 
@@ -2812,8 +2764,8 @@ body {
   font-weight: 500;
 }
 
-.finder-comparison-card--empty::before {
-  opacity: 0.2;
+.finder-comparison-card--empty .finder-comparison-difference {
+  display: none;
 }
 
 .finder-canton-list {

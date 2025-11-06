@@ -1737,6 +1737,7 @@ if (finderRoot) {
     const finderListMeta = document.getElementById('finder-list-meta');
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
+    const finderCantonChart = document.getElementById('finder-canton-chart');
     const finderCantonList = document.getElementById('finder-canton-list');
     const finderQuickPicks = document.getElementById('finder-quick-picks');
     const finderQuickTitle = document.getElementById('finder-quick-title');
@@ -3091,7 +3092,8 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesByCanton: []
       };
     }
 
@@ -3127,7 +3129,8 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesByCanton: []
       };
     }
 
@@ -3152,13 +3155,42 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesByCanton: []
       };
     }
 
     const hospitalsWithShare = enriched
       .map((h) => ({ ...h, share: h.cases / total }))
       .sort((a, b) => b.cases - a.cases);
+
+    const cantonCasesMap = hospitalsWithShare.reduce((map, hospital) => {
+      const current = map.get(hospital.canton) || 0;
+      map.set(hospital.canton, current + hospital.cases);
+      return map;
+    }, new Map());
+
+    const casesByCanton = Array.from(cantonCasesMap.entries())
+      .map(([canton, cases]) => ({
+        canton,
+        cases,
+        share: cases / total
+      }))
+      .sort((a, b) => b.cases - a.cases);
+
+    if (
+      hasCantonSelection &&
+      state.selectedCanton &&
+      !casesByCanton.some((entry) => entry.canton === state.selectedCanton)
+    ) {
+      casesByCanton.push({ canton: state.selectedCanton, cases: 0, share: 0 });
+      casesByCanton.sort((a, b) => {
+        if (b.cases !== a.cases) {
+          return b.cases - a.cases;
+        }
+        return a.canton.localeCompare(b.canton);
+      });
+    }
 
     const cantonHosp =
       state.selectedCanton === ALL_CANTONS_OPTION
@@ -3209,7 +3241,8 @@ if (finderRoot) {
       cantonHosp,
       cantonTotals,
       cantonHhi: cantonHhiData?.hhi ?? null,
-      cantonHhiLabel: cantonHhiData?.label ?? null
+      cantonHhiLabel: cantonHhiData?.label ?? null,
+      casesByCanton
     };
   }
 
@@ -3642,9 +3675,13 @@ if (finderRoot) {
 
   function renderCantonDetails(agg) {
     const cantonHosp = agg.cantonHosp;
+    const chartData = Array.isArray(agg.casesByCanton) ? agg.casesByCanton : [];
 
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
       finderCantonSummary.textContent = msg('cantonSelectPrompt');
+      if (finderCantonChart) {
+        finderCantonChart.innerHTML = '';
+      }
       finderCantonList.innerHTML = '';
       return;
     }
@@ -3670,6 +3707,49 @@ if (finderRoot) {
     }
 
     finderCantonSummary.textContent = summaryText;
+
+    if (finderCantonChart) {
+      if (!chartData.length) {
+        const emptyMessage = escapeHtml(msg('noHospitalVolumes'));
+        finderCantonChart.innerHTML = `<p class="finder-canton-chart__empty">${emptyMessage}</p>`;
+      } else {
+        const maxCases = chartData[0]?.cases ?? 0;
+        const chartMarkup = chartData
+          .map((entry) => {
+            const width = maxCases ? Math.max(0, Math.min((entry.cases / maxCases) * 100, 100)) : 0;
+            const widthLabel = `${width.toFixed(2)}%`;
+            const sharePercent = Number.isFinite(entry.share) ? entry.share * 100 : 0;
+            const shareDigits = sharePercent >= 10 ? 0 : 1;
+            const shareLabel = Number.isFinite(sharePercent)
+              ? sharePercent.toLocaleString(undefined, {
+                  minimumFractionDigits: shareDigits,
+                  maximumFractionDigits: shareDigits
+                })
+              : '0';
+            const rowClass = [
+              'finder-canton-chart__row',
+              entry.canton === state.selectedCanton ? 'is-selected' : ''
+            ]
+              .filter(Boolean)
+              .join(' ');
+            const cantonLabel = escapeHtml(entry.canton);
+            const casesLabel = escapeHtml(entry.cases.toLocaleString(activeLocale));
+            const shareText = escapeHtml(`${shareLabel}%`);
+            return `
+              <div class="${rowClass}">
+                <span class="finder-canton-chart__label">${cantonLabel}</span>
+                <div class="finder-canton-chart__bar-wrap">
+                  <div class="finder-canton-chart__bar" style="width: ${widthLabel};"></div>
+                </div>
+                <span class="finder-canton-chart__value">${casesLabel}</span>
+                <span class="finder-canton-chart__share">${shareText}</span>
+              </div>
+            `;
+          })
+          .join('');
+        finderCantonChart.innerHTML = chartMarkup;
+      }
+    }
 
     finderCantonList.innerHTML = cantonHosp
       .map((h) => {
@@ -3717,6 +3797,9 @@ if (finderRoot) {
       finderList.innerHTML = '';
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
+      if (finderCantonChart) {
+        finderCantonChart.innerHTML = '';
+      }
       finderCantonList.innerHTML = '';
       scrollToResultsIfNeeded();
       return;
@@ -3728,6 +3811,9 @@ if (finderRoot) {
       finderList.innerHTML = '';
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
+      if (finderCantonChart) {
+        finderCantonChart.innerHTML = '';
+      }
       finderCantonList.innerHTML = '';
       scrollToResultsIfNeeded();
       return;
@@ -3805,6 +3891,10 @@ if (finderRoot) {
         finderList.innerHTML = '';
         displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
+        if (finderCantonChart) {
+          const errorMessage = escapeHtml(msg('datasetError'));
+          finderCantonChart.innerHTML = `<p class="finder-canton-chart__empty">${errorMessage}</p>`;
+        }
       });
   }
 

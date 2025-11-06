@@ -2365,6 +2365,78 @@ body {
   color: var(--text-muted);
 }
 
+.finder-canton-chart {
+  margin-top: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.finder-canton-chart__row {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.finder-canton-chart__label {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-subtle);
+}
+
+.finder-canton-chart__bar-wrap {
+  position: relative;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.28);
+  overflow: hidden;
+}
+
+.finder-canton-chart__bar {
+  height: 100%;
+  background: rgba(37, 99, 235, 0.55);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.finder-canton-chart__value,
+.finder-canton-chart__share {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-subtle);
+}
+
+.finder-canton-chart__share {
+  font-size: 0.75rem;
+}
+
+.finder-canton-chart__row.is-selected {
+  color: var(--brand-navy);
+}
+
+.finder-canton-chart__row.is-selected .finder-canton-chart__label {
+  color: var(--brand-navy);
+}
+
+.finder-canton-chart__row.is-selected .finder-canton-chart__bar {
+  background: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+.finder-canton-chart__row.is-selected .finder-canton-chart__value,
+.finder-canton-chart__row.is-selected .finder-canton-chart__share {
+  color: var(--brand-navy);
+  font-weight: 600;
+}
+
+.finder-canton-chart__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .finder-canton-list {
   margin-top: 1rem;
   display: grid;

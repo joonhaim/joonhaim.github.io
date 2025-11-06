@@ -2079,9 +2079,7 @@ if (finderRoot) {
 
         const summaryItems = [
           { label: detailMessage('cases2023'), value: formatInteger(entry.cases) },
-          { label: detailMessage('share'), value: formatFraction(entry.share) },
-          { label: detailMessage('type'), value: typeLabel },
-          { label: detailMessage('canton'), value: entry.canton }
+          { label: detailMessage('share'), value: formatFraction(entry.share) }
         ];
 
         const summaryMarkup = summaryItems
@@ -2102,11 +2100,6 @@ if (finderRoot) {
           Number.isFinite(metrics.observed2023) ||
           Number.isFinite(metrics.expected2023) ||
           Number.isFinite(metrics.smr2023);
-        const hasHistoricalMetrics =
-          Number.isFinite(metrics.observedHistorical) ||
-          Number.isFinite(metrics.expectedHistorical) ||
-          Number.isFinite(metrics.smrHistorical) ||
-          Number.isFinite(metrics.casesHistorical);
 
         const metricsSections = [];
 
@@ -2116,17 +2109,6 @@ if (finderRoot) {
               { label: detailMessage('observed2023'), value: formatPercent(metrics.observed2023) },
               { label: detailMessage('expected2023'), value: formatPercent(metrics.expected2023) },
               { label: detailMessage('smr2023'), value: formatRatio(metrics.smr2023) }
-            ])
-          );
-        }
-
-        if (hasHistoricalMetrics) {
-          metricsSections.push(
-            renderMetricsSection(detailMessage('sectionHistorical'), [
-              { label: detailMessage('observedHistorical'), value: formatPercent(metrics.observedHistorical) },
-              { label: detailMessage('expectedHistorical'), value: formatPercent(metrics.expectedHistorical) },
-              { label: detailMessage('smrHistorical'), value: formatRatio(metrics.smrHistorical) },
-              { label: detailMessage('casesHistorical'), value: formatInteger(metrics.casesHistorical) }
             ])
           );
         }
@@ -2225,6 +2207,11 @@ if (finderRoot) {
         infoItems.push({
           label: detailMessage('infoCoordinates'),
           value: coordinatesText || detailMessage('infoUnavailable')
+        });
+
+        infoItems.push({
+          label: detailMessage('type'),
+          value: typeLabel || detailMessage('infoUnavailable')
         });
 
         const infoHeading = detailMessage('infoHeading');
@@ -2343,13 +2330,13 @@ if (finderRoot) {
           <header class="hospital-detail__header">
             ${eyebrowMarkup}
             <h2 id="hospital-detail-title">${escapeHtml(entry.hospital)}</h2>
-            ${subtitleMarkup}
             <div class="hospital-detail__tags">
               <span class="finder-badge ${badgeClass}">${escapeHtml(typeLabel)}</span>
               <span class="finder-badge finder-badge--neutral">${escapeHtml(entry.canton)}</span>
             </div>
           </header>
           ${infoMarkup}
+          ${subtitleMarkup}
           <section class="hospital-detail__summary">${summaryMarkup}</section>
           ${proceduresMarkup}
           <section class="hospital-detail__metrics">${metricsMarkup}</section>

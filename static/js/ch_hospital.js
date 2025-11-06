@@ -565,7 +565,9 @@ const excludedInstitutions = new Set([
 const hospitalDatasetCache = {
   promise: null,
   data: null,
-  coordinates: new Map()
+  coordinates: new Map(),
+  populations: new Map(),
+  populationTotal: 0
 };
 
 function parseInteger(value) {
@@ -627,7 +629,7 @@ function inferHospitalMeta(name, coordinatesMap = hospitalDatasetCache.coordinat
   };
 }
 
-function buildHospitalDataset(entries, coordinatesMap) {
+function buildHospitalDataset(entries, coordinatesMap, populationMap, populationTotal) {
   const byProcedure = new Map();
   const byHospital = new Map();
   const meta = new Map();
@@ -707,7 +709,14 @@ function buildHospitalDataset(entries, coordinatesMap) {
   const types = new Set();
   meta.forEach(details => types.add(details.type));
 
-  return { byProcedure, byHospital, meta, types };
+  return {
+    byProcedure,
+    byHospital,
+    meta,
+    types,
+    populations: populationMap ?? new Map(),
+    populationTotal: Number.isFinite(populationTotal) ? populationTotal : 0
+  };
 }
 
 function loadHospitalDataset() {
@@ -724,17 +733,51 @@ function loadHospitalDataset() {
           throw new Error(`Failed to load dataset (${response.status})`);
         }
         return response.json();
-      })
+      }),
+      fetch('static/data/canton_population_2023.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to load population dataset (${response.status})`);
+          }
+          return response.json();
+        })
+        .catch(error => {
+          console.warn('Unable to load canton population dataset', error);
+          return {};
+        })
     ])
-      .then(([coordinateData, dataset]) => {
+      .then(([coordinateData, dataset, populationData]) => {
         const coordinateMap = new Map(Object.entries(coordinateData || {}));
         hospitalDatasetCache.coordinates = coordinateMap;
+        const populationEntries =
+          populationData && typeof populationData === 'object' ? populationData : {};
+        const populationMap = new Map();
+        Object.entries(populationEntries).forEach(([code, value]) => {
+          if (!code) {
+            return;
+          }
+          const safeCode = String(code).toUpperCase();
+          const population = Number(value?.population);
+          if (!Number.isFinite(population) || population <= 0) {
+            return;
+          }
+          const name = typeof value?.name === 'string' && value.name.trim()
+            ? value.name.trim()
+            : safeCode;
+          populationMap.set(safeCode, { code: safeCode, name, population });
+        });
+        const populationTotal = Array.from(populationMap.values()).reduce(
+          (sum, entry) => sum + (entry.population ?? 0),
+          0
+        );
+        hospitalDatasetCache.populations = populationMap;
+        hospitalDatasetCache.populationTotal = populationTotal;
         const rows = Array.isArray(dataset?.rows)
           ? dataset.rows
           : Array.isArray(dataset)
             ? dataset
             : [];
-        const parsed = buildHospitalDataset(rows, coordinateMap);
+        const parsed = buildHospitalDataset(rows, coordinateMap, populationMap, populationTotal);
         hospitalDatasetCache.data = parsed;
         return parsed;
       })
@@ -830,10 +873,12 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Total Cases (2023)',
+        casesPer100k: 'Cases per 100k residents',
         hospitalsPerforming: 'Hospitals performing this procedure',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI Index)',
-        switzerland: 'Switzerland'
+        switzerland: 'Switzerland',
+        casesPer100kFootnote: 'Population: BFS permanent residents (2023)'
       },
       messages: {
         allCantons: 'All cantons',
@@ -877,7 +922,9 @@ if (finderRoot) {
         cantonSelectPrompt: 'Select a canton to view local hospital details.',
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
         cantonSummary:
-          'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
+          'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.{perCapitaSentence}',
+        cantonPerCapitaSentence:
+          ' That equals {perCapita} cases per 100k residents (BFS 2023).',
         cantonRowCases: '{cases} cases',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
@@ -999,10 +1046,12 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Fallzahlen gesamt (2023)',
+        casesPer100k: 'Fälle pro 100 000 Einwohner:innen',
         hospitalsPerforming: 'Spitäler mit diesem Eingriff',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI-Index)',
-        switzerland: 'Schweiz'
+        switzerland: 'Schweiz',
+        casesPer100kFootnote: 'Bevölkerung: BFS ständige Wohnbevölkerung (2023)'
       },
       messages: {
         allCantons: 'Alle Kantone',
@@ -1046,7 +1095,9 @@ if (finderRoot) {
         cantonSelectPrompt: 'Wählen Sie einen Kanton, um lokale Spitaldetails zu sehen.',
         cantonNoHospitals: 'Im Kanton {canton} passt kein Spital zur aktuellen Auswahl.',
         cantonSummary:
-          'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
+          'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.{perCapitaSentence}',
+        cantonPerCapitaSentence:
+          ' Das entspricht {perCapita} Fällen pro 100 000 Einwohner:innen (BFS 2023).',
         cantonRowCases: '{cases} Fälle',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
@@ -1168,10 +1219,12 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Cas totaux (2023)',
+        casesPer100k: 'Cas pour 100 000 habitants',
         hospitalsPerforming: 'Hôpitaux réalisant cette intervention',
         universityShare: 'Part des hôpitaux univ.',
         centralization: 'Centralisation (indice HHI)',
-        switzerland: 'Suisse'
+        switzerland: 'Suisse',
+        casesPer100kFootnote: 'Population : résidents permanents OFS (2023)'
       },
       messages: {
         allCantons: 'Tous les cantons',
@@ -1215,7 +1268,9 @@ if (finderRoot) {
         cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
         cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à cette sélection.',
         cantonSummary:
-          'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
+          'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.{perCapitaSentence}',
+        cantonPerCapitaSentence:
+          ' Cela représente {perCapita} cas pour 100 000 habitants (OFS 2023).',
         cantonRowCases: '{cases} cas',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
@@ -1337,10 +1392,12 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Casi totali (2023)',
+        casesPer100k: 'Casi per 100 000 abitanti',
         hospitalsPerforming: 'Ospedali che eseguono questa procedura',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (indice HHI)',
-        switzerland: 'Svizzera'
+        switzerland: 'Svizzera',
+        casesPer100kFootnote: 'Popolazione: residenti permanenti UST (2023)'
       },
       messages: {
         allCantons: 'Tutti i cantoni',
@@ -1384,7 +1441,9 @@ if (finderRoot) {
         cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
         cantonNoHospitals: 'Nel cantone {canton} nessun ospedale corrisponde a questa selezione.',
         cantonSummary:
-          'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
+          'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.{perCapitaSentence}',
+        cantonPerCapitaSentence:
+          ' Ciò equivale a {perCapita} casi per 100 000 abitanti (UST 2023).',
         cantonRowCases: '{cases} casi',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
@@ -1671,14 +1730,26 @@ if (finderRoot) {
     kanton: '#2563eb',
     private: '#ca8a04'
   };
+  const formatPerCapitaDisplay = (value) => {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) {
+      return '–';
+    }
+    return numeric.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 1
+    });
+  };
   const hhiLabels = getObjectTranslation('hhi.labels');
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
     totalCases: translate('kpi.totalCases'),
+    casesPer100k: translate('kpi.casesPer100k'),
     hospitalsPerforming: translate('kpi.hospitalsPerforming'),
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
   };
+  const perCapitaFootnote = translate('kpi.casesPer100kFootnote');
   const quickPickLabels = getObjectTranslation('quickPickLabels');
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
@@ -3039,6 +3110,31 @@ if (finderRoot) {
 
   function computeAggregation(procCode) {
     const hasCantonSelection = state.selectedCanton !== ALL_CANTONS_OPTION;
+    const populationMap =
+      finderDataset?.populations instanceof Map
+        ? finderDataset.populations
+        : hospitalDatasetCache.populations instanceof Map
+          ? hospitalDatasetCache.populations
+          : new Map();
+    let populationTotal = Number(finderDataset?.populationTotal);
+    if (!Number.isFinite(populationTotal) || populationTotal <= 0) {
+      populationTotal = Number(hospitalDatasetCache.populationTotal);
+    }
+    if (!Number.isFinite(populationTotal) || populationTotal <= 0) {
+      populationTotal = Array.from(populationMap.values()).reduce(
+        (sum, entry) => sum + (entry.population ?? 0),
+        0
+      );
+    }
+    const selectedCantonPopulation = hasCantonSelection
+      ? Number(populationMap.get(state.selectedCanton)?.population) || 0
+      : 0;
+    const basePerCapita = populationTotal > 0 ? 0 : null;
+    const baseCantonPerCapita = hasCantonSelection
+      ? selectedCantonPopulation > 0
+        ? 0
+        : null
+      : null;
 
     if (!finderDataset) {
       return {
@@ -3053,7 +3149,9 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesPer100k: basePerCapita,
+        cantonCasesPer100k: baseCantonPerCapita
       };
     }
 
@@ -3089,7 +3187,9 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesPer100k: basePerCapita,
+        cantonCasesPer100k: baseCantonPerCapita
       };
     }
 
@@ -3114,7 +3214,9 @@ if (finderRoot) {
           ? { totalCases: 0, hospitalCount: 0, uniShare: 0 }
           : null,
         cantonHhi: hasCantonSelection ? 0 : null,
-        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null
+        cantonHhiLabel: hasCantonSelection ? labelFromHHI(0) : null,
+        casesPer100k: basePerCapita,
+        cantonCasesPer100k: baseCantonPerCapita
       };
     }
 
@@ -3160,6 +3262,12 @@ if (finderRoot) {
           return { hhi: cantonHhiValue, label: labelFromHHI(cantonHhiValue) };
         })()
       : null;
+    const casesPer100k = populationTotal > 0 ? (total / populationTotal) * 100000 : null;
+    const cantonCasesPer100k = hasCantonSelection
+      ? selectedCantonPopulation > 0
+        ? ((cantonTotals?.totalCases ?? 0) / selectedCantonPopulation) * 100000
+        : null
+      : null;
 
     return {
       total,
@@ -3171,7 +3279,9 @@ if (finderRoot) {
       cantonHosp,
       cantonTotals,
       cantonHhi: cantonHhiData?.hhi ?? null,
-      cantonHhiLabel: cantonHhiData?.label ?? null
+      cantonHhiLabel: cantonHhiData?.label ?? null,
+      casesPer100k,
+      cantonCasesPer100k
     };
   }
 
@@ -3199,6 +3309,11 @@ if (finderRoot) {
       const numeric = Number(value);
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
+
+    const perCapitaNote =
+      typeof perCapitaFootnote === 'string' && perCapitaFootnote !== 'kpi.casesPer100kFootnote'
+        ? perCapitaFootnote
+        : '';
 
     const createValueMarkup = (label, value, options = {}) => {
       const {
@@ -3271,6 +3386,13 @@ if (finderRoot) {
         primary: formatCount(agg.total),
         secondary: cantonTotals ? formatCount(cantonTotals.totalCases) : null,
         footnote: ''
+      },
+      {
+        label: kpiLabels.casesPer100k,
+        type: 'dual',
+        primary: formatPerCapitaDisplay(agg.casesPer100k),
+        secondary: cantonTotals ? formatPerCapitaDisplay(agg.cantonCasesPer100k) : null,
+        footnote: perCapitaNote
       },
       {
         label: kpiLabels.hospitalsPerforming,
@@ -3589,13 +3711,19 @@ if (finderRoot) {
       const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
       const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
       const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
+      const perCapitaSentence = Number.isFinite(agg.cantonCasesPer100k)
+        ? msg('cantonPerCapitaSentence', {
+            perCapita: formatPerCapitaDisplay(agg.cantonCasesPer100k)
+          })
+        : '';
       summaryText = msg('cantonSummary', {
         canton: state.selectedCanton,
         count: cantonHosp.length,
         procedure: procedureLabel,
         leader: leader.hospital,
         cantonShare,
-        nationalShare
+        nationalShare,
+        perCapitaSentence
       });
     }
 

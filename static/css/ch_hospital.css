@@ -2746,6 +2746,7 @@ body {
   font-weight: 500;
   color: var(--text-muted);
   align-self: flex-start;
+  margin-top: 0.5rem;
   margin-left: var(--comparison-content-offset);
   margin-bottom: 0.75rem;
   width: 100%;
@@ -2765,6 +2766,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 0.5rem;
   margin-left: var(--comparison-content-offset);
   width: 100%;
   max-width: var(--comparison-content-max-width);

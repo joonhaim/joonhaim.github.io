@@ -3558,13 +3558,13 @@ if (finderRoot) {
                 <span class="finder-badge finder-hospital-type ${badgeClass}">${badgeLabel}</span>
                 <span class="finder-badge finder-badge--canton finder-hospital-canton">${h.canton}</span>
               </div>
+              <div class="finder-progress" aria-hidden="true">
+                <div class="finder-progress-bar" style="width: ${width}%;"></div>
+              </div>
             </div>
             <div class="finder-figures">
               <strong>${h.cases.toLocaleString()}</strong>
               <span>${share}%</span>
-            </div>
-            <div class="finder-progress" aria-hidden="true">
-              <div class="finder-progress-bar" style="width: ${width}%;"></div>
             </div>
           </div>
         `;

@@ -216,11 +216,15 @@
 
   <script>
     (() => {
-      const toArray = (collection) => Array.prototype.slice.call(collection);
-      const addFadeClass = (element) => {
-        if (element && !element.classList.contains('fade-element')) {
-          element.classList.add('fade-element');
-        }
+      const toArray = (collection) => Array.prototype.slice.call(collection || []);
+      const fadeTargets = new Set();
+
+      const collectElements = (selector) => {
+        toArray(document.querySelectorAll(selector)).forEach((element) => {
+          if (element) {
+            fadeTargets.add(element);
+          }
+        });
       };
 
       const autoFadeSelectors = [
@@ -235,36 +239,67 @@
         '.site-footer'
       ];
 
-      autoFadeSelectors.forEach((selector) => {
-        toArray(document.querySelectorAll(selector)).forEach(addFadeClass);
-      });
+      autoFadeSelectors.forEach(collectElements);
 
       const methodologyMain = document.querySelector('.methodology-main');
       if (methodologyMain) {
-        toArray(methodologyMain.querySelectorAll('*')).forEach(addFadeClass);
+        fadeTargets.add(methodologyMain);
+        toArray(methodologyMain.querySelectorAll('*')).forEach((element) => {
+          fadeTargets.add(element);
+        });
       }
 
-      const fadeElements = toArray(document.querySelectorAll('.fade-element'));
-      if (!fadeElements.length) {
+      if (!fadeTargets.size) {
         return;
       }
 
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, intersectionObserver) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              intersectionObserver.unobserve(entry.target);
-            }
-          });
-        });
+      fadeTargets.forEach((element) => {
+        if (!element.classList.contains('fade-element')) {
+          element.classList.add('fade-element');
+        }
+      });
 
-        fadeElements.forEach((element) => observer.observe(element));
-      } else {
-        fadeElements.forEach((element) => {
-          element.classList.add('visible');
-        });
-      }
+      const startObserving = () => {
+        const fadeElements = toArray(document.querySelectorAll('.fade-element'));
+        if (!fadeElements.length) {
+          return;
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries, intersectionObserver) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                  intersectionObserver.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: '0px 0px -10% 0px',
+              threshold: 0.1
+            }
+          );
+
+          fadeElements.forEach((element) => observer.observe(element));
+        } else {
+          fadeElements.forEach((element) => {
+            element.classList.add('visible');
+          });
+        }
+      };
+
+      const scheduleObservation = () => {
+        if (typeof window.requestAnimationFrame === 'function') {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(startObserving);
+          });
+        } else {
+          setTimeout(startObserving, 32);
+        }
+      };
+
+      scheduleObservation();
     })();
   </script>
 </body>

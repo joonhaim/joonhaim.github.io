@@ -914,8 +914,10 @@ if (finderRoot) {
         cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
         cantonComparisonTitle: 'Case frequency per 100k residents',
         cantonComparisonLead: 'Cases per 100k residents: {cantonRate} in {canton} vs {nationalRate} nationwide.',
-        cantonComparisonHigher: '{canton} is {difference} per 100k higher than the national average.',
-        cantonComparisonLower: '{canton} is {difference} per 100k lower than the national average.',
+        cantonComparisonHigher:
+          'In {canton}, the rate is {difference} cases per 100,000 residents higher than the national average.',
+        cantonComparisonLower:
+          'In {canton}, the rate is {difference} cases per 100,000 residents lower than the national average.',
         cantonComparisonEven: '{canton} is on par with the national average.',
         cantonComparisonLabelNational: 'Switzerland',
         cantonComparisonLabelCanton: 'Canton {canton}',
@@ -1122,8 +1124,10 @@ if (finderRoot) {
         cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
         cantonComparisonTitle: 'Fallhäufigkeit pro 100 000 Einwohner',
         cantonComparisonLead: 'Fälle pro 100 000 Einwohner: {cantonRate} in {canton} vs {nationalRate} schweizweit.',
-        cantonComparisonHigher: '{canton} liegt um {difference} pro 100 000 über dem nationalen Durchschnitt.',
-        cantonComparisonLower: '{canton} liegt um {difference} pro 100 000 unter dem nationalen Durchschnitt.',
+        cantonComparisonHigher:
+          'Im Kanton {canton} liegt die Rate um {difference} Fälle pro 100 000 Einwohner über dem nationalen Durchschnitt.',
+        cantonComparisonLower:
+          'Im Kanton {canton} liegt die Rate um {difference} Fälle pro 100 000 Einwohner unter dem nationalen Durchschnitt.',
         cantonComparisonEven: '{canton} entspricht dem nationalen Durchschnitt.',
         cantonComparisonLabelNational: 'Schweiz',
         cantonComparisonLabelCanton: 'Kanton {canton}',
@@ -1330,8 +1334,10 @@ if (finderRoot) {
         cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
         cantonComparisonTitle: 'Fréquence des cas pour 100 000 habitants',
         cantonComparisonLead: 'Cas pour 100 000 habitants : {cantonRate} dans {canton} contre {nationalRate} au niveau suisse.',
-        cantonComparisonHigher: '{canton} dépasse la moyenne nationale de {difference} pour 100 000.',
-        cantonComparisonLower: '{canton} est inférieur de {difference} pour 100 000 à la moyenne nationale.',
+        cantonComparisonHigher:
+          'Dans le canton de {canton}, le taux dépasse la moyenne nationale de {difference} cas pour 100 000 habitants.',
+        cantonComparisonLower:
+          'Dans le canton de {canton}, le taux est inférieur à la moyenne nationale de {difference} cas pour 100 000 habitants.',
         cantonComparisonEven: '{canton} est aligné sur la moyenne nationale.',
         cantonComparisonLabelNational: 'Suisse',
         cantonComparisonLabelCanton: 'Canton {canton}',
@@ -1538,8 +1544,10 @@ if (finderRoot) {
         cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
         cantonComparisonTitle: 'Frequenza dei casi per 100 000 abitanti',
         cantonComparisonLead: 'Casi per 100 000 abitanti: {cantonRate} in {canton} rispetto a {nationalRate} a livello svizzero.',
-        cantonComparisonHigher: '{canton} è superiore di {difference} ogni 100 000 rispetto alla media nazionale.',
-        cantonComparisonLower: '{canton} è inferiore di {difference} ogni 100 000 rispetto alla media nazionale.',
+        cantonComparisonHigher:
+          'Nel cantone {canton} il tasso supera la media nazionale di {difference} casi ogni 100 000 abitanti.',
+        cantonComparisonLower:
+          'Nel cantone {canton} il tasso è inferiore alla media nazionale di {difference} casi ogni 100 000 abitanti.',
         cantonComparisonEven: '{canton} è in linea con la media nazionale.',
         cantonComparisonLabelNational: 'Svizzera',
         cantonComparisonLabelCanton: 'Cantone {canton}',

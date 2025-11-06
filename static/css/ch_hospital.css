@@ -2698,8 +2698,9 @@ body {
   padding: 0;
   padding-left: var(--comparison-gutter);
   padding-top: 0.75rem;
-  gap: 0;
-  justify-content: flex-start;
+  padding-bottom: 0.75rem;
+  gap: 1.25rem;
+  justify-content: center;
   background: transparent;
   box-shadow: none;
   height: 100%;
@@ -2778,6 +2779,21 @@ body {
   margin-left: var(--comparison-content-offset);
   width: 100%;
   max-width: var(--comparison-content-max-width);
+}
+
+.finder-canton-card__comparison .finder-comparison-caption,
+.finder-canton-card__comparison .finder-comparison-difference,
+.finder-canton-card__comparison .finder-comparison-chart {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.finder-canton-card__comparison .finder-comparison-difference {
+  margin-top: 0.25rem;
+}
+
+.finder-canton-card__comparison .finder-comparison-chart {
+  margin-top: 0.25rem;
 }
 
 .finder-comparison-card--empty .finder-comparison-chart {

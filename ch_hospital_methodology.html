@@ -32,14 +32,14 @@
   <link rel="stylesheet" href="static/css/ch_hospital.css">
 </head>
 <body>
-  <div class="header-left">
+  <div class="header-left fade-element">
     <a href="ch_hospital.html" class="back-arrow" aria-label="Back to the CH-IQI dashboard">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 6L9 12l6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </a>
   </div>
-  <a href="index.html" class="swiss-cross" aria-label="Back to the homepage"></a>
+  <a href="index.html" class="swiss-cross fade-element" aria-label="Back to the homepage"></a>
 
   <section class="hero hero--methodology">
     <div class="hero-inner">
@@ -54,7 +54,7 @@
   <main class="page-shell methodology-main">
     <div class="methodology-grid">
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>1) Purpose</h2>
         <p>
           The Swiss Hospital Interventions (CH-IQI) dashboard aggregates publicly available quality and activity indicators to help users compare volumes and interpret outcomes across cantons and hospitals. This methodology aims to make the pipeline transparent and reproducible.
@@ -66,7 +66,7 @@
         </ul>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>2) Data Sources</h2>
         <p>Primary inputs used in this release:</p>
         <ul>
@@ -79,7 +79,7 @@
         </p>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>3) Data Cleaning &amp; Integration</h2>
         <ul>
           <li><strong>Format harmonisation:</strong> numeric columns coerced to decimal (dot), dates parsed to ISO-8601.</li>
@@ -91,7 +91,7 @@
         <p><em>Tooling:</em> preprocessing in Python (pandas) and/or JavaScript build steps; final transformations executed in-browser for interactivity.</p>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>4) Indicators &amp; Calculations</h2>
 
         <h3>4.1 Core formulas</h3>
@@ -121,7 +121,7 @@
         </p>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>5) Visualisation Choices</h2>
         <ul>
           <li><strong>Bars</strong> for cross-sectional comparisons (e.g., canton volumes).</li>
@@ -133,7 +133,7 @@
         </ul>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>6) Interpretation &amp; Limitations</h2>
         <ul>
           <li><strong>Coverage:</strong> the dashboard reflects what is published in CH-IQI; private or non-reporting providers may limit completeness.</li>
@@ -144,7 +144,7 @@
         </ul>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>7) Update Policy</h2>
         <p>
           The dashboard targets the most recent CH-IQI release available. After each annual release:
@@ -157,7 +157,7 @@
         </ol>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>8) Reproducibility</h2>
         <p>
           Processing scripts and configuration live in the project repository. Each release is tagged and pinned to exact data files with checksums. To reproduce:
@@ -173,7 +173,7 @@
         </p>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>9) Definitions &amp; Glossary</h2>
         <dl class="definition-list">
           <dt>CH-IQI</dt>
@@ -187,7 +187,7 @@
         </dl>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>10) References</h2>
         <ul>
           <li>FOPH: CH-IQI Hospital Quality Indicators, 2023 (official dataset portal).</li>
@@ -197,7 +197,7 @@
         <p class="note">Replace these bullets with exact links to the files used in this build.</p>
       </article>
 
-      <article class="surface-card methodology-card">
+      <article class="surface-card methodology-card fade-element">
         <h2>Changelog</h2>
         <ul class="changelog">
           <li><strong>v0.1 · 06 Nov 2025</strong> — Initial methodology draft; added sources, pipeline, formulas, limitations, and update policy.</li>
@@ -208,7 +208,7 @@
     </div>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer fade-element" role="contentinfo">
     <p>
       &copy; 2025 Adrien Joon-Ha Im · <a href="contact.html">Contact</a>
     </p>
@@ -216,8 +216,26 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-element').forEach((element) => {
-        element.classList.add('visible');
+      const fadeElements = document.querySelectorAll('.fade-element');
+
+      if (!('IntersectionObserver' in window)) {
+        fadeElements.forEach((element) => {
+          element.classList.add('visible');
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      });
+
+      fadeElements.forEach((element) => {
+        observer.observe(element);
       });
     });
   </script>

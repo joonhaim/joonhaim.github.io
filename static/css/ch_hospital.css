@@ -240,12 +240,14 @@ body {
 }
 
 .hero .tagline {
-  max-width: min(45ch, 100%);
   width: 100%;
   margin: 0;
   font-size: 1rem;
   line-height: 1.6;
   text-wrap: balance;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .hero .hero-links {

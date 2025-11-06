@@ -260,11 +260,6 @@ body {
   backdrop-filter: blur(12px);
 }
 
-.hero--methodology .hero-inner {
-  max-width: 880px;
-  padding-left: 1.5rem;
-}
-
 .hero--methodology .tagline {
   margin-bottom: 0.75rem;
 }
@@ -289,23 +284,27 @@ body {
 .methodology-card h2 {
   margin-top: 0;
   margin-bottom: 0.75rem;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  line-height: 1.35;
 }
 
 .methodology-card h3 {
-  margin-top: 2rem;
-  margin-bottom: 0.65rem;
-  font-size: 1.2rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.005em;
+  text-transform: none;
 }
 
 .methodology-card h3:first-of-type {
-  margin-top: 1.5rem;
+  margin-top: 1.35rem;
 }
 
 .methodology-card p,
 .methodology-card li {
-  font-size: 1.02rem;
-  color: var(--brand-navy);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-muted);
 }
 
 .methodology-card ul,
@@ -360,6 +359,21 @@ body {
   font-weight: 600;
 }
 
+.hero--methodology .methodology-meta {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero--methodology .methodology-meta a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.55);
+}
+
+.hero--methodology .methodology-meta a:hover,
+.hero--methodology .methodology-meta a:focus-visible {
+  text-decoration-color: rgba(255, 255, 255, 0.9);
+}
+
 @media (max-width: 720px) {
   .hero--methodology .hero-inner {
     padding: 0 1.25rem;
@@ -374,11 +388,16 @@ body {
   }
 
   .methodology-card h2 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .methodology-card h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+
+  .methodology-card p,
+  .methodology-card li {
+    font-size: 0.92rem;
   }
 }
 

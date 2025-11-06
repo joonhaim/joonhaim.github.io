@@ -2746,13 +2746,13 @@ body {
     width: min(100%, 18.5rem);
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: flex-start;
     gap: 0.35rem;
     padding: 0;
     background: transparent;
     border-radius: 0;
-    text-align: right;
+    text-align: left;
   }
 
   .hero .hero-links span {
@@ -2764,7 +2764,6 @@ body {
     background: rgba(255, 255, 255, 0.12);
     border: none;
     width: auto;
-    align-self: flex-end;
     font-size: 0.88rem;
     letter-spacing: normal;
     text-transform: none;
@@ -2783,12 +2782,16 @@ body {
     font-size: inherit;
     color: #fff;
     white-space: normal;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.65);
+    text-underline-offset: 0.18em;
   }
 
   .hero .hero-links span a:hover,
   .hero .hero-links span a:focus-visible {
     color: #fff;
     outline: none;
+    text-decoration-color: #fff;
   }
 
   .finder-kpi strong {

@@ -1780,8 +1780,9 @@ if (finderRoot) {
 
       const updateCloseButton = () => {
         const label = detailMessage('close') || 'Close';
-        closeBtn.textContent = label;
+        closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
         closeBtn.setAttribute('aria-label', label);
+        closeBtn.setAttribute('title', label);
       };
 
       const formatInteger = (value) =>

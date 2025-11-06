@@ -2739,7 +2739,7 @@ body {
   color: var(--text-muted);
   margin: 0;
   margin-bottom: 0.75rem;
-  max-width: var(--comparison-content-max-width);
+  width: min(100%, var(--comparison-content-max-width));
   margin-inline: auto;
 }
 

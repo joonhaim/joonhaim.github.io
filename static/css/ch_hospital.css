@@ -2585,15 +2585,18 @@ body {
 }
 
 .finder-comparison-card {
+  --comparison-gutter: 2.25rem;
+  --comparison-axis-right: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   padding: 1.5rem;
 }
 
 .finder-canton-card__comparison {
   min-width: 0;
-  padding-left: 2.25rem;
+  --comparison-gutter: 3rem;
+  padding-left: var(--comparison-gutter);
   border-left: 1px solid var(--border-soft);
 }
 
@@ -2659,7 +2662,7 @@ body {
 .finder-comparison-chart {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .finder-comparison-card--empty .finder-comparison-chart {
@@ -2675,7 +2678,7 @@ body {
 .finder-comparison-axis {
   position: relative;
   height: 180px;
-  padding: 0.25rem 1rem 0 3.25rem;
+  padding: 0.25rem var(--comparison-axis-right) 0 calc(var(--comparison-gutter) + 1rem);
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -2684,7 +2687,7 @@ body {
 .finder-comparison-axis::before {
   content: '';
   position: absolute;
-  left: 3.25rem;
+  left: calc(var(--comparison-gutter) + 1rem);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -2694,8 +2697,8 @@ body {
 .finder-comparison-axis::after {
   content: '';
   position: absolute;
-  left: 3.25rem;
-  right: 1rem;
+  left: calc(var(--comparison-gutter) + 1rem);
+  right: var(--comparison-axis-right);
   bottom: 0;
   height: 1px;
   background: rgba(15, 23, 42, 0.16);
@@ -2709,8 +2712,8 @@ body {
 
 .finder-comparison-tick {
   position: absolute;
-  left: 3.25rem;
-  right: 1rem;
+  left: calc(var(--comparison-gutter) + 1rem);
+  right: var(--comparison-axis-right);
   display: flex;
   align-items: center;
   pointer-events: none;
@@ -2720,7 +2723,7 @@ body {
 .finder-comparison-tick-label {
   position: absolute;
   right: 100%;
-  margin-right: 0.45rem;
+  margin-right: 0.5rem;
   padding: 0;
   font-size: 0.68rem;
   font-weight: 500;
@@ -2804,7 +2807,7 @@ body {
   align-items: flex-start;
   gap: 2rem;
   width: 100%;
-  padding: 0.35rem 0 0 3.25rem;
+  padding: 0.35rem 0 0 calc(var(--comparison-gutter) + 1rem);
 }
 
 .finder-comparison-bar-meta {
@@ -2834,7 +2837,7 @@ body {
   text-transform: none;
   color: var(--text-subtle);
   text-align: left;
-  padding-left: 3.25rem;
+  padding-left: calc(var(--comparison-gutter) + 1rem);
   margin-top: 0.2rem;
 }
 
@@ -2844,13 +2847,14 @@ body {
 
 @media (max-width: 1024px) {
   .finder-comparison-card {
-    gap: 1.1rem;
+    gap: 1.35rem;
   }
 }
 
 @media (max-width: 640px) {
   .finder-comparison-card {
     gap: 1rem;
+    --comparison-axis-right: 0.85rem;
   }
 
   .finder-comparison-caption,
@@ -2858,9 +2862,13 @@ body {
     font-size: 0.9rem;
   }
 
+  .finder-canton-card__comparison {
+    --comparison-gutter: 2.5rem;
+  }
+
   .finder-comparison-axis {
     height: 150px;
-    padding: 0.2rem 0.75rem 0 3rem;
+    padding: 0.2rem var(--comparison-axis-right) 0 calc(var(--comparison-gutter) + 1rem);
   }
 
   .finder-comparison-bars {
@@ -2874,7 +2882,7 @@ body {
 
   .finder-comparison-bar-legend {
     gap: 1.5rem;
-    padding: 0.35rem 0 0 3rem;
+    padding: 0.35rem 0 0 calc(var(--comparison-gutter) + 1rem);
   }
 }
 

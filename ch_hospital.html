@@ -49,7 +49,7 @@
       </p>
       <div class="hero-links fade-element">
         <span>Source: <a href="https://www.bag.admin.ch/en/quality-indicators-for-swiss-acute-hospitals" target="_blank" rel="noopener">FOPH CH-IQI</a></span>
-        <span>Methodology: <a href="https://github.com/joonhaim/ch-iqi-analysis" target="_blank" rel="noopener">GitHub repo</a></span>
+        <span>Methodology: <a href="ch_hospital_methodology.html">Methodology</a></span>
       </div>
     </div>
   </section>
@@ -68,10 +68,8 @@
           <label class="finder-label" for="finder-procedure-search">Find a procedure</label>
           <div class="finder-search-field">
             <svg class="finder-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <path
-                d="M13.854 12.439l3.854 3.853a1 1 0 01-1.414 1.415l-3.853-3.854a7 7 0 111.413-1.414zM9 14a5 5 0 100-10 5 5 0 000 10z"
-                fill="currentColor"
-              />
+              <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path d="M12.5 12.5l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
             </svg>
             <input id="finder-procedure-search" type="search" placeholder="Search by name or code" />
           </div>
@@ -120,9 +118,11 @@
             <p id="finder-list-context" class="finder-list-context">Cases by hospital (2023)</p>
             <h3 id="finder-list-title">Select a procedure</h3>
           </div>
-          <span id="finder-list-meta"></span>
         </div>
         <div id="finder-list" class="finder-list"></div>
+        <div class="finder-list-footer">
+          <div id="finder-list-meta" class="finder-list-meta"></div>
+        </div>
       </div>
       <div class="finder-map-column">
         <div class="finder-toolbar surface-card" role="group" aria-label="Hospital filters">
@@ -144,17 +144,36 @@
     </div>
 
     <div class="finder-bottom">
-      <div class="finder-canton-card surface-card">
-        <h3>My canton</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
+      <div class="finder-canton-card surface-card finder-canton-card--with-comparison">
+        <div class="finder-canton-card__layout">
+          <div class="finder-canton-card__primary">
+            <div class="finder-canton-header">
+              <div class="finder-canton-heading">
+                <h3>My canton</h3>
+                <p id="finder-canton-summary" class="finder-canton-summary"></p>
+              </div>
+              <div id="finder-canton-flag" class="finder-canton-flag" hidden aria-hidden="true">
+                <img src="" alt="" loading="lazy" />
+              </div>
+            </div>
+            <div id="finder-canton-list" class="finder-canton-list"></div>
+          </div>
+          <div class="finder-canton-card__comparison finder-comparison-card" id="finder-canton-comparison-card">
+            <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
+            <div
+              id="finder-canton-comparison-chart"
+              class="finder-comparison-chart"
+              aria-hidden="true"
+            ></div>
+          </div>
+        </div>
       </div>
       <div class="finder-note-card surface-card">
         <h3>How to interpret these numbers</h3>
         <p>
-          Higher case volumes can point to greater routine expertise, yet outcomes also depend on case mix
-          and patient complexity. Use these figures as a starting point and review quality indicators alongside
-          availability. This is not medical advice but provided for reference only.
+          A high number of cases per hospital usually indicates more experience in treating this a certain disease.
+            However, outcomes of procedures also depend on the variety of cases, the complexity of each patient, and availability of care.
+            These figures should therefore be only used as a reference, and are by no means medical advice.
         </p>
       </div>
     </div>
@@ -162,7 +181,7 @@
 
   <footer class="site-footer" role="contentinfo">
     <p>
-      &copy; 2025 Adrien Joon‑Ha Im · <a href="contact.html">Contact</a>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="index.html">Homepage</a>
     </p>
   </footer>
 

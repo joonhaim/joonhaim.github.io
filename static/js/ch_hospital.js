@@ -830,7 +830,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Total Cases (2023)',
-        hospitalsPerforming: 'Hospitals performing this procedure',
+        casesPer100k: 'Cases per 100k residents',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI Index)',
         switzerland: 'Switzerland'
@@ -870,6 +870,8 @@ if (finderRoot) {
         noProceduresMatch: 'No procedures match your search. Try a different keyword.',
         tryAdjustFilters: 'Try a different procedure or adjust the filters.',
         paginationShowing: 'Showing {start}–{end} of {total} hospitals',
+        hospitalsPerformingSingle: '{count} hospital performing this procedure',
+        hospitalsPerformingPlural: '{count} hospitals performing this procedure',
         ariaPrevHospitals: 'Previous page of hospitals',
         ariaNextHospitals: 'Next page of hospitals',
         topHospitals: 'Cases by hospital (2023)',
@@ -877,8 +879,49 @@ if (finderRoot) {
         cantonSelectPrompt: 'Select a canton to view local hospital details.',
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
         cantonSummary:
-          'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
+          'In the canton of {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
+        cantonNames: {
+          AG: 'Aargau',
+          AI: 'Appenzell Innerrhoden',
+          AR: 'Appenzell Ausserrhoden',
+          BE: 'Bern',
+          BL: 'Basel-Landschaft',
+          BS: 'Basel-Stadt',
+          FR: 'Fribourg',
+          GE: 'Geneva',
+          GL: 'Glarus',
+          GR: 'Graubünden',
+          JU: 'Jura',
+          LU: 'Lucerne',
+          NE: 'Neuchâtel',
+          NW: 'Nidwalden',
+          OW: 'Obwalden',
+          SG: 'St. Gallen',
+          SH: 'Schaffhausen',
+          SO: 'Solothurn',
+          SZ: 'Schwyz',
+          TG: 'Thurgau',
+          TI: 'Ticino',
+          UR: 'Uri',
+          VD: 'Vaud',
+          VS: 'Valais',
+          ZG: 'Zug',
+          ZH: 'Zurich'
+        },
+        cantonComparisonPrompt: 'Select a canton to compare against the national average.',
+        selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
+        cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
+        cantonComparisonTitle: 'Case frequency per 100k residents',
+        cantonComparisonLead: 'Cases per 100k residents: {cantonRate} in {canton} vs {nationalRate} nationwide.',
+        cantonComparisonHigher:
+          'In {canton}, the rate is {difference} cases per 100,000 residents higher than the national average.',
+        cantonComparisonLower:
+          'In {canton}, the rate is {difference} cases per 100,000 residents lower than the national average.',
+        cantonComparisonEven: '{canton} is on par with the national average.',
+        cantonComparisonLabelNational: 'Switzerland',
+        cantonComparisonLabelCanton: 'Canton {canton}',
+        cantonComparisonAxisLabel: 'Cases per 100k residents',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
@@ -905,8 +948,6 @@ if (finderRoot) {
           casesHistorical: 'Cases 2018–2022',
           note:
             'Rates are shown as published in CH-IQI reporting and may be suppressed when case volumes are low.',
-          noData: 'No additional metrics are available for this hospital.',
-          infoHeading: 'Hospital snapshot',
           infoAddress: 'Address',
           infoLocation: 'Location',
           infoWebsite: 'Website',
@@ -916,7 +957,7 @@ if (finderRoot) {
           infoTotalCases: 'Total F cases (2023)',
           infoTotalProcedures: 'Distinct F procedures',
           proceduresTitle: 'Procedure mix',
-          proceduresDescription: 'CH-IQI tracks {count} specialized procedures here ({total} total cases in 2023).',
+          proceduresDescription: 'CH-IQI tracks {count} specialized procedures in this hospital ({total} total cases in 2023).',
           proceduresCode: 'Code',
           proceduresName: 'Procedure',
           proceduresCases: 'Cases 2023',
@@ -999,7 +1040,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Fallzahlen gesamt (2023)',
-        hospitalsPerforming: 'Spitäler mit diesem Eingriff',
+        casesPer100k: 'Fälle pro 100 000 Einwohner',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI-Index)',
         switzerland: 'Schweiz'
@@ -1039,6 +1080,8 @@ if (finderRoot) {
         noProceduresMatch: 'Keine Behandlungen passen zur Suche. Versuchen Sie einen anderen Begriff.',
         tryAdjustFilters: 'Versuchen Sie einen anderen Eingriff oder passen Sie die Filter an.',
         paginationShowing: 'Angezeigt {start}–{end} von {total} Spitälern',
+        hospitalsPerformingSingle: '{count} Spital führt diesen Eingriff durch',
+        hospitalsPerformingPlural: '{count} Spitäler führen diesen Eingriff durch',
         ariaPrevHospitals: 'Vorherige Spitalseite',
         ariaNextHospitals: 'Nächste Spitalseite',
         topHospitals: 'Fälle nach Spital (2023)',
@@ -1048,6 +1091,47 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
+        cantonNames: {
+          AG: 'Aargau',
+          AI: 'Appenzell Innerrhoden',
+          AR: 'Appenzell Ausserrhoden',
+          BE: 'Bern',
+          BL: 'Basel-Landschaft',
+          BS: 'Basel-Stadt',
+          FR: 'Freiburg',
+          GE: 'Genf',
+          GL: 'Glarus',
+          GR: 'Graubünden',
+          JU: 'Jura',
+          LU: 'Luzern',
+          NE: 'Neuenburg',
+          NW: 'Nidwalden',
+          OW: 'Obwalden',
+          SG: 'St. Gallen',
+          SH: 'Schaffhausen',
+          SO: 'Solothurn',
+          SZ: 'Schwyz',
+          TG: 'Thurgau',
+          TI: 'Tessin',
+          UR: 'Uri',
+          VD: 'Waadt',
+          VS: 'Wallis',
+          ZG: 'Zug',
+          ZH: 'Zürich'
+        },
+        cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem nationalen Durchschnitt zu vergleichen.',
+        selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
+        cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
+        cantonComparisonTitle: 'Fallhäufigkeit pro 100 000 Einwohner',
+        cantonComparisonLead: 'Fälle pro 100 000 Einwohner: {cantonRate} in {canton} vs {nationalRate} schweizweit.',
+        cantonComparisonHigher:
+          'Im Kanton {canton} liegt die Rate um {difference} Fälle pro 100 000 Einwohner über dem nationalen Durchschnitt.',
+        cantonComparisonLower:
+          'Im Kanton {canton} liegt die Rate um {difference} Fälle pro 100 000 Einwohner unter dem nationalen Durchschnitt.',
+        cantonComparisonEven: '{canton} entspricht dem nationalen Durchschnitt.',
+        cantonComparisonLabelNational: 'Schweiz',
+        cantonComparisonLabelCanton: 'Kanton {canton}',
+        cantonComparisonAxisLabel: 'Fälle pro 100 000 Einwohner',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
@@ -1074,8 +1158,6 @@ if (finderRoot) {
           casesHistorical: 'Fälle 2018–2022',
           note:
             'Die Kennzahlen entsprechen den CH-IQI-Veröffentlichungen und können bei kleinen Fallzahlen unterdrückt werden.',
-          noData: 'Für dieses Spital sind keine zusätzlichen Kennzahlen verfügbar.',
-          infoHeading: 'Spitalprofil',
           infoAddress: 'Adresse',
           infoLocation: 'Ort',
           infoWebsite: 'Webseite',
@@ -1085,7 +1167,7 @@ if (finderRoot) {
           infoTotalCases: 'Fälle F-Codes (2023)',
           infoTotalProcedures: 'Anzahl F-Codes',
           proceduresTitle: 'Leistungsspektrum',
-          proceduresDescription: 'Der CH-IQI erfasst hier {count} spezialisierte Leistungen (insgesamt {total} Fälle 2023).',
+          proceduresDescription: 'Der CH-IQI erfasst in diesem Spital {count} spezialisierte Leistungen (insgesamt {total} Fälle 2023).',
           proceduresCode: 'Code',
           proceduresName: 'Leistung',
           proceduresCases: 'Fälle 2023',
@@ -1168,7 +1250,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Cas totaux (2023)',
-        hospitalsPerforming: 'Hôpitaux réalisant cette intervention',
+        casesPer100k: 'Cas pour 100 000 habitants',
         universityShare: 'Part des hôpitaux univ.',
         centralization: 'Centralisation (indice HHI)',
         switzerland: 'Suisse'
@@ -1208,6 +1290,8 @@ if (finderRoot) {
         noProceduresMatch: 'Aucune intervention ne correspond à votre recherche. Essayez un autre mot-clé.',
         tryAdjustFilters: 'Essayez une autre intervention ou ajustez les filtres.',
         paginationShowing: 'Affichage {start}–{end} sur {total} hôpitaux',
+        hospitalsPerformingSingle: '{count} hôpital réalise cette intervention',
+        hospitalsPerformingPlural: '{count} hôpitaux réalisent cette intervention',
         ariaPrevHospitals: 'Page précédente des hôpitaux',
         ariaNextHospitals: 'Page suivante des hôpitaux',
         topHospitals: 'Cas par hôpital (2023)',
@@ -1215,8 +1299,49 @@ if (finderRoot) {
         cantonSelectPrompt: 'Sélectionnez un canton pour voir les détails locaux.',
         cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à cette sélection.',
         cantonSummary:
-          'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
+          'Dans le canton de {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
+        cantonNames: {
+          AG: 'Argovie',
+          AI: 'Appenzell Rhodes-Intérieures',
+          AR: 'Appenzell Rhodes-Extérieures',
+          BE: 'Berne',
+          BL: 'Bâle-Campagne',
+          BS: 'Bâle-Ville',
+          FR: 'Fribourg',
+          GE: 'Genève',
+          GL: 'Glaris',
+          GR: 'Grisons',
+          JU: 'Jura',
+          LU: 'Lucerne',
+          NE: 'Neuchâtel',
+          NW: 'Nidwald',
+          OW: 'Obwald',
+          SG: 'Saint-Gall',
+          SH: 'Schaffhouse',
+          SO: 'Soleure',
+          SZ: 'Schwytz',
+          TG: 'Thurgovie',
+          TI: 'Tessin',
+          UR: 'Uri',
+          VD: 'Vaud',
+          VS: 'Valais',
+          ZG: 'Zoug',
+          ZH: 'Zurich'
+        },
+        cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne nationale.',
+        selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
+        cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
+        cantonComparisonTitle: 'Fréquence des cas pour 100 000 habitants',
+        cantonComparisonLead: 'Cas pour 100 000 habitants : {cantonRate} dans {canton} contre {nationalRate} au niveau suisse.',
+        cantonComparisonHigher:
+          'Dans le canton de {canton}, le taux dépasse la moyenne nationale de {difference} cas pour 100 000 habitants.',
+        cantonComparisonLower:
+          'Dans le canton de {canton}, le taux est inférieur à la moyenne nationale de {difference} cas pour 100 000 habitants.',
+        cantonComparisonEven: '{canton} est aligné sur la moyenne nationale.',
+        cantonComparisonLabelNational: 'Suisse',
+        cantonComparisonLabelCanton: 'Canton {canton}',
+        cantonComparisonAxisLabel: 'Cas pour 100 000 habitants',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
@@ -1243,8 +1368,6 @@ if (finderRoot) {
           casesHistorical: 'Cas 2018-2022',
           note:
             'Les valeurs proviennent des publications CH-IQI et peuvent être masquées lorsque les volumes sont faibles.',
-          noData: 'Aucune donnée supplémentaire n’est disponible pour cet hôpital.',
-          infoHeading: 'Aperçu de l’hôpital',
           infoAddress: 'Adresse',
           infoLocation: 'Localisation',
           infoWebsite: 'Site web',
@@ -1254,7 +1377,7 @@ if (finderRoot) {
           infoTotalCases: 'Cas F totaux (2023)',
           infoTotalProcedures: 'Nombre de codes F',
           proceduresTitle: 'Profil des interventions',
-          proceduresDescription: 'Le CH-IQI recense ici {count} interventions spécialisées (total {total} cas en 2023).',
+          proceduresDescription: 'Le CH-IQI recense {count} interventions spécialisées dans cet hôpital (total {total} cas en 2023).',
           proceduresCode: 'Code',
           proceduresName: 'Intervention',
           proceduresCases: 'Cas 2023',
@@ -1337,7 +1460,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Casi totali (2023)',
-        hospitalsPerforming: 'Ospedali che eseguono questa procedura',
+        casesPer100k: 'Casi per 100 000 abitanti',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (indice HHI)',
         switzerland: 'Svizzera'
@@ -1377,6 +1500,8 @@ if (finderRoot) {
         noProceduresMatch: 'Nessun intervento corrisponde alla ricerca. Prova con un’altra parola chiave.',
         tryAdjustFilters: 'Prova un’altra procedura o modifica i filtri.',
         paginationShowing: 'Visualizzazione {start}–{end} di {total} ospedali',
+        hospitalsPerformingSingle: '{count} ospedale esegue questa procedura',
+        hospitalsPerformingPlural: '{count} ospedali eseguono questa procedura',
         ariaPrevHospitals: 'Pagina precedente di ospedali',
         ariaNextHospitals: 'Pagina successiva di ospedali',
         topHospitals: 'Casi per ospedale (2023)',
@@ -1384,8 +1509,49 @@ if (finderRoot) {
         cantonSelectPrompt: 'Seleziona un cantone per vedere i dettagli locali.',
         cantonNoHospitals: 'Nel cantone {canton} nessun ospedale corrisponde a questa selezione.',
         cantonSummary:
-          'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
+          'Nel cantone di {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
+        cantonNames: {
+          AG: 'Argovia',
+          AI: 'Appenzello Interno',
+          AR: 'Appenzello Esterno',
+          BE: 'Berna',
+          BL: 'Basilea Campagna',
+          BS: 'Basilea Città',
+          FR: 'Friburgo',
+          GE: 'Ginevra',
+          GL: 'Glarona',
+          GR: 'Grigioni',
+          JU: 'Giura',
+          LU: 'Lucerna',
+          NE: 'Neuchâtel',
+          NW: 'Nidvaldo',
+          OW: 'Obvaldo',
+          SG: 'San Gallo',
+          SH: 'Sciaffusa',
+          SO: 'Soletta',
+          SZ: 'Svitto',
+          TG: 'Turgovia',
+          TI: 'Ticino',
+          UR: 'Uri',
+          VD: 'Vaud',
+          VS: 'Vallese',
+          ZG: 'Zugo',
+          ZH: 'Zurigo'
+        },
+        cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media nazionale.',
+        selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
+        cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
+        cantonComparisonTitle: 'Frequenza dei casi per 100 000 abitanti',
+        cantonComparisonLead: 'Casi per 100 000 abitanti: {cantonRate} in {canton} rispetto a {nationalRate} a livello svizzero.',
+        cantonComparisonHigher:
+          'Nel cantone {canton} il tasso supera la media nazionale di {difference} casi ogni 100 000 abitanti.',
+        cantonComparisonLower:
+          'Nel cantone {canton} il tasso è inferiore alla media nazionale di {difference} casi ogni 100 000 abitanti.',
+        cantonComparisonEven: '{canton} è in linea con la media nazionale.',
+        cantonComparisonLabelNational: 'Svizzera',
+        cantonComparisonLabelCanton: 'Cantone {canton}',
+        cantonComparisonAxisLabel: 'Casi per 100 000 abitanti',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
@@ -1412,8 +1578,6 @@ if (finderRoot) {
           casesHistorical: 'Casi 2018-2022',
           note:
             'I valori corrispondono alle pubblicazioni CH-IQI e possono essere nascosti con bassi volumi di casi.',
-          noData: 'Non sono disponibili ulteriori indicatori per questo ospedale.',
-          infoHeading: 'Panoramica dell’ospedale',
           infoAddress: 'Indirizzo',
           infoLocation: 'Località',
           infoWebsite: 'Sito web',
@@ -1423,7 +1587,7 @@ if (finderRoot) {
           infoTotalCases: 'Casi totali F (2023)',
           infoTotalProcedures: 'Numero di codici F',
           proceduresTitle: 'Mix di interventi',
-          proceduresDescription: 'Il CH-IQI rileva qui {count} interventi specialistici (totale {total} casi nel 2023).',
+          proceduresDescription: 'Il CH-IQI rileva {count} interventi specialistici in questo ospedale (totale {total} casi nel 2023).',
           proceduresCode: 'Codice',
           proceduresName: 'Intervento',
           proceduresCases: 'Casi 2023',
@@ -1646,6 +1810,46 @@ if (finderRoot) {
     'ZH'
   ];
 
+  const REGION_POPULATION = {
+    CH: 8962258,
+    AG: 726894,
+    AI: 16585,
+    AR: 56495,
+    BE: 1063533,
+    BL: 298837,
+    BS: 200031,
+    FR: 341537,
+    GE: 524410,
+    GL: 42056,
+    GR: 204888,
+    JU: 74548,
+    LU: 432744,
+    NE: 178291,
+    NW: 45016,
+    OW: 39272,
+    SG: 535114,
+    SH: 87111,
+    SO: 286844,
+    SZ: 167403,
+    TG: 295220,
+    TI: 357720,
+    UR: 37931,
+    VD: 845870,
+    VS: 365844,
+    ZG: 132556,
+    ZH: 1605508
+  };
+
+  const cantonNames = getObjectTranslation('messages.cantonNames');
+
+  const getCantonShortLabel = (value) => {
+    if (typeof value !== 'string') {
+      return '';
+    }
+    const trimmed = value.trim();
+    return trimmed ? trimmed.toUpperCase() : '';
+  };
+
   const cantonOptions = [
     {
       value: ALL_CANTONS_OPTION,
@@ -1654,7 +1858,7 @@ if (finderRoot) {
     },
     ...cantonCodes.map((code) => ({
       value: code,
-      label: code,
+      label: cantonNames[code] ?? code,
       icon: cantonIconPath(code)
     }))
   ];
@@ -1662,6 +1866,17 @@ if (finderRoot) {
   const cantonOptionMap = new Map(cantonOptions.map((option) => [option.value, option]));
   const getCantonOptionByValue = (value) =>
     cantonOptionMap.get(value) ?? cantonOptionMap.get(ALL_CANTONS_OPTION);
+
+  const getCantonLabel = (value) => {
+    if (!value) {
+      return '';
+    }
+    if (value === ALL_CANTONS_OPTION) {
+      return translate('messages.allCantons');
+    }
+    const option = getCantonOptionByValue(value);
+    return option?.label ?? cantonNames[value] ?? value;
+  };
 
   const typeLabels = getObjectTranslation('types.labels');
   const typeBadges = getObjectTranslation('types.badges');
@@ -1675,7 +1890,7 @@ if (finderRoot) {
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
     totalCases: translate('kpi.totalCases'),
-    hospitalsPerforming: translate('kpi.hospitalsPerforming'),
+    casesPer100k: translate('kpi.casesPer100k'),
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
   };
@@ -1700,6 +1915,11 @@ if (finderRoot) {
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
+    const finderCantonComparisonCard = document.getElementById('finder-canton-comparison-card');
+    const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
+    const finderCantonComparisonChart = document.getElementById('finder-canton-comparison-chart');
+    const finderCantonFlag = document.getElementById('finder-canton-flag');
+    const finderCantonFlagImage = finderCantonFlag ? finderCantonFlag.querySelector('img') : null;
     const finderQuickPicks = document.getElementById('finder-quick-picks');
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
@@ -1725,8 +1945,6 @@ if (finderRoot) {
       smrHistorical: 'Standardized mortality ratio 2018–2022',
       casesHistorical: 'Cases 2018–2022',
       note: 'Rates are shown as reported in CH-IQI publications and may be suppressed when data volumes are low.',
-      noData: 'No additional metrics are available for this hospital.',
-      infoHeading: 'Hospital snapshot',
       infoAddress: 'Address',
       infoLocation: 'Location',
       infoWebsite: 'Website',
@@ -1736,7 +1954,7 @@ if (finderRoot) {
       infoTotalCases: 'Total F cases (2023)',
       infoTotalProcedures: 'Distinct F procedures',
       proceduresTitle: 'Procedure mix',
-      proceduresDescription: 'CH-IQI tracks {count} specialized procedures here ({total} total cases in 2023).',
+      proceduresDescription: 'CH-IQI tracks {count} specialized procedures in this hospital ({total} total cases in 2023).',
       proceduresCode: 'Code',
       proceduresName: 'Procedure',
       proceduresCases: 'Cases 2023',
@@ -1862,9 +2080,7 @@ if (finderRoot) {
 
         const summaryItems = [
           { label: detailMessage('cases2023'), value: formatInteger(entry.cases) },
-          { label: detailMessage('share'), value: formatFraction(entry.share) },
-          { label: detailMessage('type'), value: typeLabel },
-          { label: detailMessage('canton'), value: entry.canton }
+          { label: detailMessage('share'), value: formatFraction(entry.share) }
         ];
 
         const summaryMarkup = summaryItems
@@ -1885,11 +2101,6 @@ if (finderRoot) {
           Number.isFinite(metrics.observed2023) ||
           Number.isFinite(metrics.expected2023) ||
           Number.isFinite(metrics.smr2023);
-        const hasHistoricalMetrics =
-          Number.isFinite(metrics.observedHistorical) ||
-          Number.isFinite(metrics.expectedHistorical) ||
-          Number.isFinite(metrics.smrHistorical) ||
-          Number.isFinite(metrics.casesHistorical);
 
         const metricsSections = [];
 
@@ -1903,20 +2114,12 @@ if (finderRoot) {
           );
         }
 
-        if (hasHistoricalMetrics) {
-          metricsSections.push(
-            renderMetricsSection(detailMessage('sectionHistorical'), [
-              { label: detailMessage('observedHistorical'), value: formatPercent(metrics.observedHistorical) },
-              { label: detailMessage('expectedHistorical'), value: formatPercent(metrics.expectedHistorical) },
-              { label: detailMessage('smrHistorical'), value: formatRatio(metrics.smrHistorical) },
-              { label: detailMessage('casesHistorical'), value: formatInteger(metrics.casesHistorical) }
-            ])
-          );
-        }
-
+        const noDataMessage = detailMessage('noData');
         const metricsMarkup = metricsSections.length
           ? metricsSections.join('')
-          : `<p class="hospital-detail__empty">${escapeHtml(detailMessage('noData'))}</p>`;
+          : noDataMessage
+              ? `<p class="hospital-detail__empty">${escapeHtml(noDataMessage)}</p>`
+              : '';
 
         const hospitalKey = entry.originalName ?? entry.hospital;
         const hospitalRecord = finderDataset?.byHospital?.get(hospitalKey);
@@ -2008,6 +2211,11 @@ if (finderRoot) {
         infoItems.push({
           label: detailMessage('infoCoordinates'),
           value: coordinatesText || detailMessage('infoUnavailable')
+        });
+
+        infoItems.push({
+          label: detailMessage('type'),
+          value: typeLabel || detailMessage('infoUnavailable')
         });
 
         const infoHeading = detailMessage('infoHeading');
@@ -2126,13 +2334,13 @@ if (finderRoot) {
           <header class="hospital-detail__header">
             ${eyebrowMarkup}
             <h2 id="hospital-detail-title">${escapeHtml(entry.hospital)}</h2>
-            ${subtitleMarkup}
             <div class="hospital-detail__tags">
               <span class="finder-badge ${badgeClass}">${escapeHtml(typeLabel)}</span>
               <span class="finder-badge finder-badge--neutral">${escapeHtml(entry.canton)}</span>
             </div>
           </header>
           ${infoMarkup}
+          ${subtitleMarkup}
           <section class="hospital-detail__summary">${summaryMarkup}</section>
           ${proceduresMarkup}
           <section class="hospital-detail__metrics">${metricsMarkup}</section>
@@ -2867,8 +3075,8 @@ if (finderRoot) {
 
       finderCategoryTabs.innerHTML = categoriesWithMatches
         .map((category) => {
-          const isActive = category.id === state.selectedCategory;
-          const dimmed = isSearching && !category.hasMatch && !isActive;
+          const isActive = !isSearching && category.id === state.selectedCategory;
+          const dimmed = isSearching && !category.hasMatch;
           return `
           <button type="button" class="finder-chip finder-category-btn${
             isActive ? ' active' : ''
@@ -3200,6 +3408,20 @@ if (finderRoot) {
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
 
+    const formatPer100k = (cases, population) => {
+      const populationValue = Number(population);
+      if (!Number.isFinite(populationValue) || populationValue <= 0) {
+        return '—';
+      }
+      const casesValue = Number(cases);
+      const safeCases = Number.isFinite(casesValue) ? casesValue : 0;
+      const rate = (safeCases / populationValue) * 100000;
+      return rate.toLocaleString(undefined, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+    };
+
     const createValueMarkup = (label, value, options = {}) => {
       const {
         isSecondary = false,
@@ -3240,10 +3462,11 @@ if (finderRoot) {
       ];
       if (hasCantonSelection && secondaryValue != null) {
         const secondary = valueConfig(secondaryValue);
+        const fallbackLabel = getCantonShortLabel(state.selectedCanton) || getCantonLabel(state.selectedCanton);
         const secondaryLabel =
           typeof options.secondaryLabel === 'string' && options.secondaryLabel.trim()
             ? options.secondaryLabel
-            : state.selectedCanton;
+            : fallbackLabel;
         rows.push(
           createValueMarkup(secondaryLabel, secondary.value, {
             isSecondary: true,
@@ -3264,6 +3487,8 @@ if (finderRoot) {
       className: 'finder-kpi-value-number--hhi'
     });
 
+    const cantonPopulation = hasCantonSelection ? REGION_POPULATION[state.selectedCanton] : null;
+
     const tiles = [
       {
         label: kpiLabels.totalCases,
@@ -3273,10 +3498,13 @@ if (finderRoot) {
         footnote: ''
       },
       {
-        label: kpiLabels.hospitalsPerforming,
+        label: kpiLabels.casesPer100k,
         type: 'dual',
-        primary: formatCount(agg.hospitalCount ?? agg.hospitals.length),
-        secondary: cantonTotals ? formatCount(cantonTotals.hospitalCount) : null,
+        primary: formatPer100k(agg.total, REGION_POPULATION.CH),
+        secondary:
+          cantonTotals && cantonPopulation
+            ? formatPer100k(cantonTotals.totalCases, cantonPopulation)
+            : null,
         footnote: ''
       },
       {
@@ -3290,7 +3518,10 @@ if (finderRoot) {
         info: hhiFootnote,
         valueOptions: {
           primaryLabel: switzerlandLabel,
-          secondaryLabel: state.selectedCanton
+          secondaryLabel:
+            typeof state.selectedCanton === 'string'
+              ? getCantonShortLabel(state.selectedCanton)
+              : getCantonLabel(state.selectedCanton)
         }
       },
       {
@@ -3349,7 +3580,7 @@ if (finderRoot) {
     const listLocationLabel =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? msg('topHospitals')
-        : msg('topHospitalsIn', { canton: state.selectedCanton });
+        : msg('topHospitalsIn', { canton: getCantonLabel(state.selectedCanton) });
     if (finderListContext) {
       finderListContext.textContent = listLocationLabel;
     }
@@ -3379,7 +3610,7 @@ if (finderRoot) {
         : filteredBySearch.filter((h) => h.canton === state.selectedCanton);
 
     if (!filteredByCanton.length) {
-      finderListMeta.textContent = msg('cantonNoHospitals', { canton: state.selectedCanton });
+      finderListMeta.textContent = msg('cantonNoHospitals', { canton: getCantonLabel(state.selectedCanton) });
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
       return;
     }
@@ -3397,7 +3628,15 @@ if (finderRoot) {
     const hasPrevious = state.listPage > 0;
     const hasNext = endIndex < filteredByCanton.length;
 
-    finderListMeta.innerHTML = `
+    const hospitalsCountKey =
+      filteredByCanton.length === 1
+        ? 'hospitalsPerformingSingle'
+        : 'hospitalsPerformingPlural';
+    const hospitalsCountText = msg(hospitalsCountKey, {
+      count: filteredByCanton.length.toLocaleString(activeLocale)
+    });
+
+    const paginationMarkup = `
       <div class="finder-pagination">
         <button class="finder-page-btn" data-direction="prev" aria-label="${msg('ariaPrevHospitals')}" ${
           hasPrevious ? '' : 'disabled'
@@ -3415,6 +3654,11 @@ if (finderRoot) {
           <span aria-hidden="true">&#8594;</span>
         </button>
       </div>
+    `;
+
+    finderListMeta.innerHTML = `
+      <div class="finder-list-count">${escapeHtml(hospitalsCountText)}</div>
+      ${paginationMarkup}
     `;
 
     finderListMeta.querySelectorAll('.finder-page-btn').forEach((btn) => {
@@ -3440,11 +3684,13 @@ if (finderRoot) {
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <strong>${h.hospital}</strong>
-                <span class="finder-badge ${badgeClass}">${badgeLabel}</span>
-                <span class="finder-badge" style="background: none; border: none; color: #6b7280;">${h.canton}</span>
+                <strong class="finder-hospital-name">${h.hospital}</strong>
+                <span class="finder-badge finder-hospital-type ${badgeClass}">${badgeLabel}</span>
+                <span class="finder-badge finder-badge--canton finder-hospital-canton">${h.canton}</span>
               </div>
-              <div class="finder-progress"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
+              <div class="finder-progress" aria-hidden="true">
+                <div class="finder-progress-bar" style="width: ${width}%;"></div>
+              </div>
             </div>
             <div class="finder-figures">
               <strong>${h.cases.toLocaleString()}</strong>
@@ -3570,10 +3816,35 @@ if (finderRoot) {
     mapState.map.invalidateSize();
   }
 
+  const updateCantonFlag = (option) => {
+    if (!finderCantonFlag || !finderCantonFlagImage) {
+      return;
+    }
+
+    if (!option || option.value === ALL_CANTONS_OPTION || !option.icon) {
+      finderCantonFlag.hidden = true;
+      finderCantonFlag.setAttribute('aria-hidden', 'true');
+      finderCantonFlagImage.removeAttribute('src');
+      finderCantonFlagImage.alt = '';
+      return;
+    }
+
+    finderCantonFlag.hidden = false;
+    finderCantonFlag.removeAttribute('aria-hidden');
+    finderCantonFlagImage.src = option.icon;
+    const flagLabel = option.label || option.value;
+    finderCantonFlagImage.alt = `Flag of canton ${flagLabel}`;
+  };
+
   function renderCantonDetails(agg) {
     const cantonHosp = agg.cantonHosp;
+    const hasCantonSelection = state.selectedCanton !== ALL_CANTONS_OPTION;
+    const cantonOption = hasCantonSelection ? getCantonOptionByValue(state.selectedCanton) : null;
+    const cantonLabel = hasCantonSelection ? getCantonLabel(state.selectedCanton) : '';
 
-    if (state.selectedCanton === ALL_CANTONS_OPTION) {
+    updateCantonFlag(cantonOption);
+
+    if (!hasCantonSelection) {
       finderCantonSummary.textContent = msg('cantonSelectPrompt');
       finderCantonList.innerHTML = '';
       return;
@@ -3584,13 +3855,13 @@ if (finderRoot) {
     let summaryText;
 
     if (!leader) {
-      summaryText = msg('cantonNoHospitals', { canton: state.selectedCanton });
+      summaryText = msg('cantonNoHospitals', { canton: cantonLabel });
     } else {
       const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
       const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
       const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
       summaryText = msg('cantonSummary', {
-        canton: state.selectedCanton,
+        canton: cantonLabel,
         count: cantonHosp.length,
         procedure: procedureLabel,
         leader: leader.hospital,
@@ -3608,12 +3879,202 @@ if (finderRoot) {
         const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
           <div class="finder-canton-row">
-            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span>${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+            <span class="finder-canton-hospital">${h.hospital}</span>
+            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+            <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
           </div>
         `;
       })
       .join('');
+  }
+
+  function renderCantonComparison(agg) {
+    if (!finderCantonComparisonCard || !finderCantonComparisonCaption || !finderCantonComparisonChart) {
+      return;
+    }
+
+    const setEmptyState = (captionMessage) => {
+      finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+      const hasCaption = Boolean(captionMessage);
+      finderCantonComparisonCaption.textContent = captionMessage ?? '';
+      finderCantonComparisonCaption.hidden = !hasCaption;
+      finderCantonComparisonChart.innerHTML = '';
+    };
+
+    if (state.selectedCanton === ALL_CANTONS_OPTION) {
+      setEmptyState('');
+      return;
+    }
+
+    if (!agg) {
+      setEmptyState(msg('loadingData'));
+      return;
+    }
+
+    const cantonLabel = getCantonLabel(state.selectedCanton);
+    const cantonCode =
+      typeof state.selectedCanton === 'string'
+        ? state.selectedCanton.toUpperCase()
+        : '';
+    const cantonShortLabel = getCantonShortLabel(state.selectedCanton);
+    const cantonMessageValue = cantonCode || cantonLabel;
+    const cantonPopulation = REGION_POPULATION[state.selectedCanton];
+    const nationalPopulation = REGION_POPULATION.CH;
+    const cantonCases = agg.cantonTotals?.totalCases ?? 0;
+    const nationalCases = agg.total ?? 0;
+
+    const toRate = (cases, population) => {
+      const popValue = Number(population);
+      if (!Number.isFinite(popValue) || popValue <= 0) {
+        return Number.NaN;
+      }
+      const casesValue = Number(cases);
+      const safeCases = Number.isFinite(casesValue) && casesValue > 0 ? casesValue : 0;
+      return (safeCases / popValue) * 100000;
+    };
+
+    const cantonRate = toRate(cantonCases, cantonPopulation);
+    const nationalRate = toRate(nationalCases, nationalPopulation);
+
+    if (!Number.isFinite(cantonRate) || !Number.isFinite(nationalRate)) {
+      const message = msg('cantonComparisonNoData', { canton: cantonLabel });
+      setEmptyState(message);
+      return;
+    }
+
+    finderCantonComparisonCard.classList.remove('finder-comparison-card--empty');
+    const comparisonTitle = msg('cantonComparisonTitle');
+    finderCantonComparisonCaption.textContent = comparisonTitle ?? '';
+    finderCantonComparisonCaption.hidden = !comparisonTitle;
+
+    const formatRate = (value) =>
+      Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+
+    const nationalLabel = msg('cantonComparisonLabelNational');
+    const cantonChartLabel = msg('cantonComparisonLabelCanton', {
+      canton: cantonShortLabel || cantonLabel
+    });
+
+    const comparisonLead = msg('cantonComparisonLead', {
+      cantonRate: formatRate(cantonRate),
+      nationalRate: formatRate(nationalRate),
+      canton: cantonMessageValue
+    });
+
+    const rows = [
+      { key: 'national', label: nationalLabel, value: nationalRate, abbr: 'CH' },
+      {
+        key: 'canton',
+        label: cantonChartLabel,
+        value: cantonRate,
+        abbr:
+          typeof state.selectedCanton === 'string'
+            ? state.selectedCanton.toUpperCase()
+            : ''
+      }
+    ];
+
+    const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
+    const safeMax = maxValue > 0 ? maxValue : 1;
+
+    const getAxisScale = (value) => {
+      if (!Number.isFinite(value) || value <= 0) {
+        const fallbackTicks = [0, 0.25, 0.5, 0.75, 1];
+        return { axisMax: 1, tickValues: fallbackTicks };
+      }
+
+      const desiredTickCount = 6;
+      const roughStep = value / (desiredTickCount - 1);
+      const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+      const residual = roughStep / magnitude;
+      let niceResidual;
+
+      if (residual >= 5) {
+        niceResidual = 10;
+      } else if (residual >= 2) {
+        niceResidual = 5;
+      } else if (residual >= 1) {
+        niceResidual = 2;
+      } else {
+        niceResidual = 1;
+      }
+
+      const niceStep = niceResidual * magnitude;
+      const axisMax = Math.ceil(value / niceStep) * niceStep;
+      const tickValues = [];
+      for (let tick = 0; tick <= axisMax + niceStep / 2; tick += niceStep) {
+        tickValues.push(Number(tick.toFixed(10)));
+      }
+
+      if (tickValues.length < 2) {
+        tickValues.push(axisMax);
+      }
+
+      return { axisMax, tickValues };
+    };
+
+    const { axisMax, tickValues } = getAxisScale(safeMax * 1.05);
+
+    const tickMarkup = tickValues
+      .map((tickValue) => {
+        const position = axisMax > 0 ? (tickValue / axisMax) * 100 : 0;
+        const safePosition = Math.max(0, Math.min(100, position));
+        const safeLabel = escapeHtml(formatRate(tickValue));
+        const tickClass = tickValue === 0 ? ' finder-comparison-tick--zero' : '';
+        return `
+          <div class="finder-comparison-tick${tickClass}" style="--tick-position: ${safePosition}%;">
+            <span class="finder-comparison-tick-label">${safeLabel}</span>
+            <span class="finder-comparison-tick-line" aria-hidden="true"></span>
+          </div>
+        `;
+      })
+      .join('');
+
+    const barsMarkup = rows
+      .map((row) => {
+        const height = axisMax > 0 ? (row.value / axisMax) * 100 : 0;
+        const heightValue = Math.max(0, Math.min(100, height)).toFixed(1);
+        const safeAbbr = escapeHtml(row.abbr ?? '');
+        return `
+          <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
+            <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
+            <div class="finder-comparison-bar-outer">
+              <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+    const legendMarkup = rows
+      .map((row) => {
+        const safeLabel = escapeHtml(row.label);
+        const safeValue = escapeHtml(formatRate(row.value));
+        return `
+          <div class="finder-comparison-bar-meta finder-comparison-bar-meta--${row.key}">
+            <span class="finder-comparison-bar-label">${safeLabel}</span>
+            <span class="finder-comparison-bar-value">${safeValue}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    const axisLabel = escapeHtml(msg('cantonComparisonAxisLabel'));
+    const chartMarkup = `
+      <div class="finder-comparison-plot">
+        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(comparisonLead)}">
+          <div class="finder-comparison-grid">${tickMarkup}</div>
+          <div class="finder-comparison-bars">${barsMarkup}</div>
+        </div>
+        <div class="finder-comparison-bar-legend">${legendMarkup}</div>
+        <div class="finder-comparison-axis-caption">${axisLabel}</div>
+      </div>
+    `;
+
+    finderCantonComparisonChart.innerHTML = chartMarkup;
   }
 
   function render() {
@@ -3634,7 +4095,7 @@ if (finderRoot) {
     const listLocationLabel =
       state.selectedCanton === ALL_CANTONS_OPTION
         ? msg('topHospitals')
-        : msg('topHospitalsIn', { canton: state.selectedCanton });
+        : msg('topHospitalsIn', { canton: getCantonLabel(state.selectedCanton) });
 
     if (finderListContext) {
       finderListContext.textContent = listLocationLabel;
@@ -3648,6 +4109,13 @@ if (finderRoot) {
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
+      updateCantonFlag(null);
+      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+        finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+        finderCantonComparisonCaption.textContent = '';
+        finderCantonComparisonCaption.hidden = true;
+        finderCantonComparisonChart.innerHTML = '';
+      }
       scrollToResultsIfNeeded();
       return;
     }
@@ -3659,6 +4127,13 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      updateCantonFlag(null);
+      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+        finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+        finderCantonComparisonCaption.textContent = msg('loadingData');
+        finderCantonComparisonCaption.hidden = false;
+        finderCantonComparisonChart.innerHTML = '';
+      }
       scrollToResultsIfNeeded();
       return;
     }
@@ -3668,6 +4143,7 @@ if (finderRoot) {
     renderTopList(aggregation);
     renderMap(aggregation);
     renderCantonDetails(aggregation);
+    renderCantonComparison(aggregation);
     scrollToResultsIfNeeded();
   }
 
@@ -3735,6 +4211,13 @@ if (finderRoot) {
         finderList.innerHTML = '';
         displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
+        updateCantonFlag(null);
+        if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+          finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+          finderCantonComparisonCaption.textContent = msg('datasetError');
+          finderCantonComparisonCaption.hidden = false;
+          finderCantonComparisonChart.innerHTML = '';
+        }
       });
   }
 

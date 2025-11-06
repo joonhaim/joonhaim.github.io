@@ -144,20 +144,23 @@
     </div>
 
     <div class="finder-bottom">
-      <div class="finder-canton-card surface-card">
-        <h3>My canton</h3>
-        <p id="finder-canton-summary" class="finder-canton-summary"></p>
-        <div id="finder-canton-list" class="finder-canton-list"></div>
-      </div>
-      <div class="finder-comparison-card surface-card" id="finder-canton-comparison-card">
-        <h3>Canton vs Switzerland</h3>
-        <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
-        <div
-          id="finder-canton-comparison-chart"
-          class="finder-comparison-chart"
-          aria-hidden="true"
-        ></div>
-        <p id="finder-canton-comparison-difference" class="finder-comparison-difference"></p>
+      <div class="finder-canton-card surface-card finder-canton-card--with-comparison">
+        <div class="finder-canton-card__layout">
+          <div class="finder-canton-card__primary">
+            <h3>My canton</h3>
+            <p id="finder-canton-summary" class="finder-canton-summary"></p>
+            <div id="finder-canton-list" class="finder-canton-list"></div>
+          </div>
+          <div class="finder-canton-card__comparison finder-comparison-card" id="finder-canton-comparison-card">
+            <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
+            <p id="finder-canton-comparison-difference" class="finder-comparison-difference"></p>
+            <div
+              id="finder-canton-comparison-chart"
+              class="finder-comparison-chart"
+              aria-hidden="true"
+            ></div>
+          </div>
+        </div>
       </div>
       <div class="finder-note-card surface-card">
         <h3>How to interpret these numbers</h3>

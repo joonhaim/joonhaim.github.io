@@ -3739,15 +3739,19 @@ if (finderRoot) {
 
     const setEmptyState = (captionMessage, differenceMessage = '') => {
       finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
-      finderCantonComparisonCaption.textContent = captionMessage;
+      const hasCaption = Boolean(captionMessage);
+      finderCantonComparisonCaption.textContent = captionMessage ?? '';
+      finderCantonComparisonCaption.hidden = !hasCaption;
       if (finderCantonComparisonDifference) {
-        finderCantonComparisonDifference.textContent = differenceMessage;
+        const hasDifference = Boolean(differenceMessage);
+        finderCantonComparisonDifference.textContent = differenceMessage ?? '';
+        finderCantonComparisonDifference.hidden = !hasDifference;
       }
       finderCantonComparisonChart.innerHTML = '';
     };
 
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
-      setEmptyState(msg('cantonComparisonPrompt'));
+      setEmptyState('');
       return;
     }
 
@@ -3783,6 +3787,8 @@ if (finderRoot) {
     }
 
     finderCantonComparisonCard.classList.remove('finder-comparison-card--empty');
+    finderCantonComparisonCaption.textContent = '';
+    finderCantonComparisonCaption.hidden = true;
 
     const formatRate = (value) =>
       Number(value).toLocaleString(undefined, {
@@ -3793,7 +3799,7 @@ if (finderRoot) {
     const nationalLabel = msg('cantonComparisonLabelNational');
     const cantonChartLabel = msg('cantonComparisonLabelCanton', { canton: cantonLabel });
 
-    finderCantonComparisonCaption.textContent = msg('cantonComparisonLead', {
+    const comparisonLead = msg('cantonComparisonLead', {
       cantonRate: formatRate(cantonRate),
       nationalRate: formatRate(nationalRate),
       canton: cantonLabel
@@ -3819,47 +3825,71 @@ if (finderRoot) {
 
     if (finderCantonComparisonDifference) {
       finderCantonComparisonDifference.textContent = differenceMessage;
+      finderCantonComparisonDifference.hidden = false;
     }
 
     const rows = [
-      { key: 'national', label: nationalLabel, value: nationalRate },
-      { key: 'canton', label: cantonChartLabel, value: cantonRate }
+      { key: 'national', label: nationalLabel, value: nationalRate, abbr: 'CH' },
+      {
+        key: 'canton',
+        label: cantonChartLabel,
+        value: cantonRate,
+        abbr:
+          typeof state.selectedCanton === 'string'
+            ? state.selectedCanton.toUpperCase()
+            : ''
+      }
     ];
 
     const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
     const safeMax = maxValue > 0 ? maxValue : 1;
 
-    const getNiceCeiling = (value) => {
+    const getAxisScale = (value) => {
       if (!Number.isFinite(value) || value <= 0) {
-        return 1;
+        const fallbackTicks = [0, 0.25, 0.5, 0.75, 1];
+        return { axisMax: 1, tickValues: fallbackTicks };
       }
-      const exponent = Math.floor(Math.log10(value));
-      const base = 10 ** exponent;
-      const fraction = value / base;
-      let niceFraction;
-      if (fraction <= 1) {
-        niceFraction = 1;
-      } else if (fraction <= 2) {
-        niceFraction = 2;
-      } else if (fraction <= 5) {
-        niceFraction = 5;
+
+      const desiredTickCount = 6;
+      const roughStep = value / (desiredTickCount - 1);
+      const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+      const residual = roughStep / magnitude;
+      let niceResidual;
+
+      if (residual >= 5) {
+        niceResidual = 10;
+      } else if (residual >= 2) {
+        niceResidual = 5;
+      } else if (residual >= 1) {
+        niceResidual = 2;
       } else {
-        niceFraction = 10;
+        niceResidual = 1;
       }
-      return niceFraction * base;
+
+      const niceStep = niceResidual * magnitude;
+      const axisMax = Math.ceil(value / niceStep) * niceStep;
+      const tickValues = [];
+      for (let tick = 0; tick <= axisMax + niceStep / 2; tick += niceStep) {
+        tickValues.push(Number(tick.toFixed(10)));
+      }
+
+      if (tickValues.length < 2) {
+        tickValues.push(axisMax);
+      }
+
+      return { axisMax, tickValues };
     };
 
-    const axisMax = getNiceCeiling(safeMax * 1.05);
-    const tickSteps = 4;
-    const tickValues = Array.from({ length: tickSteps }, (_, index) => (axisMax / (tickSteps - 1)) * index);
+    const { axisMax, tickValues } = getAxisScale(safeMax * 1.05);
 
     const tickMarkup = tickValues
       .map((tickValue) => {
         const position = axisMax > 0 ? (tickValue / axisMax) * 100 : 0;
         const safePosition = Math.max(0, Math.min(100, position));
         const safeLabel = escapeHtml(formatRate(tickValue));
+        const tickClass = tickValue === 0 ? ' finder-comparison-tick--zero' : '';
         return `
-          <div class="finder-comparison-tick" style="--tick-position: ${safePosition}%;">
+          <div class="finder-comparison-tick${tickClass}" style="--tick-position: ${safePosition}%;">
             <span class="finder-comparison-tick-label">${safeLabel}</span>
             <span class="finder-comparison-tick-line" aria-hidden="true"></span>
           </div>
@@ -3871,8 +3901,10 @@ if (finderRoot) {
       .map((row) => {
         const height = axisMax > 0 ? (row.value / axisMax) * 100 : 0;
         const heightValue = Math.max(0, Math.min(100, height)).toFixed(1);
+        const safeAbbr = escapeHtml(row.abbr ?? '');
         return `
           <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
+            <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
             <div class="finder-comparison-bar-outer">
               <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
             </div>
@@ -3897,13 +3929,7 @@ if (finderRoot) {
     const axisLabel = escapeHtml(msg('cantonComparisonAxisLabel'));
     const chartMarkup = `
       <div class="finder-comparison-plot">
-        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(
-          msg('cantonComparisonLead', {
-            cantonRate: formatRate(cantonRate),
-            nationalRate: formatRate(nationalRate),
-            canton: cantonLabel
-          })
-        )}">
+        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(comparisonLead)}">
           <div class="finder-comparison-grid">${tickMarkup}</div>
           <div class="finder-comparison-bars">${barsMarkup}</div>
         </div>
@@ -3949,10 +3975,12 @@ if (finderRoot) {
       finderCantonList.innerHTML = '';
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
-        finderCantonComparisonCaption.textContent = msg('selectProcedureComparison');
+        finderCantonComparisonCaption.textContent = '';
+        finderCantonComparisonCaption.hidden = true;
         finderCantonComparisonChart.innerHTML = '';
         if (finderCantonComparisonDifference) {
           finderCantonComparisonDifference.textContent = '';
+          finderCantonComparisonDifference.hidden = true;
         }
       }
       scrollToResultsIfNeeded();
@@ -3969,9 +3997,11 @@ if (finderRoot) {
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = msg('loadingData');
+        finderCantonComparisonCaption.hidden = false;
         finderCantonComparisonChart.innerHTML = '';
         if (finderCantonComparisonDifference) {
           finderCantonComparisonDifference.textContent = '';
+          finderCantonComparisonDifference.hidden = true;
         }
       }
       scrollToResultsIfNeeded();
@@ -4054,9 +4084,11 @@ if (finderRoot) {
         if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
           finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
           finderCantonComparisonCaption.textContent = msg('datasetError');
+          finderCantonComparisonCaption.hidden = false;
           finderCantonComparisonChart.innerHTML = '';
           if (finderCantonComparisonDifference) {
             finderCantonComparisonDifference.textContent = '';
+            finderCantonComparisonDifference.hidden = true;
           }
         }
       });

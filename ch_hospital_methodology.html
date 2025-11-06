@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="Methodology notes for the Swiss hospital interventions (CH-IQI) dashboard, covering data sources, cleaning steps, and analytical choices."
+  >
+  <title>Methodology · Swiss Hospital Interventions</title>
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Methodology · Swiss Hospital Interventions (CH-IQI)">
+  <meta
+    property="og:description"
+    content="Detailed notes on the data preparation and analysis powering the CH-IQI Swiss hospital interventions dashboard."
+  >
+  <meta property="og:url" content="https://joonhaim.github.io/ch_hospital_methodology.html">
+  <meta property="og:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Methodology · Swiss Hospital Interventions (CH-IQI)">
+  <meta
+    name="twitter:description"
+    content="Detailed notes on the data preparation and analysis powering the CH-IQI Swiss hospital interventions dashboard."
+  >
+  <meta name="twitter:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="static/css/ch_hospital.css">
+  <link rel="stylesheet" href="static/css/ch_hospital_methodology.css">
+</head>
+<body>
+  <div class="header-left">
+    <a href="ch_hospital.html" class="back-arrow" aria-label="Back to the CH-IQI dashboard">
+      <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 6L9 12l6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+  <a href="index.html" class="swiss-cross" aria-label="Back to the homepage"></a>
+
+  <section class="hero hero--methodology">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">CH-IQI 2023 Dashboard</p>
+      <h1>Methodology &amp; Data Notes</h1>
+      <p class="tagline">
+        This page explains how the CH-IQI hospital interventions dashboard is assembled — from sourcing the raw spreadsheets to
+        modelling the taxonomy, calculating volumes, and designing the interactive experience.
+      </p>
+      <div class="methodology-meta">
+        <span><strong>Last updated:</strong> February 2025</span>
+        <span><strong>Contact:</strong> <a href="mailto:a.j.im@umail.leidenuniv.nl">a.j.im@umail.leidenuniv.nl</a></span>
+      </div>
+    </div>
+  </section>
+
+  <main class="methodology-main">
+    <div class="methodology-container">
+      <article class="methodology-card" id="overview">
+        <h2>How to use these notes</h2>
+        <p>
+          The dashboard is intended for journalists, patients, and policymakers who want a quick overview of where specific
+          interventions are performed in Switzerland. The sections below document the decisions that shape the dataset and the
+          interface so that the results can be interpreted appropriately and — if needed — replicated.
+        </p>
+        <ul class="methodology-toc">
+          <li><a href="#sources">1. Data sources &amp; coverage</a></li>
+          <li><a href="#preparation">2. Cleaning &amp; harmonisation</a></li>
+          <li><a href="#taxonomy">3. Procedure taxonomy</a></li>
+          <li><a href="#metrics">4. Metrics &amp; calculations</a></li>
+          <li><a href="#dashboard">5. Dashboard interactions</a></li>
+          <li><a href="#limitations">6. Caveats &amp; known limitations</a></li>
+          <li><a href="#repro">7. Reproducibility checklist</a></li>
+        </ul>
+      </article>
+
+      <article class="methodology-card" id="sources">
+        <h2>1. Data sources &amp; coverage</h2>
+        <p>
+          All figures come from the <strong>Swiss Federal Office of Public Health (FOPH)</strong> CH-IQI release covering the 2023
+          reporting year. The raw Excel workbooks list the number of in-patient stays and risk-adjusted indicators for acute-care
+          hospitals.
+        </p>
+        <h3>Files consulted</h3>
+        <ul>
+          <li>Hospital-level case volumes by procedure group ("Fallzahlen je Spital und Indikator").</li>
+          <li>Metadata tables describing CH-IQI indicators, risk adjustment, and national inclusion criteria.</li>
+          <li>Reference sheets mapping cantons, hospital identifiers, and organisational types.</li>
+        </ul>
+        <h3>Temporal &amp; geographic scope</h3>
+        <ul>
+          <li>Observation window: discharges between <strong>1 January and 31 December 2023</strong>.</li>
+          <li>Hospitals: all acute-care institutions participating in the CH-IQI programme.</li>
+          <li>Geographies: cantonal assignment based on the legal headquarters of each hospital site.</li>
+        </ul>
+        <p class="note">
+          Suppressed values (&lt; 5 cases) remain hidden in the source material. The dashboard keeps these suppressions in place to
+          protect patient privacy.
+        </p>
+      </article>
+
+      <article class="methodology-card" id="preparation">
+        <h2>2. Cleaning &amp; harmonisation</h2>
+        <p>
+          The raw workbooks were exported from the FOPH portal as XLSX files and processed in Python (Pandas 2.2). The goal was to
+          deliver a tidy table where each row represents one hospital–procedure combination.
+        </p>
+        <h3>Processing steps</h3>
+        <ol>
+          <li>Normalised column headers to consistent English labels while preserving the original German titles as metadata.</li>
+          <li>Reshaped the wide sheets into long format so each procedure appears as an explicit row.</li>
+          <li>Trimmed hospital names, aligned legal entities across sheets, and attached canton codes and ownership type.</li>
+          <li>Converted suppressed cells to <code>null</code> values and flagged them for the interface.</li>
+          <li>Stored the cleaned table as a UTF-8 CSV that powers the client-side search catalogue.</li>
+        </ol>
+        <h3>Quality checks</h3>
+        <ul>
+          <li>Spot-checked aggregate volumes against national totals published by FOPH.</li>
+          <li>Validated canton assignments against the BAG list of hospital sites.</li>
+          <li>Ensured each hospital–procedure pair is unique and carries at most one data row.</li>
+        </ul>
+      </article>
+
+      <article class="methodology-card" id="taxonomy">
+        <h2>3. Procedure taxonomy</h2>
+        <p>
+          CH-IQI indicators are grouped into thematic clusters (e.g., cardiology, orthopaedics). For usability, the dashboard
+          exposes a curated set of <strong>"quick picks"</strong> and a browsable catalogue.
+        </p>
+        <ul>
+          <li>Indicator names and codes follow the official CH-IQI nomenclature.</li>
+          <li>Specialty groupings are maintained from the source metadata to avoid introducing ad-hoc categories.</li>
+          <li>Additional synonyms were authored for the search index (e.g., "hip replacement" alongside the German descriptor).</li>
+        </ul>
+        <p>
+          When the user selects an indicator, the dashboard loads all hospitals with available volume data and displays supporting
+          metadata such as the case mix and applicable quality indicator.
+        </p>
+      </article>
+
+      <article class="methodology-card" id="metrics">
+        <h2>4. Metrics &amp; calculations</h2>
+        <p>
+          The dashboard presents <strong>annual case volumes</strong> and, where available, the CH-IQI quality indicator for the
+          selected procedure. No additional statistical modelling is performed in the browser.
+        </p>
+        <h3>Displayed fields</h3>
+        <ul>
+          <li>Total number of cases reported in 2023.</li>
+          <li>Hospital type (university, central, regional, specialised).</li>
+          <li>Canton of the hospital site.</li>
+          <li>Suppression flag indicating if the underlying count is hidden.</li>
+        </ul>
+        <h3>Derived indicators</h3>
+        <ul>
+          <li>Sorting logic ranks hospitals by case volume and falls back to alphabetical order for ties.</li>
+          <li>Dashboard totals aggregate the visible (non-suppressed) rows for contextual messaging.</li>
+        </ul>
+        <p>
+          Risk-adjusted outcome measures (e.g., mortality, readmission) remain in their native format. They are surfaced alongside
+          the volume data without further manipulation.
+        </p>
+      </article>
+
+      <article class="methodology-card" id="dashboard">
+        <h2>5. Dashboard interactions</h2>
+        <p>
+          All interactions run client-side in vanilla JavaScript using the cleaned CSV and a GeoJSON file of Swiss cantons.
+        </p>
+        <ul>
+          <li><strong>Search &amp; quick picks:</strong> fuzzy matching on indicator names, codes, and synonyms.</li>
+          <li><strong>Filtering:</strong> hospital type and canton filters reduce the in-memory dataset before rendering.</li>
+          <li><strong>Map:</strong> Leaflet 1.9 renders canton boundaries; hospitals inherit the canton colour scale for consistency.</li>
+          <li><strong>State management:</strong> selections persist in <code>localStorage</code> so the user keeps context when switching languages.</li>
+        </ul>
+        <p>
+          The dashboard intentionally avoids remote calls so it can be hosted as a static page on GitHub Pages while remaining responsive.
+        </p>
+      </article>
+
+      <article class="methodology-card" id="limitations">
+        <h2>6. Caveats &amp; known limitations</h2>
+        <ul>
+          <li>Suppressed values (<strong>&lt; 5 cases</strong>) can understate activity for rare procedures.</li>
+          <li>Quality indicators are not directly comparable across specialties because of differing risk adjustments.</li>
+          <li>Hospitals with multiple locations appear under their legal entity; site-level nuances may require consulting the FOPH release.</li>
+          <li>Only acute-care hospitals are covered; rehabilitation and psychiatric facilities are outside the CH-IQI scope.</li>
+        </ul>
+      </article>
+
+      <article class="methodology-card" id="repro">
+        <h2>7. Reproducibility checklist</h2>
+        <p>
+          To reproduce or extend the dashboard, follow the steps below. The source notebooks (Python 3.11) live alongside the
+          cleaned data in a private workspace but can be shared on request.
+        </p>
+        <ol>
+          <li>Download the CH-IQI XLSX bundle for the desired year from the FOPH website.</li>
+          <li>Run the data preparation notebook to clean and export the consolidated CSV.</li>
+          <li>Refresh the procedure metadata JSON that feeds the catalogue and search synonyms.</li>
+          <li>Regenerate the static assets (minified JavaScript, GeoJSON simplification if boundaries change).</li>
+          <li>Deploy the site via GitHub Pages or another static host.</li>
+        </ol>
+        <p class="note">
+          Have questions or need the processing scripts? Reach out via the email address above.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <p>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="contact.html">Contact</a>
+    </p>
+  </footer>
+</body>
+</html>

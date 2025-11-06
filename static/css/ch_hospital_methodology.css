@@ -1,0 +1,145 @@
+:root {
+  --text-muted: #475569;
+  --border-soft: rgba(15, 23, 42, 0.08);
+  --surface-default: #ffffff;
+}
+
+body {
+  background-color: #f5f7fb;
+  color: #0f172a;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.65;
+}
+
+.hero.hero--methodology {
+  padding-bottom: 2.5rem;
+}
+
+.hero.hero--methodology .hero-inner {
+  max-width: 720px;
+}
+
+.hero.hero--methodology .hero-eyebrow {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.hero.hero--methodology .tagline {
+  margin-bottom: 1.25rem;
+}
+
+.methodology-main {
+  padding: 3rem 1.5rem 4rem;
+}
+
+.methodology-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.methodology-card {
+  background: var(--surface-default);
+  border-radius: 1rem;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.05);
+  padding: 2rem;
+}
+
+.methodology-card h2 {
+  margin-top: 0;
+  font-size: 1.75rem;
+}
+
+.methodology-card h3 {
+  margin-top: 2.25rem;
+  font-size: 1.3rem;
+}
+
+.methodology-card h3:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.methodology-card p,
+.methodology-card li {
+  font-size: 1.02rem;
+  color: #1f2937;
+}
+
+.methodology-card p + p {
+  margin-top: 1rem;
+}
+
+.methodology-card ul,
+.methodology-card ol {
+  margin: 0.75rem 0 0.75rem 1.4rem;
+  padding: 0;
+}
+
+.methodology-card li + li {
+  margin-top: 0.35rem;
+}
+
+.methodology-toc {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.methodology-toc a {
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.methodology-toc a:hover,
+.methodology-toc a:focus {
+  text-decoration: underline;
+}
+
+.methodology-card .note {
+  border-left: 4px solid #da291c;
+  background: rgba(218, 41, 28, 0.08);
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.98rem;
+  color: #da291c;
+  margin-top: 1.25rem;
+}
+
+.methodology-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.methodology-meta strong {
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .methodology-card {
+    padding: 1.5rem;
+  }
+
+  .methodology-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .methodology-card h3 {
+    font-size: 1.18rem;
+  }
+
+  .methodology-main {
+    padding: 2.5rem 1.25rem 3rem;
+  }
+}

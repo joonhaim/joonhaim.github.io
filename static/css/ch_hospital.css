@@ -3030,14 +3030,51 @@ body {
 
 .finder-canton-list {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.finder-canton-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.finder-canton-highlight {
+  background: var(--surface-muted);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-height: 0;
+}
+
+.finder-canton-highlight__value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-navy);
+  line-height: 1.2;
+}
+
+.finder-canton-highlight__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.finder-canton-rows {
   display: grid;
   gap: 0.65rem;
 }
 
 .finder-canton-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, auto) auto;
-  grid-template-areas: 'hospital type cases';
+  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, auto) minmax(7.5rem, auto) auto;
+  grid-template-areas: 'hospital type share cases';
   align-items: center;
   column-gap: 1rem;
   font-size: 0.85rem;
@@ -3058,6 +3095,43 @@ body {
   justify-content: flex-start;
   grid-area: type;
   min-width: 0;
+}
+
+.finder-canton-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  grid-area: share;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+}
+
+.finder-canton-share__bar {
+  position: relative;
+  width: 3.75rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.finder-canton-share__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--brand-red);
+  border-radius: inherit;
+  width: var(--share, 0%);
+}
+
+.finder-canton-share__label {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--brand-navy);
+  white-space: nowrap;
 }
 
 .finder-canton-cases {
@@ -3243,16 +3317,39 @@ body {
 }
 
 @media (max-width: 640px) {
+  .finder-canton-list {
+    gap: 1rem;
+  }
+
+  .finder-canton-highlights {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .finder-canton-highlight {
+    padding: 0.8rem 0.9rem;
+  }
+
   .finder-canton-row {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       'hospital cases'
-      'type cases';
-    row-gap: 0.35rem;
+      'type cases'
+      'share share';
+    row-gap: 0.45rem;
+    align-items: start;
   }
 
   .finder-canton-type {
     justify-content: flex-start;
+  }
+
+  .finder-canton-share {
+    justify-content: flex-start;
+  }
+
+  .finder-canton-share__bar {
+    width: 3rem;
   }
 }
 

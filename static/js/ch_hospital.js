@@ -880,7 +880,11 @@ if (finderRoot) {
         cantonNoHospitals: 'No hospitals in canton {canton} match the current selection.',
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
+        cantonHighlightCasesLabel: 'Total cases (2023)',
+        cantonHighlightRateLabel: 'Cases per 100k residents',
+        cantonHighlightHospitalsLabel: 'Hospitals reporting',
         cantonRowCases: '{cases} cases',
+        cantonRowShare: '{share}% of canton cases',
         cantonComparisonPrompt: 'Select a canton to compare against the Swiss average.',
         selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
         cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
@@ -1061,7 +1065,11 @@ if (finderRoot) {
         cantonNoHospitals: 'Im Kanton {canton} passt kein Spital zur aktuellen Auswahl.',
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
+        cantonHighlightCasesLabel: 'Gesamtfälle (2023)',
+        cantonHighlightRateLabel: 'Fälle pro 100 000 Einwohner',
+        cantonHighlightHospitalsLabel: 'Meldende Spitäler',
         cantonRowCases: '{cases} Fälle',
+        cantonRowShare: '{share}% der Kantonsfälle',
         cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem Schweizer Durchschnitt zu vergleichen.',
         selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
         cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
@@ -1242,7 +1250,11 @@ if (finderRoot) {
         cantonNoHospitals: 'Aucun hôpital du canton {canton} ne correspond à cette sélection.',
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
+        cantonHighlightCasesLabel: 'Total des cas (2023)',
+        cantonHighlightRateLabel: 'Cas pour 100 000 habitants',
+        cantonHighlightHospitalsLabel: 'Établissements déclarants',
         cantonRowCases: '{cases} cas',
+        cantonRowShare: '{share}% des cas du canton',
         cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne suisse.',
         selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
         cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
@@ -1423,7 +1435,11 @@ if (finderRoot) {
         cantonNoHospitals: 'Nel cantone {canton} nessun ospedale corrisponde a questa selezione.',
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
+        cantonHighlightCasesLabel: 'Casi totali (2023)',
+        cantonHighlightRateLabel: 'Casi per 100 000 abitanti',
+        cantonHighlightHospitalsLabel: 'Ospedali segnalanti',
         cantonRowCases: '{cases} casi',
+        cantonRowShare: '{share}% dei casi cantonali',
         cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media svizzera.',
         selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
         cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
@@ -3721,14 +3737,17 @@ if (finderRoot) {
       return;
     }
 
-    const totalCanton = cantonHosp.reduce((sum, h) => sum + h.cases, 0);
+    const aggregatedTotal = Number(agg.cantonTotals?.totalCases);
+    const totalCanton = Number.isFinite(aggregatedTotal)
+      ? aggregatedTotal
+      : cantonHosp.reduce((sum, h) => sum + (Number.isFinite(h.cases) ? h.cases : 0), 0);
     const leader = cantonHosp[0];
-    let summaryText;
 
+    let summaryText;
     if (!leader) {
       summaryText = msg('cantonNoHospitals', { canton: state.selectedCanton });
     } else {
-      const cantonShare = totalCanton ? Math.round((leader.cases / totalCanton) * 100) : 0;
+      const cantonShare = totalCanton > 0 ? Math.round((leader.cases / totalCanton) * 100) : 0;
       const nationalShare = agg.total ? ((leader.cases / agg.total) * 100).toFixed(1) : '0.0';
       const procedureLabel = `${state.selectedProc.name} (${state.selectedProc.code})`;
       summaryText = msg('cantonSummary', {
@@ -3743,20 +3762,109 @@ if (finderRoot) {
 
     finderCantonSummary.textContent = summaryText;
 
-    finderCantonList.innerHTML = cantonHosp
-      .map((h) => {
-        const badgeClass =
-          h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
-        const badgeLabel = typeBadges[h.type] ?? h.type;
-        return `
-          <div class="finder-canton-row">
-            <span class="finder-canton-hospital">${h.hospital}</span>
-            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
-          </div>
-        `;
-      })
-      .join('');
+    const cantonPopulation = Number(REGION_POPULATION[state.selectedCanton]);
+    const aggregatedHospitalCount = Number(agg.cantonTotals?.hospitalCount);
+    const hospitalCount = Number.isFinite(aggregatedHospitalCount) ? aggregatedHospitalCount : cantonHosp.length;
+
+    const toPer100k = (cases, population) => {
+      const populationValue = Number(population);
+      if (!Number.isFinite(populationValue) || populationValue <= 0) {
+        return Number.NaN;
+      }
+      const casesValue = Number(cases);
+      const safeCases = Number.isFinite(casesValue) ? Math.max(casesValue, 0) : 0;
+      return (safeCases / populationValue) * 100000;
+    };
+
+    const cantonRate = toPer100k(totalCanton, cantonPopulation);
+    const formatNumber = (value, options) => {
+      const numeric = Number(value);
+      return Number.isFinite(numeric) ? numeric.toLocaleString(undefined, options) : '—';
+    };
+
+    const highlightItems = [
+      {
+        label: msg('cantonHighlightCasesLabel'),
+        value: formatNumber(totalCanton)
+      },
+      {
+        label: msg('cantonHighlightRateLabel'),
+        value: formatNumber(cantonRate, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+      },
+      {
+        label: msg('cantonHighlightHospitalsLabel'),
+        value: formatNumber(hospitalCount)
+      }
+    ].filter((item) => {
+      const { label, value } = item;
+      if (typeof label !== 'string' || !label || label.startsWith('messages.')) {
+        return false;
+      }
+      return Boolean(value);
+    });
+
+    const highlightMarkup = highlightItems.length
+      ? `
+        <div class="finder-canton-highlights" role="list">
+          ${highlightItems
+            .map(
+              (item) => `
+                <div class="finder-canton-highlight" role="listitem">
+                  <span class="finder-canton-highlight__value">${escapeHtml(item.value)}</span>
+                  <span class="finder-canton-highlight__label">${escapeHtml(item.label)}</span>
+                </div>
+              `
+            )
+            .join('')}
+        </div>
+      `
+      : '';
+
+    const totalForShare =
+      totalCanton > 0
+        ? totalCanton
+        : cantonHosp.reduce((sum, h) => sum + (Number.isFinite(h.cases) ? h.cases : 0), 0);
+
+    const rowsMarkup = cantonHosp.length
+      ? `
+        <div class="finder-canton-rows">
+          ${cantonHosp
+            .map((h) => {
+              const badgeClass =
+                h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
+              const badgeLabel = typeBadges[h.type] ?? h.type;
+              const sharePercent = totalForShare > 0 ? (h.cases / totalForShare) * 100 : 0;
+              const shareBounded = Math.min(Math.max(sharePercent, 0), 100);
+              const shareDisplay = shareBounded.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1
+              });
+              const shareLabelTemplate = msg('cantonRowShare', {
+                share: shareDisplay
+              });
+              const shareLabel =
+                typeof shareLabelTemplate === 'string' && !shareLabelTemplate.startsWith('messages.')
+                  ? shareLabelTemplate
+                  : `${shareDisplay}%`;
+              const shareStyle = `${shareBounded.toFixed(1)}%`;
+              return `
+                <div class="finder-canton-row">
+                  <span class="finder-canton-hospital">${h.hospital}</span>
+                  <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+                  <span class="finder-canton-share">
+                    <span class="finder-canton-share__bar" style="--share: ${escapeAttribute(shareStyle)}"></span>
+                    <span class="finder-canton-share__label">${escapeHtml(shareLabel)}</span>
+                  </span>
+                  <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+                </div>
+              `;
+            })
+            .join('')}
+        </div>
+      `
+      : '';
+
+    finderCantonList.innerHTML = `${highlightMarkup}${rowsMarkup}`;
   }
 
   function renderCantonComparison(agg) {

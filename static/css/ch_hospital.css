@@ -2050,18 +2050,15 @@ body {
   max-height: min(
     calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     ),
     880px
   );
   overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
-  padding: var(--hospital-padding-top) var(--hospital-padding-inline)
-    var(--hospital-padding-bottom);
+  padding: var(--hospital-padding-top) var(--hospital-padding-inline) 0;
   box-shadow: 0 45px 90px rgba(15, 23, 42, 0.45);
   transform: translateY(16px);
   transition: transform 0.25s ease;
@@ -2448,10 +2445,8 @@ body {
     width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
     max-height: calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     );
   }
 
@@ -3513,10 +3508,8 @@ body {
     --hospital-padding-inline: 1.25rem;
     max-height: calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     );
   }
 

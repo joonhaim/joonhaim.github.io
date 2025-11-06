@@ -2355,8 +2355,15 @@ body {
 }
 
 .finder-canton-card,
+.finder-comparison-card,
 .finder-note-card {
   padding: 1.5rem;
+}
+
+.finder-comparison-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
 
 .finder-note-card {
@@ -2364,6 +2371,7 @@ body {
 }
 
 .finder-canton-card h3,
+.finder-comparison-card h3,
 .finder-note-card h3 {
   margin-top: 0;
   margin-bottom: 0.75rem;
@@ -2373,6 +2381,90 @@ body {
 .finder-canton-summary {
   font-size: 0.9rem;
   line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.finder-comparison-caption,
+.finder-comparison-difference {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.finder-comparison-difference {
+  font-weight: 600;
+  color: var(--brand-navy);
+}
+
+.finder-comparison-card--empty .finder-comparison-difference {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.finder-comparison-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.finder-comparison-card--empty .finder-comparison-chart {
+  display: none;
+}
+
+.finder-comparison-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.finder-comparison-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.finder-comparison-track {
+  position: relative;
+  width: 100%;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.finder-comparison-bar {
+  display: block;
+  height: 100%;
+  width: var(--bar-width, 0%);
+  max-width: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.finder-comparison-bar--national {
+  background: rgba(15, 23, 42, 0.16);
+}
+
+.finder-comparison-bar--canton {
+  background: linear-gradient(90deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.finder-comparison-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--brand-navy);
+}
+
+.finder-comparison-card--empty {
+  opacity: 0.85;
+}
+
+.finder-comparison-card--empty .finder-comparison-caption {
   color: var(--text-muted);
 }
 

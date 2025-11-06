@@ -881,6 +881,15 @@ if (finderRoot) {
         cantonSummary:
           'In canton {canton}, {count} hospitals reported cases for {procedure}. {leader} accounts for {cantonShare}% of cantonal cases and {nationalShare}% of the national total.',
         cantonRowCases: '{cases} cases',
+        cantonComparisonPrompt: 'Select a canton to compare against the Swiss average.',
+        selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
+        cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
+        cantonComparisonLead: 'Cases per 100k residents: {cantonRate} in {canton} vs {nationalRate} nationwide.',
+        cantonComparisonHigher: '{canton} is {difference} per 100k higher than the Swiss average.',
+        cantonComparisonLower: '{canton} is {difference} per 100k lower than the Swiss average.',
+        cantonComparisonEven: '{canton} is on par with the Swiss average.',
+        cantonComparisonLabelNational: 'Switzerland',
+        cantonComparisonLabelCanton: 'Canton {canton}',
         mapTitle: 'Hospital map',
         mapAriaLabel: 'Hospital locations by case volume',
         mapNoData: 'No map data available for this selection.',
@@ -1052,6 +1061,15 @@ if (finderRoot) {
         cantonSummary:
           'Im Kanton {canton} meldeten {count} Spitäler Fälle für {procedure}. {leader} steht für {cantonShare}% der kantonalen Fälle und {nationalShare}% des schweizweiten Totals.',
         cantonRowCases: '{cases} Fälle',
+        cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem Schweizer Durchschnitt zu vergleichen.',
+        selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
+        cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
+        cantonComparisonLead: 'Fälle pro 100 000 Einwohner: {cantonRate} in {canton} vs {nationalRate} schweizweit.',
+        cantonComparisonHigher: '{canton} liegt um {difference} pro 100 000 über dem Schweizer Durchschnitt.',
+        cantonComparisonLower: '{canton} liegt um {difference} pro 100 000 unter dem Schweizer Durchschnitt.',
+        cantonComparisonEven: '{canton} entspricht dem Schweizer Durchschnitt.',
+        cantonComparisonLabelNational: 'Schweiz',
+        cantonComparisonLabelCanton: 'Kanton {canton}',
         mapTitle: 'Spitalkarte',
         mapAriaLabel: 'Spitalstandorte nach Fallzahl',
         mapNoData: 'Für diese Auswahl sind keine Kartendaten vorhanden.',
@@ -1223,6 +1241,15 @@ if (finderRoot) {
         cantonSummary:
           'Dans le canton {canton}, {count} hôpitaux ont déclaré des cas pour {procedure}. {leader} représente {cantonShare}% des cas cantonaux et {nationalShare}% du total national.',
         cantonRowCases: '{cases} cas',
+        cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne suisse.',
+        selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
+        cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
+        cantonComparisonLead: 'Cas pour 100 000 habitants : {cantonRate} dans {canton} contre {nationalRate} au niveau suisse.',
+        cantonComparisonHigher: '{canton} dépasse la moyenne suisse de {difference} pour 100 000.',
+        cantonComparisonLower: '{canton} est inférieur de {difference} pour 100 000 à la moyenne suisse.',
+        cantonComparisonEven: '{canton} est aligné sur la moyenne suisse.',
+        cantonComparisonLabelNational: 'Suisse',
+        cantonComparisonLabelCanton: 'Canton {canton}',
         mapTitle: 'Carte des hôpitaux',
         mapAriaLabel: 'Localisation des hôpitaux selon le volume de cas',
         mapNoData: 'Aucune donnée cartographique disponible pour cette sélection.',
@@ -1394,6 +1421,15 @@ if (finderRoot) {
         cantonSummary:
           'Nel cantone {canton}, {count} ospedali hanno riportato casi per {procedure}. {leader} rappresenta il {cantonShare}% dei casi cantonali e il {nationalShare}% del totale nazionale.',
         cantonRowCases: '{cases} casi',
+        cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media svizzera.',
+        selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
+        cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
+        cantonComparisonLead: 'Casi per 100 000 abitanti: {cantonRate} in {canton} rispetto a {nationalRate} a livello svizzero.',
+        cantonComparisonHigher: '{canton} è superiore di {difference} ogni 100 000 rispetto alla media svizzera.',
+        cantonComparisonLower: '{canton} è inferiore di {difference} ogni 100 000 rispetto alla media svizzera.',
+        cantonComparisonEven: '{canton} è in linea con la media svizzera.',
+        cantonComparisonLabelNational: 'Svizzera',
+        cantonComparisonLabelCanton: 'Cantone {canton}',
         mapTitle: 'Mappa degli ospedali',
         mapAriaLabel: 'Posizioni degli ospedali in base al volume di casi',
         mapNoData: 'Nessun dato cartografico disponibile per questa selezione.',
@@ -1738,6 +1774,10 @@ if (finderRoot) {
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
+    const finderCantonComparisonCard = document.getElementById('finder-canton-comparison-card');
+    const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
+    const finderCantonComparisonChart = document.getElementById('finder-canton-comparison-chart');
+    const finderCantonComparisonDifference = document.getElementById('finder-canton-comparison-difference');
     const finderQuickPicks = document.getElementById('finder-quick-picks');
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
@@ -3686,6 +3726,124 @@ if (finderRoot) {
       .join('');
   }
 
+  function renderCantonComparison(agg) {
+    if (!finderCantonComparisonCard || !finderCantonComparisonCaption || !finderCantonComparisonChart) {
+      return;
+    }
+
+    const setEmptyState = (captionMessage, differenceMessage = '') => {
+      finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+      finderCantonComparisonCaption.textContent = captionMessage;
+      if (finderCantonComparisonDifference) {
+        finderCantonComparisonDifference.textContent = differenceMessage;
+      }
+      finderCantonComparisonChart.innerHTML = '';
+    };
+
+    if (state.selectedCanton === ALL_CANTONS_OPTION) {
+      setEmptyState(msg('cantonComparisonPrompt'));
+      return;
+    }
+
+    if (!agg) {
+      setEmptyState(msg('loadingData'));
+      return;
+    }
+
+    const cantonOption = getCantonOptionByValue(state.selectedCanton);
+    const cantonLabel = cantonOption?.label ?? state.selectedCanton;
+    const cantonPopulation = REGION_POPULATION[state.selectedCanton];
+    const nationalPopulation = REGION_POPULATION.CH;
+    const cantonCases = agg.cantonTotals?.totalCases ?? 0;
+    const nationalCases = agg.total ?? 0;
+
+    const toRate = (cases, population) => {
+      const popValue = Number(population);
+      if (!Number.isFinite(popValue) || popValue <= 0) {
+        return Number.NaN;
+      }
+      const casesValue = Number(cases);
+      const safeCases = Number.isFinite(casesValue) && casesValue > 0 ? casesValue : 0;
+      return (safeCases / popValue) * 100000;
+    };
+
+    const cantonRate = toRate(cantonCases, cantonPopulation);
+    const nationalRate = toRate(nationalCases, nationalPopulation);
+
+    if (!Number.isFinite(cantonRate) || !Number.isFinite(nationalRate)) {
+      const message = msg('cantonComparisonNoData', { canton: cantonLabel });
+      setEmptyState(message, message);
+      return;
+    }
+
+    finderCantonComparisonCard.classList.remove('finder-comparison-card--empty');
+
+    const formatRate = (value) =>
+      Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+
+    const nationalLabel = msg('cantonComparisonLabelNational');
+    const cantonChartLabel = msg('cantonComparisonLabelCanton', { canton: cantonLabel });
+
+    finderCantonComparisonCaption.textContent = msg('cantonComparisonLead', {
+      cantonRate: formatRate(cantonRate),
+      nationalRate: formatRate(nationalRate),
+      canton: cantonLabel
+    });
+
+    const difference = cantonRate - nationalRate;
+    const absDifference = Math.abs(difference);
+    const differenceThreshold = 0.1;
+    let differenceMessage;
+    if (absDifference < differenceThreshold) {
+      differenceMessage = msg('cantonComparisonEven', { canton: cantonLabel });
+    } else if (difference > 0) {
+      differenceMessage = msg('cantonComparisonHigher', {
+        canton: cantonLabel,
+        difference: formatRate(absDifference)
+      });
+    } else {
+      differenceMessage = msg('cantonComparisonLower', {
+        canton: cantonLabel,
+        difference: formatRate(absDifference)
+      });
+    }
+
+    if (finderCantonComparisonDifference) {
+      finderCantonComparisonDifference.textContent = differenceMessage;
+    }
+
+    const rows = [
+      { key: 'national', label: nationalLabel, value: nationalRate },
+      { key: 'canton', label: cantonChartLabel, value: cantonRate }
+    ];
+
+    const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
+    const safeMax = maxValue > 0 ? maxValue : 1;
+
+    const chartMarkup = rows
+      .map((row) => {
+        const width = Math.max(0, Math.min(100, (row.value / safeMax) * 100));
+        const widthValue = width.toFixed(1);
+        const safeLabel = escapeHtml(row.label);
+        const safeValue = escapeHtml(formatRate(row.value));
+        return `
+          <div class="finder-comparison-row">
+            <span class="finder-comparison-label">${safeLabel}</span>
+            <div class="finder-comparison-track">
+              <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-width: ${widthValue}%;"></span>
+            </div>
+            <span class="finder-comparison-value">${safeValue}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    finderCantonComparisonChart.innerHTML = chartMarkup;
+  }
+
   function render() {
     renderProcedureControls();
     renderTypeToggle();
@@ -3718,6 +3876,14 @@ if (finderRoot) {
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
+      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+        finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+        finderCantonComparisonCaption.textContent = msg('selectProcedureComparison');
+        finderCantonComparisonChart.innerHTML = '';
+        if (finderCantonComparisonDifference) {
+          finderCantonComparisonDifference.textContent = '';
+        }
+      }
       scrollToResultsIfNeeded();
       return;
     }
@@ -3729,6 +3895,14 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+        finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+        finderCantonComparisonCaption.textContent = msg('loadingData');
+        finderCantonComparisonChart.innerHTML = '';
+        if (finderCantonComparisonDifference) {
+          finderCantonComparisonDifference.textContent = '';
+        }
+      }
       scrollToResultsIfNeeded();
       return;
     }
@@ -3738,6 +3912,7 @@ if (finderRoot) {
     renderTopList(aggregation);
     renderMap(aggregation);
     renderCantonDetails(aggregation);
+    renderCantonComparison(aggregation);
     scrollToResultsIfNeeded();
   }
 
@@ -3805,6 +3980,14 @@ if (finderRoot) {
         finderList.innerHTML = '';
         displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
+        if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+          finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
+          finderCantonComparisonCaption.textContent = msg('datasetError');
+          finderCantonComparisonChart.innerHTML = '';
+          if (finderCantonComparisonDifference) {
+            finderCantonComparisonDifference.textContent = '';
+          }
+        }
       });
   }
 

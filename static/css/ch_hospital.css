@@ -2179,6 +2179,17 @@ body {
   }
 }
 
+@media (max-width: 520px) {
+  .hospital-detail__summary {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1rem;
+  }
+
+  .hospital-detail__summary-value {
+    font-size: 1.15rem;
+  }
+}
+
 .finder-map-card {
   display: flex;
   flex-direction: column;

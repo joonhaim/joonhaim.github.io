@@ -1942,8 +1942,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  --overlay-padding: clamp(1.25rem, 5vw, 3rem);
-  padding: var(--overlay-padding);
+  --overlay-vertical-gap: clamp(2rem, 8vh, 5rem);
+  --overlay-bottom-gap: var(--overlay-vertical-gap);
+  --overlay-horizontal-gap: clamp(1.25rem, 5vw, 3.5rem);
+  padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
+    var(--overlay-bottom-gap);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -1964,8 +1967,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: min(960px, calc(100% - 2rem));
-  max-height: min(calc(100vh - (var(--overlay-padding) * 2)), 880px);
+  width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
+  max-height: min(
+    calc(100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))),
+    880px
+  );
+  margin-block: auto;
   overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
@@ -1984,32 +1991,37 @@ body {
 }
 
 .hospital-detail__close {
-  align-self: flex-end;
-  margin-left: auto;
+  position: absolute;
+  top: clamp(1rem, 0.75rem + 0.75vw, 1.75rem);
+  right: clamp(1rem, 0.75rem + 0.75vw, 1.75rem);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.35rem;
+  height: 2.35rem;
   padding: 0;
   border-radius: 999px;
-  border: none;
-  background: rgba(15, 23, 42, 0.08);
-  color: #1f2937;
-  font-size: 1.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  color: #0f172a;
+  font-size: 1.45rem;
   line-height: 1;
   flex-shrink: 0;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
   z-index: 5;
 }
 
 .hospital-detail__close:hover,
 .hospital-detail__close:focus-visible {
-  background: #2563eb;
+  background: rgba(37, 99, 235, 0.9);
   color: #ffffff;
   outline: none;
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 18px 32px rgba(37, 99, 235, 0.25);
 }
 
 .hospital-detail__content {
@@ -2332,13 +2344,19 @@ body {
 @media (max-width: 720px) {
   .hospital-detail-overlay {
     align-items: flex-start;
-    --overlay-padding: 1.25rem;
-    padding: var(--overlay-padding) 1rem;
+    --overlay-vertical-gap: clamp(1.25rem, 4vh, 2rem);
+    --overlay-bottom-gap: var(--overlay-vertical-gap);
+    --overlay-horizontal-gap: 1rem;
+    padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
+      var(--overlay-bottom-gap);
   }
 
   .hospital-detail {
     padding: 1.5rem 1.5rem 2rem;
-    max-height: calc(100vh - (var(--overlay-padding) * 2));
+    width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
+    max-height: calc(
+      100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))
+    );
   }
 
   .hospital-detail__info-grid {
@@ -2887,13 +2905,18 @@ body {
 
   .hospital-detail-overlay {
     align-items: flex-start;
-    --overlay-padding: 1rem;
-    padding: var(--overlay-padding) 0.9rem;
+    --overlay-vertical-gap: calc(env(safe-area-inset-top, 0px) + 1rem);
+    --overlay-bottom-gap: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    --overlay-horizontal-gap: 0.9rem;
+    padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
+      var(--overlay-bottom-gap);
   }
 
   .hospital-detail {
-    width: 100%;
-    max-height: calc(100vh - (var(--overlay-padding) * 2));
+    width: calc(100% - (var(--overlay-horizontal-gap) * 2));
+    max-height: calc(
+      100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))
+    );
     border-radius: 1.15rem;
     padding: calc(env(safe-area-inset-top, 0px) + 1.2rem) 1.25rem
       calc(env(safe-area-inset-bottom, 0px) + 1.5rem);

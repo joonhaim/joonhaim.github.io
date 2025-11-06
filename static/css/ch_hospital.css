@@ -260,6 +260,22 @@ body {
   backdrop-filter: blur(12px);
 }
 
+@media (max-width: 640px) {
+  .hero .hero-links {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+  }
+}
+
 .hero--methodology .tagline {
   margin-bottom: 0.75rem;
 }
@@ -406,12 +422,34 @@ body {
   gap: 0.35rem;
 }
 
+@media (max-width: 640px) {
+  .hero .hero-links span {
+    display: flex;
+    width: 100%;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.16);
+    gap: 0.4rem;
+  }
+
+  .hero .hero-links span:first-child {
+    margin-top: 0.15rem;
+  }
+}
+
 .hero .hero-links a {
   color: #fff;
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.45);
   transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .hero .hero-links a {
+    display: inline-flex;
+    border-bottom: none;
+  }
 }
 
 .hero .hero-links a:hover,

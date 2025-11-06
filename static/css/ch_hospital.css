@@ -214,7 +214,8 @@ body {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 6rem 0.5rem 3rem;
+    padding: 7.5rem 0.75rem 3.5rem;
+    min-height: 28rem;
   }
 
   .hero-inner {

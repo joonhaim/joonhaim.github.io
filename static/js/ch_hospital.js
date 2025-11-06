@@ -1697,6 +1697,7 @@ if (finderRoot) {
     const finderListContext = document.getElementById('finder-list-context');
     const finderListTitle = document.getElementById('finder-list-title');
     const finderListMeta = document.getElementById('finder-list-meta');
+    const finderListNavigation = document.getElementById('finder-list-navigation');
     const finderMap = document.getElementById('finder-map');
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
@@ -3358,6 +3359,10 @@ if (finderRoot) {
     if (!agg.hospitals.length) {
       finderListMeta.textContent = msg('noHospitalsFilters');
       finderList.innerHTML = `<p class="finder-empty">${msg('noHospitalVolumes')}</p>`;
+      if (finderListNavigation) {
+        finderListNavigation.innerHTML = '';
+        finderListNavigation.hidden = true;
+      }
       return;
     }
 
@@ -3370,6 +3375,10 @@ if (finderRoot) {
     if (!filteredBySearch.length) {
       finderListMeta.textContent = msg('noHospitalsSearch');
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
+      if (finderListNavigation) {
+        finderListNavigation.innerHTML = '';
+        finderListNavigation.hidden = true;
+      }
       return;
     }
 
@@ -3381,6 +3390,10 @@ if (finderRoot) {
     if (!filteredByCanton.length) {
       finderListMeta.textContent = msg('cantonNoHospitals', { canton: state.selectedCanton });
       finderList.innerHTML = `<p class="finder-empty">${msg('tryAdjustFilters')}</p>`;
+      if (finderListNavigation) {
+        finderListNavigation.innerHTML = '';
+        finderListNavigation.hidden = true;
+      }
       return;
     }
 
@@ -3397,6 +3410,12 @@ if (finderRoot) {
     const hasPrevious = state.listPage > 0;
     const hasNext = endIndex < filteredByCanton.length;
 
+    const paginationStatus = msg('paginationShowing', {
+      start: startIndex + 1,
+      end: endIndex,
+      total: filteredByCanton.length
+    });
+
     finderListMeta.innerHTML = `
       <div class="finder-pagination">
         <button class="finder-page-btn" data-direction="prev" aria-label="${msg('ariaPrevHospitals')}" ${
@@ -3404,11 +3423,7 @@ if (finderRoot) {
         }>
           <span aria-hidden="true">&#8592;</span>
         </button>
-        <span>${msg('paginationShowing', {
-          start: startIndex + 1,
-          end: endIndex,
-          total: filteredByCanton.length
-        })}</span>
+        <span class="finder-pagination-status">${paginationStatus}</span>
         <button class="finder-page-btn" data-direction="next" aria-label="${msg('ariaNextHospitals')}" ${
           hasNext ? '' : 'disabled'
         }>
@@ -3417,16 +3432,40 @@ if (finderRoot) {
       </div>
     `;
 
-    finderListMeta.querySelectorAll('.finder-page-btn').forEach((btn) => {
-      if (btn.disabled) {
-        return;
-      }
-      btn.addEventListener('click', () => {
-        const direction = btn.dataset.direction === 'next' ? 1 : -1;
-        state.listPage = Math.min(Math.max(0, state.listPage + direction), totalPages - 1);
-        renderTopList(agg);
+    if (finderListNavigation) {
+      finderListNavigation.hidden = false;
+      finderListNavigation.innerHTML = `
+        <div class="finder-pagination finder-pagination--bottom">
+          <button class="finder-page-btn" data-direction="prev" aria-label="${msg('ariaPrevHospitals')}" ${
+            hasPrevious ? '' : 'disabled'
+          }>
+            <span aria-hidden="true">&#8592;</span>
+          </button>
+          <span class="finder-pagination-status">${paginationStatus}</span>
+          <button class="finder-page-btn" data-direction="next" aria-label="${msg('ariaNextHospitals')}" ${
+            hasNext ? '' : 'disabled'
+          }>
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+        </div>
+      `;
+    }
+
+    const attachPaginationHandlers = (container) => {
+      container?.querySelectorAll('.finder-page-btn').forEach((btn) => {
+        if (btn.disabled) {
+          return;
+        }
+        btn.addEventListener('click', () => {
+          const direction = btn.dataset.direction === 'next' ? 1 : -1;
+          state.listPage = Math.min(Math.max(0, state.listPage + direction), totalPages - 1);
+          renderTopList(agg);
+        });
       });
-    });
+    };
+
+    attachPaginationHandlers(finderListMeta);
+    attachPaginationHandlers(finderListNavigation);
 
     finderList.innerHTML = toDisplay
       .map((h, idx) => {

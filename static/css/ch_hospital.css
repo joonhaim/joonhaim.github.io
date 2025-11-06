@@ -1563,6 +1563,11 @@ body {
   gap: 0.5rem;
 }
 
+.finder-pagination-status {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
 .finder-page-btn {
   width: 1.75rem;
   height: 1.75rem;
@@ -1592,6 +1597,17 @@ body {
 .finder-page-btn:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+.finder-list-navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.finder-pagination--bottom {
+  justify-content: center;
+  width: 100%;
 }
 
 .finder-list {

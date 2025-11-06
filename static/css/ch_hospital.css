@@ -2617,6 +2617,7 @@ body {
 .finder-canton-card__layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-areas: 'primary comparison';
   gap: 1.75rem;
   align-items: stretch;
 }
@@ -2626,6 +2627,7 @@ body {
   flex-direction: column;
   gap: 1.35rem;
   min-width: 0;
+  grid-area: primary;
 }
 
 .finder-canton-header {
@@ -2679,6 +2681,7 @@ body {
 
 .finder-canton-card__comparison {
   min-width: 0;
+  grid-area: comparison;
   --comparison-gutter: 3rem;
   border-left: 1px solid var(--border-soft);
 }
@@ -3120,6 +3123,9 @@ body {
 
   .finder-canton-card__layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'primary'
+      'comparison';
     gap: 1.5rem;
   }
 
@@ -3240,6 +3246,16 @@ body {
 
   .finder-canton-type {
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 540px) {
+  .finder-canton-card__comparison {
+    --comparison-gutter: 1.5rem;
+  }
+
+  .finder-canton-card__comparison.finder-comparison-card {
+    padding: 1.35rem 0 0;
   }
 }
 

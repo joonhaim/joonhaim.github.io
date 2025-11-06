@@ -1838,6 +1838,14 @@ if (finderRoot) {
 
   const cantonNames = getObjectTranslation('messages.cantonNames');
 
+  const getCantonShortLabel = (value) => {
+    if (typeof value !== 'string') {
+      return '';
+    }
+    const trimmed = value.trim();
+    return trimmed ? trimmed.toUpperCase() : '';
+  };
+
   const cantonOptions = [
     {
       value: ALL_CANTONS_OPTION,
@@ -3463,10 +3471,11 @@ if (finderRoot) {
       ];
       if (hasCantonSelection && secondaryValue != null) {
         const secondary = valueConfig(secondaryValue);
+        const fallbackLabel = getCantonShortLabel(state.selectedCanton) || getCantonLabel(state.selectedCanton);
         const secondaryLabel =
           typeof options.secondaryLabel === 'string' && options.secondaryLabel.trim()
             ? options.secondaryLabel
-            : getCantonLabel(state.selectedCanton);
+            : fallbackLabel;
         rows.push(
           createValueMarkup(secondaryLabel, secondary.value, {
             isSecondary: true,
@@ -3518,7 +3527,10 @@ if (finderRoot) {
         info: hhiFootnote,
         valueOptions: {
           primaryLabel: switzerlandLabel,
-          secondaryLabel: getCantonLabel(state.selectedCanton)
+          secondaryLabel:
+            typeof state.selectedCanton === 'string'
+              ? getCantonShortLabel(state.selectedCanton)
+              : getCantonLabel(state.selectedCanton)
         }
       },
       {

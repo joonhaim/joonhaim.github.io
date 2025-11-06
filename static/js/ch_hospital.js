@@ -877,8 +877,7 @@ if (finderRoot) {
         hospitalsPerforming: 'Hospitals performing this procedure',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI Index)',
-        switzerland: 'Switzerland',
-        casesPer100kFootnote: 'Population: BFS permanent residents (2023)'
+        switzerland: 'Switzerland'
       },
       messages: {
         allCantons: 'All cantons',
@@ -1050,8 +1049,7 @@ if (finderRoot) {
         hospitalsPerforming: 'Spitäler mit diesem Eingriff',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI-Index)',
-        switzerland: 'Schweiz',
-        casesPer100kFootnote: 'Bevölkerung: BFS ständige Wohnbevölkerung (2023)'
+        switzerland: 'Schweiz'
       },
       messages: {
         allCantons: 'Alle Kantone',
@@ -1223,8 +1221,7 @@ if (finderRoot) {
         hospitalsPerforming: 'Hôpitaux réalisant cette intervention',
         universityShare: 'Part des hôpitaux univ.',
         centralization: 'Centralisation (indice HHI)',
-        switzerland: 'Suisse',
-        casesPer100kFootnote: 'Population : résidents permanents OFS (2023)'
+        switzerland: 'Suisse'
       },
       messages: {
         allCantons: 'Tous les cantons',
@@ -1396,8 +1393,7 @@ if (finderRoot) {
         hospitalsPerforming: 'Ospedali che eseguono questa procedura',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (indice HHI)',
-        switzerland: 'Svizzera',
-        casesPer100kFootnote: 'Popolazione: residenti permanenti UST (2023)'
+        switzerland: 'Svizzera'
       },
       messages: {
         allCantons: 'Tutti i cantoni',

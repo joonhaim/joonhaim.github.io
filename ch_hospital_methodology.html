@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta
     name="description"
-    content="Placeholder methodology information for the Swiss hospital interventions dashboard."
+    content="Methodology and data notes for the Swiss Hospital Interventions (CH-IQI) dashboard: sources, preprocessing, calculations, visualization choices, limitations, and update policy."
   >
   <title>Methodology · Swiss Hospital Interventions</title>
   <meta property="og:type" content="article">
@@ -13,7 +13,7 @@
   <meta property="og:title" content="Methodology · Swiss Hospital Interventions (CH-IQI)">
   <meta
     property="og:description"
-    content="Placeholder methodology information for the Swiss hospital interventions dashboard."
+    content="Transparent documentation of data sources, cleaning steps, indicator calculations, and design decisions behind the CH-IQI dashboard."
   >
   <meta property="og:url" content="https://joonhaim.github.io/ch_hospital_methodology.html">
   <meta property="og:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
@@ -21,7 +21,7 @@
   <meta name="twitter:title" content="Methodology · Swiss Hospital Interventions (CH-IQI)">
   <meta
     name="twitter:description"
-    content="Placeholder methodology information for the Swiss hospital interventions dashboard."
+    content="How the CH-IQI dashboard is built: data, methods, metrics, limitations, and updates."
   >
   <meta name="twitter:image" content="https://joonhaim.github.io/android-chrome-512x512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -46,10 +46,10 @@
       <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
       <h1 class="fade-element">Methodology &amp; Data Notes</h1>
       <p class="tagline fade-element">
-        Detailed documentation of the dashboard methodology will be added here soon.
+        This page explains where the data comes from, how it is cleaned and combined, how indicators are calculated, and how to read the charts.
       </p>
       <div class="methodology-meta fade-element">
-        <span><strong>Last updated:</strong> Coming soon</span>
+        <span><strong>Last updated:</strong> 06 Nov 2025</span>
         <span><strong>Contact:</strong> <a href="mailto:a.j.im@umail.leidenuniv.nl">a.j.im@umail.leidenuniv.nl</a></span>
       </div>
     </div>
@@ -57,37 +57,167 @@
 
   <main class="page-shell methodology-main">
     <div class="methodology-grid">
+
       <article class="surface-card methodology-card">
-        <h2>Overview</h2>
+        <h2>1) Purpose</h2>
         <p>
-          This page will outline the methodology and data preparation process behind the CH-IQI dashboard. The detailed content
-          is being drafted and will appear here shortly.
+          The Swiss Hospital Interventions (CH-IQI) dashboard aggregates publicly available quality and activity indicators to help users compare volumes and interpret outcomes across cantons and hospitals. This methodology aims to make the pipeline transparent and reproducible.
+        </p>
+        <ul>
+          <li>Audience: clinicians, students, policy analysts, and the public.</li>
+          <li>Scope: CH-IQI indicators (latest published year), hospital volumes, and canton-level normalisations.</li>
+          <li>Out-of-scope: causal inference, risk adjustment beyond that provided in the source data.</li>
+        </ul>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>2) Data Sources</h2>
+        <p>Primary inputs used in this release:</p>
+        <ul>
+          <li><strong>CH-IQI hospital indicators (2023):</strong> Federal Office of Public Health (FOPH). <em>Download via official open data portal.</em></li>
+          <li><strong>Population by canton (2023):</strong> Federal Statistical Office (FSO). <em>Used for per-capita metrics.</em></li>
+          <li><strong>Reference tables:</strong> canton codes (ISO-2), names, and geometry centroids for mapping.</li>
+        </ul>
+        <p>
+          Tables are joined using <code>canton_code</code> (e.g., “BE”, “ZH”). Hospital records rely on provider IDs available in the CH-IQI export. If a provider operates multiple sites, records are aggregated by the published identifier unless site-level rows are available.
         </p>
       </article>
 
       <article class="surface-card methodology-card">
-        <h2>What to expect</h2>
+        <h2>3) Data Cleaning &amp; Integration</h2>
+        <ul>
+          <li><strong>Format harmonisation:</strong> numeric columns coerced to decimal (dot), dates parsed to ISO-8601.</li>
+          <li><strong>Deduplication:</strong> duplicate rows removed by composite key (<code>year, provider_id, indicator_code</code>).</li>
+          <li><strong>Suppression rules:</strong> small counts (e.g., &lt;10) preserved as missing per source redaction; no back-calculation attempted.</li>
+          <li><strong>Outliers:</strong> extreme rates flagged but retained if present in source.</li>
+          <li><strong>Joins:</strong> canton population merged to compute per-capita indicators; missing population rows stop the affected calculation for that canton.</li>
+        </ul>
+        <p><em>Tooling:</em> preprocessing in Python (pandas) and/or JavaScript build steps; final transformations executed in-browser for interactivity.</p>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>4) Indicators &amp; Calculations</h2>
+
+        <h3>4.1 Core formulas</h3>
+        <dl class="definition-list">
+          <dt>Mortality rate (%)</dt>
+          <dd>(In-hospital deaths ÷ Discharges) × 100</dd>
+
+          <dt>Procedures per 100k inhabitants</dt>
+          <dd>(Total procedures (canton) ÷ Canton population) × 100 000</dd>
+
+          <dt>Average length of stay (days)</dt>
+          <dd>Σ (stay days) ÷ Number of discharges</dd>
+
+          <dt>National average (weighted)</dt>
+          <dd>Σ (hospital value × hospital weight) ÷ Σ (hospital weight), where weights are discharges unless otherwise specified by CH-IQI.</dd>
+        </dl>
+
+        <h3>4.2 Aggregations</h3>
+        <ul>
+          <li><strong>Hospital → Canton:</strong> sum volumes by canton; rates re-computed on canton totals.</li>
+          <li><strong>Canton → Switzerland:</strong> per-capita national rates computed from canton totals and total population.</li>
+        </ul>
+
+        <h3>4.3 Suppressed or missing values</h3>
         <p>
-          Future sections will summarise the data sources, cleaning steps, and analytical decisions that shape the dashboard.
-          We are keeping this space ready so the structure is in place once the copy is finalised.
+          Cells suppressed in the CH-IQI source remain missing in the dashboard. Charts indicate missingness with hatching or a neutral label; missing values are excluded from averages unless explicitly noted.
         </p>
       </article>
 
       <article class="surface-card methodology-card">
-        <h2>Stay tuned</h2>
+        <h2>5) Visualisation Choices</h2>
+        <ul>
+          <li><strong>Bars</strong> for cross-sectional comparisons (e.g., canton volumes).</li>
+          <li><strong>Maps</strong> for geographic distribution (per-capita shading).</li>
+          <li><strong>Lines</strong> for multi-year trends if available for 2018–2023.</li>
+          <li><strong>Highlighting:</strong> the user-selected canton is emphasised; others are muted to reduce clutter.</li>
+          <li><strong>Scales:</strong> zero-based axes for count metrics; rate charts disclose any non-zero baselines.</li>
+          <li><strong>Tooltips:</strong> show raw counts, denominators, and definitions to aid interpretation.</li>
+        </ul>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>6) Interpretation &amp; Limitations</h2>
+        <ul>
+          <li><strong>Coverage:</strong> the dashboard reflects what is published in CH-IQI; private or non-reporting providers may limit completeness.</li>
+          <li><strong>Case-mix:</strong> the dashboard does not add risk adjustment beyond source methods; hospital comparisons should be contextualised.</li>
+          <li><strong>Small-number volatility:</strong> rates from small denominators can be unstable year-to-year.</li>
+          <li><strong>Lag:</strong> publication occurs with a delay; figures represent the latest available year in the source.</li>
+          <li><strong>Mapping boundaries:</strong> canton boundaries are administrative and may not mirror referral patterns.</li>
+        </ul>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>7) Update Policy</h2>
         <p>
-          Thank you for your patience while we finish writing these notes. In the meantime you can return to the main dashboard
-          or reach out via email with any questions about the project.
+          The dashboard targets the most recent CH-IQI release available. After each annual release:
+        </p>
+        <ol>
+          <li>Ingest new year files and refresh joins.</li>
+          <li>Recompute per-capita metrics using the same year’s canton population.</li>
+          <li>Regenerate charts and spot-check indicator distributions versus prior year.</li>
+          <li>Update this page’s “Last updated”, version tag, and changelog.</li>
+        </ol>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>8) Reproducibility</h2>
+        <p>
+          Processing scripts and configuration live in the project repository. Each release is tagged and pinned to exact data files with checksums. To reproduce:
+        </p>
+        <ol>
+          <li>Clone the repo and check out the tag listed below.</li>
+          <li>Place source CSVs in <code>/data/raw/&lt;year&gt;/</code> (see README).</li>
+          <li>Run the preprocessing script to produce <code>/data/processed/</code>.</li>
+          <li>Open <code>ch_hospital.html</code> or run the local server for the dashboard.</li>
+        </ol>
+        <p class="note">
+          GitHub: add your repository URL here once public.
         </p>
       </article>
+
+      <article class="surface-card methodology-card">
+        <h2>9) Definitions &amp; Glossary</h2>
+        <dl class="definition-list">
+          <dt>CH-IQI</dt>
+          <dd>Swiss Hospital Quality Indicators published by the Federal Office of Public Health (FOPH).</dd>
+
+          <dt>Discharge</dt>
+          <dd>A completed inpatient episode; denominator for several indicators.</dd>
+
+          <dt>Per 100k</dt>
+          <dd>Normalisation by canton population to enable cross-canton comparability.</dd>
+        </dl>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>10) References</h2>
+        <ul>
+          <li>FOPH: CH-IQI Hospital Quality Indicators, 2023 (official dataset portal).</li>
+          <li>FSO: Population by Canton, 2023 (official statistics portal).</li>
+          <li>Swiss Confederation Open Data: administrative units &amp; codes.</li>
+        </ul>
+        <p class="note">Replace these bullets with exact links to the files used in this build.</p>
+      </article>
+
+      <article class="surface-card methodology-card">
+        <h2>Changelog</h2>
+        <ul class="changelog">
+          <li><strong>v0.1 · 06 Nov 2025</strong> — Initial methodology draft; added sources, pipeline, formulas, limitations, and update policy.</li>
+        </ul>
+        <p><strong>Current data vintage:</strong> CH-IQI 2023 · FSO population 2023.</p>
+      </article>
+
     </div>
   </main>
 
   <footer class="site-footer" role="contentinfo">
     <p>
-      &copy; 2025 Adrien Joon‑Ha Im · <a href="contact.html">Contact</a>
+      &copy; 2025 Adrien Joon-Ha Im · <a href="contact.html">Contact</a>
     </p>
   </footer>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.fade-element').forEach((element) => {

@@ -216,6 +216,21 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const autoFadeSelectors = [
+        '.header-left',
+        '.swiss-cross',
+        '.methodology-grid > *',
+        '.site-footer'
+      ];
+
+      autoFadeSelectors.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          if (!element.classList.contains('fade-element')) {
+            element.classList.add('fade-element');
+          }
+        });
+      });
+
       const fadeElements = document.querySelectorAll('.fade-element');
 
       if ('IntersectionObserver' in window) {

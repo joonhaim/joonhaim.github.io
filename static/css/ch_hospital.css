@@ -214,6 +214,7 @@ body {
 
 @media (max-width: 640px) {
   .hero-inner {
+      margin: 0;
     padding-left: 1.5rem;
   }
 }

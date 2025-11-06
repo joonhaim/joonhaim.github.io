@@ -3262,7 +3262,7 @@ body {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 3.4rem 1.5rem 2.6rem;
+    padding: 3.4rem 1.5rem 2.6rem 0;
   }
 
   .hero-inner {
@@ -3270,7 +3270,8 @@ body {
     padding: 0;
     max-width: 22rem;
     width: min(100%, 22rem);
-    margin-inline: auto;
+    margin-inline: 0;
+    padding-inline-start: 0;
   }
 
   .hero h1 {

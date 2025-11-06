@@ -1782,6 +1782,8 @@ if (finderRoot) {
     const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
     const finderCantonComparisonChart = document.getElementById('finder-canton-comparison-chart');
     const finderCantonComparisonDifference = document.getElementById('finder-canton-comparison-difference');
+    const finderCantonFlag = document.getElementById('finder-canton-flag');
+    const finderCantonFlagImage = finderCantonFlag ? finderCantonFlag.querySelector('img') : null;
     const finderQuickPicks = document.getElementById('finder-quick-picks');
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
@@ -3686,10 +3688,34 @@ if (finderRoot) {
     mapState.map.invalidateSize();
   }
 
+  const updateCantonFlag = (option) => {
+    if (!finderCantonFlag || !finderCantonFlagImage) {
+      return;
+    }
+
+    if (!option || option.value === ALL_CANTONS_OPTION || !option.icon) {
+      finderCantonFlag.hidden = true;
+      finderCantonFlag.setAttribute('aria-hidden', 'true');
+      finderCantonFlagImage.removeAttribute('src');
+      finderCantonFlagImage.alt = '';
+      return;
+    }
+
+    finderCantonFlag.hidden = false;
+    finderCantonFlag.removeAttribute('aria-hidden');
+    finderCantonFlagImage.src = option.icon;
+    const flagLabel = option.label || option.value;
+    finderCantonFlagImage.alt = `Flag of canton ${flagLabel}`;
+  };
+
   function renderCantonDetails(agg) {
     const cantonHosp = agg.cantonHosp;
+    const hasCantonSelection = state.selectedCanton !== ALL_CANTONS_OPTION;
+    const cantonOption = hasCantonSelection ? getCantonOptionByValue(state.selectedCanton) : null;
 
-    if (state.selectedCanton === ALL_CANTONS_OPTION) {
+    updateCantonFlag(cantonOption);
+
+    if (!hasCantonSelection) {
       finderCantonSummary.textContent = msg('cantonSelectPrompt');
       finderCantonList.innerHTML = '';
       return;
@@ -3724,8 +3750,9 @@ if (finderRoot) {
         const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
           <div class="finder-canton-row">
-            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span>${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+            <span class="finder-canton-hospital">${h.hospital}</span>
+            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+            <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
           </div>
         `;
       })
@@ -3973,6 +4000,7 @@ if (finderRoot) {
       displayMapMessage(msg('selectProcedureMap'));
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
+      updateCantonFlag(null);
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = '';
@@ -3994,6 +4022,7 @@ if (finderRoot) {
       displayMapMessage(msg('loadingMap'), 'finder-loading');
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
+      updateCantonFlag(null);
       if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = msg('loadingData');
@@ -4081,6 +4110,7 @@ if (finderRoot) {
         finderList.innerHTML = '';
         displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
+        updateCantonFlag(null);
         if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
           finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
           finderCantonComparisonCaption.textContent = msg('datasetError');

@@ -2554,12 +2554,11 @@ body {
 
 .finder-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
   gap: 1.5rem;
 }
 
 .finder-canton-card,
-.finder-comparison-card,
 .finder-note-card {
   padding: 1.5rem;
 }
@@ -2567,7 +2566,8 @@ body {
 .finder-comparison-card {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.25rem;
+  padding: 1.5rem;
 }
 
 .finder-note-card {
@@ -2591,22 +2591,39 @@ body {
 .finder-comparison-caption,
 .finder-comparison-difference {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-muted);
   text-align: left;
 }
 
-.finder-comparison-difference {
+.finder-comparison-caption {
   font-weight: 600;
   color: var(--brand-navy);
 }
 
-.finder-comparison-card--empty .finder-comparison-difference {
-  font-weight: 500;
-  color: var(--text-muted);
+.finder-comparison-difference {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--brand-navy);
+  align-self: flex-start;
 }
 
+.finder-comparison-difference::before {
+  content: '';
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--brand-red);
+}
 
 .finder-comparison-chart {
   display: flex;
@@ -2640,7 +2657,7 @@ body {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(15, 23, 42, 0.15);
+  background: rgba(15, 23, 42, 0.1);
 }
 
 .finder-comparison-grid {
@@ -2726,7 +2743,7 @@ body {
   align-items: flex-start;
   gap: 2rem;
   width: 100%;
-  padding-left: 3.25rem;
+  padding: 0.35rem 0 0 3.25rem;
 }
 
 .finder-comparison-bar-meta {
@@ -2757,13 +2774,31 @@ body {
   color: var(--text-subtle);
   text-align: left;
   padding-left: 3.25rem;
+  margin-top: 0.2rem;
 }
 
 .finder-comparison-card--empty .finder-comparison-axis-caption {
   display: none;
 }
 
+@media (max-width: 1024px) {
+  .finder-comparison-card {
+    padding: 1.35rem;
+    gap: 1.1rem;
+  }
+}
+
 @media (max-width: 640px) {
+  .finder-comparison-card {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .finder-comparison-caption,
+  .finder-comparison-difference {
+    font-size: 0.9rem;
+  }
+
   .finder-comparison-axis {
     height: 150px;
     padding: 0.2rem 0.75rem 0 3rem;
@@ -2780,16 +2815,21 @@ body {
 
   .finder-comparison-bar-legend {
     gap: 1.5rem;
-    padding-left: 3rem;
+    padding: 0.35rem 0 0 3rem;
   }
 }
 
 .finder-comparison-card--empty {
-  opacity: 0.85;
+  opacity: 0.92;
 }
 
 .finder-comparison-card--empty .finder-comparison-caption {
   color: var(--text-muted);
+  font-weight: 500;
+}
+
+.finder-comparison-card--empty .finder-comparison-difference {
+  display: none;
 }
 
 .finder-canton-list {

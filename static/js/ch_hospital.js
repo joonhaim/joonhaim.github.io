@@ -710,6 +710,148 @@ function buildHospitalDataset(entries, coordinatesMap) {
   return { byProcedure, byHospital, meta, types };
 }
 
+const POPULATION_DATASET_URL = 'static/data/je-e-01.02.03.csv';
+
+const POPULATION_NAME_TO_CODE = new Map([
+  ['Switzerland', 'CH'],
+  ['Zurich', 'ZH'],
+  ['Bern', 'BE'],
+  ['Lucerne', 'LU'],
+  ['Uri', 'UR'],
+  ['Schwyz', 'SZ'],
+  ['Obwalden', 'OW'],
+  ['Nidwalden', 'NW'],
+  ['Glarus', 'GL'],
+  ['Zug', 'ZG'],
+  ['Fribourg', 'FR'],
+  ['Solothurn', 'SO'],
+  ['Basel-Stadt', 'BS'],
+  ['Basel-Landschaft', 'BL'],
+  ['Schaffhausen', 'SH'],
+  ['Appenzell A. Rh.', 'AR'],
+  ['Appenzell I. Rh.', 'AI'],
+  ['St. Gallen', 'SG'],
+  ['Graubünden', 'GR'],
+  ['Aargau', 'AG'],
+  ['Thurgau', 'TG'],
+  ['Ticino', 'TI'],
+  ['Vaud', 'VD'],
+  ['Valais', 'VS'],
+  ['Neuchâtel', 'NE'],
+  ['Geneva', 'GE'],
+  ['Jura', 'JU']
+]);
+
+const REQUIRED_POPULATION_CODES = [
+  'CH',
+  'AG',
+  'AI',
+  'AR',
+  'BE',
+  'BL',
+  'BS',
+  'FR',
+  'GE',
+  'GL',
+  'GR',
+  'JU',
+  'LU',
+  'NE',
+  'NW',
+  'OW',
+  'SG',
+  'SH',
+  'SO',
+  'SZ',
+  'TG',
+  'TI',
+  'UR',
+  'VD',
+  'VS',
+  'ZG',
+  'ZH'
+];
+
+const cantonCodes = REQUIRED_POPULATION_CODES.filter((code) => code !== 'CH');
+
+let REGION_POPULATION = Object.create(null);
+
+function parsePopulationDataset(csvText) {
+  if (typeof csvText !== 'string' || !csvText.trim()) {
+    return {};
+  }
+
+  const population = {};
+  const lines = csvText.split(/\r?\n/);
+  let inLatestSection = false;
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      continue;
+    }
+
+    if (line.startsWith('Structure of the permanent resident population by canton,')) {
+      if (line.includes('31.12.2023')) {
+        inLatestSection = true;
+        continue;
+      }
+      if (inLatestSection) {
+        break;
+      }
+      continue;
+    }
+
+    if (!inLatestSection) {
+      continue;
+    }
+
+    if (line.startsWith(';') || line.startsWith('"') || line.toLowerCase().startsWith('source:')) {
+      continue;
+    }
+
+    const [nameRaw, totalRaw] = line.split(';');
+    if (!nameRaw || !totalRaw) {
+      continue;
+    }
+
+    const regionName = nameRaw.trim();
+    const regionCode = POPULATION_NAME_TO_CODE.get(regionName);
+    if (!regionCode) {
+      continue;
+    }
+
+    const numericValue = Number(totalRaw.replace(/[\s.]/g, ''));
+    if (!Number.isFinite(numericValue) || numericValue <= 0) {
+      continue;
+    }
+
+    population[regionCode] = numericValue;
+  }
+
+  return population;
+}
+
+function applyPopulationDataset(populationMap) {
+  const next = Object.create(null);
+  const missing = [];
+
+  REQUIRED_POPULATION_CODES.forEach((code) => {
+    const value = populationMap?.[code];
+    if (Number.isFinite(value) && value > 0) {
+      next[code] = value;
+    } else {
+      missing.push(code);
+    }
+  });
+
+  if (missing.length) {
+    console.warn('Population dataset missing codes:', missing.join(', '));
+  }
+
+  REGION_POPULATION = next;
+}
+
 function loadHospitalDataset() {
   if (!hospitalDatasetCache.promise) {
     hospitalDatasetCache.promise = Promise.all([
@@ -724,11 +866,19 @@ function loadHospitalDataset() {
           throw new Error(`Failed to load dataset (${response.status})`);
         }
         return response.json();
+      }),
+      fetch(POPULATION_DATASET_URL).then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load population dataset (${response.status})`);
+        }
+        return response.text();
       })
     ])
-      .then(([coordinateData, dataset]) => {
+      .then(([coordinateData, dataset, populationCsv]) => {
         const coordinateMap = new Map(Object.entries(coordinateData || {}));
         hospitalDatasetCache.coordinates = coordinateMap;
+        const populationData = parsePopulationDataset(populationCsv);
+        applyPopulationDataset(populationData);
         const rows = Array.isArray(dataset?.rows)
           ? dataset.rows
           : Array.isArray(dataset)
@@ -1781,64 +1931,6 @@ if (finderRoot) {
 
   const ALL_CANTONS_OPTION = 'ALL';
   const cantonIconPath = (code) => `static/images/cantons/${code.toLowerCase()}.svg`;
-  const cantonCodes = [
-    'AG',
-    'AI',
-    'AR',
-    'BE',
-    'BL',
-    'BS',
-    'FR',
-    'GE',
-    'GL',
-    'GR',
-    'JU',
-    'LU',
-    'NE',
-    'NW',
-    'OW',
-    'SG',
-    'SH',
-    'SO',
-    'SZ',
-    'TG',
-    'TI',
-    'UR',
-    'VD',
-    'VS',
-    'ZG',
-    'ZH'
-  ];
-
-  const REGION_POPULATION = {
-    CH: 8962258,
-    AG: 726894,
-    AI: 16585,
-    AR: 56495,
-    BE: 1063533,
-    BL: 298837,
-    BS: 200031,
-    FR: 341537,
-    GE: 524410,
-    GL: 42056,
-    GR: 204888,
-    JU: 74548,
-    LU: 432744,
-    NE: 178291,
-    NW: 45016,
-    OW: 39272,
-    SG: 535114,
-    SH: 87111,
-    SO: 286844,
-    SZ: 167403,
-    TG: 295220,
-    TI: 357720,
-    UR: 37931,
-    VD: 845870,
-    VS: 365844,
-    ZG: 132556,
-    ZH: 1605508
-  };
 
   const cantonNames = getObjectTranslation('messages.cantonNames');
 

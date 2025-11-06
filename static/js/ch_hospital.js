@@ -3738,6 +3738,7 @@ if (finderRoot) {
     const setEmptyState = (captionMessage, differenceMessage = '') => {
       finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
       finderCantonComparisonCaption.textContent = captionMessage;
+      finderCantonComparisonCaption.hidden = false;
       if (finderCantonComparisonDifference) {
         finderCantonComparisonDifference.textContent = differenceMessage;
       }
@@ -3781,6 +3782,8 @@ if (finderRoot) {
     }
 
     finderCantonComparisonCard.classList.remove('finder-comparison-card--empty');
+    finderCantonComparisonCaption.textContent = '';
+    finderCantonComparisonCaption.hidden = true;
 
     const formatRate = (value) =>
       Number(value).toLocaleString(undefined, {
@@ -3791,7 +3794,7 @@ if (finderRoot) {
     const nationalLabel = msg('cantonComparisonLabelNational');
     const cantonChartLabel = msg('cantonComparisonLabelCanton', { canton: cantonLabel });
 
-    finderCantonComparisonCaption.textContent = msg('cantonComparisonLead', {
+    const comparisonLead = msg('cantonComparisonLead', {
       cantonRate: formatRate(cantonRate),
       nationalRate: formatRate(nationalRate),
       canton: cantonLabel
@@ -3825,36 +3828,53 @@ if (finderRoot) {
         key: 'canton',
         label: cantonChartLabel,
         value: cantonRate,
-        abbr: (state.selectedCanton ?? '').toString().slice(0, 2).toUpperCase()
+        abbr:
+          typeof state.selectedCanton === 'string'
+            ? state.selectedCanton.toUpperCase()
+            : ''
       }
     ];
 
     const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
     const safeMax = maxValue > 0 ? maxValue : 1;
 
-    const getNiceCeiling = (value) => {
+    const getAxisScale = (value) => {
       if (!Number.isFinite(value) || value <= 0) {
-        return 1;
+        const fallbackTicks = [0, 0.25, 0.5, 0.75, 1];
+        return { axisMax: 1, tickValues: fallbackTicks };
       }
-      const exponent = Math.floor(Math.log10(value));
-      const base = 10 ** exponent;
-      const fraction = value / base;
-      let niceFraction;
-      if (fraction <= 1) {
-        niceFraction = 1;
-      } else if (fraction <= 2) {
-        niceFraction = 2;
-      } else if (fraction <= 5) {
-        niceFraction = 5;
+
+      const desiredTickCount = 6;
+      const roughStep = value / (desiredTickCount - 1);
+      const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+      const residual = roughStep / magnitude;
+      let niceResidual;
+
+      if (residual >= 5) {
+        niceResidual = 10;
+      } else if (residual >= 2) {
+        niceResidual = 5;
+      } else if (residual >= 1) {
+        niceResidual = 2;
       } else {
-        niceFraction = 10;
+        niceResidual = 1;
       }
-      return niceFraction * base;
+
+      const niceStep = niceResidual * magnitude;
+      const axisMax = Math.ceil(value / niceStep) * niceStep;
+      const tickValues = [];
+      for (let tick = 0; tick <= axisMax + niceStep / 2; tick += niceStep) {
+        tickValues.push(Number(tick.toFixed(10)));
+      }
+
+      if (tickValues.length < 2) {
+        tickValues.push(axisMax);
+      }
+
+      return { axisMax, tickValues };
     };
 
-    const axisMax = getNiceCeiling(safeMax * 1.05);
-    const tickSteps = 4;
-    const tickValues = Array.from({ length: tickSteps }, (_, index) => (axisMax / (tickSteps - 1)) * index);
+    const { axisMax, tickValues } = getAxisScale(safeMax * 1.05);
 
     const tickMarkup = tickValues
       .map((tickValue) => {
@@ -3902,13 +3922,7 @@ if (finderRoot) {
     const axisLabel = escapeHtml(msg('cantonComparisonAxisLabel'));
     const chartMarkup = `
       <div class="finder-comparison-plot">
-        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(
-          msg('cantonComparisonLead', {
-            cantonRate: formatRate(cantonRate),
-            nationalRate: formatRate(nationalRate),
-            canton: cantonLabel
-          })
-        )}">
+        <div class="finder-comparison-axis" role="img" aria-label="${escapeHtml(comparisonLead)}">
           <div class="finder-comparison-grid">${tickMarkup}</div>
           <div class="finder-comparison-bars">${barsMarkup}</div>
         </div>

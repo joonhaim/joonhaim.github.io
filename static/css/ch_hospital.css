@@ -260,6 +260,23 @@ body {
   backdrop-filter: blur(12px);
 }
 
+@media (max-width: 640px) {
+  .hero .hero-links {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+  }
+}
+
 .hero--methodology .tagline {
   margin-bottom: 0.75rem;
 }
@@ -406,12 +423,37 @@ body {
   gap: 0.35rem;
 }
 
+@media (max-width: 640px) {
+  .hero .hero-links span {
+    display: flex;
+    width: auto;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.16);
+    gap: 0.4rem;
+    align-self: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hero .hero-links span:first-child {
+    margin-top: 0.15rem;
+  }
+}
+
 .hero .hero-links a {
   color: #fff;
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.45);
   transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .hero .hero-links a {
+    display: inline-flex;
+    border-bottom: none;
+  }
 }
 
 .hero .hero-links a:hover,
@@ -2916,32 +2958,28 @@ body {
     width: min(100%, 18.5rem);
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 0.45rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.35rem;
     padding: 0;
     background: transparent;
     border-radius: 0;
+    text-align: left;
   }
 
   .hero .hero-links span {
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    padding: 0.45rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(15, 23, 42, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    width: 100%;
-    align-self: stretch;
-    position: relative;
-    overflow: hidden;
-    z-index: 0;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.72);
-    line-height: 1.3;
+    gap: 0.35rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    width: auto;
+    font-size: 0.88rem;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #fff;
   }
 
   .hero .hero-links span a {
@@ -2949,43 +2987,23 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.2rem 0.65rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.32);
-    font-size: 0.9rem;
-    letter-spacing: normal;
-    text-transform: none;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    font-size: inherit;
     color: #fff;
     white-space: normal;
-    max-width: 100%;
-    position: relative;
-    z-index: 1;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.65);
+    text-underline-offset: 0.18em;
   }
 
   .hero .hero-links span a:hover,
   .hero .hero-links span a:focus-visible {
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 255, 255, 0.6);
     color: #fff;
     outline: none;
-  }
-
-  .hero .hero-links span::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.18),
-        rgba(255, 255, 255, 0)
-      )
-      border-box;
-    opacity: 0.35;
-    z-index: -1;
+    text-decoration-color: #fff;
   }
 
   .finder-kpi strong {

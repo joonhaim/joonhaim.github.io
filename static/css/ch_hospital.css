@@ -1,6 +1,6 @@
 :root {
-  --brand-red: #da291c;
-  --brand-red-dark: #a70000;
+  --brand-red: #c85149;
+  --brand-red-dark: #8e2f2a;
   --brand-navy: #0f172a;
   --page-background: #f5f7fb;
   --surface-default: #ffffff;
@@ -113,7 +113,7 @@ body {
   border-radius: 999px;
   pointer-events: none;
   z-index: 0;
-  box-shadow: 0 4px 12px rgba(218, 41, 28, 0.25);
+  box-shadow: 0 4px 12px rgba(200, 81, 73, 0.25);
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
@@ -123,9 +123,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #DA291C;
+  background: var(--brand-red);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 6px 16px rgba(218, 41, 28, 0.25);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 6px 16px rgba(200, 81, 73, 0.25);
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -136,7 +136,7 @@ body {
 }
 .back-arrow:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(218, 41, 28, 0.28);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(200, 81, 73, 0.28);
 }
 
 .swiss-cross {
@@ -146,12 +146,12 @@ body {
   width: 2rem;
   height: 2rem;
   display: block;
-  background: #DA291C;
+  background: var(--brand-red);
   clip-path: polygon(
     40% 0%, 60% 0%, 60% 40%, 100% 40%, 100% 60%, 60% 60%,
     60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%
   );
-  box-shadow: 0 6px 16px rgba(218, 41, 28, 0.25);
+  box-shadow: 0 6px 16px rgba(200, 81, 73, 0.25);
   z-index: 10;
   cursor: pointer;
   text-decoration: none;
@@ -159,7 +159,7 @@ body {
 }
 .swiss-cross:hover {
   transform: scale(1.08);
-  box-shadow: 0 10px 24px rgba(218, 41, 28, 0.28);
+  box-shadow: 0 10px 24px rgba(200, 81, 73, 0.28);
 }
 
 .hero {
@@ -354,7 +354,7 @@ body {
 
 .methodology-card .note {
   border-left: 4px solid var(--brand-red);
-  background: rgba(218, 41, 28, 0.08);
+  background: rgba(200, 81, 73, 0.08);
   padding: 1rem 1.25rem;
   border-radius: 0.75rem;
   font-size: 0.95rem;
@@ -529,10 +529,10 @@ body {
 
 .procedure-btn {
   padding: 0.5rem 0.75rem;
-  border: 2px solid #DA291C;
+  border: 2px solid var(--brand-red);
   border-radius: 9999px;
   background: #fff;
-  color: #DA291C;
+  color: var(--brand-red);
   cursor: pointer;
   font-size: 0.85rem;
   transition: background 0.2s ease, color 0.2s ease;
@@ -547,18 +547,18 @@ body {
 }
 
 .procedure-btn.active {
-  background: #DA291C;
+  background: var(--brand-red);
   color: #fff;
 }
 
 .procedure-btn:not(.active):hover {
-  background: #DA291C;
+  background: var(--brand-red);
   color: #fff;
 }
 
 .procedure-btn.no-hover:hover {
   background: #fff;
-  color: #DA291C;
+  color: var(--brand-red);
 }
 
 #casesChart {
@@ -670,7 +670,7 @@ body {
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #da291c, #f97316);
+  background: linear-gradient(90deg, var(--brand-red), #f97316);
   opacity: 0.8;
 }
 
@@ -706,8 +706,8 @@ body {
 .finder-catalog-toggle:hover,
 .finder-catalog-toggle:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(218, 41, 28, 0.25);
-  box-shadow: 0 12px 22px rgba(218, 41, 28, 0.12);
+  border-color: rgba(200, 81, 73, 0.25);
+  box-shadow: 0 12px 22px rgba(200, 81, 73, 0.12);
   background: rgba(255, 255, 255, 0.82);
   outline: none;
 }
@@ -764,11 +764,11 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 700;
-  color: #da291c;
+  color: var(--brand-red);
   padding: 0.25rem 0.85rem;
   border-radius: 999px;
-  background: rgba(218, 41, 28, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(218, 41, 28, 0.18);
+  background: rgba(200, 81, 73, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(200, 81, 73, 0.18);
 }
 
 .finder-selector-title {
@@ -848,16 +848,16 @@ body {
 
 .finder-quick-btn:hover,
 .finder-quick-btn:focus-visible {
-  border-color: rgba(218, 41, 28, 0.4);
-  color: #b91c1c;
-  box-shadow: 0 8px 18px rgba(218, 41, 28, 0.18);
+  border-color: rgba(200, 81, 73, 0.4);
+  color: var(--brand-red-dark);
+  box-shadow: 0 8px 18px rgba(200, 81, 73, 0.18);
   outline: none;
 }
 
 .finder-quick-btn.active {
-  background: rgba(218, 41, 28, 0.08);
-  border-color: rgba(218, 41, 28, 0.45);
-  color: #b91c1c;
+  background: rgba(200, 81, 73, 0.08);
+  border-color: rgba(200, 81, 73, 0.45);
+  color: var(--brand-red-dark);
 }
 
 .finder-search-field {
@@ -897,8 +897,8 @@ body {
 
 .finder-procedure-selector input[type="search"]:focus {
   outline: none;
-  border-color: rgba(218, 41, 28, 0.8);
-  box-shadow: 0 12px 30px rgba(218, 41, 28, 0.18);
+  border-color: rgba(200, 81, 73, 0.8);
+  box-shadow: 0 12px 30px rgba(200, 81, 73, 0.18);
   background: #ffffff;
   transform: translateY(-1px);
 }
@@ -1045,17 +1045,17 @@ body {
 
 .finder-procedure-option:hover,
 .finder-procedure-option:focus-visible {
-  border-color: rgba(218, 41, 28, 0.35);
-  box-shadow: 0 12px 30px rgba(218, 41, 28, 0.12);
+  border-color: rgba(200, 81, 73, 0.35);
+  box-shadow: 0 12px 30px rgba(200, 81, 73, 0.12);
   outline: none;
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.08), rgba(218, 41, 28, 0));
+  background: linear-gradient(135deg, rgba(200, 81, 73, 0.08), rgba(200, 81, 73, 0));
   transform: translateY(-1px);
 }
 
 .finder-procedure-option.active {
-  border-color: #DA291C;
-  background: linear-gradient(135deg, rgba(218, 41, 28, 0.15), rgba(218, 41, 28, 0.05));
-  color: #891d14;
+  border-color: var(--brand-red);
+  background: linear-gradient(135deg, rgba(200, 81, 73, 0.15), rgba(200, 81, 73, 0.05));
+  color: var(--brand-red-dark);
   font-weight: 600;
   box-shadow: none;
   transform: none;
@@ -1114,7 +1114,7 @@ body {
   left: 0.65rem;
   width: 0.28rem;
   border-radius: 999px;
-  background: rgba(218, 41, 28, 0);
+  background: rgba(200, 81, 73, 0);
   transition: background 0.2s ease;
   pointer-events: none;
 }
@@ -1123,25 +1123,25 @@ body {
 .finder-chip:focus-visible {
   background: #fff;
   transform: translateX(1px);
-  box-shadow: 0 0 0 2px rgba(218, 41, 28, 0.18), 0 10px 22px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 0 0 2px rgba(200, 81, 73, 0.18), 0 10px 22px rgba(15, 23, 42, 0.12);
   outline: none;
 }
 
 .finder-chip:hover::after,
 .finder-chip:focus-visible::after {
-  background: rgba(218, 41, 28, 0.45);
+  background: rgba(200, 81, 73, 0.45);
 }
 
 .finder-chip.active {
-  border-color: rgba(218, 41, 28, 0.4);
+  border-color: rgba(200, 81, 73, 0.4);
   background: #fff;
-  color: #DA291C;
-  box-shadow: 0 12px 26px rgba(218, 41, 28, 0.16);
+  color: var(--brand-red);
+  box-shadow: 0 12px 26px rgba(200, 81, 73, 0.16);
   transform: translateX(1px);
 }
 
 .finder-chip.active::after {
-  background: #DA291C;
+  background: var(--brand-red);
 }
 
 
@@ -1270,14 +1270,14 @@ body {
 }
 
 #finder-canton:hover {
-  border-color: rgba(218, 41, 28, 0.4);
+  border-color: rgba(200, 81, 73, 0.4);
   background-color: #f3f4f6;
 }
 
 #finder-canton:focus {
   outline: none;
-  border-color: #DA291C;
-  box-shadow: 0 0 0 2px rgba(218, 41, 28, 0.14);
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 2px rgba(200, 81, 73, 0.14);
   background-color: #fff;
 }
 
@@ -1344,14 +1344,14 @@ body {
 }
 
 .finder-canton-dropdown__toggle:hover {
-  border-color: rgba(218, 41, 28, 0.4);
+  border-color: rgba(200, 81, 73, 0.4);
   background-color: #f3f4f6;
 }
 
 .finder-canton-dropdown__toggle:focus {
   outline: none;
-  border-color: #DA291C;
-  box-shadow: 0 0 0 2px rgba(218, 41, 28, 0.14);
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 2px rgba(200, 81, 73, 0.14);
   background-color: #fff;
 }
 
@@ -1429,7 +1429,7 @@ body {
 
 .finder-canton-dropdown__option.is-selected {
   background: #fee2e2;
-  color: #b91c1c;
+  color: var(--brand-red-dark);
 }
 
 .finder-canton-dropdown__option:focus {
@@ -1473,16 +1473,16 @@ body {
 
 .finder-type-btn:hover,
 .finder-type-btn:focus-visible {
-  border-color: rgba(218, 41, 28, 0.28);
+  border-color: rgba(200, 81, 73, 0.28);
   background: rgba(255, 255, 255, 0.82);
-  color: #b91c1c;
+  color: var(--brand-red-dark);
   outline: none;
 }
 
 .finder-type-btn.active {
-  background: rgba(218, 41, 28, 0.12);
-  border-color: rgba(218, 41, 28, 0.35);
-  color: #b91c1c;
+  background: rgba(200, 81, 73, 0.12);
+  border-color: rgba(200, 81, 73, 0.35);
+  color: var(--brand-red-dark);
 }
 
 .finder-kpis {
@@ -1778,8 +1778,8 @@ body {
 
 .finder-page-btn:focus-visible {
   outline: none;
-  background: rgba(218, 41, 28, 0.12);
-  color: #b91c1c;
+  background: rgba(200, 81, 73, 0.12);
+  color: var(--brand-red-dark);
 }
 
 .finder-page-btn:disabled {
@@ -1830,7 +1830,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(218, 41, 28, 0.12), rgba(218, 41, 28, 0));
+  background: linear-gradient(120deg, rgba(200, 81, 73, 0.12), rgba(200, 81, 73, 0));
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
@@ -1843,7 +1843,7 @@ body {
 .finder-row--interactive:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
-  border-color: rgba(218, 41, 28, 0.22);
+  border-color: rgba(200, 81, 73, 0.22);
   background: rgba(255, 255, 255, 0.56);
 }
 
@@ -1854,8 +1854,8 @@ body {
 .finder-row--interactive:focus-visible {
   outline: none;
   transform: translateY(-2px);
-  box-shadow: 0 18px 42px rgba(218, 41, 28, 0.2);
-  border-color: rgba(218, 41, 28, 0.35);
+  box-shadow: 0 18px 42px rgba(200, 81, 73, 0.2);
+  border-color: rgba(200, 81, 73, 0.35);
   background: rgba(255, 255, 255, 0.64);
 }
 
@@ -1993,7 +1993,7 @@ body {
 
 .finder-progress-bar {
   height: 100%;
-  background: #DA291C;
+  background: var(--brand-red);
   transition: width 0.3s ease;
 }
 
@@ -2474,7 +2474,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(218, 41, 28, 0.08) 0%, transparent 60%),
+  background: radial-gradient(circle at top left, rgba(200, 81, 73, 0.08) 0%, transparent 60%),
     radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.05) 0%, transparent 55%);
   opacity: 0.8;
   pointer-events: none;
@@ -2564,7 +2564,7 @@ body {
 }
 
 .finder-map-message.finder-error {
-  color: #b91c1c;
+  color: var(--brand-red-dark);
 }
 
 .finder-map-legend {

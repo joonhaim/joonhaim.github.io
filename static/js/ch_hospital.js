@@ -2921,8 +2921,18 @@ if (finderRoot) {
       const hasProcedures = groupsToRender.some((group) => group.procedures && group.procedures.length);
 
       if (!hasProcedures) {
-        state.shouldScrollToProcedures = false;
-        finderProcedureList.innerHTML = `<p class="finder-procedure-empty">${msg('noProceduresMatch')}</p>`;
+        finderProcedureList.innerHTML = `<p class="finder-procedure-empty">${msg(
+          'noProceduresMatch'
+        )}</p>`;
+        if (state.shouldScrollToProcedures) {
+          state.shouldScrollToProcedures = false;
+          const target = finderProcedureList.closest('.finder-procedure-panel') ?? finderProcedureList;
+          if (target) {
+            requestAnimationFrame(() => {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          }
+        }
         return;
       }
 

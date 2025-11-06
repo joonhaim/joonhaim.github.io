@@ -3820,8 +3820,13 @@ if (finderRoot) {
     }
 
     const rows = [
-      { key: 'national', label: nationalLabel, value: nationalRate },
-      { key: 'canton', label: cantonChartLabel, value: cantonRate }
+      { key: 'national', label: nationalLabel, value: nationalRate, abbr: 'CH' },
+      {
+        key: 'canton',
+        label: cantonChartLabel,
+        value: cantonRate,
+        abbr: (state.selectedCanton ?? '').toString().slice(0, 2).toUpperCase()
+      }
     ];
 
     const maxValue = rows.reduce((max, row) => (row.value > max ? row.value : max), 0);
@@ -3869,11 +3874,13 @@ if (finderRoot) {
       .map((row) => {
         const height = axisMax > 0 ? (row.value / axisMax) * 100 : 0;
         const heightValue = Math.max(0, Math.min(100, height)).toFixed(1);
+        const safeAbbr = escapeHtml(row.abbr ?? '');
         return `
           <div class="finder-comparison-bar-column finder-comparison-bar-column--${row.key}">
             <div class="finder-comparison-bar-outer">
               <span class="finder-comparison-bar finder-comparison-bar--${row.key}" style="--bar-height: ${heightValue}%;" aria-hidden="true"></span>
             </div>
+            <span class="finder-comparison-bar-key" aria-hidden="true">${safeAbbr}</span>
           </div>
         `;
       })

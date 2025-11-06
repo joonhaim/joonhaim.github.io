@@ -3684,15 +3684,11 @@ if (finderRoot) {
       }
 
       if (event.key === 'Enter') {
-        const shouldAutoScroll =
-          typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-            ? window.matchMedia('(max-width: 768px)').matches
-            : false;
-
-        if (shouldAutoScroll) {
+        event.preventDefault();
+        if (!state.shouldScrollToProcedures) {
           state.shouldScrollToProcedures = true;
-          renderProcedureControls();
         }
+        renderProcedureControls();
       }
     });
 

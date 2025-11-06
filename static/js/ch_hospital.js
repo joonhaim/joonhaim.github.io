@@ -884,7 +884,6 @@ if (finderRoot) {
         cantonHighlightRateLabel: 'Cases per 100k residents',
         cantonHighlightHospitalsLabel: 'Hospitals reporting',
         cantonRowCases: '{cases} cases',
-        cantonRowShare: '{share}% of canton cases',
         cantonComparisonPrompt: 'Select a canton to compare against the Swiss average.',
         selectProcedureComparison: 'Choose a procedure to display the canton comparison.',
         cantonComparisonNoData: 'Not enough data to calculate rates for this canton.',
@@ -1069,7 +1068,6 @@ if (finderRoot) {
         cantonHighlightRateLabel: 'Fälle pro 100 000 Einwohner',
         cantonHighlightHospitalsLabel: 'Meldende Spitäler',
         cantonRowCases: '{cases} Fälle',
-        cantonRowShare: '{share}% der Kantonsfälle',
         cantonComparisonPrompt: 'Wählen Sie einen Kanton, um ihn mit dem Schweizer Durchschnitt zu vergleichen.',
         selectProcedureComparison: 'Wählen Sie eine Behandlung, um den Kantonsvergleich anzuzeigen.',
         cantonComparisonNoData: 'Für diesen Kanton können keine Raten berechnet werden.',
@@ -1254,7 +1252,6 @@ if (finderRoot) {
         cantonHighlightRateLabel: 'Cas pour 100 000 habitants',
         cantonHighlightHospitalsLabel: 'Établissements déclarants',
         cantonRowCases: '{cases} cas',
-        cantonRowShare: '{share}% des cas du canton',
         cantonComparisonPrompt: 'Sélectionnez un canton pour le comparer à la moyenne suisse.',
         selectProcedureComparison: 'Choisissez une intervention pour afficher la comparaison cantonale.',
         cantonComparisonNoData: 'Impossible de calculer un taux pour ce canton.',
@@ -1439,7 +1436,6 @@ if (finderRoot) {
         cantonHighlightRateLabel: 'Casi per 100 000 abitanti',
         cantonHighlightHospitalsLabel: 'Ospedali segnalanti',
         cantonRowCases: '{cases} casi',
-        cantonRowShare: '{share}% dei casi cantonali',
         cantonComparisonPrompt: 'Seleziona un cantone per confrontarlo con la media svizzera.',
         selectProcedureComparison: 'Scegli una procedura per mostrare il confronto cantonale.',
         cantonComparisonNoData: 'Non è possibile calcolare il tasso per questo cantone.',
@@ -1795,6 +1791,7 @@ if (finderRoot) {
     const finderCantonSummary = document.getElementById('finder-canton-summary');
     const finderCantonList = document.getElementById('finder-canton-list');
     const finderCantonComparisonCard = document.getElementById('finder-canton-comparison-card');
+    const finderCantonComparisonInsights = document.getElementById('finder-canton-comparison-insights');
     const finderCantonComparisonCaption = document.getElementById('finder-canton-comparison-caption');
     const finderCantonComparisonChart = document.getElementById('finder-canton-comparison-chart');
     const finderCantonComparisonDifference = document.getElementById('finder-canton-comparison-difference');
@@ -3762,113 +3759,31 @@ if (finderRoot) {
 
     finderCantonSummary.textContent = summaryText;
 
-    const cantonPopulation = Number(REGION_POPULATION[state.selectedCanton]);
-    const aggregatedHospitalCount = Number(agg.cantonTotals?.hospitalCount);
-    const hospitalCount = Number.isFinite(aggregatedHospitalCount) ? aggregatedHospitalCount : cantonHosp.length;
+    const rowsMarkup = cantonHosp
+      .map((h) => {
+        const badgeClass =
+          h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
+        const badgeLabel = typeBadges[h.type] ?? h.type;
+        return `
+          <div class="finder-canton-row">
+            <span class="finder-canton-hospital">${h.hospital}</span>
+            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+            <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+          </div>
+        `;
+      })
+      .join('');
 
-    const toPer100k = (cases, population) => {
-      const populationValue = Number(population);
-      if (!Number.isFinite(populationValue) || populationValue <= 0) {
-        return Number.NaN;
-      }
-      const casesValue = Number(cases);
-      const safeCases = Number.isFinite(casesValue) ? Math.max(casesValue, 0) : 0;
-      return (safeCases / populationValue) * 100000;
-    };
-
-    const cantonRate = toPer100k(totalCanton, cantonPopulation);
-    const formatNumber = (value, options) => {
-      const numeric = Number(value);
-      return Number.isFinite(numeric) ? numeric.toLocaleString(undefined, options) : '—';
-    };
-
-    const highlightItems = [
-      {
-        label: msg('cantonHighlightCasesLabel'),
-        value: formatNumber(totalCanton)
-      },
-      {
-        label: msg('cantonHighlightRateLabel'),
-        value: formatNumber(cantonRate, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
-      },
-      {
-        label: msg('cantonHighlightHospitalsLabel'),
-        value: formatNumber(hospitalCount)
-      }
-    ].filter((item) => {
-      const { label, value } = item;
-      if (typeof label !== 'string' || !label || label.startsWith('messages.')) {
-        return false;
-      }
-      return Boolean(value);
-    });
-
-    const highlightMarkup = highlightItems.length
-      ? `
-        <div class="finder-canton-highlights" role="list">
-          ${highlightItems
-            .map(
-              (item) => `
-                <div class="finder-canton-highlight" role="listitem">
-                  <span class="finder-canton-highlight__value">${escapeHtml(item.value)}</span>
-                  <span class="finder-canton-highlight__label">${escapeHtml(item.label)}</span>
-                </div>
-              `
-            )
-            .join('')}
-        </div>
-      `
-      : '';
-
-    const totalForShare =
-      totalCanton > 0
-        ? totalCanton
-        : cantonHosp.reduce((sum, h) => sum + (Number.isFinite(h.cases) ? h.cases : 0), 0);
-
-    const rowsMarkup = cantonHosp.length
-      ? `
-        <div class="finder-canton-rows">
-          ${cantonHosp
-            .map((h) => {
-              const badgeClass =
-                h.type === 'university' ? 'badge-university' : h.type === 'kanton' ? 'badge-kanton' : 'badge-private';
-              const badgeLabel = typeBadges[h.type] ?? h.type;
-              const sharePercent = totalForShare > 0 ? (h.cases / totalForShare) * 100 : 0;
-              const shareBounded = Math.min(Math.max(sharePercent, 0), 100);
-              const shareDisplay = shareBounded.toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 1
-              });
-              const shareLabelTemplate = msg('cantonRowShare', {
-                share: shareDisplay
-              });
-              const shareLabel =
-                typeof shareLabelTemplate === 'string' && !shareLabelTemplate.startsWith('messages.')
-                  ? shareLabelTemplate
-                  : `${shareDisplay}%`;
-              const shareStyle = `${shareBounded.toFixed(1)}%`;
-              return `
-                <div class="finder-canton-row">
-                  <span class="finder-canton-hospital">${h.hospital}</span>
-                  <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-                  <span class="finder-canton-share">
-                    <span class="finder-canton-share__bar" style="--share: ${escapeAttribute(shareStyle)}"></span>
-                    <span class="finder-canton-share__label">${escapeHtml(shareLabel)}</span>
-                  </span>
-                  <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
-                </div>
-              `;
-            })
-            .join('')}
-        </div>
-      `
-      : '';
-
-    finderCantonList.innerHTML = `${highlightMarkup}${rowsMarkup}`;
+    finderCantonList.innerHTML = rowsMarkup;
   }
 
   function renderCantonComparison(agg) {
-    if (!finderCantonComparisonCard || !finderCantonComparisonCaption || !finderCantonComparisonChart) {
+    if (
+      !finderCantonComparisonCard ||
+      !finderCantonComparisonCaption ||
+      !finderCantonComparisonChart ||
+      !finderCantonComparisonInsights
+    ) {
       return;
     }
 
@@ -3883,6 +3798,9 @@ if (finderRoot) {
         finderCantonComparisonDifference.hidden = !hasDifference;
       }
       finderCantonComparisonChart.innerHTML = '';
+      finderCantonComparisonInsights.innerHTML = '';
+      finderCantonComparisonInsights.hidden = true;
+      finderCantonComparisonInsights.setAttribute('aria-hidden', 'true');
     };
 
     if (state.selectedCanton === ALL_CANTONS_OPTION) {
@@ -3930,6 +3848,59 @@ if (finderRoot) {
         minimumFractionDigits: 1,
         maximumFractionDigits: 1
       });
+
+    const formatNumber = (value, options) => {
+      const numeric = Number(value);
+      return Number.isFinite(numeric) ? numeric.toLocaleString(undefined, options) : '—';
+    };
+
+    const aggregatedTotal = Number(agg.cantonTotals?.totalCases);
+    const cantonTotal = Number.isFinite(aggregatedTotal)
+      ? aggregatedTotal
+      : Array.isArray(agg.cantonHosp)
+        ? agg.cantonHosp.reduce((sum, hospital) => sum + (Number.isFinite(hospital.cases) ? hospital.cases : 0), 0)
+        : 0;
+
+    const aggregatedHospitalCount = Number(agg.cantonTotals?.hospitalCount);
+    const hospitalCount = Number.isFinite(aggregatedHospitalCount)
+      ? aggregatedHospitalCount
+      : Array.isArray(agg.cantonHosp)
+        ? agg.cantonHosp.length
+        : Number.NaN;
+
+    const cantonHighlights = [
+      {
+        label: msg('cantonHighlightCasesLabel'),
+        value: formatNumber(cantonTotal)
+      },
+      {
+        label: msg('cantonHighlightRateLabel'),
+        value: formatRate(cantonRate)
+      },
+      {
+        label: msg('cantonHighlightHospitalsLabel'),
+        value: formatNumber(hospitalCount)
+      }
+    ].filter((item) => typeof item.label === 'string' && !item.label.startsWith('messages.') && item.label.trim().length);
+
+    if (cantonHighlights.length) {
+      finderCantonComparisonInsights.innerHTML = cantonHighlights
+        .map(
+          (item) => `
+            <div class="finder-canton-highlight" role="listitem">
+              <span class="finder-canton-highlight__value">${escapeHtml(item.value)}</span>
+              <span class="finder-canton-highlight__label">${escapeHtml(item.label)}</span>
+            </div>
+          `
+        )
+        .join('');
+      finderCantonComparisonInsights.hidden = false;
+      finderCantonComparisonInsights.removeAttribute('aria-hidden');
+    } else {
+      finderCantonComparisonInsights.innerHTML = '';
+      finderCantonComparisonInsights.hidden = true;
+      finderCantonComparisonInsights.setAttribute('aria-hidden', 'true');
+    }
 
     const nationalLabel = msg('cantonComparisonLabelNational');
     const cantonChartLabel = msg('cantonComparisonLabelCanton', { canton: cantonLabel });
@@ -4109,7 +4080,12 @@ if (finderRoot) {
       finderCantonSummary.textContent = msg('selectProcedureCantonal');
       finderCantonList.innerHTML = '';
       updateCantonFlag(null);
-      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+      if (
+        finderCantonComparisonCard &&
+        finderCantonComparisonCaption &&
+        finderCantonComparisonChart &&
+        finderCantonComparisonInsights
+      ) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = '';
         finderCantonComparisonCaption.hidden = true;
@@ -4118,6 +4094,9 @@ if (finderRoot) {
           finderCantonComparisonDifference.textContent = '';
           finderCantonComparisonDifference.hidden = true;
         }
+        finderCantonComparisonInsights.innerHTML = '';
+        finderCantonComparisonInsights.hidden = true;
+        finderCantonComparisonInsights.setAttribute('aria-hidden', 'true');
       }
       scrollToResultsIfNeeded();
       return;
@@ -4131,7 +4110,12 @@ if (finderRoot) {
       finderCantonSummary.textContent = msg('loadingData');
       finderCantonList.innerHTML = '';
       updateCantonFlag(null);
-      if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+      if (
+        finderCantonComparisonCard &&
+        finderCantonComparisonCaption &&
+        finderCantonComparisonChart &&
+        finderCantonComparisonInsights
+      ) {
         finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
         finderCantonComparisonCaption.textContent = msg('loadingData');
         finderCantonComparisonCaption.hidden = false;
@@ -4140,6 +4124,9 @@ if (finderRoot) {
           finderCantonComparisonDifference.textContent = '';
           finderCantonComparisonDifference.hidden = true;
         }
+        finderCantonComparisonInsights.innerHTML = '';
+        finderCantonComparisonInsights.hidden = true;
+        finderCantonComparisonInsights.setAttribute('aria-hidden', 'true');
       }
       scrollToResultsIfNeeded();
       return;
@@ -4219,7 +4206,12 @@ if (finderRoot) {
         displayMapMessage(msg('datasetError'), 'finder-error');
         finderCantonSummary.textContent = msg('datasetError');
         updateCantonFlag(null);
-        if (finderCantonComparisonCard && finderCantonComparisonCaption && finderCantonComparisonChart) {
+        if (
+          finderCantonComparisonCard &&
+          finderCantonComparisonCaption &&
+          finderCantonComparisonChart &&
+          finderCantonComparisonInsights
+        ) {
           finderCantonComparisonCard.classList.add('finder-comparison-card--empty');
           finderCantonComparisonCaption.textContent = msg('datasetError');
           finderCantonComparisonCaption.hidden = false;
@@ -4228,6 +4220,9 @@ if (finderRoot) {
             finderCantonComparisonDifference.textContent = '';
             finderCantonComparisonDifference.hidden = true;
           }
+          finderCantonComparisonInsights.innerHTML = '';
+          finderCantonComparisonInsights.hidden = true;
+          finderCantonComparisonInsights.setAttribute('aria-hidden', 'true');
         }
       });
   }

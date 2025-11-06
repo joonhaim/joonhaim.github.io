@@ -3506,12 +3506,15 @@ if (finderRoot) {
       }, new Map());
 
       const counts = Array.from(rowCounts.values());
-      const isTwoByTwo = counts.length === 2 && counts.every((count) => count === 2);
+      const isTwoRows = counts.length === 2;
+      const isTwoByTwo = isTwoRows && counts.every((count) => count === 2);
+      const isThreePlusOne =
+        isTwoRows && counts[0] === 3 && counts[1] === 1;
 
       const fallbackLabel = typeof preferredLabel === 'string' && preferredLabel.trim()
         ? preferredLabel.trim()
         : 'Switzerland';
-      const labelText = isTwoByTwo ? 'CH' : fallbackLabel;
+      const labelText = isTwoByTwo || isThreePlusOne ? 'CH' : fallbackLabel;
 
       finderKpis
         .querySelectorAll('.finder-kpi-value-label[data-label-type="switzerland"]')

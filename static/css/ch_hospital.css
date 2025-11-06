@@ -2896,10 +2896,11 @@ body {
 }
 
 .finder-comparison-bar {
-  width: calc(100% - 0.75rem);
+  width: min(2.25rem, calc(100% - 1.25rem));
   height: var(--bar-height, 0%);
   border-radius: 0.35rem 0.35rem 0 0;
   transition: height 0.35s ease;
+  margin: 0 auto;
 }
 
 .finder-comparison-bar--national {

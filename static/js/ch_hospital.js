@@ -3750,8 +3750,9 @@ if (finderRoot) {
         const badgeLabel = typeBadges[h.type] ?? h.type;
         return `
           <div class="finder-canton-row">
-            <span><strong>${h.hospital}</strong> <span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span>${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
+            <span class="finder-canton-hospital">${h.hospital}</span>
+            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
+            <span class="finder-canton-cases">${msg('cantonRowCases', { cases: h.cases.toLocaleString() })}</span>
           </div>
         `;
       })

@@ -1898,6 +1898,7 @@ if (finderRoot) {
   const msg = (key, replacements) => translate(`messages.${key}`, replacements);
 
   const PAGE_SIZE = 7;
+  let hasFinderResizeListener = false;
   const typeOrder = ['university', 'kanton', 'private', 'other'];
 
   function initializeFinderUi(procedureCatalog) {
@@ -1924,6 +1925,8 @@ if (finderRoot) {
     const finderQuickTitle = document.getElementById('finder-quick-title');
     const finderQuickList = document.getElementById('finder-quick-list');
     const finderQuickDescription = document.getElementById('finder-quick-description');
+
+    let latestSwitzerlandLabel = 'Switzerland';
 
     const quickPickButtons = new Map();
 
@@ -3389,13 +3392,7 @@ if (finderRoot) {
       switzerlandLabel = 'Switzerland';
     }
 
-    const isMobileViewport =
-      typeof window !== 'undefined' &&
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(max-width: 768px)').matches;
-    if (isMobileViewport) {
-      switzerlandLabel = 'CH';
-    }
+    latestSwitzerlandLabel = switzerlandLabel;
 
     const hasCantonSelection = state.selectedCanton !== ALL_CANTONS_OPTION;
     const cantonTotals = hasCantonSelection
@@ -3434,14 +3431,18 @@ if (finderRoot) {
       const {
         isSecondary = false,
         allowHtmlValue = false,
-        valueClassName = ''
+        valueClassName = '',
+        labelType = ''
       } = options;
       const safeLabel = escapeAttribute(label);
       const safeValue = allowHtmlValue ? value : escapeAttribute(value);
       const valueClass = valueClassName ? ` ${valueClassName}` : '';
+      const labelTypeAttr = labelType
+        ? ` data-label-type="${escapeAttribute(labelType)}"`
+        : '';
       return `
         <div class="finder-kpi-value${isSecondary ? ' finder-kpi-value--secondary' : ''}">
-          <span class="finder-kpi-value-label">${safeLabel}</span>
+          <span class="finder-kpi-value-label"${labelTypeAttr}>${safeLabel}</span>
           <span class="finder-kpi-value-number${valueClass}">${safeValue}</span>
         </div>
       `;
@@ -3465,7 +3466,8 @@ if (finderRoot) {
       const rows = [
         createValueMarkup(primaryLabel, primary.value, {
           allowHtmlValue: primary.allowHtml,
-          valueClassName: primary.className
+          valueClassName: primary.className,
+          labelType: 'switzerland'
         })
       ];
       if (hasCantonSelection && secondaryValue != null) {
@@ -3479,12 +3481,56 @@ if (finderRoot) {
           createValueMarkup(secondaryLabel, secondary.value, {
             isSecondary: true,
             allowHtmlValue: secondary.allowHtml,
-            valueClassName: secondary.className
+            valueClassName: secondary.className,
+            labelType: 'canton'
           })
         );
       }
       return `<div class="finder-kpi-values">${rows.join('')}</div>`;
     };
+
+    const applySwitzerlandLabel = (preferredLabel) => {
+      if (!finderKpis) {
+        return;
+      }
+
+      const cards = Array.from(finderKpis.querySelectorAll('.finder-kpi'));
+      if (!cards.length) {
+        return;
+      }
+
+      const rowCounts = cards.reduce((acc, card) => {
+        const key = Math.round(card.offsetTop);
+        acc.set(key, (acc.get(key) || 0) + 1);
+        return acc;
+      }, new Map());
+
+      const counts = Array.from(rowCounts.values());
+      const isTwoRows = counts.length === 2;
+      const isTwoByTwo = isTwoRows && counts.every((count) => count === 2);
+      const isThreePlusOne =
+        isTwoRows && counts[0] === 3 && counts[1] === 1;
+
+      const fallbackLabel = typeof preferredLabel === 'string' && preferredLabel.trim()
+        ? preferredLabel.trim()
+        : 'Switzerland';
+      const labelText = isTwoByTwo || isThreePlusOne ? 'CH' : fallbackLabel;
+
+      finderKpis
+        .querySelectorAll('.finder-kpi-value-label[data-label-type="switzerland"]')
+        .forEach((labelEl) => {
+          if (labelEl.textContent !== labelText) {
+            labelEl.textContent = labelText;
+          }
+        });
+    };
+
+    if (typeof window !== 'undefined' && !hasFinderResizeListener) {
+      window.addEventListener('resize', () => {
+        applySwitzerlandLabel(latestSwitzerlandLabel);
+      });
+      hasFinderResizeListener = true;
+    }
 
     const createHhiValue = (value, label) => ({
       value: [
@@ -3579,6 +3625,8 @@ if (finderRoot) {
         `;
       })
       .join('');
+
+    applySwitzerlandLabel(switzerlandLabel);
   }
 
   function renderTopList(agg) {

@@ -215,92 +215,29 @@
   </footer>
 
   <script>
-    (() => {
-      const toArray = (collection) => Array.prototype.slice.call(collection || []);
-      const fadeTargets = new Set();
+    document.addEventListener('DOMContentLoaded', () => {
+      const fadeElements = document.querySelectorAll('.fade-element');
 
-      const collectElements = (selector) => {
-        toArray(document.querySelectorAll(selector)).forEach((element) => {
-          if (element) {
-            fadeTargets.add(element);
-          }
+      if (!('IntersectionObserver' in window)) {
+        fadeElements.forEach((element) => {
+          element.classList.add('visible');
         });
-      };
-
-      const autoFadeSelectors = [
-        '.header-left',
-        '.swiss-cross',
-        '.hero-inner > *',
-        '.methodology-main',
-        '.methodology-grid',
-        '.methodology-grid > *',
-        '.methodology-card',
-        '.methodology-card > *',
-        '.site-footer'
-      ];
-
-      autoFadeSelectors.forEach(collectElements);
-
-      const methodologyMain = document.querySelector('.methodology-main');
-      if (methodologyMain) {
-        fadeTargets.add(methodologyMain);
-        toArray(methodologyMain.querySelectorAll('*')).forEach((element) => {
-          fadeTargets.add(element);
-        });
-      }
-
-      if (!fadeTargets.size) {
         return;
       }
 
-      fadeTargets.forEach((element) => {
-        if (!element.classList.contains('fade-element')) {
-          element.classList.add('fade-element');
-        }
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
       });
 
-      const startObserving = () => {
-        const fadeElements = toArray(document.querySelectorAll('.fade-element'));
-        if (!fadeElements.length) {
-          return;
-        }
-
-        if ('IntersectionObserver' in window) {
-          const observer = new IntersectionObserver(
-            (entries, intersectionObserver) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add('visible');
-                  intersectionObserver.unobserve(entry.target);
-                }
-              });
-            },
-            {
-              rootMargin: '0px 0px -10% 0px',
-              threshold: 0.1
-            }
-          );
-
-          fadeElements.forEach((element) => observer.observe(element));
-        } else {
-          fadeElements.forEach((element) => {
-            element.classList.add('visible');
-          });
-        }
-      };
-
-      const scheduleObservation = () => {
-        if (typeof window.requestAnimationFrame === 'function') {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(startObserving);
-          });
-        } else {
-          setTimeout(startObserving, 32);
-        }
-      };
-
-      scheduleObservation();
-    })();
+      fadeElements.forEach((element) => {
+        observer.observe(element);
+      });
+    });
   </script>
 </body>
 </html>

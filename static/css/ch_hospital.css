@@ -2318,6 +2318,10 @@ body {
   padding: 1.5rem;
 }
 
+.finder-note-card {
+  grid-column: 1 / -1;
+}
+
 .finder-canton-card h3,
 .finder-note-card h3 {
   margin-top: 0;

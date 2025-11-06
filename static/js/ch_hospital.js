@@ -830,7 +830,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Total Cases (2023)',
-        hospitalsPerforming: 'Hospitals performing this procedure',
+        casesPer100k: 'Cases per 100k residents',
         universityShare: 'Share at Univ. hospitals',
         centralization: 'Centralization (HHI Index)',
         switzerland: 'Switzerland'
@@ -870,6 +870,8 @@ if (finderRoot) {
         noProceduresMatch: 'No procedures match your search. Try a different keyword.',
         tryAdjustFilters: 'Try a different procedure or adjust the filters.',
         paginationShowing: 'Showing {start}–{end} of {total} hospitals',
+        hospitalsPerformingSingle: '{count} hospital performing this procedure',
+        hospitalsPerformingPlural: '{count} hospitals performing this procedure',
         ariaPrevHospitals: 'Previous page of hospitals',
         ariaNextHospitals: 'Next page of hospitals',
         topHospitals: 'Cases by hospital (2023)',
@@ -999,7 +1001,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Fallzahlen gesamt (2023)',
-        hospitalsPerforming: 'Spitäler mit diesem Eingriff',
+        casesPer100k: 'Fälle pro 100 000 Einwohner',
         universityShare: 'Anteil universitäre Spitäler',
         centralization: 'Zentralisierung (HHI-Index)',
         switzerland: 'Schweiz'
@@ -1039,6 +1041,8 @@ if (finderRoot) {
         noProceduresMatch: 'Keine Behandlungen passen zur Suche. Versuchen Sie einen anderen Begriff.',
         tryAdjustFilters: 'Versuchen Sie einen anderen Eingriff oder passen Sie die Filter an.',
         paginationShowing: 'Angezeigt {start}–{end} von {total} Spitälern',
+        hospitalsPerformingSingle: '{count} Spital führt diesen Eingriff durch',
+        hospitalsPerformingPlural: '{count} Spitäler führen diesen Eingriff durch',
         ariaPrevHospitals: 'Vorherige Spitalseite',
         ariaNextHospitals: 'Nächste Spitalseite',
         topHospitals: 'Fälle nach Spital (2023)',
@@ -1168,7 +1172,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Cas totaux (2023)',
-        hospitalsPerforming: 'Hôpitaux réalisant cette intervention',
+        casesPer100k: 'Cas pour 100 000 habitants',
         universityShare: 'Part des hôpitaux univ.',
         centralization: 'Centralisation (indice HHI)',
         switzerland: 'Suisse'
@@ -1208,6 +1212,8 @@ if (finderRoot) {
         noProceduresMatch: 'Aucune intervention ne correspond à votre recherche. Essayez un autre mot-clé.',
         tryAdjustFilters: 'Essayez une autre intervention ou ajustez les filtres.',
         paginationShowing: 'Affichage {start}–{end} sur {total} hôpitaux',
+        hospitalsPerformingSingle: '{count} hôpital réalise cette intervention',
+        hospitalsPerformingPlural: '{count} hôpitaux réalisent cette intervention',
         ariaPrevHospitals: 'Page précédente des hôpitaux',
         ariaNextHospitals: 'Page suivante des hôpitaux',
         topHospitals: 'Cas par hôpital (2023)',
@@ -1337,7 +1343,7 @@ if (finderRoot) {
       },
       kpi: {
         totalCases: 'Casi totali (2023)',
-        hospitalsPerforming: 'Ospedali che eseguono questa procedura',
+        casesPer100k: 'Casi per 100 000 abitanti',
         universityShare: 'Quota ospedali universitari',
         centralization: 'Centralizzazione (indice HHI)',
         switzerland: 'Svizzera'
@@ -1377,6 +1383,8 @@ if (finderRoot) {
         noProceduresMatch: 'Nessun intervento corrisponde alla ricerca. Prova con un’altra parola chiave.',
         tryAdjustFilters: 'Prova un’altra procedura o modifica i filtri.',
         paginationShowing: 'Visualizzazione {start}–{end} di {total} ospedali',
+        hospitalsPerformingSingle: '{count} ospedale esegue questa procedura',
+        hospitalsPerformingPlural: '{count} ospedali eseguono questa procedura',
         ariaPrevHospitals: 'Pagina precedente di ospedali',
         ariaNextHospitals: 'Pagina successiva di ospedali',
         topHospitals: 'Casi per ospedale (2023)',
@@ -1646,6 +1654,36 @@ if (finderRoot) {
     'ZH'
   ];
 
+  const REGION_POPULATION = {
+    CH: 8962258,
+    AG: 726894,
+    AI: 16585,
+    AR: 56495,
+    BE: 1063533,
+    BL: 298837,
+    BS: 200031,
+    FR: 341537,
+    GE: 524410,
+    GL: 42056,
+    GR: 204888,
+    JU: 74548,
+    LU: 432744,
+    NE: 178291,
+    NW: 45016,
+    OW: 39272,
+    SG: 535114,
+    SH: 87111,
+    SO: 286844,
+    SZ: 167403,
+    TG: 295220,
+    TI: 357720,
+    UR: 37931,
+    VD: 845870,
+    VS: 365844,
+    ZG: 132556,
+    ZH: 1605508
+  };
+
   const cantonOptions = [
     {
       value: ALL_CANTONS_OPTION,
@@ -1675,7 +1713,7 @@ if (finderRoot) {
   const hhiFootnote = translate('hhi.footnote');
   const kpiLabels = {
     totalCases: translate('kpi.totalCases'),
-    hospitalsPerforming: translate('kpi.hospitalsPerforming'),
+    casesPer100k: translate('kpi.casesPer100k'),
     universityShare: translate('kpi.universityShare'),
     centralization: translate('kpi.centralization')
   };
@@ -3200,6 +3238,20 @@ if (finderRoot) {
       return Number.isFinite(numeric) ? `${Math.round(numeric * 100)}%` : '0%';
     };
 
+    const formatPer100k = (cases, population) => {
+      const populationValue = Number(population);
+      if (!Number.isFinite(populationValue) || populationValue <= 0) {
+        return '—';
+      }
+      const casesValue = Number(cases);
+      const safeCases = Number.isFinite(casesValue) ? casesValue : 0;
+      const rate = (safeCases / populationValue) * 100000;
+      return rate.toLocaleString(undefined, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+    };
+
     const createValueMarkup = (label, value, options = {}) => {
       const {
         isSecondary = false,
@@ -3264,6 +3316,8 @@ if (finderRoot) {
       className: 'finder-kpi-value-number--hhi'
     });
 
+    const cantonPopulation = hasCantonSelection ? REGION_POPULATION[state.selectedCanton] : null;
+
     const tiles = [
       {
         label: kpiLabels.totalCases,
@@ -3273,10 +3327,13 @@ if (finderRoot) {
         footnote: ''
       },
       {
-        label: kpiLabels.hospitalsPerforming,
+        label: kpiLabels.casesPer100k,
         type: 'dual',
-        primary: formatCount(agg.hospitalCount ?? agg.hospitals.length),
-        secondary: cantonTotals ? formatCount(cantonTotals.hospitalCount) : null,
+        primary: formatPer100k(agg.total, REGION_POPULATION.CH),
+        secondary:
+          cantonTotals && cantonPopulation
+            ? formatPer100k(cantonTotals.totalCases, cantonPopulation)
+            : null,
         footnote: ''
       },
       {
@@ -3397,7 +3454,15 @@ if (finderRoot) {
     const hasPrevious = state.listPage > 0;
     const hasNext = endIndex < filteredByCanton.length;
 
-    finderListMeta.innerHTML = `
+    const hospitalsCountKey =
+      filteredByCanton.length === 1
+        ? 'hospitalsPerformingSingle'
+        : 'hospitalsPerformingPlural';
+    const hospitalsCountText = msg(hospitalsCountKey, {
+      count: filteredByCanton.length.toLocaleString(activeLocale)
+    });
+
+    const paginationMarkup = `
       <div class="finder-pagination">
         <button class="finder-page-btn" data-direction="prev" aria-label="${msg('ariaPrevHospitals')}" ${
           hasPrevious ? '' : 'disabled'
@@ -3415,6 +3480,11 @@ if (finderRoot) {
           <span aria-hidden="true">&#8594;</span>
         </button>
       </div>
+    `;
+
+    finderListMeta.innerHTML = `
+      <div class="finder-list-count">${escapeHtml(hospitalsCountText)}</div>
+      ${paginationMarkup}
     `;
 
     finderListMeta.querySelectorAll('.finder-page-btn').forEach((btn) => {

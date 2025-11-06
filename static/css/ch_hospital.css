@@ -1520,26 +1520,30 @@ body {
   align-items: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .finder-list-heading {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .finder-list-context {
   margin: 0;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-subtle);
 }
 
-.finder-list-header h3 {
+#finder-list-title {
   margin: 0;
-  font-size: 1.1rem;
-  line-height: 1.3;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--brand-navy);
 }
 
 #finder-list-meta {
@@ -1693,7 +1697,8 @@ body {
 
 .finder-hospital-name {
   font-weight: 600;
-  line-height: 1.2;
+  font-size: 0.95rem;
+  line-height: 1.25;
 }
 
 .finder-hospital-type,

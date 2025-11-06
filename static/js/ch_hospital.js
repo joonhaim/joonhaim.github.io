@@ -946,7 +946,6 @@ if (finderRoot) {
           casesHistorical: 'Cases 2018–2022',
           note:
             'Rates are shown as published in CH-IQI reporting and may be suppressed when case volumes are low.',
-          infoHeading: 'Hospital snapshot',
           infoAddress: 'Address',
           infoLocation: 'Location',
           infoWebsite: 'Website',
@@ -1155,7 +1154,6 @@ if (finderRoot) {
           casesHistorical: 'Fälle 2018–2022',
           note:
             'Die Kennzahlen entsprechen den CH-IQI-Veröffentlichungen und können bei kleinen Fallzahlen unterdrückt werden.',
-          infoHeading: 'Spitalprofil',
           infoAddress: 'Adresse',
           infoLocation: 'Ort',
           infoWebsite: 'Webseite',
@@ -1364,7 +1362,6 @@ if (finderRoot) {
           casesHistorical: 'Cas 2018-2022',
           note:
             'Les valeurs proviennent des publications CH-IQI et peuvent être masquées lorsque les volumes sont faibles.',
-          infoHeading: 'Aperçu de l’hôpital',
           infoAddress: 'Adresse',
           infoLocation: 'Localisation',
           infoWebsite: 'Site web',
@@ -1573,7 +1570,6 @@ if (finderRoot) {
           casesHistorical: 'Casi 2018-2022',
           note:
             'I valori corrispondono alle pubblicazioni CH-IQI e possono essere nascosti con bassi volumi di casi.',
-          infoHeading: 'Panoramica dell’ospedale',
           infoAddress: 'Indirizzo',
           infoLocation: 'Località',
           infoWebsite: 'Sito web',
@@ -1942,7 +1938,6 @@ if (finderRoot) {
       smrHistorical: 'Standardized mortality ratio 2018–2022',
       casesHistorical: 'Cases 2018–2022',
       note: 'Rates are shown as reported in CH-IQI publications and may be suppressed when data volumes are low.',
-      infoHeading: 'Hospital snapshot',
       infoAddress: 'Address',
       infoLocation: 'Location',
       infoWebsite: 'Website',

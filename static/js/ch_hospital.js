@@ -3560,11 +3560,11 @@ if (finderRoot) {
               </div>
             </div>
             <div class="finder-figures">
-              <div class="finder-figures-main">
-                <strong>${h.cases.toLocaleString()}</strong>
-                <div class="finder-progress finder-progress--compact"><div class="finder-progress-bar" style="width: ${width}%;"></div></div>
-              </div>
+              <strong>${h.cases.toLocaleString()}</strong>
               <span>${share}%</span>
+            </div>
+            <div class="finder-progress" aria-hidden="true">
+              <div class="finder-progress-bar" style="width: ${width}%;"></div>
             </div>
           </div>
         `;

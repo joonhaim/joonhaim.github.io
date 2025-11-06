@@ -2905,8 +2905,7 @@ if (finderRoot) {
 
       finderCategoryTabs.innerHTML = categoriesWithMatches
         .map((category) => {
-          const isActive =
-            category.id === state.selectedCategory && (!isSearching || category.hasMatch);
+          const isActive = !isSearching && category.id === state.selectedCategory;
           const dimmed = isSearching && !category.hasMatch;
           return `
           <button type="button" class="finder-chip finder-category-btn${

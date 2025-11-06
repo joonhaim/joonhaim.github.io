@@ -2042,6 +2042,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  min-height: clamp(26rem, 65vh, 51rem);
   --hospital-padding-top: clamp(1.75rem, 2vw + 1.75rem, 3rem);
   --hospital-padding-bottom: var(--hospital-padding-top);
   --hospital-padding-inline: clamp(1.75rem, 2vw + 1.75rem, 3rem);
@@ -2049,18 +2050,15 @@ body {
   max-height: min(
     calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     ),
     880px
   );
   overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
-  padding: var(--hospital-padding-top) var(--hospital-padding-inline)
-    var(--hospital-padding-bottom);
+  padding: var(--hospital-padding-top) var(--hospital-padding-inline) 0;
   box-shadow: 0 45px 90px rgba(15, 23, 42, 0.45);
   transform: translateY(16px);
   transition: transform 0.25s ease;
@@ -2109,8 +2107,12 @@ body {
 }
 
 .hospital-detail__content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: clamp(24rem, calc(var(--overlay-viewport-height) * 0.55), 48rem);
+  width: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
@@ -2443,10 +2445,8 @@ body {
     width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
     max-height: calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     );
   }
 
@@ -3523,10 +3523,8 @@ body {
     --hospital-padding-inline: 1.25rem;
     max-height: calc(
       var(--overlay-viewport-height) -
-        (
-          var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
-            var(--hospital-padding-top) + var(--hospital-padding-bottom)
-        )
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) +
+          var(--hospital-padding-top))
     );
   }
 

@@ -1811,12 +1811,11 @@ body {
 }
 
 .finder-row {
-  --finder-progress-height: 0.35rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 1rem;
   align-items: center;
-  padding: 0.85rem 1rem calc(0.5rem + var(--finder-progress-height));
+  padding: 0.9rem 1rem;
   border-radius: 0.55rem;
   border: 1px solid rgba(15, 23, 42, 0.05);
   background: rgba(255, 255, 255, 0.42);
@@ -1949,7 +1948,7 @@ body {
 
   .finder-hospital-name {
     flex: 1 1 100%;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.25;
   }
 
@@ -1984,12 +1983,11 @@ body {
 }
 
 .finder-progress {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--finder-progress-height);
-  background: rgba(15, 23, 42, 0.08);
+  grid-column: 1 / -1;
+  margin-top: 0.65rem;
+  height: 6px;
+  border-radius: 999px;
+  background: #f1f5f9;
   overflow: hidden;
   pointer-events: none;
 }
@@ -3191,6 +3189,17 @@ body {
     font-size: 1.12rem;
     line-height: 1.05;
     font-variant-numeric: tabular-nums;
+  }
+
+  .finder-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 0;
+    height: var(--finder-progress-height);
+    border-radius: 0;
+    background: rgba(15, 23, 42, 0.08);
   }
 
   .hospital-detail-overlay {

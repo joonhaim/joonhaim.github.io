@@ -30,7 +30,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
-  <link rel="stylesheet" href="static/css/ch_hospital_methodology.css">
 </head>
 <body>
   <div class="header-left">
@@ -57,9 +56,9 @@
     </div>
   </section>
 
-  <main class="methodology-main">
-    <div class="methodology-container">
-      <article class="methodology-card" id="overview">
+  <main class="page-shell methodology-main">
+    <div class="methodology-grid">
+      <article class="surface-card methodology-card" id="overview">
         <h2>How to use these notes</h2>
         <p>
           The dashboard is intended for journalists, patients, and policymakers who want a quick overview of where specific
@@ -77,7 +76,7 @@
         </ul>
       </article>
 
-      <article class="methodology-card" id="sources">
+      <article class="surface-card methodology-card" id="sources">
         <h2>1. Data sources &amp; coverage</h2>
         <p>
           All figures come from the <strong>Swiss Federal Office of Public Health (FOPH)</strong> CH-IQI release covering the 2023
@@ -102,7 +101,7 @@
         </p>
       </article>
 
-      <article class="methodology-card" id="preparation">
+      <article class="surface-card methodology-card" id="preparation">
         <h2>2. Cleaning &amp; harmonisation</h2>
         <p>
           The raw workbooks were exported from the FOPH portal as XLSX files and processed in Python (Pandas 2.2). The goal was to
@@ -124,7 +123,7 @@
         </ul>
       </article>
 
-      <article class="methodology-card" id="taxonomy">
+      <article class="surface-card methodology-card" id="taxonomy">
         <h2>3. Procedure taxonomy</h2>
         <p>
           CH-IQI indicators are grouped into thematic clusters (e.g., cardiology, orthopaedics). For usability, the dashboard
@@ -141,7 +140,7 @@
         </p>
       </article>
 
-      <article class="methodology-card" id="metrics">
+      <article class="surface-card methodology-card" id="metrics">
         <h2>4. Metrics &amp; calculations</h2>
         <p>
           The dashboard presents <strong>annual case volumes</strong> and, where available, the CH-IQI quality indicator for the
@@ -165,7 +164,7 @@
         </p>
       </article>
 
-      <article class="methodology-card" id="dashboard">
+      <article class="surface-card methodology-card" id="dashboard">
         <h2>5. Dashboard interactions</h2>
         <p>
           All interactions run client-side in vanilla JavaScript using the cleaned CSV and a GeoJSON file of Swiss cantons.
@@ -181,7 +180,7 @@
         </p>
       </article>
 
-      <article class="methodology-card" id="limitations">
+      <article class="surface-card methodology-card" id="limitations">
         <h2>6. Caveats &amp; known limitations</h2>
         <ul>
           <li>Suppressed values (<strong>&lt; 5 cases</strong>) can understate activity for rare procedures.</li>
@@ -191,7 +190,7 @@
         </ul>
       </article>
 
-      <article class="methodology-card" id="repro">
+      <article class="surface-card methodology-card" id="repro">
         <h2>7. Reproducibility checklist</h2>
         <p>
           To reproduce or extend the dashboard, follow the steps below. The source notebooks (Python 3.11) live alongside the

@@ -260,6 +260,128 @@ body {
   backdrop-filter: blur(12px);
 }
 
+.hero--methodology .hero-inner {
+  max-width: 880px;
+  padding-left: 1.5rem;
+}
+
+.hero--methodology .tagline {
+  margin-bottom: 0.75rem;
+}
+
+.methodology-main {
+  padding: 3rem 0 4rem;
+}
+
+.methodology-grid {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.methodology-card {
+  padding: 2rem;
+}
+
+.methodology-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.75rem;
+}
+
+.methodology-card h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.65rem;
+  font-size: 1.2rem;
+}
+
+.methodology-card h3:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.methodology-card p,
+.methodology-card li {
+  font-size: 1.02rem;
+  color: var(--brand-navy);
+}
+
+.methodology-card ul,
+.methodology-card ol {
+  margin: 0.75rem 0 0.75rem 1.4rem;
+  padding: 0;
+}
+
+.methodology-card li + li {
+  margin-top: 0.35rem;
+}
+
+.methodology-toc {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.methodology-toc a {
+  color: var(--brand-navy);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.methodology-toc a:hover,
+.methodology-toc a:focus {
+  text-decoration: underline;
+}
+
+.methodology-card .note {
+  border-left: 4px solid var(--brand-red);
+  background: rgba(218, 41, 28, 0.08);
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--brand-red);
+  margin-top: 1.25rem;
+}
+
+.methodology-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.methodology-meta strong {
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .hero--methodology .hero-inner {
+    padding: 0 1.25rem;
+  }
+
+  .methodology-main {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .methodology-card {
+    padding: 1.5rem;
+  }
+
+  .methodology-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .methodology-card h3 {
+    font-size: 1.1rem;
+  }
+}
+
 .hero .hero-links span {
   display: inline-flex;
   align-items: center;

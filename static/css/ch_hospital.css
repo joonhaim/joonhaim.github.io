@@ -29,10 +29,18 @@ body {
   padding: 1.25rem 1.5rem 1.5rem;
   width: 100%;
   max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   color: var(--text-subtle);
   font-size: 0.9rem;
   border-top: 1px solid var(--border-soft);
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 .site-footer a {

@@ -2645,7 +2645,7 @@ body {
 }
 
 .finder-canton-flag {
-  --canton-flag-size: 3.25rem;
+  --canton-flag-size: 3rem;
   width: var(--canton-flag-size);
   height: var(--canton-flag-size);
   border-radius: 50%;
@@ -2985,7 +2985,7 @@ body {
   }
 
   .finder-canton-flag {
-    --canton-flag-size: 2.75rem;
+    --canton-flag-size: 2.5rem;
   }
 
   .finder-canton-card__comparison {
@@ -3151,7 +3151,7 @@ body {
   }
 
   .finder-canton-flag {
-    --canton-flag-size: 3rem;
+    --canton-flag-size: 2.75rem;
   }
 
   .finder-canton-card__comparison {

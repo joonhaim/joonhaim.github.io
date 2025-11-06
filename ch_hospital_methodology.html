@@ -100,6 +100,16 @@
 
         <p>For this dashboard, only the “information quantitative” component (i.e., number of cases per hospital and procedure in 2023) was used.</p>
         <p>The individual procedures are labeled with F codes for the number of cases. The description for each of these F codes is, however, in the respective language region where the hospital is located. I therefore had to manually categorize what language each description was in.</p>
+          <p>
+          To identify the language of every F-code, I joined the hospital export to the multilingual catalogue published with the
+          CH-IQI 5.4 specifications and generated a lookup table that stores the authoritative German, French, and Italian wordings
+          for each indicator. The lookup lives in
+          <a href="static/data/f_code_description_translated.csv">static/data/f_code_description_translated.csv</a>, so anyone can
+          audit or reuse the mappings, and a short script flags any descriptions that do not match the table by checking language-
+          specific diacritics before I confirm the categorisation manually. When the Federal Office of Public Health releases a new
+          CH-IQI extract, I download the updated CSV, rerun the extraction script (<code>scripts/generate_f_procedure_dataset.py</code>) together with the language check, and append any
+          new or changed F-codes to the lookup so the categorisation stays current.
+        </p>
       </section>
 
       <section id="indicators">

@@ -375,7 +375,7 @@ body {
 .methodology-readme section p,
 .methodology-readme section ul,
 .methodology-readme section ol {
-  max-width: 70ch;
+  max-width: 120ch;
 }
 
 .methodology-readme ul {

@@ -1942,8 +1942,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  --overlay-vertical-gap: clamp(1.75rem, 6vh, 3.5rem);
-  --overlay-bottom-gap: var(--overlay-vertical-gap);
+  --overlay-vertical-gap: clamp(1.25rem, 4.5vh, 2.75rem);
+  --overlay-bottom-gap: clamp(1rem, 5vh, 2.75rem);
   --overlay-horizontal-gap: clamp(1.25rem, 5vw, 3.5rem);
   padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
     var(--overlay-bottom-gap);
@@ -1969,10 +1969,12 @@ body {
   gap: 1rem;
   width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
   max-height: min(
-    calc(100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))),
+    calc(
+      100vh -
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 1.25rem)
+    ),
     880px
   );
-  margin-block: auto;
   overflow: hidden;
   background: #ffffff;
   border-radius: 1.5rem;
@@ -2029,6 +2031,7 @@ body {
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
 }
 
 .hospital-detail__header {
@@ -2344,8 +2347,8 @@ body {
 @media (max-width: 720px) {
   .hospital-detail-overlay {
     align-items: flex-start;
-    --overlay-vertical-gap: clamp(1.25rem, 4vh, 2rem);
-    --overlay-bottom-gap: var(--overlay-vertical-gap);
+    --overlay-vertical-gap: clamp(1rem, 3.75vh, 1.75rem);
+    --overlay-bottom-gap: clamp(0.85rem, 4vh, 1.5rem);
     --overlay-horizontal-gap: 1rem;
     padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
       var(--overlay-bottom-gap);
@@ -2355,7 +2358,8 @@ body {
     padding: 1.5rem 1.5rem 2rem;
     width: min(960px, calc(100% - (var(--overlay-horizontal-gap) * 2)));
     max-height: calc(
-      100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))
+      100vh -
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 1rem)
     );
   }
 
@@ -2905,7 +2909,7 @@ body {
 
   .hospital-detail-overlay {
     align-items: flex-start;
-    --overlay-vertical-gap: calc(env(safe-area-inset-top, 0px) + 1rem);
+    --overlay-vertical-gap: calc(env(safe-area-inset-top, 0px) + 0.85rem);
     --overlay-bottom-gap: calc(env(safe-area-inset-bottom, 0px) + 1rem);
     --overlay-horizontal-gap: 0.9rem;
     padding: var(--overlay-vertical-gap) var(--overlay-horizontal-gap)
@@ -2915,7 +2919,8 @@ body {
   .hospital-detail {
     width: calc(100% - (var(--overlay-horizontal-gap) * 2));
     max-height: calc(
-      100vh - (var(--overlay-vertical-gap) + var(--overlay-bottom-gap))
+      100vh -
+        (var(--overlay-vertical-gap) + var(--overlay-bottom-gap) + 0.75rem)
     );
     border-radius: 1.15rem;
     padding: calc(env(safe-area-inset-top, 0px) + 1.2rem) 1.25rem

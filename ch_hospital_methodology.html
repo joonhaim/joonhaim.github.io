@@ -70,21 +70,28 @@
         <p>This dashboard was created as a personal project using two publicly available database from the Swiss Federal Office of Public Health, and from the Swiss Federal Statistical Office. The primary purpose of this dashboard is for users to easily browse through the number of cases for different medical procedures that occur in every Swiss hospital. This allows them to know the volume of cases in their local hospitals, and to compare those with other hospitals. This is public data, but it is not easily interpretable for the general public, as it is downloadable as a large CSV file from the FOPH website. The intended user is therefore the general public who wants to more easily access and interpret this data. As this is my first public dashboard, I decided to not include any public statistics regarding quality of care, and kept it simple with purely the number of cases per intervention, per hospital. </p>
       </section>
 
-      <section id="sources">
-        <h3>2. Sources</h3>
-        <p>
-            <strong>Hospital procedures (CH-IQI)</strong>  <br>
-          Source: Swiss Federal Office of Public Health (BAG/OFSP/UFSP) <br>
-          Dataset: CH-IQI 2023<br>
-          Link: <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi" target="_blank" rel="noopener">https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi</a>
-        </p>
-        <p>
-          <strong>Population by canton</strong> <br>
-          Source: Swiss Federal Statistical Office<br>
-          Dataset: Structure of the permanent resident population by canton, 2010-2023<br>
-          Link: <a href="https://www.bfs.admin.ch/asset/en/32229047" target="_blank" rel="noopener">https://www.bfs.admin.ch/asset/en/32229047</a>
-        </p>
-      </section>
+<section id="sources">
+  <h3>2. Sources</h3>
+
+  <p>
+    <strong>Hospital procedures (CH-IQI)</strong><br>
+    Source: Swiss Federal Office of Public Health (BAG/OFSP/UFSP)<br>
+    Dataset:
+    <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi" target="_blank" rel="noopener">
+      CH-IQI 2023
+    </a>
+  </p>
+
+  <p>
+    <strong>Population by canton</strong><br>
+    Source: Swiss Federal Statistical Office<br>
+    Dataset:
+    <a href="https://www.bfs.admin.ch/asset/en/32229047" target="_blank" rel="noopener">
+      Structure of the permanent resident population by canton, 2010–2023
+    </a>
+  </p>
+</section>
+
 
       <section id="database">
         <h3>3. Database</h3>
@@ -130,7 +137,7 @@
       </section>
 
       <section id="limitations">
-        <h3>5. Limitations</h3>
+        <h3>6. Limitations</h3>
         <p>This dashboard focuses exclusively on the number of cases per hospital and procedure and does not include any quality, outcome, or risk-adjusted indicators from the CH-IQI database. It is therefore not suitable for evaluating or comparing the quality of care across hospitals. Case volume alone is only one aspect of healthcare performance and should be interpreted with caution.</p>
 
         <p>The CH-IQI data itself is based on annual hospital submissions and may contain reporting delays or minor inconsistencies between institutions. Although the dataset is standardized by the Federal Office of Public Health, hospital names and codes occasionally change between years, requiring manual reconciliation. For location data, coordinates and canton affiliations are derived from public sources and verified manually, which introduces the possibility of positional inaccuracies.</p>

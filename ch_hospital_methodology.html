@@ -30,8 +30,338 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="static/css/ch_hospital.css">
+  <style>
+    .methodology-page {
+      background: #fff;
+      color: var(--brand-navy);
+      font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+      letter-spacing: 0.01em;
+    }
+
+    .methodology-page .hero {
+      padding: 5.5rem 1.5rem 4rem;
+      background: linear-gradient(135deg, rgba(218, 41, 28, 0.95), rgba(167, 0, 0, 0.98));
+    }
+
+    .methodology-page .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .methodology-page .hero-eyebrow {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      opacity: 0.92;
+    }
+
+    .methodology-page .hero h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      margin: 0.35rem 0 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .methodology-page .tagline {
+      font-size: 1.05rem;
+      max-width: 42ch;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .methodology-main {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    .methodology-card {
+      padding: clamp(2.5rem, 4vw, 3.5rem);
+      border: 1px solid rgba(218, 41, 28, 0.18);
+      box-shadow: 0 32px 80px -38px rgba(15, 23, 42, 0.28);
+      background: #fff;
+    }
+
+    .methodology-card h3 {
+      font-size: 1.5rem;
+      margin: 0 0 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brand-red);
+    }
+
+    .methodology-card h4 {
+      margin: 1.75rem 0 0.6rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--brand-navy);
+      letter-spacing: 0.04em;
+    }
+
+    .methodology-card p {
+      margin: 0 0 1rem;
+    }
+
+    .methodology-card ul {
+      margin: 0 0 1.5rem 1.1rem;
+      padding: 0;
+      list-style: none;
+    }
+
+    .methodology-card li {
+      position: relative;
+      margin: 0 0 0.75rem;
+      padding-left: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .methodology-card li::before {
+      content: "";
+      position: absolute;
+      top: 0.6rem;
+      left: 0;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--brand-red);
+    }
+
+    .methodology-card section {
+      margin-bottom: 3.25rem;
+      padding: 0 0 0 2rem;
+      border-left: 3px solid rgba(218, 41, 28, 0.3);
+    }
+
+    .methodology-card section:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .readme-toc {
+      background: linear-gradient(135deg, rgba(218, 41, 28, 0.08), rgba(218, 41, 28, 0.02));
+      border: 1px solid rgba(218, 41, 28, 0.25);
+      border-radius: 1rem;
+      padding: 1.8rem 2rem;
+      margin: 0 0 3rem;
+      box-shadow: 0 28px 60px -44px rgba(218, 41, 28, 0.6);
+    }
+
+    .readme-toc h3 {
+      margin: 0 0 1.35rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--brand-navy);
+    }
+
+    .readme-toc ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.8rem;
+      counter-reset: toc;
+    }
+
+    .readme-toc li {
+      counter-increment: toc;
+    }
+
+    .readme-toc a {
+      text-decoration: none;
+      color: var(--brand-navy);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .readme-toc a::before {
+      content: counter(toc, decimal-leading-zero);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: rgba(218, 41, 28, 0.12);
+      border: 1px solid rgba(218, 41, 28, 0.28);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--brand-red);
+      font-weight: 700;
+    }
+
+    .readme-toc a:hover,
+    .readme-toc a:focus {
+      color: var(--brand-red);
+      transform: translateX(4px);
+    }
+
+    .methodology-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      border: 1px solid rgba(218, 41, 28, 0.25);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 32px 80px -48px rgba(15, 23, 42, 0.35);
+      margin-top: 2.5rem;
+    }
+
+    .methodology-table caption {
+      padding: 1.8rem 2rem 1.2rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-align: left;
+      letter-spacing: 0.05em;
+      color: var(--brand-navy);
+      background: linear-gradient(135deg, rgba(218, 41, 28, 0.12), rgba(218, 41, 28, 0.02));
+    }
+
+    .methodology-table thead th {
+      padding: 1rem 1.25rem;
+      background: var(--brand-red);
+      color: #fff;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .methodology-table tbody tr:nth-child(odd) td {
+      background: rgba(218, 41, 28, 0.03);
+    }
+
+    .methodology-table tbody tr:nth-child(even) td {
+      background: #fff;
+    }
+
+    .methodology-table td {
+      padding: 1.4rem 1.6rem;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(218, 41, 28, 0.12);
+    }
+
+    .methodology-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .methodology-table td:first-child {
+      width: 24%;
+      font-weight: 700;
+      color: var(--brand-red);
+      letter-spacing: 0.04em;
+    }
+
+    .methodology-table td:nth-child(2) {
+      width: 42%;
+    }
+
+    .methodology-table td:last-child {
+      width: 34%;
+      color: var(--text-muted);
+    }
+
+    .formula-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--brand-navy);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .formula-label::before {
+      content: "";
+      width: 1.6rem;
+      height: 1px;
+      background: rgba(15, 23, 42, 0.3);
+    }
+
+    .formula-block {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      align-items: baseline;
+      padding: 0.75rem 1rem;
+      background: rgba(218, 41, 28, 0.08);
+      border-radius: 0.85rem;
+      font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95rem;
+      color: var(--brand-navy);
+      max-width: 100%;
+      word-break: break-word;
+    }
+
+    .methodology-card code {
+      font-family: inherit;
+      background: none;
+      padding: 0;
+    }
+
+    .purpose-callout {
+      display: block;
+      padding: 0.85rem 1rem;
+      background: rgba(218, 41, 28, 0.08);
+      border: 1px solid rgba(218, 41, 28, 0.18);
+      border-radius: 0.85rem;
+      font-weight: 600;
+      color: var(--brand-navy);
+    }
+
+    @media (max-width: 900px) {
+      .methodology-card {
+        padding: 2.2rem 1.75rem;
+      }
+
+      .methodology-card section {
+        padding-left: 1.3rem;
+      }
+
+      .methodology-table caption,
+      .methodology-table td,
+      .methodology-table thead th {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+      }
+
+      .methodology-table td {
+        display: block;
+        width: 100% !important;
+      }
+
+      .methodology-table tbody tr {
+        display: block;
+        border-bottom: 1px solid rgba(218, 41, 28, 0.12);
+      }
+
+      .methodology-table tbody tr:last-child {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .methodology-card {
+        padding: 2rem 1.35rem;
+      }
+
+      .methodology-card section {
+        padding-left: 0.9rem;
+      }
+
+      .methodology-card h3 {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="methodology-page">
   <div class="header-left">
     <a href="ch_hospital.html" class="back-arrow" aria-label="Back to the CH-IQI dashboard">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
@@ -113,226 +443,96 @@
       </section>
 
       <section id="indicators">
-  <h3>4. Indicators and Calculations</h3>
-  <p>
-    The dashboard includes a small set of simple and interpretable metrics. Each indicator is computed directly from the CH-IQI and BFS datasets, using transparent and reproducible formulas.
-  </p>
+        <h3>4. Indicators and Calculations</h3>
+        <p>
+          The dashboard includes a small set of simple and interpretable metrics. Each indicator is computed directly from the CH-IQI and BFS datasets, using transparent and reproducible formulas.
+        </p>
 
-  <table
-    class="formula-table"
-    style="width:100%;border-collapse:separate;border-spacing:0 1.25rem;margin-top:2.5rem;font-size:0.95rem;color:var(--brand-navy);"
-  >
-    <caption
-      style="caption-side:top;text-align:left;font-weight:700;font-size:1.05rem;letter-spacing:0.01em;color:var(--brand-navy);margin-bottom:1.25rem;"
-    >
-      Indicators used in the CH-IQI Dashboard (2023)
-    </caption>
-    <thead>
-      <tr>
-        <th
-          scope="col"
-          style="background:var(--brand-navy);color:#fff;padding:0.85rem 1.35rem;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;border-radius:0.9rem 0 0 0.9rem;"
-        >
-          Indicator
-        </th>
-        <th
-          scope="col"
-          style="background:var(--brand-navy);color:#fff;padding:0.85rem 1.35rem;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;border-left:1px solid rgba(255,255,255,0.12);"
-        >
-          Definition / Formula
-        </th>
-        <th
-          scope="col"
-          style="background:var(--brand-navy);color:#fff;padding:0.85rem 1.35rem;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;border-radius:0 0.9rem 0.9rem 0;border-left:1px solid rgba(255,255,255,0.12);"
-        >
-          Purpose
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Hospital case volume
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            sum(cases<sub>hospital, procedure</sub>)
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Shows the total number of procedures performed in each hospital.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Canton total volume
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            sum(hospital&nbsp;case&nbsp;volume)<sub>canton</sub>
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Aggregates all hospital cases in a canton for a selected procedure.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Per-capita rate
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            (canton&nbsp;total&nbsp;cases&nbsp;/&nbsp;canton&nbsp;population)&nbsp;&times;&nbsp;100&nbsp;000
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Provides regional context by normalising procedure counts by population.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Share of canton volume
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            (hospital&nbsp;cases&nbsp;/&nbsp;canton&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Shows each hospital’s relative contribution within its canton.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          National totals
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            sum(canton&nbsp;total&nbsp;cases)
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Summed case counts for the entire country per procedure.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Centralisation HHI Index
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            &Sigma;&nbsp;(hospital&nbsp;share<sub>%</sub>)<sup>2</sup>
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Measures concentration of procedure volumes across hospitals (0–10&nbsp;000 scale).
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          University hospital share
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            (cases<sub>university</sub>&nbsp;/&nbsp;national&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Indicates how centralised a given procedure is in tertiary care centres.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Per-hospital share of national volume
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Formula</span>
-          <code style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.92rem;">
-            (hospital&nbsp;cases&nbsp;/&nbsp;national&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100
-          </code>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Highlights each hospital’s proportion of the total Swiss volume.
-        </td>
-      </tr>
-      <tr>
-        <td
-          style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82));color:#fff;font-weight:700;border:1px solid rgba(15,23,42,0.22);border-right:none;border-radius:1rem 0 0 1rem;"
-        >
-          Leading hospital
-        </td>
-        <td
-          style="padding:1.4rem 1.6rem;background:var(--surface-default);border-top:1px solid rgba(15,23,42,0.1);border-bottom:1px solid rgba(15,23,42,0.1);border-left:1px solid rgba(15,23,42,0.08);border-right:1px solid rgba(15,23,42,0.08);line-height:1.65;"
-        >
-          <span style="display:inline-flex;align-items:center;gap:0.45rem;font-weight:600;color:var(--brand-navy);margin-bottom:0.35rem;">Rule</span>
-          <span style="display:block;padding:0.65rem 0.8rem;background:var(--surface-muted);border-radius:0.75rem;font-size:0.95rem;font-weight:600;">
-            Hospital with the highest number of cases for the selected procedure.
-          </span>
-        </td>
-        <td
-          style="padding:1.4rem 1.5rem;background:var(--surface-muted);border:1px solid rgba(15,23,42,0.08);border-left:none;border-radius:0 1rem 1rem 0;color:var(--text-muted);"
-        >
-          Identifies the top provider by case count in Switzerland.
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+        <table class="methodology-table">
+          <caption>Indicators used in the CH-IQI Dashboard (2023)</caption>
+          <thead>
+            <tr>
+              <th scope="col">Indicator</th>
+              <th scope="col">Definition / Formula</th>
+              <th scope="col">Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hospital case volume</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">sum(cases<sub>hospital, procedure</sub>)</span>
+              </td>
+              <td><span class="purpose-callout">Shows the total number of procedures performed in each hospital.</span></td>
+            </tr>
+            <tr>
+              <td>Canton total volume</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">sum(hospital&nbsp;case&nbsp;volume)<sub>canton</sub></span>
+              </td>
+              <td><span class="purpose-callout">Aggregates all hospital cases in a canton for a selected procedure.</span></td>
+            </tr>
+            <tr>
+              <td>Per-capita rate</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">(canton&nbsp;total&nbsp;cases&nbsp;/&nbsp;canton&nbsp;population)&nbsp;&times;&nbsp;100&nbsp;000</span>
+              </td>
+              <td><span class="purpose-callout">Provides regional context by normalising procedure counts by population.</span></td>
+            </tr>
+            <tr>
+              <td>Share of canton volume</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">(hospital&nbsp;cases&nbsp;/&nbsp;canton&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100</span>
+              </td>
+              <td><span class="purpose-callout">Shows each hospital’s relative contribution within its canton.</span></td>
+            </tr>
+            <tr>
+              <td>National totals</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">sum(canton&nbsp;total&nbsp;cases)</span>
+              </td>
+              <td><span class="purpose-callout">Summed case counts for the entire country per procedure.</span></td>
+            </tr>
+            <tr>
+              <td>Centralisation HHI Index</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">&Sigma;&nbsp;(hospital&nbsp;share<sub>%</sub>)<sup>2</sup></span>
+              </td>
+              <td><span class="purpose-callout">Measures concentration of procedure volumes across hospitals (0–10&nbsp;000 scale).</span></td>
+            </tr>
+            <tr>
+              <td>University hospital share</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">(cases<sub>university</sub>&nbsp;/&nbsp;national&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100</span>
+              </td>
+              <td><span class="purpose-callout">Indicates how centralised a given procedure is in tertiary care centres.</span></td>
+            </tr>
+            <tr>
+              <td>Per-hospital share of national volume</td>
+              <td>
+                <span class="formula-label">Formula</span>
+                <span class="formula-block">(hospital&nbsp;cases&nbsp;/&nbsp;national&nbsp;total&nbsp;cases)&nbsp;&times;&nbsp;100</span>
+              </td>
+              <td><span class="purpose-callout">Highlights each hospital’s proportion of the total Swiss volume.</span></td>
+            </tr>
+            <tr>
+              <td>Leading hospital</td>
+              <td>
+                <span class="formula-label">Rule</span>
+                <span class="formula-block">Hospital with the highest number of cases for the selected procedure.</span>
+              </td>
+              <td><span class="purpose-callout">Identifies the top provider by case count in Switzerland.</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
       <section id="limitations">
         <h3>5. Limitations</h3>

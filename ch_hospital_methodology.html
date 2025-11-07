@@ -125,6 +125,50 @@
           <li>University Hospital share of cases</li>
           <li>Per-hospital share of the selected procedure</li>
         </ul>
+
+        <table class="methodology-equations">
+          <caption>Indicator formulas</caption>
+          <thead>
+            <tr>
+              <th scope="col">Indicator</th>
+              <th scope="col">Equation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hospital case volume</td>
+              <td><var>cases<sub>h</sub></var> (reported 2023 cases for hospital <var>h</var>)</td>
+            </tr>
+            <tr>
+              <td>Canton total volume</td>
+              <td><span>&Sigma;<sub>h &isin; C</sub> cases<sub>h</sub></span></td>
+            </tr>
+            <tr>
+              <td>Per-capita rate</td>
+              <td><span>(total cases &divide; population) &times; 100,000</span></td>
+            </tr>
+            <tr>
+              <td>Share of canton volume</td>
+              <td><span>(cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; C</sub> cases<sub>h</sub>) &times; 100</span></td>
+            </tr>
+            <tr>
+              <td>National total cases</td>
+              <td><span>&Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
+            </tr>
+            <tr>
+              <td>Centralisation HHI Index</td>
+              <td><span>&Sigma;<sub>h &isin; H</sub> ((cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub>) &times; 100)<sup>2</sup></span></td>
+            </tr>
+            <tr>
+              <td>University hospital share</td>
+              <td><span>(&Sigma;<sub>h &isin; U</sub> cases<sub>h</sub>) &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
+            </tr>
+            <tr>
+              <td>Per-hospital share of procedure</td>
+              <td><span>cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <section id="limitations">

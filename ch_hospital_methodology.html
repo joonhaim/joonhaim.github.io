@@ -57,8 +57,9 @@
         <h3>Table of Contents</h3>
         <ol>
           <li><a href="#purpose">Purpose</a></li>
-          <li><a href="#data-sources">Data Sources</a></li>
-          <li><a href="#data-cleaning">Data Cleaning</a></li>
+          <li><a href="#sources">Sources</a></li>
+          <li><a href="#database">Database</a></li>
+          <li><a href="#data-preparation">Data Preparation</a></li>
           <li><a href="#indicators">Indicators and Calculations</a></li>
           <li><a href="#limitations">Limitations</a></li>
         </ol>
@@ -66,123 +67,75 @@
 
       <section id="purpose">
         <h3>1. Purpose</h3>
-        <p>This dashboard was created as a personal project using a publicly available database from the Swiss Federal Office of Public Health.</p>
-        <p>The primary purpose of this dashboard is for users to easily browse through the number of cases for different medical procedures in every Swiss hospital.</p>
-        <p>The intended users are the general public who wants to more easily access this public data.</p>
-        <p>As this is my first public dashboard, I decided to not include any public statistics regarding quality of care, and kept it simple with purely the number of cases per intervention, per hospital.</p>
+        <p>This dashboard was created as a personal project using two publicly available database from the Swiss Federal Office of Public Health, and from the Swiss Federal Statistical Office. The primary purpose of this dashboard is for users to easily browse through the number of cases for different medical procedures that occur in every Swiss hospital. This allows them to know the volume of cases in their local hospitals, and to compare those with other hospitals. This is public data, but it is not easily interpretable for the general public, as it is downloadable as a large CSV file from the FOPH website. The intended user is therefore the general public who wants to more easily access and interpret this data. As this is my first public dashboard, I decided to not include any public statistics regarding quality of care, and kept it simple with purely the number of cases per intervention, per hospital. </p>
       </section>
 
-      <section id="data-sources">
-        <h3>2. Data Sources</h3>
-        <h4>Hospital procedures (CH-IQI)</h4>
-        <p><strong>Source:</strong> The main database used was CH-IQI 2023 by the Swiss Federal Office of Public Health (BAG/OFSP/UFSP): <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi" target="_blank">bag.admin.ch</a>.</p>
-        <p>The CH-IQI dataset is published annually and provides a standardized national set of hospital quality indicators derived from inpatient discharge data.</p>
-
-        <h4>Population by canton</h4>
-        <p>Data regarding population by canton was taken from the Federal Statistical Office (BFS OFS UST FSO): <a href="https://www.bfs.admin.ch/asset/en/32229047" target="_blank">bfs.admin.ch</a>.</p>
-        <p><strong>Dataset:</strong> Structure of the permanent resident population by canton, 2010–2023.</p>
-        <p>For the purpose of this dashboard, only the 2023 permanent resident population was used, as the CH-IQI data used was also from 2023.</p>
-      </section>
-
-      <section id="data-cleaning">
-        <h3>3. Data Cleaning</h3>
-        <p>The CH-IQI (Swiss Inpatient Quality Indicators) database is published annually. It provides a standardized national set of hospital quality indicators derived from inpatient discharge data. The database is extensive and consists not only of the number of cases for each hospital and medical procedure, but also various categories of quality and process indicators.</p>
-        <p>Each indicator (e.g., hip replacement, stroke treatment, pneumonia) is defined according to the G-IQI/CH-IQI Version 5.4 specification, which aligns with the German IQM (Initiative Qualitätsmedizin) system.</p>
-
-        <p>For each indicator, the dataset typically includes:</p>
-        <ul>
-          <li>Observed values — e.g., number of cases, mortality rates, or complication rates.</li>
-          <li>Expected values and standardized ratios (SMR) — for indicators where risk adjustment is possible.</li>
-          <li>Process and complication indicators — e.g., proportion of minimally invasive operations or postoperative complications.</li>
-          <li>Quantitative information — such as case counts per hospital (used in this dashboard).</li>
-          <li>Minimum volume indicators — showing whether a hospital meets required minimum case thresholds for specific procedures.</li>
-        </ul>
-
-        <p>For this dashboard, only the “information quantitative” component (i.e., number of cases per hospital and procedure in 2023) was used.</p>
-        <p>The individual procedures are labeled with F codes for the number of cases. The description for each of these F codes is, however, in the respective language region where the hospital is located. I therefore had to manually categorize what language each description was in.</p>
-          <p>
-          To identify the language of every F-code, I joined the hospital export to the multilingual catalogue published with the
-          CH-IQI 5.4 specifications and generated a lookup table that stores the authoritative German, French, and Italian wordings
-          for each indicator. The lookup lives in
-          <a href="static/data/f_code_description_translated.csv">static/data/f_code_description_translated.csv</a>, so anyone can
-          audit or reuse the mappings, and a short script flags any descriptions that do not match the table by checking language-
-          specific diacritics before I confirm the categorisation manually. When the Federal Office of Public Health releases a new
-          CH-IQI extract, I download the updated CSV, rerun the extraction script (<code>scripts/generate_f_procedure_dataset.py</code>) together with the language check, and append any
-          new or changed F-codes to the lookup so the categorisation stays current.
+      <section id="sources">
+        <h3>2. Sources</h3>
+        <p>
+            <strong>Hospital procedures (CH-IQI)</strong>  <br>
+          Source: Swiss Federal Office of Public Health (BAG/OFSP/UFSP) <br>
+          Dataset: CH-IQI 2023<br>
+          Link: <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi" target="_blank" rel="noopener">https://www.bag.admin.ch/fr/indicateurs-de-qualite-specifications-ch-iqi</a>
+        </p>
+        <p>
+          <strong>Population by canton</strong> <br>
+          Source: Swiss Federal Statistical Office<br>
+          Dataset: Structure of the permanent resident population by canton, 2010-2023<br>
+          Link: <a href="https://www.bfs.admin.ch/asset/en/32229047" target="_blank" rel="noopener">https://www.bfs.admin.ch/asset/en/32229047</a>
         </p>
       </section>
 
-      <section id="indicators">
-  <h3>4. Indicators and Calculations</h3>
-  <p>
-    The dashboard includes a small set of simple and interpretable metrics. Each indicator is computed directly from the CH-IQI and BFS datasets, using transparent and reproducible formulas.
-  </p>
+      <section id="database">
+        <h3>3. Database</h3>
+        <p>The population database consists of the “Structure of the permanent resident population by canton, 2010-2023”. For the purpose of this dashboard, only the 2023 permanent resident population was used, as the CH-IQI data used was also from 2023.</p>
 
-  <table class="formula-table">
-    <caption>Indicators used in the CH-IQI Dashboard (2023)</caption>
-    <thead>
-      <tr>
-        <th scope="col">Indicator</th>
-        <th scope="col">Definition / Formula</th>
-        <th scope="col">Purpose</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Hospital case volume</strong></td>
-        <td><code>count(cases_per_hospital_and_procedure)</code></td>
-        <td>Shows the total number of procedures performed in each hospital.</td>
-      </tr>
-      <tr>
-        <td><strong>Canton total volume</strong></td>
-        <td><code>sum(hospital_case_volume) by canton</code></td>
-        <td>Aggregates all hospital cases in a canton for a selected procedure.</td>
-      </tr>
-      <tr>
-        <td><strong>Per-capita rate</strong></td>
-        <td><code>(canton_total_cases / canton_population) × 100 000</code></td>
-        <td>Provides regional context by normalising procedure counts by population.</td>
-      </tr>
-      <tr>
-        <td><strong>Share of canton volume</strong></td>
-        <td><code>(hospital_cases / canton_total_cases) × 100</code></td>
-        <td>Shows each hospital’s relative contribution within its canton.</td>
-      </tr>
-      <tr>
-        <td><strong>National totals</strong></td>
-        <td><code>sum(canton_total_cases)</code></td>
-        <td>Summed case counts for the entire country per procedure.</td>
-      </tr>
-      <tr>
-        <td><strong>Centralisation HHI Index</strong></td>
-        <td><code>sum((hospital_share_of_cases)²)</code></td>
-        <td>Measures concentration of procedure volumes across hospitals (0–1 scale).</td>
-      </tr>
-      <tr>
-        <td><strong>University hospital share</strong></td>
-        <td><code>(cases_university_hospitals / national_total_cases) × 100</code></td>
-        <td>Indicates how centralised a given procedure is in tertiary care centres.</td>
-      </tr>
-      <tr>
-        <td><strong>Per-hospital share of national volume</strong></td>
-        <td><code>(hospital_cases / national_total_cases) × 100</code></td>
-        <td>Highlights each hospital’s proportion of the total Swiss volume.</td>
-      </tr>
-      <tr>
-        <td><strong>Leading hospital</strong></td>
-        <td>Hospital with the highest number of cases for the selected procedure.</td>
-        <td>Identifies the top provider by case count in Switzerland.</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+        <p>The CH-IQI (Swiss Inpatient Quality Indicators) database is published annually. It provides a standardized national set of hospital quality indicators that are derived from inpatient discharge data. The database is extensive and consists of not only number of cases for each hospital and medical procedure, but also various categories of quality and process indicators. Each indicator (e.g., hip replacement, stroke treatment, pneumonia) is defined according to the G-IQI/CH-IQI Version 5.4 specification which aligns with the German IQM (Initiative Qualitätsmedizin) system. </p>
+
+        <p>For each indicator, the dataset typically includes:<br>
+        Observed values (e.g., number of cases, mortality rates, or complication rates)<br>
+        Expected values and standardized ratios (SMR) (for indicators where risk adjustment is possible)<br>
+        Process and complication indicators (e.g., proportion of minimally invasive operations or postoperative complications)<br>
+        Quantitative information, such as case counts per hospital (used in this dashboard).<br>
+        Minimum volume indicators, showing whether a hospital meets required minimum case thresholds for specific procedures.</p>
+
+        <p>For this dashboard, only the “information quantitative” component (i.e., number of cases per hospital and procedure in 2023) was used.</p>
+      </section>
+
+      <section id="data-preparation">
+        <h3>4. Data Preparation</h3>
+
+        <h4>4.1 Extraction and filtering (F-coded procedures)</h4>
+        <p>The individual procedures are labeled with F codes for the number of cases. The description for each of these F codes is however in each respective language region where the hospital is located. I therefore had to manually categorize what language each description was in. To make the raw CSV easier to consume in the browser, I used a small Python helper script, scripts/generate_f_procedure_dataset.py, that trims the dataset down to just the F-coded interventions. It removes aggregate rows like national or cantonal totals, keeps only the key numeric columns (hospital ID, procedure code, year, and case count), sorts the records for reproducibility, and exports the result as static/data/qip23_f_procedures.json. This produces a lightweight, dataset usable by a browser that still contains all the essential information for visualization and comparison.</p>
+
+        <h4>4.2 Front-end loading and caching</h4>
+        <p>When the CH-IQI page loads, the front-end calls loadHospitalDataset(), which fetches both JSON files—qip23_f_procedures.json and hospital_coordinates.json—alongside the population CSV. These are converted into in-memory maps keyed by hospital and procedure, so that all parts of the interface (search, maps, and KPI cards) can access them instantly without further network requests.</p>
+      </section>
+
+      <section id="indicators">
+        <h3>5. Indicators and Calculations</h3>
+        <p>The dashboard includes a small set of simple and interpretable metrics:</p>
+        <ul>
+          <li>Hospital case volume (count)</li>
+          <li>Canton total volume (count): Sum of hospital volumes within each canton for a selected procedure.</li>
+          <li>Per-capita rate (cases per 100,000 residents)</li>
+          <li>Share of canton volume</li>
+          <li>National totals</li>
+          <li>Centralisation HHI Index</li>
+          <li>University Hospital share of cases</li>
+          <li>Per-hospital share of the selected procedure</li>
+        </ul>
+      </section>
 
       <section id="limitations">
         <h3>5. Limitations</h3>
-        <p>As this is a personal and exploratory project, the dashboard does not include complex statistical modeling or risk-adjusted comparisons.</p>
-        <p>Language inconsistencies across Switzerland (DE/FR/IT) and differences in hospital reporting may introduce minor errors in categorization.</p>
-        <p>The dataset reflects 2023 data only and may not represent trends or quality of care indicators.</p>
-        <p>All values are presented as-is from the public datasets, without any modification beyond cleaning and aggregation.</p>
+        <p>This dashboard focuses exclusively on the number of cases per hospital and procedure and does not include any quality, outcome, or risk-adjusted indicators from the CH-IQI database. It is therefore not suitable for evaluating or comparing the quality of care across hospitals. Case volume alone is only one aspect of healthcare performance and should be interpreted with caution.</p>
+
+        <p>The CH-IQI data itself is based on annual hospital submissions and may contain reporting delays or minor inconsistencies between institutions. Although the dataset is standardized by the Federal Office of Public Health, hospital names and codes occasionally change between years, requiring manual reconciliation. For location data, coordinates and canton affiliations are derived from public sources and verified manually, which introduces the possibility of positional inaccuracies.</p>
+
+        <p>All data used here are from the 2023 release and represent the situation in that year only. Changes in hospital structures, service offerings, or regional population distributions after 2023 are not reflected.</p>
+
+        <p>Finally, this is an independent personal project and not an official visualization by the Federal Office of Public Health or the Federal Statistical Office. While care was taken to ensure correctness and transparency, any interpretation or conclusion drawn from the dashboard remains the responsibility of the user.</p>
       </section>
     </article>
   </main>

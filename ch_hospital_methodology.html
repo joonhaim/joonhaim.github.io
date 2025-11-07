@@ -126,49 +126,51 @@
           <li>Per-hospital share of the selected procedure</li>
         </ul>
 
-        <table class="methodology-equations">
-          <caption>Indicator formulas</caption>
-          <thead>
-            <tr>
-              <th scope="col">Indicator</th>
-              <th scope="col">Equation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Hospital case volume</td>
-              <td><var>cases<sub>h</sub></var> (reported 2023 cases for hospital <var>h</var>)</td>
-            </tr>
-            <tr>
-              <td>Canton total volume</td>
-              <td><span>&Sigma;<sub>h &isin; C</sub> cases<sub>h</sub></span></td>
-            </tr>
-            <tr>
-              <td>Per-capita rate</td>
-              <td><span>(total cases &divide; population) &times; 100,000</span></td>
-            </tr>
-            <tr>
-              <td>Share of canton volume</td>
-              <td><span>(cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; C</sub> cases<sub>h</sub>) &times; 100</span></td>
-            </tr>
-            <tr>
-              <td>National total cases</td>
-              <td><span>&Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
-            </tr>
-            <tr>
-              <td>Centralisation HHI Index</td>
-              <td><span>&Sigma;<sub>h &isin; H</sub> ((cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub>) &times; 100)<sup>2</sup></span></td>
-            </tr>
-            <tr>
-              <td>University hospital share</td>
-              <td><span>(&Sigma;<sub>h &isin; U</sub> cases<sub>h</sub>) &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
-            </tr>
-            <tr>
-              <td>Per-hospital share of procedure</td>
-              <td><span>cases<sub>h</sub> &divide; &Sigma;<sub>h &isin; H</sub> cases<sub>h</sub></span></td>
-            </tr>
-          </tbody>
-        </table>
+        <p>
+          Each indicator below is summarised in plain language so it's easy to see what the metric captures and how the dashboard derives it from the raw case counts.
+        </p>
+        <div class="indicator-grid">
+          <article class="indicator-card">
+            <h4>Hospital case volume</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> The workload handled by a single hospital for the selected procedure in 2023.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Use the reported case count for the chosen hospital without any additional aggregation.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>Canton total volume</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> The overall volume delivered inside the selected canton.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Add up the 2023 case counts of every hospital whose canton matches the current selection.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>Per-capita rate</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> How common the procedure is relative to the canton population.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Divide the canton total volume by the canton's permanent resident population and multiply the result by 100,000.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>Share of canton volume</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> The contribution of each hospital to the canton's total workload.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Divide the hospital's case volume by the canton total volume for the procedure and express the result as a percentage.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>National total cases</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> The national scale of the procedure in Switzerland.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Sum the 2023 case counts reported by every hospital in Switzerland for the selected procedure.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>Centralisation HHI Index</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> Whether cases are concentrated in a few hospitals or dispersed across many providers.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Convert each hospital's national share into a percentage, square those percentages, and add them together to obtain the Herfindahl-Hirschman Index.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>University hospital share</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> The portion of national cases handled by university hospitals.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Divide the combined case volume of university hospitals by the national total case volume.</p>
+          </article>
+          <article class="indicator-card">
+            <h4>Per-hospital share of procedure</h4>
+            <p class="indicator-card__summary"><strong>What it shows:</strong> A hospital's national market share for the procedure.</p>
+            <p class="indicator-card__formula"><strong>How it is calculated:</strong> Divide the hospital's case volume by the national total volume for the procedure.</p>
+          </article>
+        </div>
       </section>
 
       <section id="limitations">

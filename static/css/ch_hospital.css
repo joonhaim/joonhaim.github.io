@@ -463,6 +463,48 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.indicator-grid {
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.indicator-card {
+  padding: 1.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(218, 41, 28, 0.08), rgba(15, 23, 42, 0.02));
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.indicator-card h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--brand-navy);
+}
+
+.indicator-card__summary,
+.indicator-card__formula {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.indicator-card__summary strong,
+.indicator-card__formula strong {
+  color: var(--brand-navy);
+  font-weight: 700;
+}
+
+.indicator-card__formula {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  padding-top: 0.6rem;
+}
 
 .methodology-card h3 {
   margin-top: 1.75rem;

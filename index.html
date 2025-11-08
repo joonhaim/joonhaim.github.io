@@ -16,7 +16,33 @@
 </head>
 <body>
   <div class="container">
-    <div id="site-header"></div>
+    <div id="site-header">
+      <header class="site-header">
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
+          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
+        </div>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <!-- Projects dropdown -->
+            <li class="has-dropdown">
+              <a href="projects.html">Projects<span class="arrow">▾</span></a>
+              <ul class="dropdown-menu">
+                <li><a href="easysave.html">EasySave</a></li>
+                <li><a href="cognition.html">Cognition and Computation</a></li>
+                <li><a href="irl.html">Reinforcement Learning</a></li>
+                <li><a href="ch_hospital.html">Swiss Hospital Insights</a></li>
+                <li><a href="projects.html">All Projects →</a></li>
+              </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
     <main class="content">
 
       <!-- Intro -->
@@ -198,7 +224,11 @@ Choose a procedure and see how many cases were performed at each hospital across
         <a href="https://github.com/joonhaim" class="cta-link" target="_blank">GitHub Profile →</a>
       </section>
     </main>
-    <div id="site-footer"></div>
+    <div id="site-footer">
+      <footer class="site-footer">
+        <p>&copy; 2025 Adrien Joon‑Ha Im</p>
+      </footer>
+    </div>
   </div>
 </body>
 </html>

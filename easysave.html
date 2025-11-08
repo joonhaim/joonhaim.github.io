@@ -16,7 +16,33 @@
 </head>
 <body>
   <div class="container">
-    <header id="site-header"></header>
+    <div id="site-header">
+      <header class="site-header">
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
+          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
+        </div>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <!-- Projects dropdown -->
+            <li class="has-dropdown">
+              <a href="projects.html">Projects<span class="arrow">▾</span></a>
+              <ul class="dropdown-menu">
+                <li><a href="easysave.html">EasySave</a></li>
+                <li><a href="cognition.html">Cognition and Computation</a></li>
+                <li><a href="irl.html">Reinforcement Learning</a></li>
+                <li><a href="ch_hospital.html">Swiss Hospital Insights</a></li>
+                <li><a href="projects.html">All Projects →</a></li>
+              </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
 
     <main class="content">
       <!-- Hero -->
@@ -101,7 +127,11 @@
         </div>
       </section>
 
-    <footer id="site-footer"></footer>
+    <div id="site-footer">
+      <footer class="site-footer">
+        <p>&copy; 2025 Adrien Joon‑Ha Im</p>
+      </footer>
+    </div>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

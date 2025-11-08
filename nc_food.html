@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Neural Computing Project: Food Classification CNN</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="static/css/styles.css">
+  <script src="static/js/script.js" defer></script>
+  <script src="static/js/includes.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div id="site-header"></div>
+
+    <main class="content">
+      <section class="project-intro">
+        <h1>Neural Computing Project: Food Classification CNN</h1>
+        <p>
+          For the Neural Computing course we engineered a full deep learning pipeline that recognises
+          91 distinct food categories from a dataset of 67,000 crowd-sourced photographs.
+          The project focused on designing a strong baseline without ImageNet pretraining, exploring
+          how far careful data processing, architectural tweaks, and modern optimisation techniques
+          can push a classic convolutional network.
+        </p>
+        <p>
+          Beyond the core classifier, we connected the model to a Gemini LLM service that transforms
+          raw predictions into personalised “food profiles”, turning label probabilities into
+          narrative explanations, serving suggestions, and nutrition highlights for end users.
+        </p>
+      </section>
+
+      <section id="pipeline" class="assignment-layout">
+        <div class="assignment-text">
+          <h2>Pipeline Overview</h2>
+          <p>
+            Our system revisits AlexNet with modern training practices to maximise performance on a
+            relatively small, imbalanced dataset. Key components include:
+          </p>
+          <ul>
+            <li><strong>Data pipeline:</strong> stratified train/validation/test split, class-aware sampling,
+              and rich augmentations (color jitter, random crops, flips) applied with Albumentations.</li>
+            <li><strong>Architecture:</strong> streamlined AlexNet backbone augmented with Batch Normalization and
+              dropout regularisation for each convolutional block to stabilise training.</li>
+            <li><strong>Loss &amp; optimisation:</strong> Focal Loss mitigated class imbalance while the AdamW optimizer
+              paired with cosine annealing learning rate scheduling accelerated convergence.</li>
+            <li><strong>Training infrastructure:</strong> mixed-precision training on A100 GPUs, automatic checkpointing,
+              and Weights &amp; Biases experiment tracking.</li>
+          </ul>
+          <p>
+            The resulting model achieved <strong>52% top-1 accuracy</strong> on the held-out test set without any
+            external pretraining, outperforming earlier course baselines by a significant margin.
+          </p>
+        </div>
+        <div class="assignment-pdf">
+          <div class="pdf-container">
+            <iframe
+              src="static/pdf/nc-food/nc-food-report.pdf#navpanes=0"
+              title="Neural Computing Project Report"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </section>
+
+      <section id="llm-integration">
+        <h2>Gemini-Powered Food Profiles</h2>
+        <p>
+          To make the classifier more engaging we integrated Google&apos;s Gemini API. Batch predictions
+          from the CNN are transformed into a short prompt that describes the most likely dishes,
+          their confidence scores, and any dietary tags inferred from class metadata. Gemini then
+          synthesises a concise profile that highlights the dominant cuisine, suggests complementary
+          dishes, and offers nutritional talking points tailored to the user&apos;s preferences.
+        </p>
+        <p>
+          This hybrid workflow demonstrates how discriminative vision models and large language models
+          can collaborate: the CNN grounds the system in visual evidence while the LLM translates
+          probabilities into actionable insights for meal planning applications.
+        </p>
+      </section>
+
+      <section id="resources">
+        <h2>Resources</h2>
+        <ul>
+          <li><a href="static/pdf/nc-food/nc-food-report.pdf" target="_blank" rel="noopener">Download the full Neural Computing report (PDF)</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+</body>
+</html>

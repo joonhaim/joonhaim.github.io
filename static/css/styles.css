@@ -546,11 +546,11 @@ body {
   border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: var(--space-md);
-  text-align: left;
+  text-align: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .project-card .project-logo {
@@ -564,8 +564,6 @@ body {
 @media (max-width: 600px) {
   .project-card {
     flex-basis: 100%;
-    text-align: center;
-    align-items: center;
   }
 }
 

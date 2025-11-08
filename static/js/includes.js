@@ -1,13 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const load = (sel, url) =>
-      fetch(url)
-        .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-        .then(html => { document.querySelector(sel).innerHTML = html; })
-        .catch(err => console.error(`Error loading ${url}:`, err));
-  
-    // inject header & footer
-    const headerLoaded = load('#site-header', 'partials/header.html');
-    load('#site-footer', 'partials/footer.html');
+  const load = (sel, url) => {
+    const container = document.querySelector(sel);
+    if (!container) return Promise.resolve(null);
+
+    const hasMarkup = container.childElementCount > 0 || container.textContent.trim().length > 0;
+    if (hasMarkup) return Promise.resolve(container);
+
+    return fetch(url)
+      .then(r => (r.ok ? r.text() : Promise.reject(r.statusText)))
+      .then(html => {
+        container.innerHTML = html;
+        return container;
+      })
+      .catch(err => {
+        console.error(`Error loading ${url}:`, err);
+        return container;
+      });
+  };
+
+  // inject header & footer when needed
+  const headerLoaded = load('#site-header', 'partials/header.html');
+  load('#site-footer', 'partials/footer.html');
 
   // once header is in place, highlight active link and enable mobile nav
   headerLoaded.then(() => {
@@ -26,4 +39,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-  });
+});

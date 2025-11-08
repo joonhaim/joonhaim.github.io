@@ -166,7 +166,8 @@ body {
 
 /* 4a. Section headings */
 .content h1,
-.content h2 {
+.content h2,
+.content .section-title {
   font-weight: 500;
   margin-bottom: var(--space-sm);
   color: #111;
@@ -180,6 +181,14 @@ body {
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.5rem;
   margin-top: var(--space-lg);
+}
+
+.content .section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-top: 0;
 }
 
 /* 4b. Intro paragraph */

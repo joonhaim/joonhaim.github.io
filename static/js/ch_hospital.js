@@ -898,11 +898,6 @@ const hospitalInfoOverrides = {
     locality: "Dielsdorf",
     website: "https://www.adus-klinik.ch"
   },
-  "ArKa SA": {
-    address: "Route de Chancy 98\n1213 Onex",
-    locality: "Onex",
-    website: "https://arka-clinique.ch"
-  },
   "Berit Klinik Goldach": {
     address: "Klosterstrasse 19\n9403 Goldach",
     locality: "Goldach",
@@ -936,7 +931,7 @@ const hospitalInfoOverrides = {
   "Clinique de la Plaine": {
     address: "Rue Micheli-du-Crest 4\n1205 Genève",
     locality: "Genève",
-    website: "https://www.clinique-plaine.ch"
+    website: "https://www.klinik-seeschau.ch/"
   },
   "EOC Ente ospedaliero cantonale": {
     address: "Viale Officina 3\n6500 Bellinzona",
@@ -946,7 +941,7 @@ const hospitalInfoOverrides = {
   "Flury Stiftung Spital Schiers": {
     address: "Spitalstrasse 1\n7220 Schiers",
     locality: "Schiers",
-    website: "https://www.flury-stiftung.ch"
+    website: "https://www.flurystiftung.ch/de/spital/ueber-uns/spital"
   },
   "Geburtshaus Delphys": {
     address: "Rue Agasse 66\n1208 Genève",

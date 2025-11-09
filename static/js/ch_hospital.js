@@ -696,7 +696,7 @@ const hospitalInfoOverrides = {
   "Gruppo ospedaliero Moncucco Clinica Santa Chiara SA": {
     address: "Via San Pietro 6\n6600 Locarno",
     locality: "Locarno",
-    website: "https://www.clinicasantachiara.ch"
+    website: "https://www.moncucco.ch/clinica-santa-chiara.php"
   },
   "HFR - Hôpital fribourgeois": {
     address: "Chemin des Pensionnats 2-6\n1708 Fribourg",

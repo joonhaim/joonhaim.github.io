@@ -478,7 +478,47 @@ const hospitalInfoOverrides = {
     locality: "Lausanne",
     website: "https://www.chuv.ch"
   },
+  "AMEOS Spital Einsiedeln AG": {
+    address: "Spitalstrasse 28\n8840 Einsiedeln",
+    locality: "Einsiedeln",
+    website: "https://www.ameos.ch/einsiedeln"
+  },
+  "Andreas Klinik": {
+    address: "Rigistrasse 1\n6330 Cham",
+    locality: "Cham",
+    website: "https://www.hirslanden.ch/de/andreas-klinik"
+  },
+  "Asana Spital Leuggern AG": {
+    address: "Spitalstrasse 1\n5316 Leuggern",
+    locality: "Leuggern",
+    website: "https://www.asana-ag.ch"
+  },
+  "Asana Spital Menziken AG": {
+    address: "Spitalstrasse 60\n5737 Menziken",
+    locality: "Menziken",
+    website: "https://www.asana-ag.ch"
+  },
+  "Berit Klinik AG": {
+    address: "Breitenstrasse 12\n9042 Speicher",
+    locality: "Speicher",
+    website: "https://www.beritklinik.ch"
+  },
+  "Berit Klinik Wattwil": {
+    address: "Ebnaterstrasse 26\n9630 Wattwil",
+    locality: "Wattwil",
+    website: "https://www.beritklinik.ch"
+  },
+  "Bethesda Spital AG": {
+    address: "Gellertstrasse 144\n4052 Basel",
+    locality: "Basel",
+    website: "https://www.bethesda.ch"
+  },
   "Insel Gruppe AG (universitär)": {
+    address: "Freiburgstrasse 18\n3010 Bern",
+    locality: "Bern",
+    website: "https://www.insel.ch"
+  },
+  "Insel Gruppe AG (nicht-universitär)": {
     address: "Freiburgstrasse 18\n3010 Bern",
     locality: "Bern",
     website: "https://www.insel.ch"
@@ -508,25 +548,350 @@ const hospitalInfoOverrides = {
     locality: "Basel",
     website: "https://www.ukbb.ch"
   },
+  "GZO Spital Wetzikon": {
+    address: "Spitalstrasse 66\n8620 Wetzikon",
+    locality: "Wetzikon",
+    website: "https://www.gzo.ch"
+  },
+  "Gesundheitszentrum Fricktal": {
+    address: "Rheinstrasse 91\n4310 Rheinfelden",
+    locality: "Rheinfelden",
+    website: "https://www.gzf.ch"
+  },
   "LUKS Spitalbetriebe AG": {
     address: "Spitalstrasse 16\n6000 Luzern 16",
     locality: "Luzern",
     website: "https://www.luks.ch"
+  },
+  "Kantonsspital Baden AG": {
+    address: "Im Ergel 1\n5404 Baden",
+    locality: "Baden",
+    website: "https://www.kantonsspitalbaden.ch"
+  },
+  "Kantonsspital Graubünden": {
+    address: "Loestrasse 170\n7000 Chur",
+    locality: "Chur",
+    website: "https://www.ksgr.ch"
+  },
+  "Kantonsspital Winterthur": {
+    address: "Brauerstrasse 15\n8400 Winterthur",
+    locality: "Winterthur",
+    website: "https://www.ksw.ch"
   },
   "Kantonsspital St. Gallen": {
     address: "Rorschacher Strasse 95\n9007 St. Gallen",
     locality: "St. Gallen",
     website: "https://www.kssg.ch"
   },
+  "Klinik Arlesheim AG": {
+    address: "Pfeffingerweg 1\n4144 Arlesheim",
+    locality: "Arlesheim",
+    website: "https://www.klinik-arlesheim.ch"
+  },
+  "Klinik Gut St. Moritz AG": {
+    address: "Via Nouva 3\n7500 St. Moritz",
+    locality: "St. Moritz",
+    website: "https://www.klinik-gut.ch"
+  },
+  "Klinik Hirslanden AG": {
+    address: "Witellikerstrasse 40\n8032 Zürich",
+    locality: "Zürich",
+    website: "https://www.hirslanden.ch/de/klinik-hirslanden"
+  },
+  "Klinik Im Park": {
+    address: "Seestrasse 220\n8027 Zürich",
+    locality: "Zürich",
+    website: "https://www.hirslanden.ch/de/klinik-im-park"
+  },
+  "Klinik Pyramide am See AG": {
+    address: "Bellerivestrasse 34\n8008 Zürich",
+    locality: "Zürich",
+    website: "https://www.pyramide.ch"
+  },
+  "Klinik Seeschau AG": {
+    address: "Seestrasse 107\n8266 Steckborn",
+    locality: "Steckborn",
+    website: "https://www.klinikseeschau.ch"
+  },
   "Stadtspital Zürich": {
     address: "Birmensdorferstrasse 497\n8063 Zürich",
     locality: "Zürich",
     website: "https://www.stadtspital.ch"
   },
+  "Clinique Bois-Cerf": {
+    address: "Avenue d'Ouchy 31\n1006 Lausanne",
+    locality: "Lausanne",
+    website: "https://www.hirslanden.ch/fr/clinique-bois-cerf"
+  },
+  "Clinique CIC Riviera": {
+    address: "Avenue de Corsier 19\n1814 La Tour-de-Peilz",
+    locality: "La Tour-de-Peilz",
+    website: "https://www.cicriviera.ch"
+  },
+  "Clinique CIC Valais SA": {
+    address: "Avenue du Grand-Champsec 80\n1950 Sion",
+    locality: "Sion",
+    website: "https://www.cicvalais.ch"
+  },
+  "Clinique Cecil": {
+    address: "Avenue Ruchonnet 53\n1003 Lausanne",
+    locality: "Lausanne",
+    website: "https://www.hirslanden.ch/fr/clinique-cecil"
+  },
+  "Clinique Générale-Beaulieu": {
+    address: "Chemin de Beau-Soleil 20\n1206 Genève",
+    locality: "Genève",
+    website: "https://www.hirslanden.ch/fr/clinique-generale-beaulieu"
+  },
+  "Clinique de La Source": {
+    address: "Avenue J.-J. Mercier 3\n1003 Lausanne",
+    locality: "Lausanne",
+    website: "https://www.lasource.ch"
+  },
+  "Clinique des Grangettes SA": {
+    address: "Chemin des Grangettes 7\n1224 Chêne-Bougeries",
+    locality: "Chêne-Bougeries",
+    website: "https://www.hirslanden.ch/fr/clinique-des-grangettes"
+  },
+  "Clinique la Colline": {
+    address: "Avenue de Beau-Séjour 6\n1206 Genève",
+    locality: "Genève",
+    website: "https://www.hirslanden.ch/fr/clinique-la-colline"
+  },
+  "EHC Ensemble hospitalier de la Côte": {
+    address: "Chemin du Crêt 2\n1110 Morges",
+    locality: "Morges",
+    website: "https://www.ehc.vd.ch"
+  },
+  "Etablissements Hospitaliers du Nord Vaudois (eHnv)": {
+    address: "Rue d'Entremonts 11\n1400 Yverdon-les-Bains",
+    locality: "Yverdon-les-Bains",
+    website: "https://www.ehnv.ch"
+  },
+  "GSMN Schweiz AG Clinique de Genolier": {
+    address: "Route du Muids 3\n1272 Genolier",
+    locality: "Genolier",
+    website: "https://www.genolier.net"
+  },
+  "GSMN Schweiz AG Clinique de Montchoisi": {
+    address: "Avenue de Montchoisi 35\n1006 Lausanne",
+    locality: "Lausanne",
+    website: "https://www.montchoisi.ch"
+  },
+  "GSMN Schweiz AG Privatklinik Bethanien": {
+    address: "Toblerstrasse 51\n8044 Zürich",
+    locality: "Zürich",
+    website: "https://www.bethanien.ch"
+  },
+  "GSMN Schweiz AG Privatklinik Lindberg": {
+    address: "Lindbergstrasse 25\n8400 Winterthur",
+    locality: "Winterthur",
+    website: "https://www.lindberg.ch"
+  },
+  "Gruppo ospedaliero Moncucco Clinica Moncucco": {
+    address: "Via Moncucco 10\n6900 Lugano",
+    locality: "Lugano",
+    website: "https://www.gomsa.ch"
+  },
+  "Gruppo ospedaliero Moncucco Clinica Santa Chiara SA": {
+    address: "Via San Pietro 6\n6600 Locarno",
+    locality: "Locarno",
+    website: "https://www.clinicasantachiara.ch"
+  },
+  "HFR - Hôpital fribourgeois": {
+    address: "Chemin des Pensionnats 2-6\n1708 Fribourg",
+    locality: "Fribourg",
+    website: "https://www.h-fr.ch"
+  },
+  "Hirslanden Klinik Aarau": {
+    address: "Schänisweg 1\n5001 Aarau",
+    locality: "Aarau",
+    website: "https://www.hirslanden.ch/de/klinik-aarau"
+  },
+  "Hôpital Intercantonal de la Broye (HIB)": {
+    address: "Route de Payerne 20\n1530 Payerne",
+    locality: "Payerne",
+    website: "https://www.hib-op.ch"
+  },
+  "Hôpital Riviera-Chablais Vaud-Valais": {
+    address: "Route du Vieux-Séquoia 20\n1847 Rennaz",
+    locality: "Rennaz",
+    website: "https://www.hopitalrivierachablais.ch"
+  },
+  "Hôpital de la Tour": {
+    address: "Avenue J.-D. Maillard 3\n1217 Meyrin",
+    locality: "Meyrin",
+    website: "https://www.latour.ch"
+  },
+  "Hôpital du Jura": {
+    address: "Rue du 18-Novembre 2\n2800 Delémont",
+    locality: "Delémont",
+    website: "https://www.hopitaldujura.ch"
+  },
+  "Hôpital du Valais Centre hospitalier du Valais Romand CHVR": {
+    address: "Avenue du Grand-Champsec 80\n1950 Sion",
+    locality: "Sion",
+    website: "https://www.hopitalduvalais.ch"
+  },
   "Kantonsspital Aarau AG": {
     address: "Tellstrasse 25\n5001 Aarau",
     locality: "Aarau",
     website: "https://www.ksaarau.ch"
+  },
+  "Klinik Hohmad AG": {
+    address: "Hohmadstrasse 1\n3600 Thun",
+    locality: "Thun",
+    website: "https://www.klinikhohmad.ch"
+  },
+  "Merian Iselin Klinik AG": {
+    address: "Froburgstrasse 20\n4052 Basel",
+    locality: "Basel",
+    website: "https://www.merianiselin.ch"
+  },
+  "Praxisklinik Rennbahn AG": {
+    address: "Rennbahnweg 12\n4133 Pratteln",
+    locality: "Pratteln",
+    website: "https://www.praxisklinik-rennbahn.ch"
+  },
+  "Regionalspital Emmental AG": {
+    address: "Bernstrasse 7\n3400 Burgdorf",
+    locality: "Burgdorf",
+    website: "https://www.spital-emmental.ch"
+  },
+  "Regionalspital Surselva AG": {
+    address: "Spitalstrasse 27\n7130 Ilanz/Glion",
+    locality: "Ilanz/Glion",
+    website: "https://www.spitalsurselva.ch"
+  },
+  "Réseau hospitalier neuchâtelois RHNe": {
+    address: "Rue de Chasseral 20\n2300 La Chaux-de-Fonds",
+    locality: "La Chaux-de-Fonds",
+    website: "https://www.rhne.ch"
+  },
+  "See-Spital": {
+    address: "Asylstrasse 19\n8810 Horgen",
+    locality: "Horgen",
+    website: "https://www.see-spital.ch"
+  },
+  "Solothurner Spitäler AG": {
+    address: "Schöngrünstrasse 42\n4500 Solothurn",
+    locality: "Solothurn",
+    website: "https://www.so-h.ch"
+  },
+  "Spital Bülach AG": {
+    address: "Spitalstrasse 24\n8180 Bülach",
+    locality: "Bülach",
+    website: "https://www.spitalbuelach.ch"
+  },
+  "Spital Limmattal": {
+    address: "Urdorferstrasse 100\n8952 Schlieren",
+    locality: "Schlieren",
+    website: "https://www.spital-limmattal.ch"
+  },
+  "Spital Männedorf AG": {
+    address: "Asylstrasse 10\n8708 Männedorf",
+    locality: "Männedorf",
+    website: "https://www.spitalmaennedorf.ch"
+  },
+  "Spital Nidwalden AG": {
+    address: "Ennetmooserstrasse 19\n6370 Stans",
+    locality: "Stans",
+    website: "https://www.spitalnidwalden.ch"
+  },
+  "Spital Oberengadin": {
+    address: "Via Nouva 3\n7503 Samedan",
+    locality: "Samedan",
+    website: "https://www.spitaloberengadin.ch"
+  },
+  "Spital Thusis": {
+    address: "Neudorfstrasse 47\n7430 Thusis",
+    locality: "Thusis",
+    website: "https://www.spitalthusis.ch"
+  },
+  "Spital Uster AG": {
+    address: "Brunnenstrasse 42\n8610 Uster",
+    locality: "Uster",
+    website: "https://www.spitaluster.ch"
+  },
+  "Spital Wallis - Spitalzentrum Oberwallis (SZO)": {
+    address: "Spitalstrasse 14\n3900 Brig-Glis",
+    locality: "Brig-Glis",
+    website: "https://www.spitalwallis.ch"
+  },
+  "Spital Zofingen AG": {
+    address: "Mühlethalstrasse 27\n4800 Zofingen",
+    locality: "Zofingen",
+    website: "https://www.spitalzofingen.ch"
+  },
+  "Spital Zollikerberg": {
+    address: "Trichtenhauserstrasse 20\n8125 Zollikerberg",
+    locality: "Zollikerberg",
+    website: "https://www.spitalzollikerberg.ch"
+  },
+  "Spitalzentrum Biel AG": {
+    address: "Vogelsang 84\n2501 Biel/Bienne",
+    locality: "Biel/Bienne",
+    website: "https://www.swissmedical.net/de/standorte/spitalzentrum-biel"
+  },
+  "Spitäler Schaffhausen": {
+    address: "Geissbergstrasse 81\n8208 Schaffhausen",
+    locality: "Schaffhausen",
+    website: "https://www.spitaeler-sh.ch"
+  },
+  "St. Claraspital": {
+    address: "Kleinriehenstrasse 30\n4058 Basel",
+    locality: "Basel",
+    website: "https://www.claraspital.ch"
+  },
+  "Stiftung Spital Muri": {
+    address: "Spitalstrasse 3\n5630 Muri",
+    locality: "Muri",
+    website: "https://www.spital-muri.ch"
+  },
+  "Swiss Medical Network Hospitals SA Clinica Ars Medica": {
+    address: "Via ai Saleggi 15\n6616 Losone",
+    locality: "Losone",
+    website: "https://www.clinicaarsmedica.ch"
+  },
+  "Swiss Medical Network Hospitals SA Clinica Sant'Anna": {
+    address: "Via Sant'Anna 1\n6974 Sorengo",
+    locality: "Sorengo",
+    website: "https://www.clinicasantanna.ch"
+  },
+  "Swiss Medical Network Hospitals SA Clinique de Valère": {
+    address: "Avenue Grand-Champsec 90\n1950 Sion",
+    locality: "Sion",
+    website: "https://www.cliniquedevalere.ch"
+  },
+  "Swiss Medical Network Hospitals SA Neuchâtel": {
+    address: "Rue de la Maladière 45\n2000 Neuchâtel",
+    locality: "Neuchâtel",
+    website: "https://www.clinique-neuchatel.ch"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Belair": {
+    address: "Rietstrasse 30\n8201 Schaffhausen",
+    locality: "Schaffhausen",
+    website: "https://www.privatklinik-belair.ch"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Obach": {
+    address: "Schänzlistrasse 39\n4500 Solothurn",
+    locality: "Solothurn",
+    website: "https://www.privatklinik-obach.ch"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Siloah": {
+    address: "Worbstrasse 316\n3073 Gümligen",
+    locality: "Gümligen",
+    website: "https://www.privatklinik-siloah.ch"
+  },
+  "Swiss Medical Network Hospitals SA Privatklinik Villa im Park": {
+    address: "Bahnhofstrasse 19\n5012 Schönenwerd",
+    locality: "Schönenwerd",
+    website: "https://www.privatklinik-villaimpark.ch"
+  },
+  "Zuger Kantonsspital AG": {
+    address: "Aegeristrasse 57\n6300 Zug",
+    locality: "Zug",
+    website: "https://www.zgks.ch"
   }
 };
 

@@ -596,7 +596,7 @@ const hospitalInfoOverrides = {
   "Klinik Hirslanden AG": {
     address: "Witellikerstrasse 40\n8032 Zürich",
     locality: "Zürich",
-    website: "https://www.hirslanden.ch/de/klinik-hirslanden"
+    website: "https://www.hirslanden.ch/"
   },
   "Klinik Im Park": {
     address: "Seestrasse 220\n8027 Zürich",
@@ -696,7 +696,7 @@ const hospitalInfoOverrides = {
   "Gruppo ospedaliero Moncucco Clinica Santa Chiara SA": {
     address: "Via San Pietro 6\n6600 Locarno",
     locality: "Locarno",
-    website: "https://www.clinicasantachiara.ch"
+    website: "https://www.moncucco.ch/clinica-santa-chiara.php"
   },
   "HFR - Hôpital fribourgeois": {
     address: "Chemin des Pensionnats 2-6\n1708 Fribourg",
@@ -892,6 +892,351 @@ const hospitalInfoOverrides = {
     address: "Aegeristrasse 57\n6300 Zug",
     locality: "Zug",
     website: "https://www.zgks.ch"
+  },
+  "Adus Medica AG": {
+    address: "Breitestrasse 11\n8157 Dielsdorf",
+    locality: "Dielsdorf",
+    website: "https://www.adus-klinik.ch"
+  },
+  "Berit Klinik Goldach": {
+    address: "Klosterstrasse 19\n9403 Goldach",
+    locality: "Goldach",
+    website: "https://goldach.beritklinik.ch"
+  },
+  "Center da Sanadad Savognin SA": {
+    address: "Stradung 52\n7460 Savognin",
+    locality: "Savognin",
+    website: "https://www.cds-savognin.ch"
+  },
+  "Center da Sanda Engiadina Bassa Ospidal d'Engiadina Bassa": {
+    address: "Via da l'Ospidal 280\n7550 Scuol",
+    locality: "Scuol",
+    website: "https://www.cseb.ch"
+  },
+  "Center da Sanda Val Müstair Akutabteilung": {
+    address: "Via Val Müstair 186\n7536 Sta. Maria Val Müstair",
+    locality: "Sta. Maria Val Müstair",
+    website: "https://www.cdem.ch"
+  },
+  "Centro Sanitario Bregaglia Reparto acuto": {
+    address: "Flin 5\n7606 Promontogno",
+    locality: "Promontogno",
+    website: "https://www.csbregaglia.ch"
+  },
+  "Centro Sanitario Valposchiavo Ospedale San Sisto": {
+    address: "Via da li Clüsuri 1\n7742 Poschiavo",
+    locality: "Poschiavo",
+    website: "https://www.csvp.ch"
+  },
+  "Clinique de la Plaine": {
+    address: "Rue Micheli-du-Crest 4\n1205 Genève",
+    locality: "Genève",
+    website: "https://www.klinik-seeschau.ch/"
+  },
+  "EOC Ente ospedaliero cantonale": {
+    address: "Viale Officina 3\n6500 Bellinzona",
+    locality: "Bellinzona",
+    website: "https://www.eoc.ch"
+  },
+  "Flury Stiftung Spital Schiers": {
+    address: "Spitalstrasse 1\n7220 Schiers",
+    locality: "Schiers",
+    website: "https://www.flurystiftung.ch/de/spital/ueber-uns/spital"
+  },
+  "Geburtshaus Delphys": {
+    address: "Rue Agasse 66\n1208 Genève",
+    locality: "Genève",
+    website: "https://www.delphys.ch"
+  },
+  "Geburtshaus Luna AG": {
+    address: "Obere Zollgasse 77\n3072 Ostermundigen",
+    locality: "Ostermundigen",
+    website: "https://www.geburtshaus-luna.ch"
+  },
+  "Geburtshaus St.Gallen GmbH": {
+    address: "Linsebühlstrasse 49\n9000 St. Gallen",
+    locality: "St. Gallen",
+    website: "https://www.geburtshaus-stgallen.ch"
+  },
+  "Geburtshaus Stans GmbH": {
+    address: "Hansmatt 13a\n6370 Stans",
+    locality: "Stans",
+    website: "https://www.geburtshaus-stans.ch"
+  },
+  "Geburtshaus Tagmond GmbH": {
+    address: "Wannenweg 30\n4133 Pratteln",
+    locality: "Pratteln",
+    website: "https://www.tagmond.ch"
+  },
+  "Geburtshaus Terra Alta": {
+    address: "Seedorferstrasse 21\n6204 Sempach",
+    locality: "Sempach",
+    website: "https://www.terra-alta.ch"
+  },
+  "Geburtshaus Winterthur AG": {
+    address: "Lindstrasse 16\n8400 Winterthur",
+    locality: "Winterthur",
+    website: "https://www.geburtshaus-winterthur.ch"
+  },
+  "Geburtshaus Zürcher Oberland AG": {
+    address: "Schürlistrasse 3\n8344 Bäretswil",
+    locality: "Bäretswil",
+    website: "https://www.geburtshaus-zho.ch"
+  },
+  "Geburtshaus ambra GmbH": {
+    address: "Lutzenbergstrasse 13\n4443 Wittinsburg",
+    locality: "Wittinsburg",
+    website: "https://www.geburtshaus-ambra.ch"
+  },
+  "Genossenschaft Geburtshaus Simmental-Saanenland Maternité Alpine": {
+    address: "Ledi 494\n3770 Zweisimmen",
+    locality: "Zweisimmen",
+    website: "https://www.maternite-alpine.ch"
+  },
+  "Groupement Hospitalier de l'Ouest Lémanique (GHOL) SA": {
+    address: "Chemin Monastier 10\n1260 Nyon",
+    locality: "Nyon",
+    website: "https://www.ghol.ch"
+  },
+  "Herz-Neuro-Zentrum Bodensee AG": {
+    address: "Spitalcampus 1\n8596 Münsterlingen",
+    locality: "Münsterlingen",
+    website: "https://www.herz-neuro-zentrum.ch"
+  },
+  "Hirslanden Bern AG": {
+    address: "Schänzlistrasse 39\n3013 Bern",
+    locality: "Bern",
+    website: "https://www.hirslanden.ch"
+  },
+  "Hirslanden Klinik Am Rosenberg AG": {
+    address: "Walzenhauserstrasse 70\n9410 Heiden",
+    locality: "Heiden",
+    website: "https://www.hirslanden.ch/de/klinik-am-rosenberg/home.html"
+  },
+  "Hirslanden Klinik Birshof": {
+    address: "Reinacherstrasse 28\n4142 Münchenstein",
+    locality: "Münchenstein",
+    website: "https://www.hirslanden.ch/de/klinik-birshof/home.html"
+  },
+  "Hirslanden Klinik Linde AG": {
+    address: "Vogelsang 84\n2502 Biel/Bienne",
+    locality: "Biel/Bienne",
+    website: "https://www.hirslanden.ch/de/klinik-linde/home.html"
+  },
+  "Hirslanden Klinik St. Anna AG": {
+    address: "St. Anna-Strasse 32\n6006 Luzern",
+    locality: "Luzern",
+    website: "https://www.hirslanden.ch/de/klinik-st-anna/home.html"
+  },
+  "Hirslanden Klinik Stephanshorn": {
+    address: "Brauerstrasse 95\n9016 St. Gallen",
+    locality: "St. Gallen",
+    website: "https://www.hirslanden.ch/de/klinik-stephanshorn/home.html"
+  },
+  "Hôpital Jules Daler": {
+    address: "Route de Bertigny 34\n1700 Fribourg",
+    locality: "Fribourg",
+    website: "https://www.daler.ch"
+  },
+  "Kantonsspital Baselland": {
+    address: "Rheinstrasse 26\n4410 Liestal",
+    locality: "Liestal",
+    website: "https://www.ksbl.ch"
+  },
+  "Kantonsspital Glarus": {
+    address: "Burgstrasse 99\n8750 Glarus",
+    locality: "Glarus",
+    website: "https://www.ksgl.ch"
+  },
+  "Kantonsspital Obwalden": {
+    address: "Brünigstrasse 118\n6060 Sarnen",
+    locality: "Sarnen",
+    website: "https://www.spital-obwalden.ch"
+  },
+  "Kantonsspital Uri": {
+    address: "Spitalweg 11\n6460 Altdorf",
+    locality: "Altdorf",
+    website: "https://www.ksuri.ch"
+  },
+  "Klinik Tiefenbrunnen AG": {
+    address: "Dammstrasse 29\n8702 Zollikon",
+    locality: "Zollikon",
+    website: "https://www.klinik-tiefenbrunnen.ch"
+  },
+  "Limmatklinik AG": {
+    address: "Hardturmstrasse 133\n8005 Zürich",
+    locality: "Zürich",
+    website: "https://www.limmatklinik.ch"
+  },
+  "Lindenhofgruppe AG": {
+    address: "Bremgartenstrasse 117\n3001 Bern",
+    locality: "Bern",
+    website: "https://www.lindenhofgruppe.ch"
+  },
+  "Maison de Naissance Tilia Sàrl": {
+    address: "Chemin des Valangines 9\n2000 Neuchâtel",
+    locality: "Neuchâtel",
+    website: "https://tilia-naissance.ch"
+  },
+  "Maison de Naissance le Petit Prince": {
+    address: "Route du Petit-Moncor 1d\n1752 Villars-sur-Glâne",
+    locality: "Villars-sur-Glâne",
+    website: "https://www.le-petit-prince.ch"
+  },
+  "Maison de naissance La Roseraie": {
+    address: "Chemin du Châtelet 3\n1208 Genève",
+    locality: "Genève",
+    website: "https://www.laroseraie.ch"
+  },
+  "Maison de naissance Les Cigognes": {
+    address: "Route Principale 21\n2824 Vicques",
+    locality: "Vicques",
+    website: "https://www.les-cigognes.ch"
+  },
+  "Matthea Geburtshaus": {
+    address: "Klybeckstrasse 64/70\n4057 Basel",
+    locality: "Basel",
+    website: "https://www.geburtshaus-matthea.ch"
+  },
+  "Nouvelle Clinique Vert-Pré": {
+    address: "Chemin de la Colombe 15\n1231 Conches",
+    locality: "Conches",
+    website: "https://www.cliniquevertpre.ch"
+  },
+  "PALLIATIVKLINIK IM PARK": {
+    address: "Birseckstrasse 59\n4144 Arlesheim",
+    locality: "Arlesheim",
+    website: "https://www.palliativklinik.ch"
+  },
+  "Pôle santé Vallée de Joux Hôpital de la Vallée de Joux": {
+    address: "Rue de l'Hôpital 3\n1347 Le Sentier",
+    locality: "Le Sentier",
+    website: ""
+  },
+  "Pôle santé du Pays-d'Enhaut": {
+    address: "Route de l'Hôpital 17\n1660 Château-d'Oex",
+    locality: "Château-d'Oex",
+    website: ""
+  },
+  "Rosenklinik AG": {
+    address: "St. Gallerstrasse 43\n8645 Jona",
+    locality: "Jona",
+    website: "https://www.rosenklinik.ch"
+  },
+  "Réseau Santé Balcon du Jura.vd (RSBJ)": {
+    address: "Avenue de l'Hôtel-de-Ville 9\n1450 Sainte-Croix",
+    locality: "Sainte-Croix",
+    website: "https://www.rsbj.ch"
+  },
+  "Réseau de l'Arc SA": {
+    address: "Rue Baptiste-Savoye 27-29\n2610 St-Imier",
+    locality: "St-Imier",
+    website: "https://www.reseaudelarc.ch"
+  },
+  "SRO AG": {
+    address: "St. Urbanstrasse 67\n4900 Langenthal",
+    locality: "Langenthal",
+    website: "https://www.sro.ch"
+  },
+  "Schulthess Klinik": {
+    address: "Lengghalde 2\n8008 Zürich",
+    locality: "Zürich",
+    website: "https://www.schulthess-klinik.ch"
+  },
+  "Spezialklinik Gynäkologie, Neonatologie": {
+    address: "",
+    locality: "Bern",
+    website: ""
+  },
+  "Spital Affoltern AG": {
+    address: "Sonnenbergstrasse 27\n8910 Affoltern am Albis",
+    locality: "Affoltern am Albis",
+    website: "https://www.spitalaffoltern.ch"
+  },
+  "Spital Davos AG Akutabteilung": {
+    address: "Promenade 4\n7270 Davos Platz",
+    locality: "Davos Platz",
+    website: "https://www.spitaldavos.ch"
+  },
+  "Spital Lachen": {
+    address: "Oberdorfstrasse 41\n8853 Lachen",
+    locality: "Lachen",
+    website: "https://www.spital-lachen.ch"
+  },
+  "Spital Linth": {
+    address: "Gasterstrasse 25\n8730 Uznach",
+    locality: "Uznach",
+    website: "https://www.h-och.ch"
+  },
+  "Spital STS AG": {
+    address: "Krankenhausstrasse 12\n3600 Thun",
+    locality: "Thun",
+    website: "https://www.spitalthun.ch"
+  },
+  "Spital Schwyz": {
+    address: "Waldeggstrasse 10\n6430 Schwyz",
+    locality: "Schwyz",
+    website: "https://www.spital-schwyz.ch"
+  },
+  "Spital Thurgau AG Kantonsspitäler Frauenfeld & Münsterlingen": {
+    address: "Pfaffenholzstrasse 4\n8501 Frauenfeld",
+    locality: "Frauenfeld",
+    website: "https://www.stgag.ch"
+  },
+  "Spital Walenstadt": {
+    address: "Spitalstrasse 1\n8880 Walenstadt",
+    locality: "Walenstadt",
+    website: "https://www.h-och.ch"
+  },
+  "Spitalregion Fürstenland Toggenburg": {
+    address: "Fürstenlandstrasse 32\n9500 Wil",
+    locality: "Wil",
+    website: "https://www.srft.ch"
+  },
+  "Spitalregion Rheintal Werdenberg Sarganserland": {
+    address: "Spitalstrasse 44\n9472 Grabs",
+    locality: "Grabs",
+    website: "https://www.srrws.ch"
+  },
+  "Spitalverbund Appenzell Ausserrhoden": {
+    address: "Krombach 3\n9102 Herisau",
+    locality: "Herisau",
+    website: "https://www.spitalverbund.ch"
+  },
+  "Spitäler Frutigen Meiringen Interlaken AG": {
+    address: "Weissenaustrasse 27\n3800 Unterseen",
+    locality: "Unterseen",
+    website: "https://www.spitalfmi.ch"
+  },
+  "Stiftung Diaconis Palliative Care": {
+    address: "Schänzlistrasse 15\n3013 Bern",
+    locality: "Bern",
+    website: "https://diaconis.ch/palliative-care/"
+  },
+  "Stiftung Ostschweizer Kinderspital": {
+    address: "Claudiusstrasse 6\n9006 St. Gallen",
+    locality: "St. Gallen",
+    website: "https://www.kispisg.ch"
+  },
+  "Swiss Medical Network Hospitals SA Clinique Générale Ste-Anne": {
+    address: "Rue Hans-Geiler 6\n1700 Fribourg",
+    locality: "Fribourg",
+    website: "https://www.cliniquegenerale.ch"
+  },
+  "Thurklinik AG": {
+    address: "Ulmenstrasse 1\n8500 Frauenfeld",
+    locality: "Frauenfeld",
+    website: "https://www.thurklinik.ch"
+  },
+  "Uroviva Klinik AG": {
+    address: "Zürichstrasse 5\n8180 Bülach",
+    locality: "Bülach",
+    website: "https://www.uroviva.ch"
+  },
+  "Venenklinik Bellevue AG": {
+    address: "Brückenstrasse 9\n8280 Kreuzlingen",
+    locality: "Kreuzlingen",
+    website: "https://www.venenklinik.ch"
   }
 };
 

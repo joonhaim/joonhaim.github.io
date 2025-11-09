@@ -596,7 +596,7 @@ const hospitalInfoOverrides = {
   "Klinik Hirslanden AG": {
     address: "Witellikerstrasse 40\n8032 Zürich",
     locality: "Zürich",
-    website: "https://www.hirslanden.ch/de/klinik-hirslanden"
+    website: "https://www.hirslanden.ch/"
   },
   "Klinik Im Park": {
     address: "Seestrasse 220\n8027 Zürich",

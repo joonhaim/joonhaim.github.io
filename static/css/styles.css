@@ -248,6 +248,11 @@ body {
   gap: var(--space-sm);
   margin-bottom: var(--space-md);
 }
+.hero-note {
+  margin: 0 0 var(--space-md);
+  font-size: 0.95rem;
+  color: #5a5a5a;
+}
 .button {
   display: inline-flex;
   align-items: center;
@@ -1048,6 +1053,16 @@ body {
   align-items: center;
   justify-content: center;
 }
+.promo-media {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: center;
+}
+.promo-logo {
+  width: min(220px, 80%);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(43, 111, 240, 0.18));
+}
 .promo-fig {
   width: 100%;
   max-width: 420px;
@@ -1060,14 +1075,14 @@ body {
 
 .promo-banner--edupace {
   --promo-accent: #2b6ff0;
-  --promo-bg: #0f1115;
-  --promo-text: #f5f7ff;
-  --promo-muted: #c7d3ff;
-  --promo-highlight: #e5ecff;
-  --promo-status-bg: rgba(255, 255, 255, 0.14);
-  --promo-status-color: #e1e8ff;
-  --promo-fig-color: #a8bfff;
-  border-color: rgba(255, 255, 255, 0.15);
+  --promo-bg: #f3f7ff;
+  --promo-text: #16213a;
+  --promo-muted: #3b4b6b;
+  --promo-highlight: #1f3b73;
+  --promo-status-bg: rgba(43, 111, 240, 0.12);
+  --promo-status-color: #20408c;
+  --promo-fig-color: #2b6ff0;
+  border-color: rgba(43, 111, 240, 0.2);
 }
 
 .promo-banner--edupace .promo-kicker {

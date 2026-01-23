@@ -25,15 +25,19 @@
             <img src="static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
           </h1>
           <p class="lead">
-            EduPace is an educational simulator that trains nurses and students to configure a
-            temporary external single-chamber pacemaker. It blends a software ECG and pacing
-            simulator with a tactile control unit so users can practice pacing, sensing, and
-            threshold adjustments in a realistic environment.
+            EduPace is a blended software + hardware simulator that trains nurses and biomedical
+            engineering students to configure a temporary external single-chamber pacemaker. The
+            platform pairs a real-time ECG engine with a tactile control unit, so learners can
+            practice pacing, sensing, and threshold tuning in a setting that mirrors the clinical
+            workflow.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#" aria-label="EduPace project report placeholder link">View project report</a>
-            <a class="button secondary" href="#" aria-label="EduPace repository placeholder link">Explore repository</a>
+            <a class="button primary" href="report.pdf">View project report (PDF)</a>
+            <a class="button secondary" href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Explore repository</a>
           </div>
+          <p class="hero-note">
+            The report PDF will be uploaded here shortly. Check back in a few days for the full documentation.
+          </p>
           <div class="hero-meta">
             <div class="meta-card">
               <span class="meta-label">Collaboration</span>
@@ -70,6 +74,8 @@
           <h2>EduPace in training</h2>
           <p>
             Captured during hands-on testing sessions with the EduPace hardware and simulator workflow.
+            Nurses and students evaluate rhythm changes, adjust pacing parameters, and validate capture
+            thresholds in a safe, repeatable environment before entering the ward.
           </p>
         </div>
         <img src="static/images/edupace/edupace_trial.jpg" alt="Nurse using the EduPace training device">
@@ -77,24 +83,58 @@
 
       <section class="edupace-section">
         <div class="section-heading">
+          <h2>Project resources</h2>
+          <p>
+            EduPace is documented as an open, reproducible project. The codebase, firmware, and setup
+            instructions live in the GitHub repository, and the final report will be published as a
+            PDF on this site.
+          </p>
+        </div>
+        <div class="overview-grid">
+          <article class="overview-card">
+            <h3>GitHub repository</h3>
+            <p>
+              Explore the simulator, firmware, and hardware notes in the public repo.
+              <a href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Visit EduPace on GitHub →</a>
+            </p>
+          </article>
+          <article class="overview-card">
+            <h3>Project report (PDF)</h3>
+            <p>
+              The finalized report will be uploaded as <strong>report.pdf</strong> in the next few days.
+              Once published, it will be accessible directly from this page.
+            </p>
+          </article>
+          <article class="overview-card">
+            <h3>Hardware documentation</h3>
+            <p>
+              Bill of materials, enclosure files, and wiring diagrams will accompany the report release
+              for reproducible fabrication.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="edupace-section">
+        <div class="section-heading">
           <h2>Project overview</h2>
           <p>
-            Developed within the TU Delft Minor Biomedical Engineering, EduPace replicates the
-            behavior of the Medtronic 53401 Temporary External Pacemaker for training scenarios.
-            Learners can safely rehearse device configuration, interpretation, and patient-response
-            adjustments before entering the clinic. The simulator targets the clinical realities of
-            managing bradycardia caused by AV blocks, where dependable ventricular pacing is
-            critical to restore sufficient cardiac output.
+            Developed in the TU Delft Minor Biomedical Engineering, EduPace recreates the behavior
+            of the Medtronic 53401 Temporary External Pacemaker for realistic training scenarios.
+            Learners can rehearse device configuration, interpretation, and patient-response
+            adjustments before entering the clinic. The simulator targets bradycardia caused by AV
+            blocks, where dependable ventricular pacing is essential to restore adequate cardiac
+            output and prevent hemodynamic collapse.
           </p>
         </div>
         <div class="overview-grid">
           <article class="overview-card">
             <h3>Clinical relevance</h3>
-            <p>Models first-, second-, and third-degree AV blocks and the pacing response.</p>
+            <p>Models first-, second-, and third-degree AV blocks with realistic pacing response.</p>
           </article>
           <article class="overview-card">
             <h3>Hands-on confidence</h3>
-            <p>Nurses gain muscle memory by adjusting rate, output, and sensitivity on hardware.</p>
+            <p>Builds muscle memory through rate, output, and sensitivity tuning on hardware.</p>
           </article>
           <article class="overview-card">
             <h3>Feedback-driven design</h3>
@@ -107,16 +147,17 @@
         <div class="split-text">
           <h2>Why temporary pacing training matters</h2>
           <p>
-            Temporary external pacemakers stabilize patients with bradycardia caused by sinoatrial
-            node dysfunction or atrioventricular (AV) blocks. Because the devices are rarely used on
-            the ward, many nurses do not routinely practice the setup and adjustments needed to
-            respond quickly in emergencies. EduPace bridges this gap by providing a realistic,
+            Temporary external pacemakers stabilize patients with bradycardia caused by
+            sinoatrial-node dysfunction or atrioventricular (AV) blocks. Because these devices are
+            used infrequently on the ward, many nurses do not practice the setup and adjustments
+            needed to respond quickly in emergencies. EduPace closes that gap with a realistic,
             repeatable learning environment that mirrors real-world pacing workflows.
           </p>
           <ul class="feature-list">
-            <li>Focus on ventricular pacing to manage AV conduction failures.</li>
+            <li>Focuses on ventricular pacing to manage AV conduction failures.</li>
             <li>Reinforces recognition of ECG changes across AV block severity.</li>
             <li>Simulates capture thresholds and sensing behavior for safer pacing.</li>
+            <li>Provides instructor-ready scenarios for rapid onboarding and refreshers.</li>
           </ul>
         </div>
         <div class="split-visual">
@@ -124,8 +165,8 @@
             <span class="tag">Problem statement</span>
             <h3>Confidence gap</h3>
             <p>
-              Current digital simulators show the interface but lack the tactile experience needed
-              for confident device handling during acute care situations.
+              Many digital simulators show the interface but lack the tactile experience needed for
+              confident device handling during acute care situations.
             </p>
           </div>
           <div class="stacked-card">
@@ -133,7 +174,7 @@
             <h3>Practical, repeatable practice</h3>
             <p>
               Build on the previous student prototype with improved hardware, ergonomics, and
-              clinical realism guided by hospital feedback.
+              clinical realism guided by hospital feedback and real-world pacing workflows.
             </p>
           </div>
         </div>
@@ -145,13 +186,14 @@
           <p>
             The EduPace system combines a browser-based simulator with Arduino-powered hardware to
             create a blended digital-physical learning environment. Each component is modular, so
-            the platform can evolve with additional scenarios and devices.
+            the platform can evolve with additional scenarios, devices, and assessment tooling.
           </p>
           <ul class="feature-list">
             <li>Web-based ECG and pacing engine with real-time visualization.</li>
             <li>Arduino GIGA control surface with encoders, buttons, and indicator LEDs.</li>
             <li>WebSerial connectivity for seamless device-browser communication.</li>
             <li>Configurable scenarios for instructors and self-paced learning.</li>
+            <li>Session data export for competency tracking and debriefs.</li>
           </ul>
         </div>
         <div class="split-visual">
@@ -160,7 +202,7 @@
             <h3>Simulator Interface</h3>
             <p>
               Electron-packaged web app with dashboards, scenario selection, and real-time ECG
-              feedback that mirrors pacemaker adjustments.
+              feedback that mirrors pacemaker adjustments and clinical responses.
             </p>
           </div>
           <div class="stacked-card">
@@ -168,7 +210,7 @@
             <h3>Control Unit</h3>
             <p>
               Arduino GIGA R1 with a touch display shield, rotary encoders for rate/output/sense,
-              and on-screen LED indicators for pacing and sensing activity.
+              and on-screen LED indicators for pacing and sensing activity in the training loop.
             </p>
           </div>
         </div>
@@ -220,7 +262,7 @@
             refinements to the hardware, software, and enclosure. The team moved from an Arduino
             Mega-based prototype to the Arduino GIGA R1 platform, redesigned the enclosure multiple
             times for better ergonomics, and refined the ECG modeling to align with clinical pacing
-            behavior.
+            behavior and expected capture thresholds.
           </p>
           <p>
             The space below is reserved for ongoing documentation, including a group presentation
@@ -260,6 +302,7 @@
             <li>Decision-tree pacing logic for rate, sensing, and capture behavior.</li>
             <li>Serial protocol over USB-C at 115200 baud for reliable updates.</li>
             <li>WebSerial plug-and-play setup for clinical training rooms.</li>
+            <li>Telemetry hooks ready for future LMS or skills-lab integrations.</li>
           </ul>
         </div>
         <div class="split-visual">
@@ -276,7 +319,7 @@
             <h3>Training dashboard</h3>
             <p>
               Scenario selection, ECG visualization, progress tracking, and session feedback are
-              combined to guide learners through pacing practice.
+              combined to guide learners through pacing practice and debriefs.
             </p>
           </div>
         </div>

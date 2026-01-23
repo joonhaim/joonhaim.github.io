@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">EduPace ECG Traces Placeholder</title>
+  <desc id="desc">Placeholder graphic for ECG trace visualization.</desc>
+  <rect width="960" height="540" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="4" rx="24" />
+  <path d="M80 280 L160 280 L190 220 L220 340 L250 180 L280 280 L360 280 L390 240 L420 300 L450 200 L480 280 L560 280 L590 230 L620 330 L650 210 L680 280 L760 280 L790 240 L820 310 L850 220 L880 280" fill="none" stroke="#0b5fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="50%" y="80%" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#555">
+    ECG Trace Simulation
+  </text>
+</svg>

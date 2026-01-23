@@ -211,6 +211,12 @@ body {
   font-size: clamp(2.5rem, 4vw, 3.2rem);
   margin-bottom: var(--space-sm);
 }
+.edupace-title img {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
 .edupace-hero__content .lead {
   font-size: 1.1rem;
   color: #444;
@@ -370,6 +376,27 @@ body {
 .split-visual {
   display: grid;
   gap: var(--space-sm);
+}
+.photo-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.photo-card {
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  padding: var(--space-sm);
+  display: grid;
+  gap: 0.5rem;
+}
+.photo-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+.photo-card figcaption {
+  font-size: 0.9rem;
+  color: #555;
 }
 .stacked-card {
   border-radius: 16px;

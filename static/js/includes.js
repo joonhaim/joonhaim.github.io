@@ -19,14 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // inject header & footer when needed
-  const headerLoaded = load('#site-header', 'partials/header.html');
-  load('#site-footer', 'partials/footer.html');
+  const headerLoaded = load('#site-header', '/partials/header.html');
+  load('#site-footer', '/partials/footer.html');
 
   // once header is in place, highlight active link and enable mobile nav
   headerLoaded.then(() => {
-    const path = location.pathname.split('/').pop() || 'index.html';
+    const currentPath = location.pathname.replace(/\/$/, '') || '/index.html';
     document.querySelectorAll('.main-nav a').forEach(a => {
-      if (a.getAttribute('href') === path) a.classList.add('active');
+      const linkPath = new URL(a.href).pathname.replace(/\/$/, '');
+      if (linkPath === currentPath) a.classList.add('active');
     });
 
     const navToggle = document.getElementById('nav-toggle');

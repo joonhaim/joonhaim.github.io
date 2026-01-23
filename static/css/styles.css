@@ -128,7 +128,7 @@ body {
   margin: 0;
   border: 1px solid var(--color-border);
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  min-width: 200px;
+  min-width: 240px;
   z-index: 10;
 }
 .main-nav .has-dropdown:hover .dropdown-menu {
@@ -143,10 +143,23 @@ body {
   color: #555;
   text-decoration: none;
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 .main-nav .dropdown-menu a:hover {
   background: #f0f0f0;
   color: #000;
+}
+.main-nav .dropdown-menu a .flagship-star {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.3rem;
+  color: #5f5f5f;
+  opacity: 0.75;
+}
+.main-nav .dropdown-menu a .flagship-star svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: 0 0 auto;
 }
 .main-nav .has-dropdown > a .arrow {
   margin-left: 0.25rem;
@@ -300,9 +313,16 @@ body {
   padding: var(--space-sm);
 }
 .logo-placeholder img {
-  max-width: 220px;
+  max-width: 100%;
   width: 100%;
   height: auto;
+  border-radius: 12px;
+}
+.media-placeholder {
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  background: #e7e7e7;
 }
 .device-placeholder {
   background: linear-gradient(135deg, #f5f5f5, #ededed);
@@ -317,13 +337,31 @@ body {
   margin-top: var(--space-sm);
 }
 .logo-row img {
-  max-height: 48px;
-  max-width: 160px;
+  max-height: 70px;
+  max-width: 200px;
   height: auto;
   width: auto;
 }
 .edupace-section {
   margin-bottom: var(--space-xl);
+}
+.edupace-media {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: center;
+}
+.edupace-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+@media (min-width: 900px) {
+  .edupace-media {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
 }
 .section-heading {
   display: grid;
@@ -819,14 +857,35 @@ body {
 }
 
 /* === CH-IQI Promo Banner =================================== */
+/* === Featured banner cluster ================================== */
+.featured-banners {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+
+.featured-banners .promo-banner {
+  height: 100%;
+}
+
+/* === CH-IQI Promo Banner =================================== */
 .promo-banner {
+  --promo-accent: var(--color-accent);
+  --promo-bg: #fff;
+  --promo-text: #111;
+  --promo-muted: #444;
+  --promo-highlight: #333;
+  --promo-status-bg: rgba(17, 17, 17, 0.08);
+  --promo-status-color: #444;
+  --promo-fig-color: #000;
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: var(--space-lg);
   padding: var(--space-lg);
   border: 1px solid var(--color-border);
   border-radius: 16px;
-  background: #fff;
+  background: var(--promo-bg);
   position: relative;
   overflow: hidden;
 }
@@ -835,7 +894,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 45%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--promo-accent) 12%, transparent), transparent 45%);
   pointer-events: none;
 }
 
@@ -847,8 +906,8 @@ body {
   border-radius: 9999px;
   font-weight: 600;
   font-size: 0.8rem;
-  color: #444;
-  background: rgba(17, 17, 17, 0.08);
+  color: var(--promo-status-color);
+  background: var(--promo-status-bg);
   letter-spacing: 0.02em;
   text-transform: uppercase;
   margin: 0 0 0.6rem;
@@ -858,7 +917,7 @@ body {
   font-size: 1.75rem;
   margin: 0.6rem 0 0.25rem;
   line-height: 1.2;
-  color: #111;
+  color: var(--promo-text);
 }
 
 .promo-banner h2 a {
@@ -875,7 +934,7 @@ body {
 
 .promo-kicker {
   max-width: 60ch;
-  color: #444;
+  color: var(--promo-muted);
 }
 
 .promo-highlights {
@@ -891,7 +950,7 @@ body {
   display: flex;
   gap: 0.6rem;
   align-items: flex-start;
-  color: #333;
+  color: var(--promo-highlight);
   font-size: 0.92rem;
 }
 
@@ -901,10 +960,10 @@ body {
   height: 1rem;
   margin-top: 0.1rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  background: color-mix(in srgb, var(--promo-accent) 16%, transparent);
   display: grid;
   place-items: center;
-  color: var(--color-accent);
+  color: var(--promo-accent);
 }
 
 .promo-highlights .icon svg {
@@ -921,11 +980,11 @@ body {
   margin-top: 0.9rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #2a2a2a;
+  color: var(--promo-highlight);
 }
 
 .promo-meta-label {
-  color: #333;
+  color: var(--promo-muted);
 }
 
 .btn-compact {
@@ -945,7 +1004,7 @@ body {
   justify-content: center;
   width: 1rem;
   height: 1rem;
-  color: var(--color-accent);
+  color: var(--promo-accent);
 }
 
 .promo-meta .icon svg {
@@ -979,6 +1038,11 @@ body {
 }
 .btn-primary:hover { transform: translateY(-1px); }
 
+.promo-banner .btn-primary {
+  background: var(--promo-accent);
+  border-color: var(--promo-accent);
+}
+
 .promo-right {
   display: flex;
   align-items: center;
@@ -988,7 +1052,26 @@ body {
   width: 100%;
   max-width: 420px;
   height: auto;
-  color: #000; /* grid lines */
+  color: var(--promo-fig-color); /* grid lines */
+}
+.promo-fig--portrait {
+  max-width: 320px;
+}
+
+.promo-banner--edupace {
+  --promo-accent: #2b6ff0;
+  --promo-bg: #0f1115;
+  --promo-text: #f5f7ff;
+  --promo-muted: #c7d3ff;
+  --promo-highlight: #e5ecff;
+  --promo-status-bg: rgba(255, 255, 255, 0.14);
+  --promo-status-color: #e1e8ff;
+  --promo-fig-color: #a8bfff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.promo-banner--edupace .promo-kicker {
+  max-width: 48ch;
 }
 
 /* Motion */
@@ -1006,4 +1089,10 @@ body {
   .promo-right { order: -1; } /* put illustration on top on mobile */
   .promo-highlights { margin-top: 0.8rem; }
   .promo-meta { align-self: flex-start; }
+}
+
+@media (max-width: 980px) {
+  .featured-banners {
+    grid-template-columns: 1fr;
+  }
 }

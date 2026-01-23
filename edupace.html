@@ -40,6 +40,10 @@
           </p>
         </div>
         <div class="edupace-hero__visual">
+          <figure class="hero-image">
+            <img src="static/images/edupace/edupace_trial2.jpg" alt="Clinician using EduPace hardware with the simulator">
+            <figcaption>Real-world practice: learners tune pacing parameters while monitoring the simulator.</figcaption>
+          </figure>
           <div class="hero-partners">
             <strong>Collaborating institutions</strong>
             <div class="logo-row">
@@ -60,20 +64,28 @@
         </div>
         <div class="edupace-gallery__grid">
           <figure class="edupace-gallery__item edupace-gallery__item--wide">
-            <img src="static/images/edupace/edupace_trial.jpg" alt="Nurse using the EduPace training device">
-            <figcaption>Hands-on training with the EduPace hardware.</figcaption>
+            <img src="static/images/edupace/edupace_trial3.jpeg" alt="Learner practicing with the EduPace pacemaker trainer">
+            <figcaption>Hands-on usage in the lab: pacing adjustments and ECG feedback in real time.</figcaption>
           </figure>
           <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace simulator dashboard">
-            <figcaption>Live simulator dashboard for pacing scenarios.</figcaption>
+            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace simulator dashboard showing pacing controls">
+            <figcaption>EduPace App dashboard for the software simulator.</figcaption>
+          </figure>
+          <figure class="edupace-gallery__item">
+            <img src="static/images/edupace/device_diagram.png" alt="Diagram of the EduPace training system layout">
+            <figcaption>Device diagram showing the hardware-control layout and connections.</figcaption>
           </figure>
           <figure class="edupace-gallery__item">
             <img src="static/images/edupace/edupace_internals.png" alt="EduPace hardware internals">
-            <figcaption>Electronics and enclosure internals.</figcaption>
+            <figcaption>Arduino-based internals with custom wiring and enclosure design.</figcaption>
           </figure>
           <figure class="edupace-gallery__item">
             <img src="static/images/edupace/ecg_traces.png" alt="ECG curve library from EduPace">
-            <figcaption>ECG curve library for rhythm interpretation.</figcaption>
+            <figcaption>ECG trace library that powers realistic pacing response.</figcaption>
+          </figure>
+          <figure class="edupace-gallery__item">
+            <img src="static/images/edupace/edupace_trial2.jpg" alt="Clinician interacting with the EduPace pacemaker simulator">
+            <figcaption>Final product in use during a clinical-style training session.</figcaption>
           </figure>
         </div>
       </section>
@@ -210,6 +222,34 @@
               and on-screen LED indicators for pacing and sensing activity in the training loop.
             </p>
           </div>
+          <figure class="photo-card">
+            <img src="static/images/edupace/device_diagram.png" alt="Diagram of the EduPace system showing hardware and software flow">
+            <figcaption>Diagram-style overview of how the control unit and simulator connect.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="edupace-section split-section">
+        <div class="split-text">
+          <h2>ECG modeling &amp; rhythm library</h2>
+          <p>
+            Ashley led the ECG modeling work, building a library of rhythm morphologies that respond
+            to three adjustable pacemaker parameters: rate, output, and sense. Each waveform is
+            composed so the pacing spikes, capture events, and sensed beats shift realistically as
+            learners tune the device.
+          </p>
+          <ul class="feature-list">
+            <li>Pathology-specific traces for common AV block scenarios.</li>
+            <li>Waveform segments modeled to react dynamically to pacing output.</li>
+            <li>Sensing logic tied to amplitude thresholds for missed vs. captured beats.</li>
+            <li>Rapid swapping between rhythms to support instructor-led drills.</li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <figure class="photo-card">
+            <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
+            <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -262,26 +302,26 @@
             behavior and expected capture thresholds.
           </p>
           <p>
-            The space below is reserved for ongoing documentation, including a group presentation
-            photo and additional screenshots as the project continues to evolve.
+            The team validated the final hardware in live training sessions and documented the
+            electronics, enclosure, and pacing engine for future cohorts.
           </p>
         </div>
         <div class="split-visual photo-grid">
           <figure class="photo-card">
-            <img src="static/images/edupace/edupace_ecg_traces.svg" alt="EduPace ECG trace simulation">
-            <figcaption>ECG traces generated with the Rational Bézier-Bernstein model.</figcaption>
+            <img src="static/images/edupace/edupace_internals.png" alt="EduPace internal electronics and wiring">
+            <figcaption>Arduino-powered electronics and custom wiring harnesses.</figcaption>
           </figure>
           <figure class="photo-card">
-            <img src="static/images/edupace/edupace_cad_model.svg" alt="3D CAD model of the EduPace enclosure">
-            <figcaption>3D CAD modeling of the enclosure with ergonomic refinements.</figcaption>
+            <img src="static/images/edupace/edupace_closeup.png" alt="Close-up of EduPace control surface">
+            <figcaption>Close-up of the control surface, knobs, and pacing indicators.</figcaption>
           </figure>
           <figure class="photo-card">
-            <img src="static/images/edupace/edupace_package.svg" alt="EduPace final product package">
-            <figcaption>Final product packaging with hardware, cables, and training kit.</figcaption>
+            <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
+            <figcaption>Live training session validating the final form factor.</figcaption>
           </figure>
           <figure class="photo-card">
-            <img src="static/images/edupace/edupace_group_photo.svg" alt="EduPace team presentation group photo placeholder">
-            <figcaption>Group presentation photo (coming soon).</figcaption>
+            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace dashboard showing pacing controls and ECG view">
+            <figcaption>Simulator UI showing pacing controls and ECG feedback.</figcaption>
           </figure>
         </div>
       </section>
@@ -303,6 +343,10 @@
           </ul>
         </div>
         <div class="split-visual">
+          <figure class="photo-card">
+            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace software dashboard with pacing scenarios">
+            <figcaption>EduPace App view used to guide pacing scenarios and debriefs.</figcaption>
+          </figure>
           <div class="stacked-card">
             <span class="tag">Communication</span>
             <h3>Hardware-to-software link</h3>

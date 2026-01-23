@@ -281,6 +281,25 @@ body {
   display: grid;
   gap: var(--space-md);
 }
+.hero-image {
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  padding: var(--space-sm);
+  display: grid;
+  gap: 0.5rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+.hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+.hero-image figcaption {
+  font-size: 0.9rem;
+  color: #555;
+}
 .hero-partners {
   border-radius: 18px;
   border: 1px solid var(--color-border);

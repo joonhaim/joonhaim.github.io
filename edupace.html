@@ -21,7 +21,9 @@
       <section class="edupace-hero">
         <div class="edupace-hero__content">
           <p class="eyebrow">TU Delft Minor Biomedical Engineering · 2025</p>
-          <h1>EduPace</h1>
+          <h1 class="edupace-title">
+            <img src="static/images/edupace/edupace_text_right_crop.png" alt="EduPace">
+          </h1>
           <p class="lead">
             EduPace is an educational simulator that trains nurses and students to configure a
             temporary external single-chamber pacemaker. It blends a software ECG and pacing
@@ -49,12 +51,17 @@
         </div>
         <div class="edupace-hero__visual">
           <div class="logo-placeholder">
-            <span>EduPace logo placeholder</span>
+            <img src="static/images/edupace/edupace_package.svg" alt="EduPace final prototype package">
           </div>
           <div class="device-placeholder">
             <div>
-              <strong>Simulator preview</strong>
-              <p>Interface mockup + hardware unit placeholder</p>
+              <strong>Institutional partners</strong>
+              <p>Developed with clinical input and academic mentorship.</p>
+              <div class="logo-row">
+                <img src="static/images/logos/TUD.png" alt="TU Delft logo">
+                <img src="static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
+                <img src="static/images/edupace/edupace.png" alt="EduPace logo">
+              </div>
             </div>
           </div>
         </div>
@@ -67,22 +74,60 @@
             Developed within the TU Delft Minor Biomedical Engineering, EduPace replicates the
             behavior of the Medtronic 53401 Temporary External Pacemaker for training scenarios.
             Learners can safely rehearse device configuration, interpretation, and patient-response
-            adjustments before entering the clinic.
+            adjustments before entering the clinic. The simulator targets the clinical realities of
+            managing bradycardia caused by AV blocks, where dependable ventricular pacing is
+            critical to restore sufficient cardiac output.
           </p>
         </div>
         <div class="overview-grid">
           <article class="overview-card">
-            <h3>Realistic pacing logic</h3>
-            <p>Simulate pacing, sensing, capture, and threshold drift with ECG feedback.</p>
+            <h3>Clinical relevance</h3>
+            <p>Models first-, second-, and third-degree AV blocks and the pacing response.</p>
           </article>
           <article class="overview-card">
-            <h3>Tactile control unit</h3>
-            <p>Physical knobs, LEDs, and display mirror the real device for hands-on training.</p>
+            <h3>Hands-on confidence</h3>
+            <p>Nurses gain muscle memory by adjusting rate, output, and sensitivity on hardware.</p>
           </article>
           <article class="overview-card">
-            <h3>Scenario-driven learning</h3>
-            <p>Practice common clinical cases with guided outcomes and performance checks.</p>
+            <h3>Feedback-driven design</h3>
+            <p>Iterated with clinical staff to improve usability, realism, and ergonomics.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="edupace-section split-section">
+        <div class="split-text">
+          <h2>Why temporary pacing training matters</h2>
+          <p>
+            Temporary external pacemakers stabilize patients with bradycardia caused by sinoatrial
+            node dysfunction or atrioventricular (AV) blocks. Because the devices are rarely used on
+            the ward, many nurses do not routinely practice the setup and adjustments needed to
+            respond quickly in emergencies. EduPace bridges this gap by providing a realistic,
+            repeatable learning environment that mirrors real-world pacing workflows.
+          </p>
+          <ul class="feature-list">
+            <li>Focus on ventricular pacing to manage AV conduction failures.</li>
+            <li>Reinforces recognition of ECG changes across AV block severity.</li>
+            <li>Simulates capture thresholds and sensing behavior for safer pacing.</li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="stacked-card">
+            <span class="tag">Problem statement</span>
+            <h3>Confidence gap</h3>
+            <p>
+              Current digital simulators show the interface but lack the tactile experience needed
+              for confident device handling during acute care situations.
+            </p>
+          </div>
+          <div class="stacked-card">
+            <span class="tag">Project goal</span>
+            <h3>Practical, repeatable practice</h3>
+            <p>
+              Build on the previous student prototype with improved hardware, ergonomics, and
+              clinical realism guided by hospital feedback.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -96,7 +141,7 @@
           </p>
           <ul class="feature-list">
             <li>Web-based ECG and pacing engine with real-time visualization.</li>
-            <li>Arduino GIGA control surface with encoders, buttons, and alarms.</li>
+            <li>Arduino GIGA control surface with encoders, buttons, and indicator LEDs.</li>
             <li>WebSerial connectivity for seamless device-browser communication.</li>
             <li>Configurable scenarios for instructors and self-paced learning.</li>
           </ul>
@@ -105,52 +150,180 @@
           <div class="stacked-card">
             <span class="tag">Software</span>
             <h3>Simulator Interface</h3>
-            <p>Placeholder for ECG waveform + parameter panel screenshot.</p>
+            <p>
+              Electron-packaged web app with dashboards, scenario selection, and real-time ECG
+              feedback that mirrors pacemaker adjustments.
+            </p>
           </div>
           <div class="stacked-card">
             <span class="tag">Hardware</span>
             <h3>Control Unit</h3>
-            <p>Placeholder for the enclosure, knobs, and display photo.</p>
+            <p>
+              Arduino GIGA R1 with a touch display shield, rotary encoders for rate/output/sense,
+              and on-screen LED indicators for pacing and sensing activity.
+            </p>
           </div>
         </div>
       </section>
 
       <section class="edupace-section">
-        <h2>Installation &amp; setup</h2>
+        <h2>Design highlights</h2>
         <div class="steps-grid">
           <div class="step-card">
             <span class="step-number">01</span>
-            <h3>Gather the kit</h3>
-            <p>Arduino GIGA R1 WiFi, GIGA Display Shield, and a USB-C cable.</p>
+            <h3>Hardware choices</h3>
+            <p>
+              Arduino GIGA R1 was selected for the display shield compatibility and higher graphics
+              performance compared to the earlier Arduino Mega build.
+            </p>
           </div>
           <div class="step-card">
             <span class="step-number">02</span>
-            <h3>Flash the firmware</h3>
-            <p>Upload the EduPace firmware to the device using Arduino IDE.</p>
+            <h3>Display upgrade</h3>
+            <p>
+              The 800×480 touchscreen replaces 7-segment displays and reproduces labels, indicators,
+              and lock/power states from the Medtronic 53401.
+            </p>
           </div>
           <div class="step-card">
             <span class="step-number">03</span>
-            <h3>Launch the simulator</h3>
-            <p>Open the web UI in Chrome or Edge for WebSerial support.</p>
+            <h3>Rotary encoders</h3>
+            <p>
+              Incremental encoders emulate the click-by-click adjustment of rate, output, and
+              sensitivity settings with directional logic.
+            </p>
           </div>
           <div class="step-card">
             <span class="step-number">04</span>
-            <h3>Start a scenario</h3>
-            <p>Connect the hardware and begin guided training sessions.</p>
+            <h3>Ergonomic enclosure</h3>
+            <p>
+              The 3D-printed casing was refined to be thin, lightweight, and comfortable for
+              one-handed use in training sessions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="edupace-section split-section">
+        <div class="split-text">
+          <h2>Development process</h2>
+          <p>
+            EduPace progressed through rapid prototyping, clinical feedback sessions, and iterative
+            refinements to the hardware, software, and enclosure. The team moved from an Arduino
+            Mega-based prototype to the Arduino GIGA R1 platform, redesigned the enclosure multiple
+            times for better ergonomics, and refined the ECG modeling to align with clinical pacing
+            behavior.
+          </p>
+          <p>
+            The space below is reserved for ongoing documentation, including a group presentation
+            photo and additional screenshots as the project continues to evolve.
+          </p>
+        </div>
+        <div class="split-visual photo-grid">
+          <figure class="photo-card">
+            <img src="static/images/edupace/edupace_ecg_traces.svg" alt="EduPace ECG trace simulation">
+            <figcaption>ECG traces generated with the Rational Bézier-Bernstein model.</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="static/images/edupace/edupace_cad_model.svg" alt="3D CAD model of the EduPace enclosure">
+            <figcaption>3D CAD modeling of the enclosure with ergonomic refinements.</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="static/images/edupace/edupace_package.svg" alt="EduPace final product package">
+            <figcaption>Final product packaging with hardware, cables, and training kit.</figcaption>
+          </figure>
+          <figure class="photo-card">
+            <img src="static/images/edupace/edupace_group_photo.svg" alt="EduPace team presentation group photo placeholder">
+            <figcaption>Group presentation photo (coming soon).</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="edupace-section split-section">
+        <div class="split-text">
+          <h2>Software architecture</h2>
+          <p>
+            EduPace runs as a cross-platform web application packaged with Electron. The software is
+            modular, separating ECG generation, pacing logic, scenario control, and device
+            communication so new cases and features can be added without reworking the full system.
+          </p>
+          <ul class="feature-list">
+            <li>Rational Bézier-Bernstein ECG traces for realistic morphology.</li>
+            <li>Decision-tree pacing logic for rate, sensing, and capture behavior.</li>
+            <li>Serial protocol over USB-C at 115200 baud for reliable updates.</li>
+            <li>WebSerial plug-and-play setup for clinical training rooms.</li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="stacked-card">
+            <span class="tag">Communication</span>
+            <h3>Hardware-to-software link</h3>
+            <p>
+              Encoder adjustments send rate/output/sense values to the simulator while software
+              commands drive pacing/sensing LED indicators on the device display.
+            </p>
+          </div>
+          <div class="stacked-card">
+            <span class="tag">Interface</span>
+            <h3>Training dashboard</h3>
+            <p>
+              Scenario selection, ECG visualization, progress tracking, and session feedback are
+              combined to guide learners through pacing practice.
+            </p>
           </div>
         </div>
       </section>
 
       <section class="edupace-section">
-        <h2>Repository structure</h2>
-        <div class="code-block">
-          <pre><code>.
-├── arduino/                   # Firmware and hardware assets
-├── electron/                  # Desktop wrapper for the simulator
-└── simulator-interface/       # Browser-based pacing &amp; ECG simulator
-          </code></pre>
+        <h2>Training workflow</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h3>Select a scenario</h3>
+            <p>Pick a clinical case and review the baseline patient rhythm.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h3>Adjust the pacemaker</h3>
+            <p>Use the knobs to tune rate, output, and sensitivity on the device.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h3>Monitor the ECG</h3>
+            <p>Watch for pacing spikes, capture, and sensed events on the waveform.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">04</span>
+            <h3>Review feedback</h3>
+            <p>Receive guidance on success criteria and time to stabilization.</p>
+          </div>
         </div>
-        <p class="muted-note">Placeholder summary based on the current EduPace repository layout.</p>
+      </section>
+
+      <section class="edupace-section">
+        <h2>Key results</h2>
+        <div class="overview-grid">
+          <article class="overview-card">
+            <h3>Improved realism</h3>
+            <p>
+              Updated ECG modeling and pacing logic create a closer match to clinical expectations.
+            </p>
+          </article>
+          <article class="overview-card">
+            <h3>Higher usability</h3>
+            <p>
+              Nurses reported the interface felt closer to the Medtronic 53401 and easier to
+              operate than the previous prototype.
+            </p>
+          </article>
+          <article class="overview-card">
+            <h3>Room to grow</h3>
+            <p>
+              Future iterations can add atrial and dual-chamber pacing modes, richer ECG
+              superposition, and more scenarios.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section class="edupace-section">
@@ -173,6 +346,14 @@
             <p>UI/UX flow, WebSerial integration, scenario architecture.</p>
           </article>
         </div>
+      </section>
+
+      <section class="edupace-section">
+        <h2>Acknowledgements</h2>
+        <p>
+          The EduPace team thanks project supervisor Paul Verschuren and nurse Kim for providing
+          clinical feedback, guidance, and support throughout development.
+        </p>
       </section>
 
       <section class="edupace-section disclaimer-card">

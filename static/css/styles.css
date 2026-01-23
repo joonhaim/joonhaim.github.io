@@ -293,9 +293,28 @@ body {
   min-height: 140px;
   padding: var(--space-sm);
 }
+.logo-placeholder img {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+}
 .device-placeholder {
   background: linear-gradient(135deg, #f5f5f5, #ededed);
   min-height: 220px;
+}
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-sm);
+}
+.logo-row img {
+  max-height: 48px;
+  max-width: 160px;
+  height: auto;
+  width: auto;
 }
 .edupace-section {
   margin-bottom: var(--space-xl);

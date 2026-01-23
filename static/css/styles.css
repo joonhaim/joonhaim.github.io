@@ -317,8 +317,8 @@ body {
   margin-top: var(--space-sm);
 }
 .logo-row img {
-  max-height: 48px;
-  max-width: 160px;
+  max-height: 64px;
+  max-width: 180px;
   height: auto;
   width: auto;
 }
@@ -984,11 +984,37 @@ body {
   align-items: center;
   justify-content: center;
 }
+.promo-image {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+}
 .promo-fig {
   width: 100%;
   max-width: 420px;
   height: auto;
   color: #000; /* grid lines */
+}
+
+.promo-banner--compact {
+  grid-template-columns: 1fr;
+  padding: var(--space-md);
+  background: #fafafa;
+}
+
+.promo-banner--compact .promo-status {
+  font-size: 0.75rem;
+  background: rgba(17, 17, 17, 0.06);
+}
+
+.promo-banner--compact h2 {
+  font-size: 1.35rem;
+}
+
+.promo-banner--compact .promo-kicker {
+  font-size: 0.95rem;
 }
 
 /* Motion */

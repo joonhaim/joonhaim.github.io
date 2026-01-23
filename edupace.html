@@ -18,12 +18,166 @@
     <div id="site-header"></div>
 
     <main class="content">
-      <section class="project-intro">
-        <h1>EduPace</h1>
-        <p>
-          This page is a placeholder for the upcoming EduPace project overview. Detailed content,
-          visuals, and resources will be added soon.
-        </p>
+      <section class="edupace-hero">
+        <div class="edupace-hero__content">
+          <p class="eyebrow">TU Delft Minor Biomedical Engineering · 2025</p>
+          <h1>EduPace</h1>
+          <p class="lead">
+            EduPace is an educational simulator that trains nurses and students to configure a
+            temporary external single-chamber pacemaker. It blends a software ECG and pacing
+            simulator with a tactile control unit so users can practice pacing, sensing, and
+            threshold adjustments in a realistic environment.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#" aria-label="EduPace project report placeholder link">View project report</a>
+            <a class="button secondary" href="#" aria-label="EduPace repository placeholder link">Explore repository</a>
+          </div>
+          <div class="hero-meta">
+            <div class="meta-card">
+              <span class="meta-label">Collaboration</span>
+              <span class="meta-value">Reinier de Graaf Hospital</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Focus</span>
+              <span class="meta-value">Temporary pacing training</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Outcome</span>
+              <span class="meta-value">Safe, repeatable practice</span>
+            </div>
+          </div>
+        </div>
+        <div class="edupace-hero__visual">
+          <div class="logo-placeholder">
+            <span>EduPace logo placeholder</span>
+          </div>
+          <div class="device-placeholder">
+            <div>
+              <strong>Simulator preview</strong>
+              <p>Interface mockup + hardware unit placeholder</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="edupace-section">
+        <div class="section-heading">
+          <h2>Project overview</h2>
+          <p>
+            Developed within the TU Delft Minor Biomedical Engineering, EduPace replicates the
+            behavior of the Medtronic 53401 Temporary External Pacemaker for training scenarios.
+            Learners can safely rehearse device configuration, interpretation, and patient-response
+            adjustments before entering the clinic.
+          </p>
+        </div>
+        <div class="overview-grid">
+          <article class="overview-card">
+            <h3>Realistic pacing logic</h3>
+            <p>Simulate pacing, sensing, capture, and threshold drift with ECG feedback.</p>
+          </article>
+          <article class="overview-card">
+            <h3>Tactile control unit</h3>
+            <p>Physical knobs, LEDs, and display mirror the real device for hands-on training.</p>
+          </article>
+          <article class="overview-card">
+            <h3>Scenario-driven learning</h3>
+            <p>Practice common clinical cases with guided outcomes and performance checks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="edupace-section split-section">
+        <div class="split-text">
+          <h2>System components</h2>
+          <p>
+            The EduPace system combines a browser-based simulator with Arduino-powered hardware to
+            create a blended digital-physical learning environment. Each component is modular, so
+            the platform can evolve with additional scenarios and devices.
+          </p>
+          <ul class="feature-list">
+            <li>Web-based ECG and pacing engine with real-time visualization.</li>
+            <li>Arduino GIGA control surface with encoders, buttons, and alarms.</li>
+            <li>WebSerial connectivity for seamless device-browser communication.</li>
+            <li>Configurable scenarios for instructors and self-paced learning.</li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="stacked-card">
+            <span class="tag">Software</span>
+            <h3>Simulator Interface</h3>
+            <p>Placeholder for ECG waveform + parameter panel screenshot.</p>
+          </div>
+          <div class="stacked-card">
+            <span class="tag">Hardware</span>
+            <h3>Control Unit</h3>
+            <p>Placeholder for the enclosure, knobs, and display photo.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="edupace-section">
+        <h2>Installation &amp; setup</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h3>Gather the kit</h3>
+            <p>Arduino GIGA R1 WiFi, GIGA Display Shield, and a USB-C cable.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h3>Flash the firmware</h3>
+            <p>Upload the EduPace firmware to the device using Arduino IDE.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h3>Launch the simulator</h3>
+            <p>Open the web UI in Chrome or Edge for WebSerial support.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">04</span>
+            <h3>Start a scenario</h3>
+            <p>Connect the hardware and begin guided training sessions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="edupace-section">
+        <h2>Repository structure</h2>
+        <div class="code-block">
+          <pre><code>.
+├── arduino/                   # Firmware and hardware assets
+├── electron/                  # Desktop wrapper for the simulator
+└── simulator-interface/       # Browser-based pacing &amp; ECG simulator
+          </code></pre>
+        </div>
+        <p class="muted-note">Placeholder summary based on the current EduPace repository layout.</p>
+      </section>
+
+      <section class="edupace-section">
+        <h2>Team &amp; contributions</h2>
+        <div class="team-grid">
+          <article class="team-card">
+            <h3>Ashley Jacobi</h3>
+            <p>ECG morphology research, pacing logic design, documentation lead.</p>
+          </article>
+          <article class="team-card">
+            <h3>Süheyla Nurlu</h3>
+            <p>Arduino integration, hardware interaction, serial communication.</p>
+          </article>
+          <article class="team-card">
+            <h3>Cees Vlasman</h3>
+            <p>Enclosure CAD, 3D printing, hardware assembly and testing.</p>
+          </article>
+          <article class="team-card">
+            <h3>Adrien Joon-Ha Im</h3>
+            <p>UI/UX flow, WebSerial integration, scenario architecture.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="edupace-section disclaimer-card">
+        <h2>Disclaimer</h2>
+        <p>EduPace is for educational use only and is not a medical device.</p>
       </section>
     </main>
 

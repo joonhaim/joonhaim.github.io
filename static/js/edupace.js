@@ -2,6 +2,7 @@ import { stitchBeats } from "./edupace/ecgStitcher.js";
 import { thirdDegHeartBlock } from "./edupace/ecgThirdDegree.js";
 import { mobitzTypeII } from "./edupace/ecgMobitz2.js";
 import { slowConduction } from "./edupace/ecgSlowConduction.js";
+import { knobPresets } from "./edupace/knobPresets.js";
 
 const initSectionObserver = () => {
   const tocLinks = Array.from(document.querySelectorAll(".edupace-toc__link"));
@@ -95,10 +96,16 @@ const initEcgWidget = () => {
     sense: 5,
   };
 
-  const limits = {
-    rate: { min: 30, max: 140, step: 1, unit: "bpm" },
-    output: { min: 1, max: 10, step: 1, unit: "mA" },
-    sense: { min: 1, max: 10, step: 1, unit: "mV" },
+  const precision = {
+    rate: 0,
+    output: 1,
+    sense: 1,
+  };
+
+  const presets = {
+    rate: knobPresets.rate,
+    output: knobPresets.output,
+    sense: knobPresets.sensitivity,
   };
 
   const SMALL_T = 0.04;
@@ -123,16 +130,21 @@ const initEcgWidget = () => {
   let prevSweepX = 0;
   let lastTs = null;
 
+  const formatValue = (key, value) => {
+    const digits = precision[key] ?? 0;
+    return value.toFixed(digits);
+  };
+
   const updateLabels = () => {
-    valueMap.rate.textContent = `${state.rate} ${limits.rate.unit}`;
-    valueMap.output.textContent = `${state.output} ${limits.output.unit}`;
-    valueMap.sense.textContent = `${state.sense} ${limits.sense.unit}`;
+    valueMap.rate.textContent = `${formatValue("rate", state.rate)} bpm`;
+    valueMap.output.textContent = `${formatValue("output", state.output)} mA`;
+    valueMap.sense.textContent = `${formatValue("sense", state.sense)} mV`;
   };
 
   const buildWaveform = () => {
     const baseConfig = {
-      patientHR: state.rate,
-      sensitivity: state.sense / 10,
+      patientHR: 40,
+      sensitivity: state.sense,
       rate: state.rate,
       output: state.output,
       asynchronous: false,
@@ -263,7 +275,7 @@ const initEcgWidget = () => {
     const X = (t) => (t / VIEW_SEC) * width;
     const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
 
-    for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
+    for (let t = 0; t < VIEW_SEC - 1e-9; t += SMALL_T) {
       const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
       targetCtx.beginPath();
       targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
@@ -273,7 +285,7 @@ const initEcgWidget = () => {
       targetCtx.stroke();
     }
 
-    for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
+    for (let v = R_Y_MIN + SMALL_A; v < R_Y_MAX - 1e-9; v += SMALL_A) {
       const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
       targetCtx.beginPath();
       targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
@@ -392,6 +404,33 @@ const initEcgWidget = () => {
     requestAnimationFrame(animate);
   };
 
+  const findClosestIndex = (values, current) => {
+    let closestIndex = 0;
+    let closestDiff = Math.abs(values[0] - current);
+    for (let i = 1; i < values.length; i += 1) {
+      const diff = Math.abs(values[i] - current);
+      if (diff < closestDiff) {
+        closestDiff = diff;
+        closestIndex = i;
+      }
+    }
+    return closestIndex;
+  };
+
+  const stepPreset = (key, direction) => {
+    const values = presets[key];
+    if (!values || values.length === 0) {
+      return state[key];
+    }
+    const current = state[key];
+    const currentIndex = findClosestIndex(values, current);
+    const nextIndex = Math.min(
+      values.length - 1,
+      Math.max(0, currentIndex + direction)
+    );
+    return values[nextIndex];
+  };
+
   const handleScenarioChange = (button) => {
     const scenario = button.dataset.scenario;
     if (!scenario) {
@@ -403,16 +442,13 @@ const initEcgWidget = () => {
     updateLabels();
   };
 
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
   const handleStep = (button) => {
     const target = button.dataset.target;
     const step = parseInt(button.dataset.step, 10);
-    if (!target || Number.isNaN(step) || !limits[target]) {
+    if (!target || Number.isNaN(step) || !presets[target]) {
       return;
     }
-    const { min, max } = limits[target];
-    state[target] = clamp(state[target] + step, min, max);
+    state[target] = stepPreset(target, step);
     updateLabels();
     buildWaveform();
   };

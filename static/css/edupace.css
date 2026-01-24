@@ -123,6 +123,12 @@
   width: 100%;
 }
 
+@media (min-width: 900px) {
+  .ecg-widget {
+    max-width: 50%;
+  }
+}
+
 .ecg-widget__header h4 {
   color: #0f172a;
 }

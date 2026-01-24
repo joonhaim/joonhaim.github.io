@@ -227,6 +227,8 @@
 .timeline-step__content--split .ecg-widget {
   grid-column: auto;
   justify-self: end;
+  width: 100%;
+  max-width: none;
 }
 
 .ecg-paper {

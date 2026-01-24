@@ -114,21 +114,37 @@
 }
 
 .ecg-widget {
-  background: var(--edupace-dark);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 24px 45px rgba(5, 9, 20, 0.5);
-  color: #e2e8f0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .ecg-widget__header h4 {
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 .ecg-widget__header p,
 .ecg-control,
 .ecg-widget__header,
 .ecg-control__label {
-  color: #cbd5f5;
+  color: #475569;
+}
+
+.ecg-widget__note {
+  display: inline-flex;
+  margin-top: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .ecg-widget__scenarios {
@@ -136,16 +152,17 @@
 }
 
 .ecg-scenario {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  color: #e2e8f0;
-  padding: 0.4rem 0.9rem;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #0f172a;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
 }
 
 .ecg-scenario.is-active {
-  background: var(--edupace-accent);
-  border-color: var(--edupace-accent);
-  color: #04110a;
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
 }
 
 .ecg-monitor {
@@ -188,9 +205,9 @@
 
 .ecg-step {
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background: rgba(15, 23, 42, 0.75);
-  color: #f8fafc;
+  border: 1px solid #cbd5f5;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 .ecg-step:hover {
@@ -198,7 +215,7 @@
 }
 
 .ecg-value {
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 .timeline-step__content--split .ecg-widget {
@@ -240,4 +257,13 @@
   border-radius: 12px;
   background: #ffffff;
   border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.ecg-control__buttons {
+  gap: 0.3rem;
+}
+
+.ecg-step {
+  width: 30px;
+  height: 30px;
 }

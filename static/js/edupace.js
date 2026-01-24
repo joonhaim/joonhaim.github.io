@@ -26,24 +26,43 @@ const initSectionObserver = () => {
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActive(entry.target.id);
-        }
-      });
-    },
-    {
-      rootMargin: "-20% 0px -60% 0px",
-      threshold: 0.2,
-    }
-  );
+  let ticking = false;
 
-  sections.forEach((section) => observer.observe(section));
+  const updateActiveSection = () => {
+    const marker = window.innerHeight * 0.35;
+    let activeId = sections[0].id;
+
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= marker) {
+        activeId = section.id;
+      }
+    });
+
+    const nearBottom =
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (nearBottom) {
+      activeId = sections[sections.length - 1].id;
+    }
+
+    setActive(activeId);
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateActiveSection);
+    }
+  };
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  requestUpdate();
 
   tocLinks.forEach((link) => {
-    link.addEventListener("click", () => setActive(link.dataset.section));
+    link.addEventListener("click", () => {
+      setActive(link.dataset.section);
+    });
   });
 };
 

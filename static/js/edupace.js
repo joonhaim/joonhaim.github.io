@@ -5,17 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const canvas = widget.querySelector("#ecgCanvas");
-  const scenarioSelect = widget.querySelector("#ecgScenario");
-  const rateInput = widget.querySelector("#ecgRate");
-  const outputInput = widget.querySelector("#ecgOutput");
-  const senseInput = widget.querySelector("#ecgSense");
+  const scenarioButtons = Array.from(widget.querySelectorAll(".ecg-scenario"));
+  const stepButtons = Array.from(widget.querySelectorAll(".ecg-step"));
   const valueMap = {
     rate: widget.querySelector('[data-value="rate"]'),
     output: widget.querySelector('[data-value="output"]'),
     sense: widget.querySelector('[data-value="sense"]'),
   };
 
-  if (!canvas || !scenarioSelect || !rateInput || !outputInput || !senseInput) {
+  if (!canvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
     return;
   }
 
@@ -26,11 +24,22 @@ document.addEventListener("DOMContentLoaded", () => {
     mobitz: { baseRate: 60, amplitude: 0.95, irregularity: 0.06, dropEvery: 3 },
     slow: { baseRate: 52, amplitude: 0.8, irregularity: 0.03, dropEvery: 0 },
   };
+  const limits = {
+    rate: { min: 30, max: 140, step: 1, unit: "bpm" },
+    output: { min: 1, max: 10, step: 1, unit: "mA" },
+    sense: { min: 1, max: 10, step: 1, unit: "mV" },
+  };
+  const state = {
+    scenario: "nsr",
+    rate: 80,
+    output: 6,
+    sense: 5,
+  };
 
   const updateLabels = () => {
-    valueMap.rate.textContent = `${rateInput.value} bpm`;
-    valueMap.output.textContent = `${outputInput.value} mA`;
-    valueMap.sense.textContent = `${senseInput.value} mV`;
+    valueMap.rate.textContent = `${state.rate} ${limits.rate.unit}`;
+    valueMap.output.textContent = `${state.output} ${limits.output.unit}`;
+    valueMap.sense.textContent = `${state.sense} ${limits.sense.unit}`;
   };
 
   const resizeCanvas = () => {
@@ -56,11 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const drawWaveform = () => {
-    const scenarioKey = scenarioSelect.value;
+    const scenarioKey = state.scenario;
     const scenario = scenarios[scenarioKey];
-    const rateValue = parseFloat(rateInput.value);
-    const outputValue = parseFloat(outputInput.value);
-    const senseValue = parseFloat(senseInput.value);
+    const rateValue = state.rate;
+    const outputValue = state.output;
+    const senseValue = state.sense;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     const baseline = height * 0.55;
@@ -121,14 +130,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const handleInput = () => {
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  const handleScenarioChange = (button) => {
+    const scenario = button.dataset.scenario;
+    if (!scenario || !scenarios[scenario]) {
+      return;
+    }
+    state.scenario = scenario;
+    scenarioButtons.forEach((item) => item.classList.toggle("is-active", item === button));
     updateLabels();
     drawWaveform();
   };
 
-  [scenarioSelect, rateInput, outputInput, senseInput].forEach((control) => {
-    control.addEventListener("input", handleInput);
-    control.addEventListener("change", handleInput);
+  const handleStep = (button) => {
+    const target = button.dataset.target;
+    const step = parseInt(button.dataset.step, 10);
+    if (!target || Number.isNaN(step) || !limits[target]) {
+      return;
+    }
+    const { min, max } = limits[target];
+    state[target] = clamp(state[target] + step, min, max);
+    updateLabels();
+    drawWaveform();
+  };
+
+  scenarioButtons.forEach((button) => {
+    button.addEventListener("click", () => handleScenarioChange(button));
+  });
+
+  stepButtons.forEach((button) => {
+    button.addEventListener("click", () => handleStep(button));
   });
 
   updateLabels();

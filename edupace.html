@@ -11,6 +11,7 @@
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="static/css/styles.css">
   <script src="static/js/script.js" defer></script>
+  <script src="static/js/edupace.js" defer></script>
   <script src="static/js/includes.js" defer></script>
 </head>
 <body>
@@ -35,9 +36,6 @@
             <a class="button primary" href="report.pdf">View project report (PDF)</a>
             <a class="button secondary" href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Explore repository</a>
           </div>
-          <p class="hero-note">
-            The report PDF will be uploaded here shortly. Check back in a few days for the full documentation.
-          </p>
         </div>
         <div class="edupace-hero__visual">
           <figure class="hero-image">
@@ -51,76 +49,6 @@
               <img src="static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="edupace-section edupace-gallery">
-        <div class="section-heading">
-          <h2>Inside EduPace</h2>
-          <p>
-            A closer look at the training workflow, simulator UI, and the hardware that makes
-            hands-on pacing practice possible.
-          </p>
-        </div>
-        <div class="edupace-gallery__grid">
-          <figure class="edupace-gallery__item edupace-gallery__item--wide">
-            <img src="static/images/edupace/edupace_trial3.jpeg" alt="Learner practicing with the EduPace pacemaker trainer">
-            <figcaption>Hands-on usage in the lab: pacing adjustments and ECG feedback in real time.</figcaption>
-          </figure>
-          <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace simulator dashboard showing pacing controls">
-            <figcaption>EduPace App dashboard for the software simulator.</figcaption>
-          </figure>
-          <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/device_diagram.png" alt="Diagram of the EduPace training system layout">
-            <figcaption>Device diagram showing the hardware-control layout and connections.</figcaption>
-          </figure>
-          <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/edupace_internals.png" alt="EduPace hardware internals">
-            <figcaption>Arduino-based internals with custom wiring and enclosure design.</figcaption>
-          </figure>
-          <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/ecg_traces.png" alt="ECG curve library from EduPace">
-            <figcaption>ECG trace library that powers realistic pacing response.</figcaption>
-          </figure>
-          <figure class="edupace-gallery__item">
-            <img src="static/images/edupace/edupace_trial2.jpg" alt="Clinician interacting with the EduPace pacemaker simulator">
-            <figcaption>Final product in use during a clinical-style training session.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="edupace-section">
-        <div class="section-heading">
-          <h2>Project resources</h2>
-          <p>
-            EduPace is documented as an open, reproducible project. The codebase, firmware, and setup
-            instructions live in the GitHub repository, and the final report will be published as a
-            PDF on this site.
-          </p>
-        </div>
-        <div class="overview-grid">
-          <article class="overview-card">
-            <h3>GitHub repository</h3>
-            <p>
-              Explore the simulator, firmware, and hardware notes in the public repo.
-              <a href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Visit EduPace on GitHub →</a>
-            </p>
-          </article>
-          <article class="overview-card">
-            <h3>Project report (PDF)</h3>
-            <p>
-              The finalized report will be uploaded as <strong>report.pdf</strong> in the next few days.
-              Once published, it will be accessible directly from this page.
-            </p>
-          </article>
-          <article class="overview-card">
-            <h3>Hardware documentation</h3>
-            <p>
-              Bill of materials, enclosure files, and wiring diagrams will accompany the report release
-              for reproducible fabrication.
-            </p>
-          </article>
         </div>
       </section>
 
@@ -189,68 +117,129 @@
         </div>
       </section>
 
-      <section class="edupace-section split-section">
-        <div class="split-text">
+      <section class="edupace-section system-components">
+        <div class="section-heading">
           <h2>System components</h2>
           <p>
-            The EduPace system combines a browser-based simulator with Arduino-powered hardware to
-            create a blended digital-physical learning environment. Each component is modular, so
-            the platform can evolve with additional scenarios, devices, and assessment tooling.
+            EduPace is built around two primary components: a software simulator that models ECG
+            response in real time, and a tactile hardware console that mirrors hospital pacemakers.
+            Together they form a blended training loop for pacing, sensing, and threshold tuning.
           </p>
-          <ul class="feature-list">
-            <li>Web-based ECG and pacing engine with real-time visualization.</li>
-            <li>Arduino GIGA control surface with encoders, buttons, and indicator LEDs.</li>
-            <li>WebSerial connectivity for seamless device-browser communication.</li>
-            <li>Configurable scenarios for instructors and self-paced learning.</li>
-            <li>Session data export for competency tracking and debriefs.</li>
-          </ul>
         </div>
-        <div class="split-visual">
-          <div class="stacked-card">
-            <span class="tag">Software</span>
-            <h3>Simulator Interface</h3>
-            <p>
-              Electron-packaged web app with dashboards, scenario selection, and real-time ECG
-              feedback that mirrors pacemaker adjustments and clinical responses.
-            </p>
-          </div>
-          <div class="stacked-card">
-            <span class="tag">Hardware</span>
-            <h3>Control Unit</h3>
-            <p>
-              Arduino GIGA R1 with a touch display shield, rotary encoders for rate/output/sense,
-              and on-screen LED indicators for pacing and sensing activity in the training loop.
-            </p>
-          </div>
-          <figure class="photo-card">
-            <img src="static/images/edupace/device_diagram.png" alt="Diagram of the EduPace system showing hardware and software flow">
-            <figcaption>Diagram-style overview of how the control unit and simulator connect.</figcaption>
-          </figure>
-        </div>
-      </section>
 
-      <section class="edupace-section split-section">
-        <div class="split-text">
-          <h2>ECG modeling &amp; rhythm library</h2>
-          <p>
-            Ashley led the ECG modeling work, building a library of rhythm morphologies that respond
-            to three adjustable pacemaker parameters: rate, output, and sense. Each waveform is
-            composed so the pacing spikes, capture events, and sensed beats shift realistically as
-            learners tune the device.
-          </p>
-          <ul class="feature-list">
-            <li>Pathology-specific traces for common AV block scenarios.</li>
-            <li>Waveform segments modeled to react dynamically to pacing output.</li>
-            <li>Sensing logic tied to amplitude thresholds for missed vs. captured beats.</li>
-            <li>Rapid swapping between rhythms to support instructor-led drills.</li>
-          </ul>
-        </div>
-        <div class="split-visual">
-          <figure class="photo-card">
-            <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
-            <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
-          </figure>
-        </div>
+        <article class="system-block">
+          <div class="system-block__intro">
+            <span class="tag">Software</span>
+            <h3>ECG modeling &amp; interactive pacing lab</h3>
+            <p>
+              The ECG engine responds to three adjustable parameters (rate, output, and sensitivity)
+              and supports four training rhythms: NSR, 3rd degree AV block, 2nd degree AV block
+              (Mobitz II), and slow conduction. Learners can quickly compare pacing strategies and
+              see how the waveform shifts with each adjustment.
+            </p>
+          </div>
+          <div class="system-block__content split-section">
+            <div class="split-text">
+              <ul class="feature-list">
+                <li>Pathology-specific traces tuned for pacing response.</li>
+                <li>Waveform segments react dynamically to output and sensitivity changes.</li>
+                <li>Scenario swapping for fast instructor-led drills.</li>
+                <li>Instant feedback on pacing spikes and capture.</li>
+              </ul>
+            </div>
+            <div class="split-visual">
+              <figure class="photo-card">
+                <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
+                <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
+              </figure>
+              <div class="ecg-widget" aria-label="ECG parameter sandbox">
+                <div class="ecg-widget__header">
+                  <div>
+                    <h4>Try the ECG parameters</h4>
+                    <p>Adjust rate, output, and sensitivity to see how the waveform reacts.</p>
+                  </div>
+                  <label class="ecg-widget__select">
+                    Scenario
+                    <select id="ecgScenario">
+                      <option value="nsr">NSR</option>
+                      <option value="third">3rd deg AV</option>
+                      <option value="mobitz">2nd deg AV Mobitz II</option>
+                      <option value="slow">Slow conduction</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="ecg-widget__body">
+                  <canvas id="ecgCanvas" role="img" aria-label="Interactive ECG preview"></canvas>
+                  <div class="ecg-widget__controls">
+                    <label>
+                      Rate
+                      <input type="range" id="ecgRate" min="30" max="140" value="80">
+                      <span class="ecg-value" data-value="rate">80 bpm</span>
+                    </label>
+                    <label>
+                      Output
+                      <input type="range" id="ecgOutput" min="1" max="10" value="6">
+                      <span class="ecg-value" data-value="output">6 mA</span>
+                    </label>
+                    <label>
+                      Sensitivity
+                      <input type="range" id="ecgSense" min="1" max="10" value="5">
+                      <span class="ecg-value" data-value="sense">5 mV</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="system-block__content split-section system-block__secondary">
+            <div class="split-text">
+              <h4>Electron-ready training app</h4>
+              <p>
+                The simulator was built as a responsive web app, packaged into an Electron desktop
+                application, and distributed through GitHub releases for offline lab setups.
+              </p>
+              <ul class="feature-list">
+                <li>Dashboard for scenario selection and pacing readiness checks.</li>
+                <li>Training tab with ECG playback, step-by-step guidance, and outcomes.</li>
+                <li>Settings pane for device pairing, patient presets, and session exports.</li>
+              </ul>
+            </div>
+            <div class="split-visual">
+              <figure class="photo-card">
+                <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
+                <figcaption>Dashboard view from the Electron-packaged training app.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="system-block">
+          <div class="system-block__intro">
+            <span class="tag">Hardware</span>
+            <h3>Arduino-based control unit</h3>
+            <p>
+              The physical trainer uses an Arduino GIGA R1 with a touchscreen shield, rotary
+              encoders, and indicator LEDs that match the Medtronic 53401 layout. The enclosure was
+              custom-modeled for comfortable, one-handed pacing adjustments in a training room.
+            </p>
+          </div>
+          <div class="system-block__content split-section">
+            <div class="split-text">
+              <ul class="feature-list">
+                <li>Rotary encoders emulate click-by-click rate, output, and sensitivity tuning.</li>
+                <li>3D-printed casing refined for lightweight, clinical-style handling.</li>
+                <li>USB-C serial link keeps hardware and software synchronized.</li>
+                <li>Modular internals for quick maintenance and upgrades.</li>
+              </ul>
+            </div>
+            <div class="split-visual">
+              <figure class="photo-card">
+                <img src="static/images/edupace/edupace_closeup.png" alt="Close-up of EduPace hardware controls and display">
+                <figcaption>Close-up of the tactile controls and display layout.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
       </section>
 
       <section class="edupace-section">
@@ -323,46 +312,6 @@
             <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace dashboard showing pacing controls and ECG view">
             <figcaption>Simulator UI showing pacing controls and ECG feedback.</figcaption>
           </figure>
-        </div>
-      </section>
-
-      <section class="edupace-section split-section">
-        <div class="split-text">
-          <h2>Software architecture</h2>
-          <p>
-            EduPace runs as a cross-platform web application packaged with Electron. The software is
-            modular, separating ECG generation, pacing logic, scenario control, and device
-            communication so new cases and features can be added without reworking the full system.
-          </p>
-          <ul class="feature-list">
-            <li>Rational Bézier-Bernstein ECG traces for realistic morphology.</li>
-            <li>Decision-tree pacing logic for rate, sensing, and capture behavior.</li>
-            <li>Serial protocol over USB-C at 115200 baud for reliable updates.</li>
-            <li>WebSerial plug-and-play setup for clinical training rooms.</li>
-            <li>Telemetry hooks ready for future LMS or skills-lab integrations.</li>
-          </ul>
-        </div>
-        <div class="split-visual">
-          <figure class="photo-card">
-            <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace software dashboard with pacing scenarios">
-            <figcaption>EduPace App view used to guide pacing scenarios and debriefs.</figcaption>
-          </figure>
-          <div class="stacked-card">
-            <span class="tag">Communication</span>
-            <h3>Hardware-to-software link</h3>
-            <p>
-              Encoder adjustments send rate/output/sense values to the simulator while software
-              commands drive pacing/sensing LED indicators on the device display.
-            </p>
-          </div>
-          <div class="stacked-card">
-            <span class="tag">Interface</span>
-            <h3>Training dashboard</h3>
-            <p>
-              Scenario selection, ECG visualization, progress tracking, and session feedback are
-              combined to guide learners through pacing practice and debriefs.
-            </p>
-          </div>
         </div>
       </section>
 

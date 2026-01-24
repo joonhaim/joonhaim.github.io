@@ -89,11 +89,20 @@ const initEcgWidget = () => {
 
   const paperCtx = paperCanvas.getContext("2d");
   const monitorCtx = monitorCanvas.getContext("2d");
+  const parseDisplayValue = (key, fallback) => {
+    const element = valueMap[key];
+    if (!element) {
+      return fallback;
+    }
+    const parsed = Number.parseFloat(element.textContent);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  };
+
   const state = {
     scenario: "nsr",
-    rate: 80,
-    output: 6,
-    sense: 5,
+    rate: parseDisplayValue("rate", 80),
+    output: parseDisplayValue("output", 6),
+    sense: parseDisplayValue("sense", 5),
   };
 
   const precision = {
@@ -137,8 +146,11 @@ const initEcgWidget = () => {
 
   const updateLabels = () => {
     valueMap.rate.textContent = `${formatValue("rate", state.rate)} bpm`;
+    valueMap.rate.dataset.currentValue = String(state.rate);
     valueMap.output.textContent = `${formatValue("output", state.output)} mA`;
+    valueMap.output.dataset.currentValue = String(state.output);
     valueMap.sense.textContent = `${formatValue("sense", state.sense)} mV`;
+    valueMap.sense.dataset.currentValue = String(state.sense);
   };
 
   const buildWaveform = () => {
@@ -448,7 +460,11 @@ const initEcgWidget = () => {
     if (!target || Number.isNaN(step) || !presets[target]) {
       return;
     }
-    state[target] = stepPreset(target, step);
+    const nextValue = stepPreset(target, step);
+    if (nextValue === state[target]) {
+      return;
+    }
+    state[target] = nextValue;
     updateLabels();
     buildWaveform();
   };

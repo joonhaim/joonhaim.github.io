@@ -225,7 +225,10 @@
 }
 
 .timeline-step__content--split .ecg-widget {
-  grid-column: 1 / -1;
+  grid-column: auto;
+  justify-self: end;
+  width: 100%;
+  max-width: none;
 }
 
 .ecg-paper {
@@ -266,10 +269,10 @@
 }
 
 .ecg-control__buttons {
-  gap: 0.3rem;
+  gap: 0.15rem;
 }
 
 .ecg-step {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
 }

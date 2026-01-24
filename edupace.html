@@ -139,8 +139,8 @@
               changes in real time.
             </p>
           </div>
-          <div class="timeline-step__content timeline-step__content--split">
-            <figure class="photo-card">
+          <div class="timeline-step__content timeline-step__content--stacked">
+            <figure class="photo-card photo-card--wide">
               <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
               <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
             </figure>
@@ -199,6 +199,29 @@
                   </div>
                   <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                 </div>
+              </div>
+            </div>
+            <div class="system-block">
+              <div class="system-block__intro">
+                <h4>Rational Bezier-Bernstein Model</h4>
+                <p>
+                  EduPace models each ECG trace with a Rational Bezier-Bernstein formulation that
+                  weights control points to shape physiologic peaks and valleys while maintaining
+                  a smooth, continuous curve across pacing cycles.
+                </p>
+              </div>
+              <div class="system-block__content">
+                <figure class="photo-card">
+                  <img src="static/images/edupace/rational_bezier_bernstein_placeholder.svg" alt="Rational Bezier-Bernstein model equations placeholder">
+                  <figcaption>Placeholder for the Rational Bezier-Bernstein model formulation.</figcaption>
+                </figure>
+                <ul class="feature-list">
+                  <li>A3.A Normal ECG trace for patient heart rate of 80 bpm.</li>
+                  <li>A3.B Ventricular pacing for patient heart rate of 40 bpm (bradycardia), pacemaker rate of 70 ppm, sensitivity of 0.5 mV, and output of 1.7 mA.</li>
+                  <li>A3.C ECG trace for first degree heart block for patient heart rate of 75 bpm, pacemaker rate of 60 ppm, sensitivity of 0.7 mV, and output of 1.7 mA.</li>
+                  <li>A3.D ECG trace for second degree heart block for patient heart rate of 80 bpm, pacemaker rate of 90 ppm, sensitivity of 0.5 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
+                  <li>A3.E ECG trace for third degree heart block for patient heart rate of 70 bpm, pacemaker rate of 80 ppm, sensitivity of 0.4 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -270,6 +293,10 @@
                 <li>Mounting rails keep the screen, LEDs, and wiring secured in the enclosure.</li>
                 <li>Iterative prints validated ergonomics before final assembly.</li>
               </ul>
+              <figure class="photo-card">
+                <div class="photo-card__placeholder">Custom knob CAD render (placeholder)</div>
+                <figcaption>Placeholder for the custom-made knob CAD visuals.</figcaption>
+              </figure>
             </div>
           </div>
         </article>
@@ -295,6 +322,50 @@
             </figure>
           </div>
         </article>
+      </section>
+
+      <section class="edupace-section" id="device-ui" data-edupace-section>
+        <div class="section-heading">
+          <h2>Physical device UI screenshots</h2>
+          <p>Add screenshots of the physical device UI to document the hardware-facing workflow.</p>
+        </div>
+        <div class="edupace-gallery__grid">
+          <figure class="edupace-gallery__item">
+            <div class="photo-card__placeholder edupace-gallery__placeholder">Device UI screenshot 1</div>
+            <figcaption>Placeholder for a device UI screen capture.</figcaption>
+          </figure>
+          <figure class="edupace-gallery__item">
+            <div class="photo-card__placeholder edupace-gallery__placeholder">Device UI screenshot 2</div>
+            <figcaption>Placeholder for a device UI screen capture.</figcaption>
+          </figure>
+          <figure class="edupace-gallery__item">
+            <div class="photo-card__placeholder edupace-gallery__placeholder">Device UI screenshot 3</div>
+            <figcaption>Placeholder for a device UI screen capture.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="edupace-section" id="desktop-app" data-edupace-section>
+        <div class="section-heading">
+          <h2>Desktop app slideshow</h2>
+          <p>Placeholder slides for future desktop app screenshots.</p>
+        </div>
+        <div class="edupace-slideshow">
+          <div class="edupace-slideshow__track" aria-label="Desktop app screenshots">
+            <figure class="edupace-slideshow__slide">
+              <div class="photo-card__placeholder">Desktop app slide 1</div>
+              <figcaption class="edupace-slideshow__note">Placeholder slide for the main dashboard.</figcaption>
+            </figure>
+            <figure class="edupace-slideshow__slide">
+              <div class="photo-card__placeholder">Desktop app slide 2</div>
+              <figcaption class="edupace-slideshow__note">Placeholder slide for the training workflow.</figcaption>
+            </figure>
+            <figure class="edupace-slideshow__slide">
+              <div class="photo-card__placeholder">Desktop app slide 3</div>
+              <figcaption class="edupace-slideshow__note">Placeholder slide for settings and device pairing.</figcaption>
+            </figure>
+          </div>
+        </div>
       </section>
 
       <section class="edupace-section" id="key-results" data-edupace-section>
@@ -378,6 +449,14 @@
             <a class="edupace-toc__link" href="#development-timeline" data-section="development-timeline">
               <span class="edupace-toc__dot"></span>
               <span class="edupace-toc__label">Development timeline</span>
+            </a>
+            <a class="edupace-toc__link" href="#device-ui" data-section="device-ui">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Device UI</span>
+            </a>
+            <a class="edupace-toc__link" href="#desktop-app" data-section="desktop-app">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Desktop app</span>
             </a>
             <a class="edupace-toc__link" href="#key-results" data-section="key-results">
               <span class="edupace-toc__dot"></span>

@@ -1,11 +1,11 @@
 :root {
   --edupace-dark: #0b0f1a;
-  --edupace-panel: rgba(12, 18, 32, 0.92);
-  --edupace-border: rgba(148, 163, 184, 0.2);
+  --edupace-panel: #ffffff;
+  --edupace-border: #e2e8f0;
   --edupace-accent: #33ff66;
-  --edupace-accent-soft: rgba(51, 255, 102, 0.16);
-  --edupace-text: #e2e8f0;
-  --edupace-muted: #94a3b8;
+  --edupace-accent-soft: rgba(15, 23, 42, 0.08);
+  --edupace-text: #0f172a;
+  --edupace-muted: #64748b;
 }
 
 .edupace-layout {
@@ -26,16 +26,13 @@
 }
 
 .edupace-toc__inner {
-  position: sticky;
-  top: 120px;
   display: grid;
   gap: 1rem;
   padding: 1.25rem 1.2rem;
   border-radius: 20px;
   background: var(--edupace-panel);
   border: 1px solid var(--edupace-border);
-  box-shadow: 0 24px 40px rgba(15, 23, 42, 0.25);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 28px rgba(15, 23, 42, 0.08);
 }
 
 .edupace-toc__title {
@@ -60,7 +57,7 @@
   bottom: 0.3rem;
   width: 2px;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(51, 255, 102, 0.4), rgba(56, 189, 248, 0.2));
+  background: #e2e8f0;
 }
 
 .edupace-toc__link {
@@ -78,9 +75,9 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.05);
+  border: 1px solid #cbd5f5;
+  background: #f8fafc;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.15);
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -96,9 +93,9 @@
 
 .edupace-toc__link.is-active .edupace-toc__dot,
 .edupace-toc__link[aria-current="true"] .edupace-toc__dot {
-  border-color: var(--edupace-accent);
-  background: var(--edupace-accent);
-  box-shadow: 0 0 0 4px var(--edupace-accent-soft), 0 0 12px rgba(51, 255, 102, 0.5);
+  border-color: #0f172a;
+  background: #0f172a;
+  box-shadow: 0 0 0 4px var(--edupace-accent-soft);
 }
 
 .edupace-toc__link.is-active .edupace-toc__label,
@@ -114,6 +111,9 @@
 
   .edupace-toc {
     display: block;
+    position: sticky;
+    top: 120px;
+    align-self: start;
   }
 }
 
@@ -181,7 +181,7 @@
 
 .ecg-monitor__canvas {
   width: 100%;
-  height: 190px;
+  height: 220px;
   display: block;
   border-radius: 12px;
   background: #000;
@@ -201,4 +201,8 @@
 
 .ecg-value {
   color: var(--edupace-text);
+}
+
+.timeline-step__content--split .ecg-widget {
+  grid-column: 1 / -1;
 }

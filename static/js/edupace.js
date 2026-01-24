@@ -80,12 +80,27 @@ const initEcgWidget = () => {
     sense: { min: 1, max: 10, step: 1, unit: "mV" },
   };
 
-  const waveformState = {
-    samples: new Float32Array(0),
-    duration: 2.8,
-    window: 2.6,
-    lastUpdate: 0,
-  };
+  const SMALL_T = 0.04;
+  const BIG_T = 0.2;
+  const SMALL_A = 0.1;
+  const BIG_A = 1.0;
+  const VIEW_SEC = 6;
+  const Y_MIN = -1;
+  const Y_MAX = 1;
+  const VERTICAL_SCALE = 1.6;
+  const R_Y_MIN = Y_MIN * VERTICAL_SCALE;
+  const R_Y_MAX = Y_MAX * VERTICAL_SCALE;
+  const SWEEP_TIME_SCALE = 1.0;
+
+  const monitorBuffer = document.createElement("canvas");
+  const monitorBufferCtx = monitorBuffer.getContext("2d");
+  const monitorScreen = document.createElement("canvas");
+  const monitorScreenCtx = monitorScreen.getContext("2d");
+
+  let stripLive = null;
+  let sweepX = 0;
+  let prevSweepX = 0;
+  let lastTs = null;
 
   const updateLabels = () => {
     valueMap.rate.textContent = `${state.rate} ${limits.rate.unit}`;
@@ -122,126 +137,192 @@ const initEcgWidget = () => {
 
     const { x, y } = result;
     if (!x || !y || x.length === 0 || y.length === 0) {
+      stripLive = null;
       return;
     }
 
-    const maxX = Math.max(...x);
-    const duration = Math.max(2.6, maxX || 2.6);
-    const sampleCount = Math.max(1500, Math.floor(duration * 600));
-    const samples = new Float32Array(sampleCount);
+    stripLive = { x, y };
+    rebuildMonitorBuffer();
+    resetSweep();
+  };
 
-    let cursor = 0;
-    for (let i = 0; i < sampleCount; i++) {
-      const t = (i / (sampleCount - 1)) * duration;
-      while (cursor < x.length - 2 && x[cursor + 1] < t) {
-        cursor += 1;
-      }
-      const t0 = x[cursor];
-      const t1 = x[cursor + 1] ?? t0;
-      const y0 = y[cursor];
-      const y1 = y[cursor + 1] ?? y0;
-      const ratio = t1 === t0 ? 0 : (t - t0) / (t1 - t0);
-      samples[i] = y0 + (y1 - y0) * ratio;
-    }
-
-    waveformState.samples = samples;
-    waveformState.duration = duration;
+  const setCanvasSize = (target, cssW, cssH) => {
+    const ratio = window.devicePixelRatio || 1;
+    target.style.width = `${cssW}px`;
+    target.style.height = `${cssH}px`;
+    target.width = Math.floor(cssW * ratio);
+    target.height = Math.floor(cssH * ratio);
+    const targetCtx = target.getContext("2d");
+    targetCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
   };
 
   const resizeCanvas = () => {
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(ratio, ratio);
-  };
-
-  const drawGrid = (width, height) => {
-    ctx.strokeStyle = "rgba(51, 255, 102, 0.12)";
-    ctx.lineWidth = 1;
-    const minor = 24;
-    for (let x = 0; x <= width; x += minor) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-    for (let y = 0; y <= height; y += minor) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-
-    ctx.strokeStyle = "rgba(51, 255, 102, 0.2)";
-    ctx.lineWidth = 1.2;
-    const major = minor * 5;
-    for (let x = 0; x <= width; x += major) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-    for (let y = 0; y <= height; y += major) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-  };
-
-  const sampleAt = (time) => {
-    const { samples, duration } = waveformState;
-    if (!samples.length || duration <= 0) {
-      return 0;
-    }
-    const normalized = ((time % duration) + duration) % duration;
-    const idx = Math.floor((normalized / duration) * (samples.length - 1));
-    return samples[idx] ?? 0;
-  };
-
-  const drawWaveform = (timestamp) => {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    if (width === 0 || height === 0) {
+    if (!width || !height) {
+      return;
+    }
+    setCanvasSize(canvas, width, height);
+    setCanvasSize(monitorBuffer, width, height);
+    setCanvasSize(monitorScreen, width, height);
+    rebuildMonitorBuffer();
+    resetSweep();
+  };
+
+  const lowerBound = (arr, val) => {
+    let lo = 0;
+    let hi = arr.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (arr[mid] < val) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  };
+
+  const drawWaveWindowToSize = (targetCtx, width, height, strip, tLeft, tRight) => {
+    const X = (t) => ((t - tLeft) / (tRight - tLeft)) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    const i0 = lowerBound(strip.x, tLeft);
+    const i1 = lowerBound(strip.x, tRight);
+    if (i1 - i0 < 2) return;
+
+    targetCtx.beginPath();
+    targetCtx.strokeStyle = "#33ff66";
+    targetCtx.lineWidth = 2;
+    targetCtx.lineJoin = "round";
+    targetCtx.lineCap = "round";
+    targetCtx.moveTo(X(strip.x[i0]), Y(strip.y[i0]));
+    for (let i = i0 + 1; i < i1; i += 1) {
+      targetCtx.lineTo(X(strip.x[i]), Y(strip.y[i]));
+    }
+    targetCtx.stroke();
+  };
+
+  const drawMonitorGrid = (targetCtx, width, height) => {
+    targetCtx.clearRect(0, 0, width, height);
+    targetCtx.fillStyle = "#000000";
+    targetCtx.fillRect(0, 0, width, height);
+
+    const X = (t) => (t / VIEW_SEC) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
+      const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
+      targetCtx.beginPath();
+      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.lineWidth = isBig ? 1.1 : 0.8;
+      targetCtx.moveTo(X(t), 0);
+      targetCtx.lineTo(X(t), height);
+      targetCtx.stroke();
+    }
+
+    for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
+      const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
+      targetCtx.beginPath();
+      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.lineWidth = isBig ? 1.1 : 0.8;
+      targetCtx.moveTo(0, Y(v));
+      targetCtx.lineTo(width, Y(v));
+      targetCtx.stroke();
+    }
+  };
+
+  const rebuildMonitorBuffer = () => {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if (!stripLive || !stripLive.x.length || !width || !height) {
       return;
     }
 
-    ctx.clearRect(0, 0, width, height);
-    drawGrid(width, height);
+    drawMonitorGrid(monitorBufferCtx, width, height);
+    drawWaveWindowToSize(monitorBufferCtx, width, height, stripLive, 0, VIEW_SEC);
 
-    const baseline = height * 0.58;
-    const amplitude = height * 0.32;
-    const speed = 0.9;
-    const windowDuration = waveformState.window;
-    const startTime = (timestamp / 1000) * speed;
+    drawMonitorGrid(monitorScreenCtx, width, height);
+  };
 
-    ctx.save();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(51, 255, 102, 0.9)";
-    ctx.shadowColor = "rgba(51, 255, 102, 0.6)";
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
+  const overwriteSliceOnScreen = (x0, x1) => {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if (x1 <= x0) return;
 
-    for (let x = 0; x <= width; x++) {
-      const t = startTime + (x / width) * windowDuration;
-      const y = baseline - sampleAt(t) * amplitude;
-      if (x === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
+    const ratio = window.devicePixelRatio || 1;
+    const sx = Math.floor(x0 * ratio);
+    const sw = Math.ceil((x1 - x0) * ratio);
+    const sy = 0;
+    const sh = Math.ceil(height * ratio);
+
+    monitorScreenCtx.drawImage(
+      monitorBuffer,
+      sx,
+      sy,
+      sw,
+      sh,
+      x0,
+      0,
+      x1 - x0,
+      height
+    );
+  };
+
+  const resetSweep = () => {
+    sweepX = 0;
+    prevSweepX = 0;
+    lastTs = null;
+    if (canvas.clientWidth && canvas.clientHeight) {
+      drawMonitorGrid(monitorScreenCtx, canvas.clientWidth, canvas.clientHeight);
     }
+  };
 
+  const stepSweep = (dt) => {
+    const width = canvas.clientWidth;
+    const pxPerSec = (width / VIEW_SEC) * SWEEP_TIME_SCALE;
+    prevSweepX = sweepX;
+    sweepX += pxPerSec * dt;
+    if (sweepX >= width) sweepX %= width;
+
+    if (sweepX >= prevSweepX) {
+      overwriteSliceOnScreen(prevSweepX, sweepX);
+    } else {
+      overwriteSliceOnScreen(prevSweepX, width);
+      overwriteSliceOnScreen(0, sweepX);
+    }
+  };
+
+  const renderMonitor = () => {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(monitorScreen, 0, 0, width, height);
+
+    ctx.strokeStyle = "rgba(51,255,102,0.95)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(sweepX, 0);
+    ctx.lineTo(sweepX, height);
     ctx.stroke();
-    ctx.restore();
+
+    ctx.strokeStyle = "rgba(51,255,102,0.18)";
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(sweepX, 0);
+    ctx.lineTo(sweepX, height);
+    ctx.stroke();
   };
 
   const animate = (timestamp) => {
-    if (!waveformState.lastUpdate || timestamp - waveformState.lastUpdate > 16) {
-      drawWaveform(timestamp);
-      waveformState.lastUpdate = timestamp;
+    if (!stripLive) {
+      requestAnimationFrame(animate);
+      return;
     }
+
+    if (lastTs == null) lastTs = timestamp;
+    const dt = (timestamp - lastTs) / 1000;
+    lastTs = timestamp;
+
+    stepSweep(dt);
+    renderMonitor();
     requestAnimationFrame(animate);
   };
 

@@ -14,6 +14,14 @@
   <script src="static/js/script.js" defer></script>
   <script src="static/js/edupace.js" type="module"></script>
   <script src="static/js/includes.js" defer></script>
+    <!-- KaTeX (equation rendering) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- Bézier ECG widget -->
+<script src="static/js/bezier-widget.js" type="module"></script>
+
 </head>
 <body>
   <div class="container">
@@ -211,10 +219,29 @@
                 </p>
               </div>
               <div class="system-block__content">
-                <figure class="photo-card">
-                  <img src="static/images/edupace/rational_bezier_bernstein_placeholder.svg" alt="Rational Bezier-Bernstein model equations placeholder">
-                  <figcaption>Placeholder for the Rational Bezier-Bernstein model formulation.</figcaption>
-                </figure>
+                <div class="bezier-widget" id="bezierWidget" aria-label="Rational Bézier ECG demo">
+  <div class="bezier-widget__toolbar" role="group" aria-label="Waveform selection">
+    <button type="button" class="bezier-tab is-active" data-wave="Normal" aria-pressed="true">Normal</button>
+    <button type="button" class="bezier-tab" data-wave="Ventricular pacing" aria-pressed="false">Ventricular paced</button>
+    <button type="button" class="bezier-tab" data-wave="Mobitz II" aria-pressed="false">Mobitz II</button>
+
+    <div class="bezier-chips" aria-hidden="true">
+      <span class="bezier-chip" id="bezierSegChip">Segment: —</span>
+      <span class="bezier-chip" id="bezierDegChip">n = —</span>
+      <span class="bezier-chip" id="bezierTChip">t = 0.00</span>
+    </div>
+  </div>
+
+  <div class="bezier-widget__canvasWrap">
+    <canvas id="bezierEcgCanvas" class="bezier-widget__canvas" role="img" aria-label="Bézier ECG curve with control points"></canvas>
+  </div>
+
+  <div class="bezier-widget__formula">
+    $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
+    B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
+  </div>
+</div>
+
                 <ul class="feature-list">
                   <li>A3.A Normal ECG trace for patient heart rate of 80 bpm.</li>
                   <li>A3.B Ventricular pacing for patient heart rate of 40 bpm (bradycardia), pacemaker rate of 70 ppm, sensitivity of 0.5 mV, and output of 1.7 mA.</li>

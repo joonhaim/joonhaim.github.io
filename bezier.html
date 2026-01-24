@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ECG from Rational Bézier (Mini)</title>
+
+  <!-- KaTeX for the formula -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --accent:#DA291C; --radius:14px; --shadow:0 10px 24px rgba(0,0,0,.08);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+    }
+    body{ margin:0; padding:24px; background:#f7f7fb; font-family:var(--sans); color:var(--text); }
+
+    .mini{
+      width:min(560px, 100%); /* narrower */
+      margin:0 auto;
+      background:var(--bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .top{
+      padding:14px 16px 12px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .top h3{ margin:0; font-size:14.5px; letter-spacing:-0.01em; }
+    .top p{ margin:6px 0 0; color:var(--muted); font-size:12.5px; line-height:1.45; max-width:48ch; }
+
+    .selectWrap{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width: 200px;
+    }
+    .selectWrap label{
+      font-size:11.5px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      white-space:nowrap;
+    }
+    select{
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:8px 10px;
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      font-size:12.5px;
+    }
+
+    .stage{
+      padding:12px 16px 14px;
+      display:grid;
+      gap:10px;
+    }
+    .canvasWrap{
+      position:relative;
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+    }
+    canvas{ width:100%; height:300px; display:block; } /* taller */
+
+    .hint{
+      position:absolute;
+      left:12px; top:10px;
+      background:rgba(255,255,255,.85);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      backdrop-filter: blur(6px);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      white-space:nowrap;
+    }
+    .chip{
+      font-family:var(--mono);
+      font-size:11px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:2px 8px;
+      background:#fff;
+      color:var(--muted);
+    }
+    .formula{
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:#fff;
+      padding:10px 12px;
+      overflow:auto;
+    }
+    .caption{
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mini" id="ecgBezierWidget">
+    <div class="top">
+      <div>
+        <h3>ECG shapes from rational Bézier segments</h3>
+        <p>
+          Grey dots are control points. The red dashed polygon shows the points of the
+          <b>current segment</b> the dot is tracing.
+        </p>
+      </div>
+
+      <div class="selectWrap">
+        <label>
+          <span>Waveform</span>
+          <span class="chip" id="waveChip">Normal</span>
+        </label>
+        <select id="waveSel">
+          <option value="Normal">Normal (PQRST)</option>
+          <option value="Ventricular pacing">Ventricular pacing</option>
+          <option value="Mobitz II">Mobitz II (dropped beat)</option>
+          <option value="3rd degree AV block (paced)">3rd-degree AV block (paced)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="canvasWrap">
+        <div class="hint">
+          <span class="chip" id="segChip">Segment: —</span>
+          <span class="chip" id="degChip">n = —</span>
+          <span class="chip" id="tChip">t = 0.00</span>
+        </div>
+        <canvas id="ecgCanvas"></canvas>
+      </div>
+
+      <div class="formula">
+        $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
+        B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
+      </div>
+
+      <div class="caption">
+        <span>Tip: QRS looks “spiky” because a few points have large weights \(w_i\).</span>
+        <span>Control-point size is loosely weight-based.</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const canvas = document.getElementById("ecgCanvas");
+  const ctx = canvas.getContext("2d");
+
+  const waveSel  = document.getElementById("waveSel");
+  const waveChip = document.getElementById("waveChip");
+  const segChip  = document.getElementById("segChip");
+  const degChip  = document.getElementById("degChip");
+  const tChip    = document.getElementById("tChip");
+
+  // -------------------------
+  // REAL POINT SETS (from your ECG_wave cases)
+  // -------------------------
+  const POINTS = {
+    // Normal segments
+    normal: {
+      P: [
+        [1,0.0,0],[1.5,0.132366,0.03],[1,0.264732,0.12],[1,0.397099,0.3],[1.5,1.058929,0.9],
+        [3,1.72076,1.3],[1,2.382591,0.8],[1,2.58114,0.5],[1,2.77969,0.16],[1.5,2.912056,0.04],[1,3.044422,0]
+      ],
+      preQRS: [
+        [1,3.21088,0],[1,3.37634,0],[1,3.54180,0],[1,3.70725,0],[1,3.87271,0],[1,4.03817,0],[1,4.36909,0]
+      ],
+      QRS: [
+        [10,4.36909,0],[10,4.56909,0],[100,4.66909,-0.05],[1,4.74909,-0.2],[1,4.96909,-0.65],
+        [700,5.46909,-1.5],[10,5.61909,0],[1,5.76909,2.5],[10,5.96909,5.5],[1000,6.36909,11],
+        [10,6.71909,5.5],[1,6.86909,2.5],[1,7.01909,0],[700,7.21909,-3.3],[1,7.71909,-1.5],
+        [10,8.06909,-0.1],[100,8.16909,-0.03],[10,8.26909,0]
+      ],
+      preT: [
+        [1,8.36909,0],[1,8.86909,0],[1,9.11909,0],[1,9.36909,0],[1,9.86909,0],[1,10.36909,0],[1,10.86909,0]
+      ],
+      T: [
+        [1,11.26909,0],[5,11.36909,0],[2,11.41909,0.04],[1,11.56909,0.1],[1,12.36909,1],
+        [2,13.36909,1.9],[10,13.96909,2.1],[2,15.36909,0.55],[1,15.56909,0.15],[5,15.66909,0.05],[1,15.78909,0]
+      ],
+      endX: 15.78909
+    },
+
+    // Ventricular pacing segments
+    vpaced: {
+      P: [
+        [1,0.0,0.0],[1.5,0.132366,0.045],[1,0.264732,0.18],[1,0.397099,0.45],[1.5,1.058929,1.35],[3,1.72076,1.95],
+        [1,2.382591,1.2],[1,2.58114,0.75],[1,2.77969,0.24],[1.5,2.912056,0.06],[1,3.044422,0.0]
+      ],
+      preSpike: [
+        [1,4.344422,0]
+      ],
+      spike: [
+        [1,4.286229,0],[10,4.380709,14],[1,4.475189,0]
+      ],
+      QRS: [
+        [2,4.931608,-0.8],[1,5.395389,-3.1],[5,5.763607,-7.1],[5,6.046174,-7.6],[1,6.315471,-11.5],
+        [10,6.827175,-16.8],[1,7.243828,-14.6],[1,7.703432,-10.5],[1,8.162635,-6.4],[1,8.621839,-3],[10,9.179848,0]
+      ],
+      T: [
+        [10,9.189848,0],[1,9.379848,0.4],[1,9.579848,0.75],[1,10.079848,1.8],[1,10.579848,2.75],[1,11.079848,3.6],
+        [1,11.579848,4.15],[5,12.079848,4.75],[5,12.579848,5.4],[15,13.029848,5.7],[5,13.579848,5.3],[5,14.079848,4.4],
+        [1,14.579848,3],[1,15.079848,1.6],[1,15.579848,0.5],[1,15.979848,0]
+      ],
+      endX: 15.979848
+    },
+
+    // Mobitz II "no conduction" = P wave only (your ECG_wave case)
+    mobitzPonly: {
+      Ponly: [
+        [1,0,0],[1.5,0.2,0.03],[1,0.4,0.12],[1,0.6,0.3],[1.5,1.6,0.9],[3,2.6,1.3],
+        [1,3.6,0.8],[1,3.9,0.5],[1,4.2,0.16],[1.5,4.4,0.04],[1,4.6,0]
+      ],
+      endX: 4.6
+    },
+
+    // 3rd-degree heart block building blocks (your ECG_wave cases)
+    thirdDeg: {
+      Pw: [
+        [1,0,0],[2,0.07,0.02],[1,0.15,0.12],[1,0.25,0.44],[2,0.35,0.65],[3,0.465,0.74],
+        [2,0.6,0.63],[1,0.65,0.52],[1,0.75,0.16],[1,0.8,0.05],[2,0.85,0.01],[1,0.9,0]
+      ],
+      pacedV: [
+        [1,0,0],[10,0.032,14],[1,0.064,0],
+        [2,0.224,-0.8],[1,0.384,-3.1],[5,0.512,-7.1],[5,0.608,-7.6],[1,0.704,-11.5],[10,0.88,-16.8],[1,1.024,-14.6],
+        [1,1.184,-10.5],[1,1.344,-6.4],[1,1.504,-3],[10,1.696,0],
+        [10,1.6992,0],[1,1.76,0.4],[1,1.824,0.75],[1,1.984,1.8],[1,2.144,2.75],[1,2.304,3.6],[1,2.464,4.15],
+        [5,2.624,4.75],[5,2.784,5.4],[15,2.928,5.7],[5,3.104,5.3],[5,3.264,4.4],[1,3.424,3],[1,3.584,1.6],[1,3.744,0.5],[1,3.872,0]
+      ],
+      endX: 3.872
+    }
+  };
+
+  // -------------------------
+  // Bézier math
+  // -------------------------
+  const comb = (n,k) => {
+    k = Math.min(k, n-k);
+    let r = 1;
+    for(let i=1;i<=k;i++) r = r * (n - (k - i)) / i;
+    return r;
+  };
+  const bernstein = (n,i,t) => comb(n,i) * Math.pow(t,i) * Math.pow(1-t, n-i);
+
+  function toObjPoints(arr){
+    return arr.map(([w,x,y]) => ({w,x,y}));
+  }
+
+  function ensureMinPoints(pts){
+    if(pts.length >= 2) return pts;
+    const p = pts[0];
+    return [p, { ...p, x: p.x + 1e-6 }];
+  }
+
+  function R(points, t){
+    const n = points.length - 1;
+    let numX=0, numY=0, den=0;
+    for(let i=0;i<=n;i++){
+      const B = bernstein(n,i,t);
+      const {w,x,y} = points[i];
+      numX += B*w*x;
+      numY += B*w*y;
+      den  += B*w;
+    }
+    return { x: numX/den, y: numY/den, t };
+  }
+
+  function sampleSegment(points, N=220){
+    const pts = ensureMinPoints(points);
+    const out = [];
+    for(let j=0;j<=N;j++){
+      out.push(R(pts, j/N));
+    }
+    return out;
+  }
+
+  function baselineSegment(x0, x1, y=0){
+    return [{w:1,x:x0,y:y},{w:1,x:x1,y:y}];
+  }
+
+  // -------------------------
+  // Build waveforms (segments + offsets)
+  // -------------------------
+  function buildWaveform(key){
+    // returns { name, segments: [{name, points}], totalEndX }
+    if(key === "Normal"){
+      const n = POINTS.normal;
+      const segs = [
+        { name:"P wave",      points: toObjPoints(n.P) },
+        { name:"PR segment",  points: toObjPoints(n.preQRS) },
+        { name:"QRS complex", points: toObjPoints(n.QRS) },
+        { name:"ST segment",  points: toObjPoints(n.preT) },
+        { name:"T wave",      points: toObjPoints(n.T) },
+      ];
+      return { name:"Normal", segments: segs, totalEndX: n.endX };
+    }
+
+    if(key === "Ventricular pacing"){
+      const v = POINTS.vpaced;
+      const preSpike = toObjPoints(v.preSpike); // one point -> duplicated later
+      const segs = [
+        { name:"P wave",            points: toObjPoints(v.P) },
+        { name:"Baseline",          points: ensureMinPoints(preSpike) },
+        { name:"Pacing spike",      points: toObjPoints(v.spike) },
+        { name:"Wide QRS complex",  points: toObjPoints(v.QRS) },
+        { name:"T wave",            points: toObjPoints(v.T) },
+      ];
+      return { name:"Ventricular pacing", segments: segs, totalEndX: v.endX };
+    }
+
+    if(key === "Mobitz II"){
+      // Two-beat strip: conducted beat (normal) + dropped beat (P-only + baseline)
+      const n = POINTS.normal;
+      const pOnly = POINTS.mobitzPonly;
+
+      const beatLen = n.endX;        // match normal beat length
+      const gap = 0.7;               // small separation (keeps it “tighter”)
+
+      const conducted = [
+        { name:"Beat 1: P wave",      points: toObjPoints(n.P) },
+        { name:"Beat 1: PR segment",  points: toObjPoints(n.preQRS) },
+        { name:"Beat 1: QRS complex", points: toObjPoints(n.QRS) },
+        { name:"Beat 1: ST segment",  points: toObjPoints(n.preT) },
+        { name:"Beat 1: T wave",      points: toObjPoints(n.T) },
+      ];
+
+      const dropOffset = beatLen + gap;
+
+      const droppedP = toObjPoints(pOnly.Ponly).map(p => ({...p, x: p.x + dropOffset}));
+      const baseLine = baselineSegment(dropOffset + pOnly.endX, dropOffset + beatLen, 0);
+
+      const dropped = [
+        { name:"Beat 2: P wave (dropped QRS)", points: droppedP },
+        { name:"Beat 2: Baseline",             points: baseLine },
+      ];
+
+      // shift conducted beat to start at 0 (already is)
+      const segs = [...conducted, ...dropped];
+      return { name:"Mobitz II", segments: segs, totalEndX: dropOffset + beatLen };
+    }
+
+    if(key === "3rd degree AV block (paced)"){
+      // Simple illustrative strip: a couple P waves + a paced ventricular beat.
+      // (Not full pacing logic; just the building blocks, to show the shape + control points.)
+      const td = POINTS.thirdDeg;
+
+      const P = toObjPoints(td.Pw);
+      const paced = toObjPoints(td.pacedV);
+
+      // Place two dissociated P waves before the paced beat.
+      const P1 = P.map(p => ({...p, x: p.x + 0.0}));
+      const P2 = P.map(p => ({...p, x: p.x + 1.15}));
+
+      // Place the paced ventricular beat later.
+      const pacedOffset = 2.05;
+      const Vp = paced.map(p => ({...p, x: p.x + pacedOffset}));
+
+      // Add short baselines between for readability
+      const segs = [
+        { name:"P wave (atrial)", points: P1 },
+        { name:"Baseline",        points: baselineSegment(0.9, 1.15, 0) },
+        { name:"P wave (atrial)", points: P2 },
+        { name:"Baseline",        points: baselineSegment(2.05 - 0.15, 2.05, 0) },
+        { name:"Paced ventricular beat", points: Vp },
+        { name:"Baseline",        points: baselineSegment(pacedOffset + td.endX, pacedOffset + td.endX + 0.8, 0) }
+      ];
+
+      return { name:"3rd degree AV block (paced)", segments: segs, totalEndX: pacedOffset + td.endX + 0.8 };
+    }
+
+    // fallback
+    return buildWaveform("Normal");
+  }
+
+  // -------------------------
+  // Build polyline for drawing + segment ids for highlighting
+  // -------------------------
+  function buildPolyline(wave){
+    const segSamples = wave.segments.map(seg => sampleSegment(seg.points, 240));
+    const full = [];
+    segSamples.forEach((arr, segIdx) => {
+      arr.forEach((p, i) => {
+        if(segIdx > 0 && i === 0) return; // avoid duplicates at joins
+        full.push({ ...p, segIdx });
+      });
+    });
+    return { full, segSamples };
+  }
+
+  // -------------------------
+  // Canvas layout
+  // -------------------------
+  function resize(){
+    const r = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener("resize", () => { resize(); draw(); });
+
+  function bounds(pts){
+    let xmin=Infinity,xmax=-Infinity,ymin=Infinity,ymax=-Infinity;
+    pts.forEach(p=>{
+      xmin=Math.min(xmin,p.x); xmax=Math.max(xmax,p.x);
+      ymin=Math.min(ymin,p.y); ymax=Math.max(ymax,p.y);
+    });
+    const px = (xmax-xmin)*0.05 || 1;
+    const py = (ymax-ymin)*0.14 || 1;
+    return {xmin:xmin-px,xmax:xmax+px,ymin:ymin-py,ymax:ymax+py};
+  }
+
+  let state = {
+    waveKey: "Normal",
+    wave: null,
+    poly: null,
+    B: null,
+    xMin: 0,
+    xMax: 1,
+    xAnim: 0,
+  };
+
+  function map(x,y){
+    const W = canvas.getBoundingClientRect().width;
+    const H = canvas.getBoundingClientRect().height;
+    const pad = 12;
+    const B = state.B;
+    const sx = (W-2*pad)/(B.xmax-B.xmin);
+    const sy = (H-2*pad)/(B.ymax-B.ymin);
+    return {
+      px: pad + (x - B.xmin)*sx,
+      py: H - pad - (y - B.ymin)*sy,
+      W, H
+    };
+  }
+
+  function drawGrid(W,H){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle="#fff";
+    ctx.fillRect(0,0,W,H);
+
+    const minor=16, major=minor*5;
+
+    ctx.save();
+    ctx.globalAlpha=0.28;
+    ctx.strokeStyle="#e5e7eb";
+    ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=minor){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for(let y=0;y<=H;y+=minor){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    ctx.globalAlpha=0.55;
+    ctx.strokeStyle="#d1d5db";
+    for(let x=0;x<=W;x+=major){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for(let y=0;y<=H;y+=major){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    ctx.restore();
+  }
+
+  function strokePolyline(pts){
+    if(!pts.length) return;
+    ctx.save();
+    ctx.strokeStyle="#111827";
+    ctx.lineWidth=2.3;
+    ctx.lineJoin="round";
+    ctx.lineCap="round";
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const m = map(p.x,p.y);
+      if(i===0) ctx.moveTo(m.px,m.py);
+      else ctx.lineTo(m.px,m.py);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawAllControlPoints(activeSegIdx){
+    // Grey points for all segments, slightly larger than before
+    const allSegs = state.wave.segments;
+
+    ctx.save();
+    allSegs.forEach((seg, segIdx) => {
+      seg.points.forEach(p => {
+        const m = map(p.x,p.y);
+        const isActive = segIdx === activeSegIdx;
+
+        // Size loosely based on weight (log), clamped
+        const lw = Math.log10(Math.max(1, p.w));
+        const r = (isActive ? 4.2 : 3.2) + 2.2 * Math.min(3, lw)/3;
+
+        ctx.globalAlpha = isActive ? 0.55 : 0.18;
+        ctx.fillStyle   = isActive ? "rgba(218,41,28,0.18)" : "rgba(17,24,39,0.12)";
+        ctx.strokeStyle = isActive ? "rgba(218,41,28,0.42)" : "rgba(17,24,39,0.16)";
+        ctx.lineWidth = 1;
+
+        ctx.beginPath();
+        ctx.arc(m.px, m.py, r, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+      });
+    });
+    ctx.restore();
+  }
+
+  function drawControlPolygon(segIdx){
+    const pts = ensureMinPoints(state.wave.segments[segIdx].points);
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.strokeStyle = "rgba(218,41,28,0.9)";
+    ctx.lineWidth = 1.8;
+    ctx.setLineDash([6,6]);
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const m = map(p.x,p.y);
+      if(i===0) ctx.moveTo(m.px,m.py);
+      else ctx.lineTo(m.px,m.py);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function pointAtX(x){
+    const full = state.poly.full;
+
+    // binary search
+    let lo=0, hi=full.length-1;
+    while(lo < hi){
+      const mid = (lo+hi) >> 1;
+      if(full[mid].x < x) lo = mid + 1;
+      else hi = mid;
+    }
+    const i = Math.max(1, lo);
+    const a = full[i-1], b = full[i];
+    const span = (b.x - a.x) || 1e-9;
+    const u = (x - a.x) / span;
+
+    return {
+      x: a.x + (b.x - a.x)*u,
+      y: a.y + (b.y - a.y)*u,
+      segIdx: (u < 0.5 ? a.segIdx : b.segIdx),
+      tApprox: (u < 0.5 ? a.t : b.t)
+    };
+  }
+
+  function draw(){
+    const W = canvas.getBoundingClientRect().width;
+    const H = canvas.getBoundingClientRect().height;
+
+    const cur = pointAtX(state.xAnim);
+    const seg = state.wave.segments[cur.segIdx];
+
+    segChip.textContent = `Segment: ${seg.name}`;
+    degChip.textContent = `n = ${Math.max(1, seg.points.length) - 1}`;
+    tChip.textContent   = `t = ${cur.tApprox.toFixed(2)}`;
+
+    drawGrid(W,H);
+    strokePolyline(state.poly.full);
+
+    drawAllControlPoints(cur.segIdx);
+    drawControlPolygon(cur.segIdx);
+
+    // Dot
+    const m = map(cur.x, cur.y);
+    ctx.save();
+    ctx.fillStyle = "rgba(218,41,28,0.95)";
+    ctx.beginPath();
+    ctx.arc(m.px, m.py, 5.4, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.globalAlpha = 0.18;
+    ctx.beginPath();
+    ctx.arc(m.px, m.py, 12, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // -------------------------
+  // Animation loop
+  // -------------------------
+  let last = performance.now();
+  const periodSecondsByWave = {
+    "Normal": 3.8,
+    "Ventricular pacing": 4.0,
+    "Mobitz II": 5.0,
+    "3rd degree AV block (paced)": 4.6
+  };
+
+  function frame(now){
+    const dt = (now - last) / 1000;
+    last = now;
+
+    const period = periodSecondsByWave[state.waveKey] || 4.0;
+    const dx = (state.xMax - state.xMin) * (dt / period);
+
+    state.xAnim += dx;
+    if(state.xAnim > state.xMax) state.xAnim = state.xMin + (state.xAnim - state.xMax);
+
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  // -------------------------
+  // Init + waveform switching
+  // -------------------------
+  function setWave(key){
+    state.waveKey = key;
+    waveChip.textContent = key;
+
+    state.wave = buildWaveform(key);
+    state.poly = buildPolyline(state.wave);
+
+    // bounds based on full polyline
+    state.B = bounds(state.poly.full);
+    state.xMin = state.poly.full[0].x;
+    state.xMax = state.poly.full[state.poly.full.length - 1].x;
+    state.xAnim = state.xMin;
+
+    draw();
+  }
+
+  waveSel.addEventListener("change", () => setWave(waveSel.value));
+
+  resize();
+  setWave("Normal");
+  requestAnimationFrame(frame);
+
+  // KaTeX render
+  setTimeout(() => {
+    if(window.renderMathInElement){
+      window.renderMathInElement(document.getElementById("ecgBezierWidget"), {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\(", right: "\\)", display: false},
+          {left: "$", right: "$", display: false},
+        ],
+        throwOnError: false
+      });
+    }
+  }, 50);
+})();
+</script>
+</body>
+</html>

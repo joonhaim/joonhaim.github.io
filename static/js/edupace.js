@@ -1,10 +1,80 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { stitchBeats } from "./edupace/ecgStitcher.js";
+import { thirdDegHeartBlock } from "./edupace/ecgThirdDegree.js";
+import { mobitzTypeII } from "./edupace/ecgMobitz2.js";
+import { slowConduction } from "./edupace/ecgSlowConduction.js";
+import { knobPresets } from "./edupace/knobPresets.js";
+
+const initSectionObserver = () => {
+  const tocLinks = Array.from(document.querySelectorAll(".edupace-toc__link"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+
+  const sectionMap = new Map(
+    tocLinks.map((link) => [link, document.getElementById(link.dataset.section)])
+  );
+
+  const setActive = (activeId) => {
+    tocLinks.forEach((link) => {
+      const isActive = link.dataset.section === activeId;
+      link.classList.toggle("is-active", isActive);
+      link.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  };
+
+  const sections = Array.from(sectionMap.values()).filter(Boolean);
+  if (sections.length === 0) {
+    return;
+  }
+
+  let ticking = false;
+
+  const updateActiveSection = () => {
+    const marker = window.innerHeight * 0.35;
+    let activeId = sections[0].id;
+
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= marker) {
+        activeId = section.id;
+      }
+    });
+
+    const nearBottom =
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (nearBottom) {
+      activeId = sections[sections.length - 1].id;
+    }
+
+    setActive(activeId);
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateActiveSection);
+    }
+  };
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  requestUpdate();
+
+  tocLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      setActive(link.dataset.section);
+    });
+  });
+};
+
+const initEcgWidget = () => {
   const widget = document.querySelector(".ecg-widget");
   if (!widget) {
     return;
   }
 
-  const canvas = widget.querySelector("#ecgCanvas");
+  const paperCanvas = widget.querySelector("#ecgPaper");
+  const monitorCanvas = widget.querySelector("#ecgMonitor");
   const scenarioButtons = Array.from(widget.querySelectorAll(".ecg-scenario"));
   const stepButtons = Array.from(widget.querySelectorAll(".ecg-step"));
   const valueMap = {
@@ -13,22 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
     sense: widget.querySelector('[data-value="sense"]'),
   };
 
-  if (!canvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
+  if (!paperCanvas || !monitorCanvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
     return;
   }
 
-  const ctx = canvas.getContext("2d");
-  const scenarios = {
-    nsr: { baseRate: 75, amplitude: 1, irregularity: 0.02, dropEvery: 0 },
-    third: { baseRate: 40, amplitude: 0.85, irregularity: 0.1, dropEvery: 0 },
-    mobitz: { baseRate: 60, amplitude: 0.95, irregularity: 0.06, dropEvery: 3 },
-    slow: { baseRate: 52, amplitude: 0.8, irregularity: 0.03, dropEvery: 0 },
-  };
-  const limits = {
-    rate: { min: 30, max: 140, step: 1, unit: "bpm" },
-    output: { min: 1, max: 10, step: 1, unit: "mA" },
-    sense: { min: 1, max: 10, step: 1, unit: "mV" },
-  };
+  const paperCtx = paperCanvas.getContext("2d");
+  const monitorCtx = monitorCanvas.getContext("2d");
   const state = {
     scenario: "nsr",
     rate: 80,
@@ -36,123 +96,361 @@ document.addEventListener("DOMContentLoaded", () => {
     sense: 5,
   };
 
+  const precision = {
+    rate: 0,
+    output: 1,
+    sense: 1,
+  };
+
+  const presets = {
+    rate: knobPresets.rate,
+    output: knobPresets.output,
+    sense: knobPresets.sensitivity,
+  };
+
+  const SMALL_T = 0.04;
+  const BIG_T = 0.2;
+  const SMALL_A = 0.1;
+  const BIG_A = 1.0;
+  const VIEW_SEC = 6;
+  const Y_MIN = -1;
+  const Y_MAX = 1;
+  const VERTICAL_SCALE = 1.6;
+  const R_Y_MIN = Y_MIN * VERTICAL_SCALE;
+  const R_Y_MAX = Y_MAX * VERTICAL_SCALE;
+  const SWEEP_TIME_SCALE = 1.0;
+
+  const monitorBuffer = document.createElement("canvas");
+  const monitorBufferCtx = monitorBuffer.getContext("2d");
+  const monitorScreen = document.createElement("canvas");
+  const monitorScreenCtx = monitorScreen.getContext("2d");
+
+  let stripLive = null;
+  let sweepX = 0;
+  let prevSweepX = 0;
+  let lastTs = null;
+
+  const formatValue = (key, value) => {
+    const digits = precision[key] ?? 0;
+    return value.toFixed(digits);
+  };
+
   const updateLabels = () => {
-    valueMap.rate.textContent = `${state.rate} ${limits.rate.unit}`;
-    valueMap.output.textContent = `${state.output} ${limits.output.unit}`;
-    valueMap.sense.textContent = `${state.sense} ${limits.sense.unit}`;
+    valueMap.rate.textContent = `${formatValue("rate", state.rate)} bpm`;
+    valueMap.output.textContent = `${formatValue("output", state.output)} mA`;
+    valueMap.sense.textContent = `${formatValue("sense", state.sense)} mV`;
+  };
+
+  const buildWaveform = () => {
+    const baseConfig = {
+      patientHR: 40,
+      sensitivity: state.sense,
+      rate: state.rate,
+      output: state.output,
+      asynchronous: false,
+      iterations: 22,
+    };
+
+    let result;
+    switch (state.scenario) {
+      case "third":
+        result = thirdDegHeartBlock(baseConfig);
+        break;
+      case "mobitz":
+        result = mobitzTypeII(baseConfig);
+        break;
+      case "slow":
+        result = slowConduction(baseConfig);
+        break;
+      case "nsr":
+      default:
+        result = stitchBeats(baseConfig);
+        break;
+    }
+
+    const { x, y } = result;
+    if (!x || !y || x.length === 0 || y.length === 0) {
+      stripLive = null;
+      return;
+    }
+
+    stripLive = { x, y };
+    renderPaper();
+    rebuildMonitorBuffer();
+    resetSweep();
+  };
+
+  const setCanvasSize = (target, cssW, cssH) => {
+    const ratio = window.devicePixelRatio || 1;
+    target.style.width = `${cssW}px`;
+    target.style.height = `${cssH}px`;
+    target.width = Math.floor(cssW * ratio);
+    target.height = Math.floor(cssH * ratio);
+    const targetCtx = target.getContext("2d");
+    targetCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
   };
 
   const resizeCanvas = () => {
+    const paperWidth = paperCanvas.clientWidth;
+    const paperHeight = paperCanvas.clientHeight;
+    const monitorWidth = monitorCanvas.clientWidth;
+    const monitorHeight = monitorCanvas.clientHeight;
+    if (!paperWidth || !paperHeight || !monitorWidth || !monitorHeight) {
+      return;
+    }
+    setCanvasSize(paperCanvas, paperWidth, paperHeight);
+    setCanvasSize(monitorCanvas, monitorWidth, monitorHeight);
+    setCanvasSize(monitorBuffer, monitorWidth, monitorHeight);
+    setCanvasSize(monitorScreen, monitorWidth, monitorHeight);
+    renderPaper();
+    rebuildMonitorBuffer();
+    resetSweep();
+  };
+
+  const lowerBound = (arr, val) => {
+    let lo = 0;
+    let hi = arr.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (arr[mid] < val) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  };
+
+  const drawWaveWindowToSize = (targetCtx, width, height, strip, tLeft, tRight, strokeStyle) => {
+    const X = (t) => ((t - tLeft) / (tRight - tLeft)) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    const i0 = lowerBound(strip.x, tLeft);
+    const i1 = lowerBound(strip.x, tRight);
+    if (i1 - i0 < 2) return;
+
+    targetCtx.beginPath();
+    targetCtx.strokeStyle = strokeStyle;
+    targetCtx.lineWidth = 2;
+    targetCtx.lineJoin = "round";
+    targetCtx.lineCap = "round";
+    targetCtx.moveTo(X(strip.x[i0]), Y(strip.y[i0]));
+    for (let i = i0 + 1; i < i1; i += 1) {
+      targetCtx.lineTo(X(strip.x[i]), Y(strip.y[i]));
+    }
+    targetCtx.stroke();
+  };
+
+  const drawPaperGrid = (width, height) => {
+    paperCtx.clearRect(0, 0, width, height);
+    paperCtx.fillStyle = "#ffffff";
+    paperCtx.fillRect(0, 0, width, height);
+
+    const X = (t) => (t / VIEW_SEC) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
+      const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
+      paperCtx.beginPath();
+      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.lineWidth = isBig ? 1.2 : 0.8;
+      paperCtx.moveTo(X(t), 0);
+      paperCtx.lineTo(X(t), height);
+      paperCtx.stroke();
+    }
+
+    for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
+      const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
+      paperCtx.beginPath();
+      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.lineWidth = isBig ? 1.2 : 0.8;
+      paperCtx.moveTo(0, Y(v));
+      paperCtx.lineTo(width, Y(v));
+      paperCtx.stroke();
+    }
+  };
+
+  const drawMonitorGrid = (targetCtx, width, height) => {
+    targetCtx.clearRect(0, 0, width, height);
+    targetCtx.fillStyle = "#000000";
+    targetCtx.fillRect(0, 0, width, height);
+
+    const X = (t) => (t / VIEW_SEC) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    for (let t = 0; t < VIEW_SEC - 1e-9; t += SMALL_T) {
+      const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
+      targetCtx.beginPath();
+      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.lineWidth = isBig ? 1.1 : 0.8;
+      targetCtx.moveTo(X(t), 0);
+      targetCtx.lineTo(X(t), height);
+      targetCtx.stroke();
+    }
+
+    for (let v = R_Y_MIN + SMALL_A; v < R_Y_MAX - 1e-9; v += SMALL_A) {
+      const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
+      targetCtx.beginPath();
+      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.lineWidth = isBig ? 1.1 : 0.8;
+      targetCtx.moveTo(0, Y(v));
+      targetCtx.lineTo(width, Y(v));
+      targetCtx.stroke();
+    }
+  };
+
+  const renderPaper = () => {
+    const width = paperCanvas.clientWidth;
+    const height = paperCanvas.clientHeight;
+    if (!stripLive || !stripLive.x.length || !width || !height) {
+      return;
+    }
+
+    drawPaperGrid(width, height);
+    drawWaveWindowToSize(paperCtx, width, height, stripLive, 0, VIEW_SEC, "#111827");
+  };
+
+  const rebuildMonitorBuffer = () => {
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
+    if (!stripLive || !stripLive.x.length || !width || !height) {
+      return;
+    }
+
+    drawMonitorGrid(monitorBufferCtx, width, height);
+    drawWaveWindowToSize(monitorBufferCtx, width, height, stripLive, 0, VIEW_SEC, "#33ff66");
+
+    drawMonitorGrid(monitorScreenCtx, width, height);
+  };
+
+  const overwriteSliceOnScreen = (x0, x1) => {
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
+    if (x1 <= x0) return;
+
     const ratio = window.devicePixelRatio || 1;
-    canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(ratio, ratio);
-    drawWaveform();
+    const sx = Math.floor(x0 * ratio);
+    const sw = Math.ceil((x1 - x0) * ratio);
+    const sy = 0;
+    const sh = Math.ceil(height * ratio);
+
+    monitorScreenCtx.drawImage(
+      monitorBuffer,
+      sx,
+      sy,
+      sw,
+      sh,
+      x0,
+      0,
+      x1 - x0,
+      height
+    );
   };
 
-  const gaussian = (x, center, width, amplitude) => {
-    return amplitude * Math.exp(-Math.pow((x - center) / width, 2));
-  };
-
-  const ecgShape = (phase) => {
-    const p = gaussian(phase, 0.15, 0.035, 0.22);
-    const q = gaussian(phase, 0.3, 0.015, -0.3);
-    const r = gaussian(phase, 0.32, 0.012, 1.05);
-    const s = gaussian(phase, 0.35, 0.02, -0.35);
-    const t = gaussian(phase, 0.6, 0.07, 0.35);
-    return p + q + r + s + t;
-  };
-
-  const drawWaveform = () => {
-    const scenarioKey = state.scenario;
-    const scenario = scenarios[scenarioKey];
-    const rateValue = state.rate;
-    const outputValue = state.output;
-    const senseValue = state.sense;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const baseline = height * 0.55;
-    const beatRate = scenario.baseRate + (rateValue - 70) * 0.6;
-    const cycles = (beatRate / 60) * 2.4;
-    const amplitude = scenario.amplitude * (0.6 + outputValue / 12);
-    const noise = (11 - senseValue) * 0.0015;
-
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (let x = 0; x <= width; x += width / 6) {
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
+  const resetSweep = () => {
+    sweepX = 0;
+    prevSweepX = 0;
+    lastTs = null;
+    if (monitorCanvas.clientWidth && monitorCanvas.clientHeight) {
+      drawMonitorGrid(monitorScreenCtx, monitorCanvas.clientWidth, monitorCanvas.clientHeight);
     }
-    for (let y = 0; y <= height; y += height / 4) {
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
+  };
+
+  const stepSweep = (dt) => {
+    const width = monitorCanvas.clientWidth;
+    const pxPerSec = (width / VIEW_SEC) * SWEEP_TIME_SCALE;
+    prevSweepX = sweepX;
+    sweepX += pxPerSec * dt;
+    if (sweepX >= width) sweepX %= width;
+
+    if (sweepX >= prevSweepX) {
+      overwriteSliceOnScreen(prevSweepX, sweepX);
+    } else {
+      overwriteSliceOnScreen(prevSweepX, width);
+      overwriteSliceOnScreen(0, sweepX);
     }
-    ctx.stroke();
+  };
 
-    ctx.strokeStyle = "#22d3ee";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
+  const renderMonitor = () => {
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
+    monitorCtx.clearRect(0, 0, width, height);
+    monitorCtx.drawImage(monitorScreen, 0, 0, width, height);
 
-    for (let x = 0; x <= width; x++) {
-      const t = (x / width) * cycles;
-      const beatIndex = Math.floor(t);
-      const phase = t % 1;
-      const isDropped = scenario.dropEvery > 0 && beatIndex % scenario.dropEvery === scenario.dropEvery - 1;
-      const irregularOffset = Math.sin(phase * Math.PI * 2) * scenario.irregularity;
-      const baseValue = isDropped ? 0.02 : ecgShape(phase + irregularOffset);
-      const jitter = (Math.random() - 0.5) * noise;
-      const y = baseline - (baseValue + jitter) * amplitude * height * 0.32;
-      if (x === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
+    monitorCtx.strokeStyle = "rgba(51,255,102,0.95)";
+    monitorCtx.lineWidth = 2;
+    monitorCtx.beginPath();
+    monitorCtx.moveTo(sweepX, 0);
+    monitorCtx.lineTo(sweepX, height);
+    monitorCtx.stroke();
+
+    monitorCtx.strokeStyle = "rgba(51,255,102,0.18)";
+    monitorCtx.lineWidth = 10;
+    monitorCtx.beginPath();
+    monitorCtx.moveTo(sweepX, 0);
+    monitorCtx.lineTo(sweepX, height);
+    monitorCtx.stroke();
+  };
+
+  const animate = (timestamp) => {
+    if (!stripLive) {
+      requestAnimationFrame(animate);
+      return;
+    }
+
+    if (lastTs == null) lastTs = timestamp;
+    const dt = (timestamp - lastTs) / 1000;
+    lastTs = timestamp;
+
+    stepSweep(dt);
+    renderMonitor();
+    requestAnimationFrame(animate);
+  };
+
+  const findClosestIndex = (values, current) => {
+    let closestIndex = 0;
+    let closestDiff = Math.abs(values[0] - current);
+    for (let i = 1; i < values.length; i += 1) {
+      const diff = Math.abs(values[i] - current);
+      if (diff < closestDiff) {
+        closestDiff = diff;
+        closestIndex = i;
       }
     }
-    ctx.stroke();
-
-    ctx.strokeStyle = "#f97316";
-    ctx.lineWidth = 1.5;
-    for (let beat = 0; beat < Math.ceil(cycles); beat++) {
-      const isDropped = scenario.dropEvery > 0 && beat % scenario.dropEvery === scenario.dropEvery - 1;
-      if (isDropped) {
-        continue;
-      }
-      const spikeX = ((beat + 0.28) / cycles) * width;
-      const spikeHeight = (outputValue / 10) * height * 0.25;
-      ctx.beginPath();
-      ctx.moveTo(spikeX, baseline - spikeHeight);
-      ctx.lineTo(spikeX, baseline + spikeHeight * 0.15);
-      ctx.stroke();
-    }
+    return closestIndex;
   };
 
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const stepPreset = (key, direction) => {
+    const values = presets[key];
+    if (!values || values.length === 0) {
+      return state[key];
+    }
+    const current = state[key];
+    const currentIndex = findClosestIndex(values, current);
+    const nextIndex = Math.min(
+      values.length - 1,
+      Math.max(0, currentIndex + direction)
+    );
+    return values[nextIndex];
+  };
 
   const handleScenarioChange = (button) => {
     const scenario = button.dataset.scenario;
-    if (!scenario || !scenarios[scenario]) {
+    if (!scenario) {
       return;
     }
     state.scenario = scenario;
     scenarioButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    buildWaveform();
     updateLabels();
-    drawWaveform();
   };
 
   const handleStep = (button) => {
     const target = button.dataset.target;
     const step = parseInt(button.dataset.step, 10);
-    if (!target || Number.isNaN(step) || !limits[target]) {
+    if (!target || Number.isNaN(step) || !presets[target]) {
       return;
     }
-    const { min, max } = limits[target];
-    state[target] = clamp(state[target] + step, min, max);
+    state[target] = stepPreset(target, step);
     updateLabels();
-    drawWaveform();
+    buildWaveform();
   };
 
   scenarioButtons.forEach((button) => {
@@ -165,5 +463,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateLabels();
   resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  buildWaveform();
+  window.addEventListener("resize", () => {
+    resizeCanvas();
+  });
+  requestAnimationFrame(animate);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  initSectionObserver();
+  initEcgWidget();
 });

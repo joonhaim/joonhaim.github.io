@@ -10,49 +10,51 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="static/css/edupace.css">
   <script src="static/js/script.js" defer></script>
-  <script src="static/js/edupace.js" defer></script>
+  <script src="static/js/edupace.js" type="module"></script>
   <script src="static/js/includes.js" defer></script>
 </head>
 <body>
   <div class="container">
     <div id="site-header"></div>
 
-    <main class="content">
-      <section class="edupace-hero">
-        <div class="edupace-hero__content">
-          <p class="eyebrow">TU Delft Minor Biomedical Engineering · 2025</p>
-          <h1 class="edupace-title">
-            <img src="static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
-          </h1>
-          <p class="lead">
-            EduPace is a blended software + hardware simulator that trains nurses and biomedical
-            engineering students to configure a temporary external single-chamber pacemaker. The
-            platform pairs a real-time ECG engine with a tactile control unit, so learners can
-            practice pacing, sensing, and threshold tuning in a setting that mirrors the clinical
-            workflow.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="report.pdf">View project report (PDF)</a>
-            <a class="button secondary" href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Explore repository</a>
-          </div>
-        </div>
-        <div class="edupace-hero__visual">
-          <figure class="hero-image">
-            <img src="static/images/edupace/edupace_square.png" alt="EduPace pacemaker training device">
-            <figcaption>EduPace combines tactile hardware with a real-time pacing simulator.</figcaption>
-          </figure>
-          <div class="hero-partners">
-            <strong>Collaborating institutions</strong>
-            <div class="logo-row">
-              <img src="static/images/logos/TUD.png" alt="TU Delft logo">
-              <img src="static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
+    <main class="content edupace-layout">
+      <div class="edupace-body">
+        <section class="edupace-hero" id="edupace-hero" data-edupace-section>
+          <div class="edupace-hero__content">
+            <p class="eyebrow">TU Delft Minor Biomedical Engineering · 2025</p>
+            <h1 class="edupace-title">
+              <img src="static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
+            </h1>
+            <p class="lead">
+              EduPace is a blended software + hardware simulator that trains nurses and biomedical
+              engineering students to configure a temporary external single-chamber pacemaker. The
+              platform pairs a real-time ECG engine with a tactile control unit, so learners can
+              practice pacing, sensing, and threshold tuning in a setting that mirrors the clinical
+              workflow.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="report.pdf">View project report (PDF)</a>
+              <a class="button secondary" href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Explore repository</a>
             </div>
           </div>
-        </div>
+          <div class="edupace-hero__visual">
+            <figure class="hero-image">
+              <img src="static/images/edupace/edupace_square.png" alt="EduPace pacemaker training device">
+              <figcaption>EduPace combines tactile hardware with a real-time pacing simulator.</figcaption>
+            </figure>
+            <div class="hero-partners">
+              <strong>Collaborating institutions</strong>
+              <div class="logo-row">
+                <img src="static/images/logos/TUD.png" alt="TU Delft logo">
+                <img src="static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
+              </div>
+            </div>
+          </div>
       </section>
 
-      <section class="edupace-section">
+      <section class="edupace-section" id="project-overview" data-edupace-section>
         <div class="section-heading">
           <h2>Project overview</h2>
           <p>
@@ -80,7 +82,7 @@
         </div>
       </section>
 
-      <section class="edupace-section split-section">
+      <section class="edupace-section split-section" id="training-need" data-edupace-section>
         <div class="split-text">
           <h2>Why temporary pacing training matters</h2>
           <p>
@@ -117,7 +119,7 @@
         </div>
       </section>
 
-      <section class="edupace-section edupace-timeline">
+      <section class="edupace-section edupace-timeline" id="development-timeline" data-edupace-section>
         <div class="section-heading">
           <h2>Development timeline</h2>
           <p>
@@ -157,7 +159,13 @@
                 </div>
               </div>
               <div class="ecg-widget__body">
-                <canvas id="ecgCanvas" role="img" aria-label="Interactive ECG preview"></canvas>
+                <div class="ecg-monitor" aria-hidden="true">
+                  <div class="ecg-monitor__meta">
+                    <span>ECG monitor</span>
+                    <span class="ecg-monitor__status">Live</span>
+                  </div>
+                  <canvas id="ecgCanvas" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG preview"></canvas>
+                </div>
                 <div class="ecg-widget__controls">
                   <div class="ecg-control">
                     <span class="ecg-control__label">Rate</span>
@@ -282,7 +290,7 @@
         </article>
       </section>
 
-      <section class="edupace-section">
+      <section class="edupace-section" id="key-results" data-edupace-section>
         <h2>Key results</h2>
         <div class="overview-grid">
           <article class="overview-card">
@@ -308,7 +316,7 @@
         </div>
       </section>
 
-      <section class="edupace-section">
+      <section class="edupace-section" id="team-contributions" data-edupace-section>
         <h2>Team &amp; contributions</h2>
         <div class="team-grid">
           <article class="team-card">
@@ -330,7 +338,7 @@
         </div>
       </section>
 
-      <section class="edupace-section">
+      <section class="edupace-section" id="acknowledgements" data-edupace-section>
         <h2>Acknowledgements</h2>
         <p>
           The EduPace team thanks project supervisor Paul Verschuren and nurse Kim for providing
@@ -338,10 +346,51 @@
         </p>
       </section>
 
-      <section class="edupace-section disclaimer-card">
+      <section class="edupace-section disclaimer-card" id="disclaimer" data-edupace-section>
         <h2>Disclaimer</h2>
         <p>EduPace is for educational use only and is not a medical device.</p>
       </section>
+      </div>
+
+      <aside class="edupace-toc" aria-label="EduPace sections">
+        <div class="edupace-toc__inner">
+          <span class="edupace-toc__title">On this page</span>
+          <nav class="edupace-toc__nav">
+            <a class="edupace-toc__link" href="#edupace-hero" data-section="edupace-hero">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Intro</span>
+            </a>
+            <a class="edupace-toc__link" href="#project-overview" data-section="project-overview">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Project overview</span>
+            </a>
+            <a class="edupace-toc__link" href="#training-need" data-section="training-need">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Why training matters</span>
+            </a>
+            <a class="edupace-toc__link" href="#development-timeline" data-section="development-timeline">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Development timeline</span>
+            </a>
+            <a class="edupace-toc__link" href="#key-results" data-section="key-results">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Key results</span>
+            </a>
+            <a class="edupace-toc__link" href="#team-contributions" data-section="team-contributions">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Team &amp; contributions</span>
+            </a>
+            <a class="edupace-toc__link" href="#acknowledgements" data-section="acknowledgements">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Acknowledgements</span>
+            </a>
+            <a class="edupace-toc__link" href="#disclaimer" data-section="disclaimer">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Disclaimer</span>
+            </a>
+          </nav>
+        </div>
+      </aside>
     </main>
 
     <div id="site-footer"></div>

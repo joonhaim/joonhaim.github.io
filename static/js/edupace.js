@@ -1,4 +1,53 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { stitchBeats } from "./edupace/ecgStitcher.js";
+import { thirdDegHeartBlock } from "./edupace/ecgThirdDegree.js";
+import { mobitzTypeII } from "./edupace/ecgMobitz2.js";
+import { slowConduction } from "./edupace/ecgSlowConduction.js";
+
+const initSectionObserver = () => {
+  const tocLinks = Array.from(document.querySelectorAll(".edupace-toc__link"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+
+  const sectionMap = new Map(
+    tocLinks.map((link) => [link, document.getElementById(link.dataset.section)])
+  );
+
+  const setActive = (activeId) => {
+    tocLinks.forEach((link) => {
+      const isActive = link.dataset.section === activeId;
+      link.classList.toggle("is-active", isActive);
+      link.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  };
+
+  const sections = Array.from(sectionMap.values()).filter(Boolean);
+  if (sections.length === 0) {
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    },
+    {
+      rootMargin: "-20% 0px -60% 0px",
+      threshold: 0.2,
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+
+  tocLinks.forEach((link) => {
+    link.addEventListener("click", () => setActive(link.dataset.section));
+  });
+};
+
+const initEcgWidget = () => {
   const widget = document.querySelector(".ecg-widget");
   if (!widget) {
     return;
@@ -18,22 +67,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const ctx = canvas.getContext("2d");
-  const scenarios = {
-    nsr: { baseRate: 75, amplitude: 1, irregularity: 0.02, dropEvery: 0 },
-    third: { baseRate: 40, amplitude: 0.85, irregularity: 0.1, dropEvery: 0 },
-    mobitz: { baseRate: 60, amplitude: 0.95, irregularity: 0.06, dropEvery: 3 },
-    slow: { baseRate: 52, amplitude: 0.8, irregularity: 0.03, dropEvery: 0 },
-  };
-  const limits = {
-    rate: { min: 30, max: 140, step: 1, unit: "bpm" },
-    output: { min: 1, max: 10, step: 1, unit: "mA" },
-    sense: { min: 1, max: 10, step: 1, unit: "mV" },
-  };
   const state = {
     scenario: "nsr",
     rate: 80,
     output: 6,
     sense: 5,
+  };
+
+  const limits = {
+    rate: { min: 30, max: 140, step: 1, unit: "bpm" },
+    output: { min: 1, max: 10, step: 1, unit: "mA" },
+    sense: { min: 1, max: 10, step: 1, unit: "mV" },
+  };
+
+  const waveformState = {
+    samples: new Float32Array(0),
+    duration: 2.8,
+    window: 2.6,
+    lastUpdate: 0,
   };
 
   const updateLabels = () => {
@@ -42,106 +93,170 @@ document.addEventListener("DOMContentLoaded", () => {
     valueMap.sense.textContent = `${state.sense} ${limits.sense.unit}`;
   };
 
+  const buildWaveform = () => {
+    const baseConfig = {
+      patientHR: state.rate,
+      sensitivity: state.sense / 10,
+      rate: state.rate,
+      output: state.output,
+      asynchronous: false,
+      iterations: 22,
+    };
+
+    let result;
+    switch (state.scenario) {
+      case "third":
+        result = thirdDegHeartBlock(baseConfig);
+        break;
+      case "mobitz":
+        result = mobitzTypeII(baseConfig);
+        break;
+      case "slow":
+        result = slowConduction(baseConfig);
+        break;
+      case "nsr":
+      default:
+        result = stitchBeats(baseConfig);
+        break;
+    }
+
+    const { x, y } = result;
+    if (!x || !y || x.length === 0 || y.length === 0) {
+      return;
+    }
+
+    const maxX = Math.max(...x);
+    const duration = Math.max(2.6, maxX || 2.6);
+    const sampleCount = Math.max(1500, Math.floor(duration * 600));
+    const samples = new Float32Array(sampleCount);
+
+    let cursor = 0;
+    for (let i = 0; i < sampleCount; i++) {
+      const t = (i / (sampleCount - 1)) * duration;
+      while (cursor < x.length - 2 && x[cursor + 1] < t) {
+        cursor += 1;
+      }
+      const t0 = x[cursor];
+      const t1 = x[cursor + 1] ?? t0;
+      const y0 = y[cursor];
+      const y1 = y[cursor + 1] ?? y0;
+      const ratio = t1 === t0 ? 0 : (t - t0) / (t1 - t0);
+      samples[i] = y0 + (y1 - y0) * ratio;
+    }
+
+    waveformState.samples = samples;
+    waveformState.duration = duration;
+  };
+
   const resizeCanvas = () => {
     const ratio = window.devicePixelRatio || 1;
     canvas.width = canvas.clientWidth * ratio;
     canvas.height = canvas.clientHeight * ratio;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(ratio, ratio);
-    drawWaveform();
   };
 
-  const gaussian = (x, center, width, amplitude) => {
-    return amplitude * Math.exp(-Math.pow((x - center) / width, 2));
-  };
-
-  const ecgShape = (phase) => {
-    const p = gaussian(phase, 0.15, 0.035, 0.22);
-    const q = gaussian(phase, 0.3, 0.015, -0.3);
-    const r = gaussian(phase, 0.32, 0.012, 1.05);
-    const s = gaussian(phase, 0.35, 0.02, -0.35);
-    const t = gaussian(phase, 0.6, 0.07, 0.35);
-    return p + q + r + s + t;
-  };
-
-  const drawWaveform = () => {
-    const scenarioKey = state.scenario;
-    const scenario = scenarios[scenarioKey];
-    const rateValue = state.rate;
-    const outputValue = state.output;
-    const senseValue = state.sense;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const baseline = height * 0.55;
-    const beatRate = scenario.baseRate + (rateValue - 70) * 0.6;
-    const cycles = (beatRate / 60) * 2.4;
-    const amplitude = scenario.amplitude * (0.6 + outputValue / 12);
-    const noise = (11 - senseValue) * 0.0015;
-
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+  const drawGrid = (width, height) => {
+    ctx.strokeStyle = "rgba(51, 255, 102, 0.12)";
     ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (let x = 0; x <= width; x += width / 6) {
+    const minor = 24;
+    for (let x = 0; x <= width; x += minor) {
+      ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, height);
+      ctx.stroke();
     }
-    for (let y = 0; y <= height; y += height / 4) {
+    for (let y = 0; y <= height; y += minor) {
+      ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
+      ctx.stroke();
     }
-    ctx.stroke();
 
-    ctx.strokeStyle = "#22d3ee";
+    ctx.strokeStyle = "rgba(51, 255, 102, 0.2)";
+    ctx.lineWidth = 1.2;
+    const major = minor * 5;
+    for (let x = 0; x <= width; x += major) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+    for (let y = 0; y <= height; y += major) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+  };
+
+  const sampleAt = (time) => {
+    const { samples, duration } = waveformState;
+    if (!samples.length || duration <= 0) {
+      return 0;
+    }
+    const normalized = ((time % duration) + duration) % duration;
+    const idx = Math.floor((normalized / duration) * (samples.length - 1));
+    return samples[idx] ?? 0;
+  };
+
+  const drawWaveform = (timestamp) => {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if (width === 0 || height === 0) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+    drawGrid(width, height);
+
+    const baseline = height * 0.58;
+    const amplitude = height * 0.32;
+    const speed = 0.9;
+    const windowDuration = waveformState.window;
+    const startTime = (timestamp / 1000) * speed;
+
+    ctx.save();
     ctx.lineWidth = 2;
+    ctx.strokeStyle = "rgba(51, 255, 102, 0.9)";
+    ctx.shadowColor = "rgba(51, 255, 102, 0.6)";
+    ctx.shadowBlur = 8;
     ctx.beginPath();
 
     for (let x = 0; x <= width; x++) {
-      const t = (x / width) * cycles;
-      const beatIndex = Math.floor(t);
-      const phase = t % 1;
-      const isDropped = scenario.dropEvery > 0 && beatIndex % scenario.dropEvery === scenario.dropEvery - 1;
-      const irregularOffset = Math.sin(phase * Math.PI * 2) * scenario.irregularity;
-      const baseValue = isDropped ? 0.02 : ecgShape(phase + irregularOffset);
-      const jitter = (Math.random() - 0.5) * noise;
-      const y = baseline - (baseValue + jitter) * amplitude * height * 0.32;
+      const t = startTime + (x / width) * windowDuration;
+      const y = baseline - sampleAt(t) * amplitude;
       if (x === 0) {
         ctx.moveTo(x, y);
       } else {
         ctx.lineTo(x, y);
       }
     }
-    ctx.stroke();
 
-    ctx.strokeStyle = "#f97316";
-    ctx.lineWidth = 1.5;
-    for (let beat = 0; beat < Math.ceil(cycles); beat++) {
-      const isDropped = scenario.dropEvery > 0 && beat % scenario.dropEvery === scenario.dropEvery - 1;
-      if (isDropped) {
-        continue;
-      }
-      const spikeX = ((beat + 0.28) / cycles) * width;
-      const spikeHeight = (outputValue / 10) * height * 0.25;
-      ctx.beginPath();
-      ctx.moveTo(spikeX, baseline - spikeHeight);
-      ctx.lineTo(spikeX, baseline + spikeHeight * 0.15);
-      ctx.stroke();
-    }
+    ctx.stroke();
+    ctx.restore();
   };
 
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const animate = (timestamp) => {
+    if (!waveformState.lastUpdate || timestamp - waveformState.lastUpdate > 16) {
+      drawWaveform(timestamp);
+      waveformState.lastUpdate = timestamp;
+    }
+    requestAnimationFrame(animate);
+  };
 
   const handleScenarioChange = (button) => {
     const scenario = button.dataset.scenario;
-    if (!scenario || !scenarios[scenario]) {
+    if (!scenario) {
       return;
     }
     state.scenario = scenario;
     scenarioButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    buildWaveform();
     updateLabels();
-    drawWaveform();
   };
+
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
   const handleStep = (button) => {
     const target = button.dataset.target;
@@ -152,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const { min, max } = limits[target];
     state[target] = clamp(state[target] + step, min, max);
     updateLabels();
-    drawWaveform();
+    buildWaveform();
   };
 
   scenarioButtons.forEach((button) => {
@@ -165,5 +280,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateLabels();
   resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
+  buildWaveform();
+  window.addEventListener("resize", () => {
+    resizeCanvas();
+  });
+  requestAnimationFrame(animate);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  initSectionObserver();
+  initEcgWidget();
 });

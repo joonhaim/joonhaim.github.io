@@ -9,8 +9,7 @@
 }
 
 .edupace-layout {
-  display: grid;
-  gap: clamp(1.5rem, 3vw, 3rem);
+  display: block;
 }
 
 .edupace-body {
@@ -104,16 +103,13 @@
 }
 
 @media (min-width: 1100px) {
-  .edupace-layout {
-    grid-template-columns: minmax(0, 1fr) 240px;
-    align-items: start;
-  }
-
   .edupace-toc {
     display: block;
-    position: sticky;
+    position: fixed;
     top: 120px;
-    align-self: start;
+    right: clamp(1rem, 3vw, 2.5rem);
+    width: 210px;
+    z-index: 10;
   }
 }
 
@@ -121,16 +117,18 @@
   background: var(--edupace-dark);
   border: 1px solid rgba(148, 163, 184, 0.25);
   box-shadow: 0 24px 45px rgba(5, 9, 20, 0.5);
+  color: #e2e8f0;
 }
 
 .ecg-widget__header h4 {
-  color: var(--edupace-text);
+  color: #f8fafc;
 }
 
 .ecg-widget__header p,
 .ecg-control,
-.ecg-widget__header {
-  color: var(--edupace-muted);
+.ecg-widget__header,
+.ecg-control__label {
+  color: #cbd5f5;
 }
 
 .ecg-widget__scenarios {
@@ -140,7 +138,7 @@
 .ecg-scenario {
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(148, 163, 184, 0.3);
-  color: var(--edupace-text);
+  color: #e2e8f0;
   padding: 0.4rem 0.9rem;
 }
 
@@ -192,7 +190,7 @@
   border-radius: 12px;
   border: 1px solid rgba(148, 163, 184, 0.35);
   background: rgba(15, 23, 42, 0.75);
-  color: var(--edupace-text);
+  color: #f8fafc;
 }
 
 .ecg-step:hover {
@@ -200,9 +198,46 @@
 }
 
 .ecg-value {
-  color: var(--edupace-text);
+  color: #f8fafc;
 }
 
 .timeline-step__content--split .ecg-widget {
   grid-column: 1 / -1;
+}
+
+.ecg-paper {
+  position: relative;
+  padding: 0.75rem;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+.ecg-paper__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.ecg-paper__status {
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.ecg-paper__canvas {
+  width: 100%;
+  height: 200px;
+  display: block;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.4);
 }

@@ -159,12 +159,12 @@
                 </div>
               </div>
               <div class="ecg-widget__body">
-                <div class="ecg-monitor" aria-hidden="true">
-                  <div class="ecg-monitor__meta">
-                    <span>ECG monitor</span>
-                    <span class="ecg-monitor__status">Live</span>
+                <div class="ecg-paper" aria-hidden="true">
+                  <div class="ecg-paper__meta">
+                    <span>ECG paper</span>
+                    <span class="ecg-paper__status">Reference</span>
                   </div>
-                  <canvas id="ecgCanvas" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG preview"></canvas>
+                  <canvas id="ecgPaper" class="ecg-paper__canvas" role="img" aria-label="ECG graph paper preview"></canvas>
                 </div>
                 <div class="ecg-widget__controls">
                   <div class="ecg-control">
@@ -191,6 +191,13 @@
                       <button type="button" class="ecg-step" data-target="sense" data-step="1" aria-label="Increase sensitivity">+</button>
                     </div>
                   </div>
+                </div>
+                <div class="ecg-monitor" aria-hidden="true">
+                  <div class="ecg-monitor__meta">
+                    <span>ECG software rendering</span>
+                    <span class="ecg-monitor__status">Live</span>
+                  </div>
+                  <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                 </div>
               </div>
             </div>

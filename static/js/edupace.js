@@ -53,7 +53,8 @@ const initEcgWidget = () => {
     return;
   }
 
-  const canvas = widget.querySelector("#ecgCanvas");
+  const paperCanvas = widget.querySelector("#ecgPaper");
+  const monitorCanvas = widget.querySelector("#ecgMonitor");
   const scenarioButtons = Array.from(widget.querySelectorAll(".ecg-scenario"));
   const stepButtons = Array.from(widget.querySelectorAll(".ecg-step"));
   const valueMap = {
@@ -62,11 +63,12 @@ const initEcgWidget = () => {
     sense: widget.querySelector('[data-value="sense"]'),
   };
 
-  if (!canvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
+  if (!paperCanvas || !monitorCanvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
     return;
   }
 
-  const ctx = canvas.getContext("2d");
+  const paperCtx = paperCanvas.getContext("2d");
+  const monitorCtx = monitorCanvas.getContext("2d");
   const state = {
     scenario: "nsr",
     rate: 80,
@@ -142,6 +144,7 @@ const initEcgWidget = () => {
     }
 
     stripLive = { x, y };
+    renderPaper();
     rebuildMonitorBuffer();
     resetSweep();
   };
@@ -157,14 +160,18 @@ const initEcgWidget = () => {
   };
 
   const resizeCanvas = () => {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    if (!width || !height) {
+    const paperWidth = paperCanvas.clientWidth;
+    const paperHeight = paperCanvas.clientHeight;
+    const monitorWidth = monitorCanvas.clientWidth;
+    const monitorHeight = monitorCanvas.clientHeight;
+    if (!paperWidth || !paperHeight || !monitorWidth || !monitorHeight) {
       return;
     }
-    setCanvasSize(canvas, width, height);
-    setCanvasSize(monitorBuffer, width, height);
-    setCanvasSize(monitorScreen, width, height);
+    setCanvasSize(paperCanvas, paperWidth, paperHeight);
+    setCanvasSize(monitorCanvas, monitorWidth, monitorHeight);
+    setCanvasSize(monitorBuffer, monitorWidth, monitorHeight);
+    setCanvasSize(monitorScreen, monitorWidth, monitorHeight);
+    renderPaper();
     rebuildMonitorBuffer();
     resetSweep();
   };
@@ -180,7 +187,7 @@ const initEcgWidget = () => {
     return lo;
   };
 
-  const drawWaveWindowToSize = (targetCtx, width, height, strip, tLeft, tRight) => {
+  const drawWaveWindowToSize = (targetCtx, width, height, strip, tLeft, tRight, strokeStyle) => {
     const X = (t) => ((t - tLeft) / (tRight - tLeft)) * width;
     const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
 
@@ -189,7 +196,7 @@ const initEcgWidget = () => {
     if (i1 - i0 < 2) return;
 
     targetCtx.beginPath();
-    targetCtx.strokeStyle = "#33ff66";
+    targetCtx.strokeStyle = strokeStyle;
     targetCtx.lineWidth = 2;
     targetCtx.lineJoin = "round";
     targetCtx.lineCap = "round";
@@ -198,6 +205,35 @@ const initEcgWidget = () => {
       targetCtx.lineTo(X(strip.x[i]), Y(strip.y[i]));
     }
     targetCtx.stroke();
+  };
+
+  const drawPaperGrid = (width, height) => {
+    paperCtx.clearRect(0, 0, width, height);
+    paperCtx.fillStyle = "#ffffff";
+    paperCtx.fillRect(0, 0, width, height);
+
+    const X = (t) => (t / VIEW_SEC) * width;
+    const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
+
+    for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
+      const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
+      paperCtx.beginPath();
+      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.lineWidth = isBig ? 1.2 : 0.8;
+      paperCtx.moveTo(X(t), 0);
+      paperCtx.lineTo(X(t), height);
+      paperCtx.stroke();
+    }
+
+    for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
+      const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
+      paperCtx.beginPath();
+      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.lineWidth = isBig ? 1.2 : 0.8;
+      paperCtx.moveTo(0, Y(v));
+      paperCtx.lineTo(width, Y(v));
+      paperCtx.stroke();
+    }
   };
 
   const drawMonitorGrid = (targetCtx, width, height) => {
@@ -229,22 +265,33 @@ const initEcgWidget = () => {
     }
   };
 
+  const renderPaper = () => {
+    const width = paperCanvas.clientWidth;
+    const height = paperCanvas.clientHeight;
+    if (!stripLive || !stripLive.x.length || !width || !height) {
+      return;
+    }
+
+    drawPaperGrid(width, height);
+    drawWaveWindowToSize(paperCtx, width, height, stripLive, 0, VIEW_SEC, "#111827");
+  };
+
   const rebuildMonitorBuffer = () => {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
     if (!stripLive || !stripLive.x.length || !width || !height) {
       return;
     }
 
     drawMonitorGrid(monitorBufferCtx, width, height);
-    drawWaveWindowToSize(monitorBufferCtx, width, height, stripLive, 0, VIEW_SEC);
+    drawWaveWindowToSize(monitorBufferCtx, width, height, stripLive, 0, VIEW_SEC, "#33ff66");
 
     drawMonitorGrid(monitorScreenCtx, width, height);
   };
 
   const overwriteSliceOnScreen = (x0, x1) => {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
     if (x1 <= x0) return;
 
     const ratio = window.devicePixelRatio || 1;
@@ -270,13 +317,13 @@ const initEcgWidget = () => {
     sweepX = 0;
     prevSweepX = 0;
     lastTs = null;
-    if (canvas.clientWidth && canvas.clientHeight) {
-      drawMonitorGrid(monitorScreenCtx, canvas.clientWidth, canvas.clientHeight);
+    if (monitorCanvas.clientWidth && monitorCanvas.clientHeight) {
+      drawMonitorGrid(monitorScreenCtx, monitorCanvas.clientWidth, monitorCanvas.clientHeight);
     }
   };
 
   const stepSweep = (dt) => {
-    const width = canvas.clientWidth;
+    const width = monitorCanvas.clientWidth;
     const pxPerSec = (width / VIEW_SEC) * SWEEP_TIME_SCALE;
     prevSweepX = sweepX;
     sweepX += pxPerSec * dt;
@@ -291,24 +338,24 @@ const initEcgWidget = () => {
   };
 
   const renderMonitor = () => {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(monitorScreen, 0, 0, width, height);
+    const width = monitorCanvas.clientWidth;
+    const height = monitorCanvas.clientHeight;
+    monitorCtx.clearRect(0, 0, width, height);
+    monitorCtx.drawImage(monitorScreen, 0, 0, width, height);
 
-    ctx.strokeStyle = "rgba(51,255,102,0.95)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(sweepX, 0);
-    ctx.lineTo(sweepX, height);
-    ctx.stroke();
+    monitorCtx.strokeStyle = "rgba(51,255,102,0.95)";
+    monitorCtx.lineWidth = 2;
+    monitorCtx.beginPath();
+    monitorCtx.moveTo(sweepX, 0);
+    monitorCtx.lineTo(sweepX, height);
+    monitorCtx.stroke();
 
-    ctx.strokeStyle = "rgba(51,255,102,0.18)";
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.moveTo(sweepX, 0);
-    ctx.lineTo(sweepX, height);
-    ctx.stroke();
+    monitorCtx.strokeStyle = "rgba(51,255,102,0.18)";
+    monitorCtx.lineWidth = 10;
+    monitorCtx.beginPath();
+    monitorCtx.moveTo(sweepX, 0);
+    monitorCtx.lineTo(sweepX, height);
+    monitorCtx.stroke();
   };
 
   const animate = (timestamp) => {

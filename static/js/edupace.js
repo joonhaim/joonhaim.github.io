@@ -486,7 +486,80 @@ const initEcgWidget = () => {
   requestAnimationFrame(animate);
 };
 
+const initPhotoToggles = () => {
+  const toggles = Array.from(document.querySelectorAll("[data-photo-toggle]"));
+  if (toggles.length === 0) {
+    return;
+  }
+
+  toggles.forEach((toggle) => {
+    const image = toggle.querySelector("img");
+    const caption = toggle.querySelector(".photo-toggle__caption");
+    const buttons = Array.from(toggle.querySelectorAll("[data-photo-src]"));
+    if (!image || !caption || buttons.length === 0) {
+      return;
+    }
+
+    let activeIndex = buttons.findIndex((button) => button.classList.contains("is-active"));
+    if (activeIndex < 0) {
+      activeIndex = 0;
+    }
+
+    let timer = null;
+
+    const applyButtonState = (index) => {
+      const button = buttons[index];
+      if (!button) {
+        return;
+      }
+      const nextSrc = button.dataset.photoSrc;
+      const nextAlt = button.dataset.photoAlt;
+      const nextCaption = button.dataset.photoCaption;
+
+      if (nextSrc) {
+        image.src = nextSrc;
+      }
+      if (nextAlt) {
+        image.alt = nextAlt;
+      }
+      if (nextCaption) {
+        caption.textContent = nextCaption;
+      }
+
+      buttons.forEach((item, itemIndex) => {
+        const isActive = itemIndex === index;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      activeIndex = index;
+    };
+
+    const startTimer = () => {
+      if (timer) {
+        window.clearInterval(timer);
+      }
+      timer = window.setInterval(() => {
+        const nextIndex = (activeIndex + 1) % buttons.length;
+        applyButtonState(nextIndex);
+      }, 6500);
+    };
+
+    buttons.forEach((button, index) => {
+      button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
+      button.addEventListener("click", () => {
+        applyButtonState(index);
+        startTimer();
+      });
+    });
+
+    applyButtonState(activeIndex);
+    startTimer();
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   initSectionObserver();
   initEcgWidget();
+  initPhotoToggles();
 });

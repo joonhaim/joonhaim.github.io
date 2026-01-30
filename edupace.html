@@ -265,9 +265,29 @@
                 <li>Settings pane for device pairing, patient presets, and session exports.</li>
               </ul>
             </div>
-            <figure class="photo-card">
+            <figure class="photo-card" data-photo-toggle>
               <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
-              <figcaption>Dashboard view from the Electron-packaged training app.</figcaption>
+              <figcaption class="photo-toggle__caption">Dashboard view from the Electron-packaged training app.</figcaption>
+              <div class="photo-toggle" role="group" aria-label="Training app screenshots">
+                <button
+                  class="photo-toggle__button is-active"
+                  type="button"
+                  data-photo-src="static/images/edupace/edupace_dashboard.png"
+                  data-photo-alt="EduPace app dashboard showing pacing scenarios"
+                  data-photo-caption="Dashboard view from the Electron-packaged training app."
+                >
+                  Dashboard
+                </button>
+                <button
+                  class="photo-toggle__button"
+                  type="button"
+                  data-photo-src="static/images/edupace/training_tab.png"
+                  data-photo-alt="EduPace training tab showing ECG playback and guided steps"
+                  data-photo-caption="Training tab view with ECG playback and guided steps."
+                >
+                  Training tab
+                </button>
+              </div>
             </figure>
           </div>
         </article>

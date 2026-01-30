@@ -1417,15 +1417,15 @@ body {
 }
 
 .promo-banner--edupace {
-  --promo-accent: #4d8bff;
-  --promo-bg: #1c2b4a;
-  --promo-text: #f4f7ff;
-  --promo-muted: #c9d3ee;
-  --promo-highlight: #f0f4ff;
-  --promo-status-bg: rgba(77, 139, 255, 0.22);
-  --promo-status-color: #dfe8ff;
-  --promo-fig-color: #9bb9ff;
-  border-color: rgba(77, 139, 255, 0.35);
+  --promo-accent: #2f6bff;
+  --promo-bg: #f3f7ff;
+  --promo-text: #102046;
+  --promo-muted: #405079;
+  --promo-highlight: #1a2f66;
+  --promo-status-bg: rgba(47, 107, 255, 0.16);
+  --promo-status-color: #1e3d8f;
+  --promo-fig-color: #2f6bff;
+  border-color: rgba(47, 107, 255, 0.28);
 }
 
 .promo-banner--edupace .promo-kicker {

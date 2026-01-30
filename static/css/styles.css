@@ -370,6 +370,21 @@ body {
   gap: var(--space-sm);
   max-width: 780px;
 }
+.overview-section .overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-lg);
+  align-items: start;
+  margin-top: var(--space-md);
+}
+.overview-section .overview-text {
+  display: grid;
+  gap: var(--space-sm);
+}
+.overview-section .overview-cards {
+  display: grid;
+  gap: var(--space-md);
+}
 .system-components {
   display: grid;
   gap: var(--space-lg);
@@ -681,22 +696,32 @@ body {
   color: #555;
 }
 .stacked-card {
-  border-radius: 16px;
+  border-radius: 20px;
   padding: var(--space-md);
-  border: 1px solid #dcdcdc;
-  background: #fafafa;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 0.5rem;
+}
+.stacked-card h3 {
+  margin: 0;
+}
+.stacked-card p {
+  margin: 0;
+  color: #475569;
 }
 .tag {
   display: inline-flex;
   font-size: 0.75rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background: #fff;
-  border: 1px solid #dcdcdc;
-  margin-bottom: 0.5rem;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  margin-bottom: 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #777;
+  color: #0f172a;
 }
 .step-number {
   font-size: 0.9rem;

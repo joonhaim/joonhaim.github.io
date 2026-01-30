@@ -1160,7 +1160,7 @@ body {
 .featured-carousel .promo-banner {
   flex: 0 0 100%;
   height: auto;
-  padding: 1.1rem 2rem;
+  padding: 1.4rem 2.4rem 2.6rem;
   border-radius: 14px;
   grid-template-columns: 1.4fr 0.9fr;
   gap: var(--space-md);
@@ -1285,7 +1285,10 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin-left: 0.4rem;
+  position: absolute;
+  right: 2.2rem;
+  bottom: 1.4rem;
+  margin-left: 0;
 }
 
 .featured-control {
@@ -1414,15 +1417,15 @@ body {
 }
 
 .promo-banner--edupace {
-  --promo-accent: #2b6ff0;
-  --promo-bg: #e2ebff;
-  --promo-text: #16213a;
-  --promo-muted: #3b4b6b;
-  --promo-highlight: #1f3b73;
-  --promo-status-bg: rgba(43, 111, 240, 0.18);
-  --promo-status-color: #20408c;
-  --promo-fig-color: #2b6ff0;
-  border-color: rgba(43, 111, 240, 0.28);
+  --promo-accent: #4d8bff;
+  --promo-bg: #1c2b4a;
+  --promo-text: #f4f7ff;
+  --promo-muted: #c9d3ee;
+  --promo-highlight: #f0f4ff;
+  --promo-status-bg: rgba(77, 139, 255, 0.22);
+  --promo-status-color: #dfe8ff;
+  --promo-fig-color: #9bb9ff;
+  border-color: rgba(77, 139, 255, 0.35);
 }
 
 .promo-banner--edupace .promo-kicker {

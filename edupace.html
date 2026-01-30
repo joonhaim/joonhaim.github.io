@@ -74,20 +74,6 @@
             output and prevent hemodynamic collapse.
           </p>
         </div>
-        <div class="overview-grid">
-          <article class="overview-card">
-            <h3>Clinical relevance</h3>
-            <p>Models first-, second-, and third-degree AV blocks with realistic pacing response.</p>
-          </article>
-          <article class="overview-card">
-            <h3>Hands-on confidence</h3>
-            <p>Builds muscle memory through rate, output, and sensitivity tuning on hardware.</p>
-          </article>
-          <article class="overview-card">
-            <h3>Feedback-driven design</h3>
-            <p>Iterated with clinical staff to improve usability, realism, and ergonomics.</p>
-          </article>
-        </div>
       </section>
 
       <section class="edupace-section split-section" id="training-need" data-edupace-section>
@@ -148,10 +134,53 @@
             </p>
           </div>
           <div class="timeline-step__content timeline-step__content--stacked">
-            <figure class="photo-card photo-card--wide">
-              <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
-              <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
-            </figure>
+            <div class="system-block">
+              <div class="system-block__intro">
+                <h4>Rational Bezier-Bernstein Model</h4>
+                <p>
+                  EduPace models each ECG trace with a Rational Bezier-Bernstein formulation that
+                  weights control points to shape physiologic peaks and valleys while maintaining
+                  a smooth, continuous curve across pacing cycles.
+                </p>
+              </div>
+              <div class="system-block__content">
+                <div class="bezier-widget" id="bezierWidget" aria-label="Rational Bézier ECG demo">
+  <div class="bezier-widget__toolbar" role="group" aria-label="Waveform selection">
+    <button type="button" class="bezier-tab is-active" data-wave="Normal" aria-pressed="true">Normal</button>
+    <button type="button" class="bezier-tab" data-wave="Ventricular pacing" aria-pressed="false">Ventricular paced</button>
+    <button type="button" class="bezier-tab" data-wave="Mobitz II" aria-pressed="false">Mobitz II</button>
+
+    <div class="bezier-chips" aria-hidden="true">
+      <span class="bezier-chip" id="bezierSegChip">Segment: —</span>
+      <span class="bezier-chip" id="bezierDegChip">n = —</span>
+      <span class="bezier-chip" id="bezierTChip">t = 0.00</span>
+    </div>
+  </div>
+
+  <div class="bezier-widget__canvasWrap">
+    <canvas id="bezierEcgCanvas" class="bezier-widget__canvas" role="img" aria-label="Bézier ECG curve with control points"></canvas>
+  </div>
+
+  <div class="bezier-widget__formula">
+    $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
+    B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
+  </div>
+</div>
+              </div>
+            </div>
+            <div>
+              <figure class="photo-card photo-card--wide">
+                <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
+                <figcaption>ECG morphology library powering the dynamic pacing engine.</figcaption>
+              </figure>
+              <ul class="feature-list">
+                <li>A3.A Normal ECG trace for patient heart rate of 80 bpm.</li>
+                <li>A3.B Ventricular pacing for patient heart rate of 40 bpm (bradycardia), pacemaker rate of 70 ppm, sensitivity of 0.5 mV, and output of 1.7 mA.</li>
+                <li>A3.C ECG trace for first degree heart block for patient heart rate of 75 bpm, pacemaker rate of 60 ppm, sensitivity of 0.7 mV, and output of 1.7 mA.</li>
+                <li>A3.D ECG trace for second degree heart block for patient heart rate of 80 bpm, pacemaker rate of 90 ppm, sensitivity of 0.5 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
+                <li>A3.E ECG trace for third degree heart block for patient heart rate of 70 bpm, pacemaker rate of 80 ppm, sensitivity of 0.4 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
+              </ul>
+            </div>
             <div class="ecg-widget" aria-label="ECG parameter sandbox">
               <div class="ecg-widget__header">
                 <div>
@@ -207,48 +236,6 @@
                   </div>
                   <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                 </div>
-              </div>
-            </div>
-            <div class="system-block">
-              <div class="system-block__intro">
-                <h4>Rational Bezier-Bernstein Model</h4>
-                <p>
-                  EduPace models each ECG trace with a Rational Bezier-Bernstein formulation that
-                  weights control points to shape physiologic peaks and valleys while maintaining
-                  a smooth, continuous curve across pacing cycles.
-                </p>
-              </div>
-              <div class="system-block__content">
-                <div class="bezier-widget" id="bezierWidget" aria-label="Rational Bézier ECG demo">
-  <div class="bezier-widget__toolbar" role="group" aria-label="Waveform selection">
-    <button type="button" class="bezier-tab is-active" data-wave="Normal" aria-pressed="true">Normal</button>
-    <button type="button" class="bezier-tab" data-wave="Ventricular pacing" aria-pressed="false">Ventricular paced</button>
-    <button type="button" class="bezier-tab" data-wave="Mobitz II" aria-pressed="false">Mobitz II</button>
-
-    <div class="bezier-chips" aria-hidden="true">
-      <span class="bezier-chip" id="bezierSegChip">Segment: —</span>
-      <span class="bezier-chip" id="bezierDegChip">n = —</span>
-      <span class="bezier-chip" id="bezierTChip">t = 0.00</span>
-    </div>
-  </div>
-
-  <div class="bezier-widget__canvasWrap">
-    <canvas id="bezierEcgCanvas" class="bezier-widget__canvas" role="img" aria-label="Bézier ECG curve with control points"></canvas>
-  </div>
-
-  <div class="bezier-widget__formula">
-    $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
-    B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
-  </div>
-</div>
-
-                <ul class="feature-list">
-                  <li>A3.A Normal ECG trace for patient heart rate of 80 bpm.</li>
-                  <li>A3.B Ventricular pacing for patient heart rate of 40 bpm (bradycardia), pacemaker rate of 70 ppm, sensitivity of 0.5 mV, and output of 1.7 mA.</li>
-                  <li>A3.C ECG trace for first degree heart block for patient heart rate of 75 bpm, pacemaker rate of 60 ppm, sensitivity of 0.7 mV, and output of 1.7 mA.</li>
-                  <li>A3.D ECG trace for second degree heart block for patient heart rate of 80 bpm, pacemaker rate of 90 ppm, sensitivity of 0.5 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
-                  <li>A3.E ECG trace for third degree heart block for patient heart rate of 70 bpm, pacemaker rate of 80 ppm, sensitivity of 0.4 mV, and output of 1.3 mA. Pacing doesn’t occur, as capture threshold isn’t reached.</li>
-                </ul>
               </div>
             </div>
           </div>

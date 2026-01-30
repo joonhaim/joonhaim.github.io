@@ -67,8 +67,9 @@
         </div>
       </section>
 <!-- Featured Promo Banners -->
-<section class="featured-banners" aria-label="Featured dashboards">
-  <article class="promo-banner promo-banner--edupace" aria-labelledby="edupace-heading">
+<section class="featured-banners featured-carousel" aria-label="Featured dashboards" data-interval="5000">
+  <div class="featured-track">
+    <article class="promo-banner promo-banner--edupace" aria-labelledby="edupace-heading">
     <div class="promo-left">
       <p class="promo-status">Featured Project</p>
 
@@ -100,6 +101,10 @@
 
       <div class="promo-meta">
         <a class="btn btn-primary btn-compact" href="edupace.html">View Project</a>
+        <div class="promo-nav" aria-label="Featured projects navigation">
+          <button class="featured-control" type="button" data-direction="prev" aria-label="Previous featured project">‹</button>
+          <button class="featured-control" type="button" data-direction="next" aria-label="Next featured project">›</button>
+        </div>
       </div>
     </div>
 
@@ -108,9 +113,9 @@
         <img class="promo-fig promo-fig--photo" src="static/images/edupace/edupace_device_transparent.png" alt="">
       </div>
     </div>
-  </article>
+    </article>
 
-  <article class="promo-banner promo-banner--ch-iqi" aria-labelledby="ch-iqi-heading">
+    <article class="promo-banner promo-banner--ch-iqi" aria-labelledby="ch-iqi-heading">
     <div class="promo-left">
       <p class="promo-status"> New Dashboard</p>
 
@@ -147,6 +152,10 @@
 
       <div class="promo-meta">
         <a class="btn btn-primary btn-compact" href="ch_hospital.html">View Dashboard</a>
+        <div class="promo-nav" aria-label="Featured projects navigation">
+          <button class="featured-control" type="button" data-direction="prev" aria-label="Previous featured project">‹</button>
+          <button class="featured-control" type="button" data-direction="next" aria-label="Next featured project">›</button>
+        </div>
       </div>
     </div>
 
@@ -177,7 +186,8 @@
         </g>
       </svg>
     </div>
-  </article>
+    </article>
+  </div>
 </section>
 <!-- /Featured Promo Banners -->
       <!-- Projects -->

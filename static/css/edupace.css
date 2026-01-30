@@ -292,7 +292,7 @@
 
 /* --- Bézier ECG widget --- */
 .bezier-widget{
-  width: min(420px, 100%);
+  width: min(480px, 100%);
   border: 1px solid var(--color-border, #e5e7eb);
   border-radius: 14px;
   background: #fff;
@@ -344,11 +344,12 @@
 
 .bezier-widget__canvasWrap{
   border-bottom: 1px solid var(--color-border, #e5e7eb);
+  aspect-ratio: 13 / 8;
 }
 
 .bezier-widget__canvas{
   width: 100%;
-  height: 240px;
+  height: 100%;
   display: block;
 }
 

@@ -1160,7 +1160,7 @@ body {
 .featured-carousel .promo-banner {
   flex: 0 0 100%;
   height: auto;
-  padding: var(--space-md);
+  padding: 1.1rem 2rem;
   border-radius: 14px;
   grid-template-columns: 1.4fr 0.9fr;
   gap: var(--space-md);
@@ -1241,7 +1241,7 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .promo-highlights li {
@@ -1383,12 +1383,12 @@ body {
 }
 .promo-fig {
   width: 100%;
-  max-width: 420px;
+  max-width: 360px;
   height: auto;
   color: var(--promo-fig-color); /* grid lines */
 }
 .promo-fig--portrait {
-  max-width: 320px;
+  max-width: 280px;
 }
 .promo-fig--photo {
   border-radius: 20px;

@@ -1153,7 +1153,7 @@ body {
   --promo-status-color: #444;
   --promo-fig-color: #000;
   display: grid;
-  grid-template-columns: 1.4fr 0.9fr;
+  grid-template-columns: 1.5fr 0.85fr;
   gap: var(--space-md);
   padding: var(--space-md);
   border: 1px solid var(--color-border);
@@ -1208,16 +1208,16 @@ body {
 .promo-kicker {
   max-width: 60ch;
   color: var(--promo-muted);
-  font-size: 0.96rem;
+  font-size: 0.95rem;
 }
 
 .promo-highlights {
-  margin: 0.6rem 0 0;
+  margin: 0.5rem 0 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 0.75rem;
 }
 
 .promo-highlights li {
@@ -1225,7 +1225,8 @@ body {
   gap: 0.6rem;
   align-items: flex-start;
   color: var(--promo-highlight);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 .promo-highlights .icon {
@@ -1251,7 +1252,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--promo-highlight);
@@ -1389,7 +1390,10 @@ body {
 @media (max-width: 900px) {
   .promo-banner { grid-template-columns: 1fr; }
   .promo-right { order: -1; } /* put illustration on top on mobile */
-  .promo-highlights { margin-top: 0.8rem; }
+  .promo-highlights {
+    margin-top: 0.8rem;
+    grid-template-columns: 1fr;
+  }
   .promo-meta { align-self: flex-start; }
 }
 

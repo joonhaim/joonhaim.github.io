@@ -76,7 +76,7 @@ const initAutoHideToc = () => {
   document.body.classList.add("edupace-toc-auto");
 
   let hideTimer = null;
-  const HIDE_DELAY = 3000;
+  const HIDE_DELAY = 2000;
 
   const scheduleHide = () => {
     if (hideTimer) {

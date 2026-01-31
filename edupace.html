@@ -165,7 +165,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
 </div>
               </div>
             </div>
-            <div>
+            <div class="timeline-step__content timeline-step__content--split">
               <figure class="photo-card photo-card--wide">
                 <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
                 <figcaption>
@@ -179,61 +179,61 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                   </ul>
                 </figcaption>
               </figure>
-            </div>
-            <div class="ecg-widget" aria-label="ECG parameter sandbox">
-              <div class="ecg-widget__header">
-                <div>
-                  <h4>Try the ECG parameters</h4>
-                  <p>Adjust rate, output, and sensitivity to see how the waveform reacts.</p>
-                  <span class="ecg-widget__note">Intrinsic HR: 40 bpm</span>
-                </div>
-                <div class="ecg-widget__scenarios" role="group" aria-label="Scenario">
-                  <button type="button" class="ecg-scenario is-active" data-scenario="nsr">NSR</button>
-                  <button type="button" class="ecg-scenario" data-scenario="third">3rd deg AV</button>
-                  <button type="button" class="ecg-scenario" data-scenario="mobitz">2nd deg AV Mobitz II</button>
-                  <button type="button" class="ecg-scenario" data-scenario="slow">Slow conduction</button>
-                </div>
-              </div>
-              <div class="ecg-widget__body">
-                <div class="ecg-paper" aria-hidden="true">
-                  <div class="ecg-paper__meta">
-                    <span>ECG paper</span>
-                    <span class="ecg-paper__status">Reference</span>
+              <div class="ecg-widget" aria-label="ECG parameter sandbox">
+                <div class="ecg-widget__header">
+                  <div>
+                    <h4>Try the ECG parameters</h4>
+                    <p>Adjust rate, output, and sensitivity to see how the waveform reacts.</p>
+                    <span class="ecg-widget__note">Intrinsic HR: 40 bpm</span>
                   </div>
-                  <canvas id="ecgPaper" class="ecg-paper__canvas" role="img" aria-label="ECG graph paper preview"></canvas>
+                  <div class="ecg-widget__scenarios" role="group" aria-label="Scenario">
+                    <button type="button" class="ecg-scenario is-active" data-scenario="nsr">NSR</button>
+                    <button type="button" class="ecg-scenario" data-scenario="third">3rd deg AV</button>
+                    <button type="button" class="ecg-scenario" data-scenario="mobitz">2nd deg AV Mobitz II</button>
+                    <button type="button" class="ecg-scenario" data-scenario="slow">Slow conduction</button>
+                  </div>
                 </div>
-                <div class="ecg-widget__controls">
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Rate</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Rate">
-                      <button type="button" class="ecg-step" data-target="rate" data-step="-1" aria-label="Decrease rate">−</button>
-                      <span class="ecg-value" data-value="rate">80 bpm</span>
-                      <button type="button" class="ecg-step" data-target="rate" data-step="1" aria-label="Increase rate">+</button>
+                <div class="ecg-widget__body">
+                  <div class="ecg-paper" aria-hidden="true">
+                    <div class="ecg-paper__meta">
+                      <span>ECG paper</span>
+                      <span class="ecg-paper__status">Reference</span>
+                    </div>
+                    <canvas id="ecgPaper" class="ecg-paper__canvas" role="img" aria-label="ECG graph paper preview"></canvas>
+                  </div>
+                  <div class="ecg-widget__controls">
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Rate</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Rate">
+                        <button type="button" class="ecg-step" data-target="rate" data-step="-1" aria-label="Decrease rate">−</button>
+                        <span class="ecg-value" data-value="rate">80 bpm</span>
+                        <button type="button" class="ecg-step" data-target="rate" data-step="1" aria-label="Increase rate">+</button>
+                      </div>
+                    </div>
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Output</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Output">
+                        <button type="button" class="ecg-step" data-target="output" data-step="-1" aria-label="Decrease output">−</button>
+                        <span class="ecg-value" data-value="output">6 mA</span>
+                        <button type="button" class="ecg-step" data-target="output" data-step="1" aria-label="Increase output">+</button>
+                      </div>
+                    </div>
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Sensitivity</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Sensitivity">
+                        <button type="button" class="ecg-step" data-target="sense" data-step="-1" aria-label="Decrease sensitivity">−</button>
+                        <span class="ecg-value" data-value="sense">5 mV</span>
+                        <button type="button" class="ecg-step" data-target="sense" data-step="1" aria-label="Increase sensitivity">+</button>
+                      </div>
                     </div>
                   </div>
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Output</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Output">
-                      <button type="button" class="ecg-step" data-target="output" data-step="-1" aria-label="Decrease output">−</button>
-                      <span class="ecg-value" data-value="output">6 mA</span>
-                      <button type="button" class="ecg-step" data-target="output" data-step="1" aria-label="Increase output">+</button>
+                  <div class="ecg-monitor" aria-hidden="true">
+                    <div class="ecg-monitor__meta">
+                      <span>ECG software rendering</span>
+                      <span class="ecg-monitor__status">Live</span>
                     </div>
+                    <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                   </div>
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Sensitivity</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Sensitivity">
-                      <button type="button" class="ecg-step" data-target="sense" data-step="-1" aria-label="Decrease sensitivity">−</button>
-                      <span class="ecg-value" data-value="sense">5 mV</span>
-                      <button type="button" class="ecg-step" data-target="sense" data-step="1" aria-label="Increase sensitivity">+</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="ecg-monitor" aria-hidden="true">
-                  <div class="ecg-monitor__meta">
-                    <span>ECG software rendering</span>
-                    <span class="ecg-monitor__status">Live</span>
-                  </div>
-                  <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                 </div>
               </div>
             </div>

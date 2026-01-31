@@ -67,18 +67,13 @@ const initSectionObserver = () => {
   });
 };
 
-const initAutoHideNav = () => {
-  const headerSlot = document.getElementById("site-header");
-  if (!headerSlot) {
+const initAutoHideToc = () => {
+  const toc = document.querySelector(".edupace-toc");
+  if (!toc) {
     return;
   }
 
-  document.body.classList.add("edupace-nav-auto");
-
-  const updateOffset = () => {
-    const height = headerSlot.getBoundingClientRect().height;
-    document.body.style.setProperty("--edupace-nav-offset", `${height}px`);
-  };
+  document.body.classList.add("edupace-toc-auto");
 
   let hideTimer = null;
   const HIDE_DELAY = 3000;
@@ -88,19 +83,14 @@ const initAutoHideNav = () => {
       window.clearTimeout(hideTimer);
     }
     hideTimer = window.setTimeout(() => {
-      const isMenuOpen = headerSlot.querySelector(".main-nav.open");
-      if (isMenuOpen) {
-        scheduleHide();
-        return;
-      }
-      headerSlot.classList.add("is-hidden");
-      headerSlot.classList.remove("is-visible");
+      toc.classList.add("is-hidden");
+      toc.classList.remove("is-visible");
     }, HIDE_DELAY);
   };
 
-  const showNav = () => {
-    headerSlot.classList.add("is-visible");
-    headerSlot.classList.remove("is-hidden");
+  const showToc = () => {
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
     scheduleHide();
   };
 
@@ -111,38 +101,30 @@ const initAutoHideNav = () => {
     }
     ticking = true;
     window.requestAnimationFrame(() => {
-      showNav();
+      showToc();
       ticking = false;
     });
   };
 
-  headerSlot.classList.add("is-hidden");
+  toc.classList.add("is-hidden");
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", updateOffset);
 
-  headerSlot.addEventListener("mouseenter", () => {
+  toc.addEventListener("mouseenter", () => {
     if (hideTimer) {
       window.clearTimeout(hideTimer);
     }
-    headerSlot.classList.add("is-visible");
-    headerSlot.classList.remove("is-hidden");
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
   });
-  headerSlot.addEventListener("mouseleave", scheduleHide);
-  headerSlot.addEventListener("focusin", () => {
+  toc.addEventListener("mouseleave", scheduleHide);
+  toc.addEventListener("focusin", () => {
     if (hideTimer) {
       window.clearTimeout(hideTimer);
     }
-    headerSlot.classList.add("is-visible");
-    headerSlot.classList.remove("is-hidden");
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
   });
-  headerSlot.addEventListener("focusout", scheduleHide);
-
-  const observer = new MutationObserver(() => {
-    updateOffset();
-  });
-  observer.observe(headerSlot, { childList: true, subtree: true });
-
-  updateOffset();
+  toc.addEventListener("focusout", scheduleHide);
 };
 
 const initEcgWidget = () => {
@@ -638,7 +620,7 @@ const initPhotoToggles = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   initSectionObserver();
-  initAutoHideNav();
+  initAutoHideToc();
   initEcgWidget();
   initPhotoToggles();
 });

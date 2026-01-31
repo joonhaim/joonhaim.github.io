@@ -137,6 +137,10 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                   weights control points to shape physiologic peaks and valleys while maintaining
                   a smooth, continuous curve across pacing cycles.
                 </p>
+                <div class="bezier-equation">
+                  $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
+                  B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
+                </div>
 
               </div>
                 
@@ -158,10 +162,6 @@ EduPace is a simulator combining hardware and software designed to train nurses 
     <canvas id="bezierEcgCanvas" class="bezier-widget__canvas" role="img" aria-label="Bézier ECG curve with control points"></canvas>
   </div>
 
-  <div class="bezier-widget__formula">
-    $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
-    B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
-  </div>
 </div>
               </div>
             </div>

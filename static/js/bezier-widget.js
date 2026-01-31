@@ -458,5 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setWave("Normal");
   requestAnimationFrame(frame);
-  tryRenderMath(root);
+  const equation = document.querySelector(".bezier-equation");
+  [root, equation].filter(Boolean).forEach((node) => tryRenderMath(node));
 });

@@ -67,6 +67,66 @@ const initSectionObserver = () => {
   });
 };
 
+const initAutoHideToc = () => {
+  const toc = document.querySelector(".edupace-toc");
+  if (!toc) {
+    return;
+  }
+
+  document.body.classList.add("edupace-toc-auto");
+
+  let hideTimer = null;
+  const HIDE_DELAY = 3000;
+
+  const scheduleHide = () => {
+    if (hideTimer) {
+      window.clearTimeout(hideTimer);
+    }
+    hideTimer = window.setTimeout(() => {
+      toc.classList.add("is-hidden");
+      toc.classList.remove("is-visible");
+    }, HIDE_DELAY);
+  };
+
+  const showToc = () => {
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
+    scheduleHide();
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) {
+      return;
+    }
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      showToc();
+      ticking = false;
+    });
+  };
+
+  toc.classList.add("is-hidden");
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  toc.addEventListener("mouseenter", () => {
+    if (hideTimer) {
+      window.clearTimeout(hideTimer);
+    }
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
+  });
+  toc.addEventListener("mouseleave", scheduleHide);
+  toc.addEventListener("focusin", () => {
+    if (hideTimer) {
+      window.clearTimeout(hideTimer);
+    }
+    toc.classList.add("is-visible");
+    toc.classList.remove("is-hidden");
+  });
+  toc.addEventListener("focusout", scheduleHide);
+};
+
 const initEcgWidget = () => {
   const widget = document.querySelector(".ecg-widget");
   if (!widget) {
@@ -560,6 +620,7 @@ const initPhotoToggles = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   initSectionObserver();
+  initAutoHideToc();
   initEcgWidget();
   initPhotoToggles();
 });

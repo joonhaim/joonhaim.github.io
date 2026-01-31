@@ -8,6 +8,22 @@
   --edupace-muted: #64748b;
 }
 
+body.edupace-toc-auto .edupace-toc {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+body.edupace-toc-auto .edupace-toc.is-hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+body.edupace-toc-auto .edupace-toc.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
 .edupace-layout {
   display: block;
 }

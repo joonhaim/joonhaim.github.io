@@ -356,7 +356,7 @@ body {
   height: 260px;
 }
 .edupace-section {
-  margin-bottom: var(--space-xl);
+  margin-bottom: calc(var(--space-xl) + var(--space-sm));
 }
 @media (min-width: 900px) {
   .edupace-gallery__item img {
@@ -635,6 +635,27 @@ body {
   height: auto;
   border-radius: 12px;
   display: block;
+}
+.photo-toggle__image {
+  will-change: transform, opacity;
+}
+.photo-toggle__image.is-sliding {
+  animation: photo-toggle-slide 0.55s ease;
+}
+@keyframes photo-toggle-slide {
+  from {
+    opacity: 0.4;
+    transform: translateX(10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-toggle__image.is-sliding {
+    animation: none;
+  }
 }
 .photo-card--wide img {
   width: 100%;

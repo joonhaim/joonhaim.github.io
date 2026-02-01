@@ -585,6 +585,9 @@ const initPhotoToggles = () => {
       if (nextCaption) {
         caption.textContent = nextCaption;
       }
+      image.classList.remove("is-sliding");
+      void image.offsetWidth;
+      image.classList.add("is-sliding");
 
       buttons.forEach((item, itemIndex) => {
         const isActive = itemIndex === index;

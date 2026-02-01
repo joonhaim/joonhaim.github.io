@@ -101,9 +101,8 @@
         <div class="section-heading">
           <h2>Development of EduPace</h2>
           <p>
-            EduPace evolved through a sequence of software, hardware, and industrial design
-            milestones that culminate in a training-ready simulator. Each stage builds toward the
-            final simulator used in workshops and live nursing practice.
+            EduPace was developed through a staged, system-level process spanning software architecture, electronic hardware, and physical device design. Each component was developed iteratively and in parallel, with design decisions informed by clinical requirements and user feedback, ultimately converging into a training-ready simulator for nursing education.
+
           </p>
         </div>
 
@@ -114,7 +113,8 @@
             <p>
               The ECG engine responds to adjustable parameters (rate, output, and sensitivity) and
               supports four training rhythms: Normal Sinus Rhythm, 3rd degree AV block, 2nd degree AV block
-              (Mobitz II), and slow conduction.
+              (Mobitz II), and slow conduction. The simulation combines a rule-based pacemaker logic with a real-time ECG generator, allowing pacing success or failure to emerge from the selected rate, output, and sensitivity settings.
+
             </p>
           </div>
           <div class="timeline-step__content timeline-step__content--stacked">
@@ -130,6 +130,11 @@
                   $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
                   B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
                 </div>
+                  <p>
+                      Control points were extracted from representative ECG traces using manual sampling to improve physiological realism. This approach was inspired by Chutchavong et al. and chosen for its balance between visual accuracy and computational efficiency.
+
+                  </p>
+
 
               </div>
                 

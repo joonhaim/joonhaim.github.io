@@ -314,6 +314,26 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   gap: var(--space-lg);
 }
 
+.timeline-step__content--app {
+  gap: var(--space-lg);
+}
+
+.edupace-app-features {
+  margin: var(--space-md) 0;
+}
+
+.edupace-architecture-card {
+  border-color: #cbd5f5;
+  background: #f8fafc;
+}
+
+@media (min-width: 960px) {
+  .timeline-step__content--app {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: start;
+  }
+}
+
 @media (min-width: 900px) {
   .system-block--split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);

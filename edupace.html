@@ -251,18 +251,42 @@
               </div>
             </div>
           </div>
-          <div class="timeline-step__content timeline-step__content--stacked">
-            <div>
+          <div class="timeline-step__content timeline-step__content--split timeline-step__content--app">
+            <div class="edupace-app-content">
               <h3 id="timeline-edupace-app">EduPace App</h3>
               <p>
                 The simulator was built as a responsive web app, packaged into an Electron desktop
                 application, and distributed through GitHub releases for offline lab setups.
               </p>
-              <ul class="feature-list">
-                <li>Dashboard for scenario selection and pacing readiness checks.</li>
-                <li>Training tab with ECG playback, step-by-step guidance, and outcomes.</li>
-                <li>Settings pane for device pairing, patient presets, and session exports.</li>
-              </ul>
+              <div class="overview-grid edupace-app-features">
+                <article class="overview-card">
+                  <h3>Scenario-driven dashboard</h3>
+                  <p>Browse training cases, see recent sessions, and quickly start a guided scenario.</p>
+                </article>
+                <article class="overview-card">
+                  <h3>Live training workspace</h3>
+                  <p>Practice pacing and sensing with a real-time ECG display and responsive controls.</p>
+                </article>
+                <article class="overview-card">
+                  <h3>Virtual pacemaker controls</h3>
+                  <p>Train without hardware using an on-screen pacemaker that behaves like the physical device.</p>
+                </article>
+                <article class="overview-card">
+                  <h3>Plug-and-play hardware connection</h3>
+                  <p>Connect the EduPace device over USB and start training right away, with the simulator controlled from the physical interface.</p>
+                </article>
+                <article class="overview-card">
+                  <h3>Session review and learning feedback</h3>
+                  <p>After each run, review what happened and see whether the patient was stabilised and how long it took.</p>
+                </article>
+              </div>
+              <article class="overview-card edupace-architecture-card">
+                <h3>Architecture highlight</h3>
+                <p>
+                  Modular design separates ECG waveform generation, scenario logic, and device communication,
+                  making it easy to add new scenarios or pacing modes later.
+                </p>
+              </article>
             </div>
             <figure class="photo-card" data-photo-toggle>
               <img class="photo-toggle__image" src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">

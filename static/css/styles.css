@@ -487,6 +487,16 @@ body {
 .timeline-step--casing .photo-card {
   box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
+.timeline-step--final .timeline-step__content--split {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+.timeline-step--final .photo-card {
+  padding: var(--space-md);
+}
+.photo-card--final img {
+  max-height: 460px;
+  object-fit: cover;
+}
 .ecg-widget {
   border-radius: 20px;
   padding: var(--space-md);

@@ -377,10 +377,11 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .bezier-equation{
-  margin-top: 24px;
-  padding: 12px 14px;
+  margin-top: 28px;
+  padding: 20px 24px;
   border-radius: 12px;
   border: 1px solid var(--color-border, #e5e7eb);
   background: #fff;
-  overflow: auto;
+  overflow: visible;
+  line-height: 1.5;
 }

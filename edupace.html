@@ -117,7 +117,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </p>
         </div>
 
-        <article class="timeline-step">
+        <article class="timeline-step" id="timeline-ecg-modeling">
           <div class="timeline-step__header">
             <span class="timeline-step__tag">Software</span>
             <h3>ECG modeling &amp; interactive pacing lab</h3>
@@ -240,7 +240,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </div>
           <div class="timeline-step__content timeline-step__content--stacked">
             <div>
-              <h4>EduPace App</h4>
+              <h4 id="timeline-edupace-app">EduPace App</h4>
               <p>
                 The simulator was built as a responsive web app, packaged into an Electron desktop
                 application, and distributed through GitHub releases for offline lab setups.
@@ -252,7 +252,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
               </ul>
             </div>
             <figure class="photo-card" data-photo-toggle>
-              <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
+              <img class="photo-toggle__image" src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
               <figcaption class="photo-toggle__caption">Dashboard view from the Electron-packaged training app.</figcaption>
               <div class="photo-toggle" role="group" aria-label="Training app screenshots">
                 <button
@@ -274,11 +274,15 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                   Training tab
                 </button>
               </div>
+              <div class="photo-toggle__nav" role="group" aria-label="Training app navigation">
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="prev" aria-label="Previous screenshot">←</button>
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="next" aria-label="Next screenshot">→</button>
+              </div>
             </figure>
           </div>
         </article>
 
-        <article class="timeline-step">
+        <article class="timeline-step" id="timeline-edupace-device">
           <div class="timeline-step__header">
             <span class="timeline-step__tag">Hardware</span>
             <h3>EduPace Device</h3>
@@ -320,9 +324,9 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </div>
         </article>
 
-        <article class="timeline-step">
+        <article class="timeline-step timeline-step--casing" id="timeline-casing-design">
           <div class="timeline-step__header">
-            <span class="timeline-step__tag">Hardware design</span>
+            <span class="timeline-step__tag">Casing design</span>
             <h3>Enclosure CAD &amp; control integration</h3>
             <p>
               CAD iterations refined the enclosure geometry, knob placement, and assembly points so
@@ -350,7 +354,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </div>
         </article>
 
-        <article class="timeline-step timeline-step--final">
+        <article class="timeline-step timeline-step--final" id="timeline-final-product">
           <div class="timeline-step__header">
             <span class="timeline-step__tag">Final product</span>
             <h3>Training-ready simulator</h3>
@@ -361,13 +365,9 @@ EduPace is a simulator combining hardware and software designed to train nurses 
             </p>
           </div>
           <div class="timeline-step__content timeline-step__content--split">
-            <figure class="photo-card">
+            <figure class="photo-card photo-card--compact">
               <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
               <figcaption>Live training session validating the final form factor.</figcaption>
-            </figure>
-            <figure class="photo-card">
-              <img src="static/images/edupace/edupace_dashboard.png" alt="EduPace dashboard showing pacing controls and ECG view">
-              <figcaption>Simulator UI showing pacing controls and ECG feedback.</figcaption>
             </figure>
           </div>
         </article>
@@ -439,21 +439,29 @@ EduPace is a simulator combining hardware and software designed to train nurses 
         <div class="edupace-toc__inner">
           <span class="edupace-toc__title">On this page</span>
           <nav class="edupace-toc__nav">
-            <a class="edupace-toc__link" href="#edupace-hero" data-section="edupace-hero">
-              <span class="edupace-toc__dot"></span>
-              <span class="edupace-toc__label">Intro</span>
-            </a>
             <a class="edupace-toc__link" href="#project-overview" data-section="project-overview">
               <span class="edupace-toc__dot"></span>
-              <span class="edupace-toc__label">Overview</span>
+              <span class="edupace-toc__label">Project overview</span>
             </a>
-            <a class="edupace-toc__link" href="#development-timeline" data-section="development-timeline">
+            <a class="edupace-toc__link" href="#timeline-ecg-modeling" data-section="timeline-ecg-modeling">
               <span class="edupace-toc__dot"></span>
-              <span class="edupace-toc__label">Development timeline</span>
+              <span class="edupace-toc__label">ECG modeling</span>
             </a>
-            <a class="edupace-toc__link" href="#device-ui" data-section="device-ui">
+            <a class="edupace-toc__link" href="#timeline-edupace-app" data-section="timeline-edupace-app">
               <span class="edupace-toc__dot"></span>
-              <span class="edupace-toc__label">Device UI</span>
+              <span class="edupace-toc__label">EduPace app</span>
+            </a>
+            <a class="edupace-toc__link" href="#timeline-edupace-device" data-section="timeline-edupace-device">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">EduPace device</span>
+            </a>
+            <a class="edupace-toc__link" href="#timeline-casing-design" data-section="timeline-casing-design">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Casing design</span>
+            </a>
+            <a class="edupace-toc__link" href="#timeline-final-product" data-section="timeline-final-product">
+              <span class="edupace-toc__dot"></span>
+              <span class="edupace-toc__label">Final product</span>
             </a>
             <a class="edupace-toc__link" href="#key-results" data-section="key-results">
               <span class="edupace-toc__dot"></span>

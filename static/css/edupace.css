@@ -309,13 +309,17 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 
 @media (min-width: 900px) {
   .system-block--split {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
     align-items: start;
   }
 
   .system-block--split .system-block__content {
     justify-self: end;
     width: 100%;
+  }
+
+  .bezier-widget {
+    margin-left: auto;
   }
 }
 
@@ -373,7 +377,7 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .bezier-equation{
-  margin-top: 14px;
+  margin-top: 24px;
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid var(--color-border, #e5e7eb);

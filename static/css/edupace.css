@@ -49,15 +49,15 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .edupace-timeline {
-  gap: var(--space-xl);
+  gap: calc(var(--space-xl) + var(--space-md));
 }
 
 .timeline-step {
-  gap: var(--space-lg);
+  gap: var(--space-xl);
 }
 
 .timeline-step__content {
-  gap: var(--space-lg);
+  gap: var(--space-xl);
 }
 
 .edupace-body .feature-list {
@@ -73,7 +73,7 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .edupace-body .feature-list li::before {
-  color: var(--edupace-accent);
+  color: var(--edupace-text);
   font-size: 0.95rem;
 }
 

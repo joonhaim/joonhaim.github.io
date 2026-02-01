@@ -389,6 +389,19 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   bottom: var(--space-md);
 }
 
+.edupace-casing-carousel {
+  padding: var(--space-md);
+}
+
+.edupace-casing-carousel .photo-toggle__image {
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.edupace-casing-carousel .photo-toggle__nav {
+  bottom: var(--space-md);
+}
+
 @media (min-width: 900px) {
   .edupace-app-features {
     grid-template-columns: repeat(3, minmax(0, 1fr));

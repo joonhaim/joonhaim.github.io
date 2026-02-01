@@ -61,47 +61,47 @@ EduPace is a simulator combining hardware and software designed to train nurses 
       <section class="edupace-section overview-section" id="project-overview" data-edupace-section>
         <div class="section-heading">
           <h2>Project overview</h2>
-          <p>
-            Developed as part the TU Delft Minor Biomedical Engineering, EduPace recreates the behavior
-            of the Medtronic 53401 Temporary External Pacemaker for realistic training scenarios.
-            Learners can rehearse device configuration, interpretation, and patient-response
-            adjustments before entering the clinic. The simulator targets bradycardia caused by AV
-            blocks, where dependable ventricular pacing is essential to restore adequate cardiac
-            output and prevent hemodynamic collapse.
-          </p>
-        </div>
-        <div class="overview-grid">
-          <div class="overview-text">
-            <p>
-              Temporary external pacemakers stabilize patients with bradycardia caused by
-              sinoatrial-node dysfunction or atrioventricular (AV) blocks. Because these devices are
-              used infrequently on the ward, many nurses do not practice the setup and adjustments
-              needed to respond quickly in emergencies. EduPace closes that gap with a realistic,
-              repeatable learning environment that mirrors real-world pacing workflows.
-            </p>
-            <ul class="feature-list">
-              <li>Focuses on ventricular pacing to manage AV conduction failures.</li>
-              <li>Reinforces recognition of ECG changes across AV block severity.</li>
-              <li>Simulates capture thresholds and sensing behavior.</li>
-            </ul>
-          </div>
-          <div class="overview-cards">
-            <div class="stacked-card">
-              <span class="tag">Problem statement</span>
-              <h3>Confidence gap</h3>
+          <div class="overview-intro">
+            <div class="overview-copy">
               <p>
-                Many digital simulators such as Medtronic VirtualEPG show the interface but lack
-                the tactile experience needed for confident device handling during acute care
-                situations.
+                Developed as part the TU Delft Minor Biomedical Engineering, EduPace recreates the behavior
+                of the Medtronic 53401 Temporary External Pacemaker for realistic training scenarios.
+                Learners can rehearse device configuration, interpretation, and patient-response
+                adjustments before entering the clinic. The simulator targets bradycardia caused by AV
+                blocks, where dependable ventricular pacing is essential to restore adequate cardiac
+                output and prevent hemodynamic collapse.
               </p>
+              <p>
+                Temporary external pacemakers stabilize patients with bradycardia caused by
+                sinoatrial-node dysfunction or atrioventricular (AV) blocks. Because these devices are
+                used infrequently on the ward, many nurses do not practice the setup and adjustments
+                needed to respond quickly in emergencies. EduPace closes that gap with a realistic,
+                repeatable learning environment that mirrors real-world pacing workflows.
+              </p>
+              <ul class="feature-list">
+                <li>Focuses on ventricular pacing to manage AV conduction failures.</li>
+                <li>Reinforces recognition of ECG changes across AV block severity.</li>
+                <li>Simulates capture thresholds and sensing behavior.</li>
+              </ul>
             </div>
-            <div class="stacked-card">
-              <span class="tag">Project goal</span>
-              <h3>Practical, repeatable practice</h3>
-              <p>
-                Build on the previous student prototype with improved hardware, ergonomics, and
-                clinical realism guided by hospital feedback and real-world pacing workflows.
-              </p>
+            <div class="overview-cards">
+              <div class="stacked-card">
+                <span class="tag">Problem statement</span>
+                <h3>Confidence gap</h3>
+                <p>
+                  Many digital simulators such as Medtronic VirtualEPG show the interface but lack
+                  the tactile experience needed for confident device handling during acute care
+                  situations.
+                </p>
+              </div>
+              <div class="stacked-card">
+                <span class="tag">Project goal</span>
+                <h3>Practical, repeatable practice</h3>
+                <p>
+                  Build on the previous student prototype with improved hardware, ergonomics, and
+                  clinical realism guided by hospital feedback and real-world pacing workflows.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -137,7 +137,13 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                   weights control points to shape physiologic peaks and valleys while maintaining
                   a smooth, continuous curve across pacing cycles.
                 </p>
+                <div class="bezier-equation">
+                  $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
+                  B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
+                </div>
+
               </div>
+                
               <div class="system-block__content">
                 <div class="bezier-widget" id="bezierWidget" aria-label="Rational Bézier ECG demo">
   <div class="bezier-widget__toolbar" role="group" aria-label="Waveform selection">
@@ -156,14 +162,10 @@ EduPace is a simulator combining hardware and software designed to train nurses 
     <canvas id="bezierEcgCanvas" class="bezier-widget__canvas" role="img" aria-label="Bézier ECG curve with control points"></canvas>
   </div>
 
-  <div class="bezier-widget__formula">
-    $$\mathbf{R}(t)=\frac{\sum_{i=0}^{n} w_i\,\mathbf{p}_i\,B_i^n(t)}{\sum_{i=0}^{n} w_i\,B_i^n(t)},\quad
-    B_i^n(t)=\binom{n}{i}t^i(1-t)^{n-i}$$
-  </div>
 </div>
               </div>
             </div>
-            <div>
+            <div class="timeline-step__content timeline-step__content--split">
               <figure class="photo-card photo-card--wide">
                 <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
                 <figcaption>
@@ -177,61 +179,61 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                   </ul>
                 </figcaption>
               </figure>
-            </div>
-            <div class="ecg-widget" aria-label="ECG parameter sandbox">
-              <div class="ecg-widget__header">
-                <div>
-                  <h4>Try the ECG parameters</h4>
-                  <p>Adjust rate, output, and sensitivity to see how the waveform reacts.</p>
-                  <span class="ecg-widget__note">Intrinsic HR: 40 bpm</span>
-                </div>
-                <div class="ecg-widget__scenarios" role="group" aria-label="Scenario">
-                  <button type="button" class="ecg-scenario is-active" data-scenario="nsr">NSR</button>
-                  <button type="button" class="ecg-scenario" data-scenario="third">3rd deg AV</button>
-                  <button type="button" class="ecg-scenario" data-scenario="mobitz">2nd deg AV Mobitz II</button>
-                  <button type="button" class="ecg-scenario" data-scenario="slow">Slow conduction</button>
-                </div>
-              </div>
-              <div class="ecg-widget__body">
-                <div class="ecg-paper" aria-hidden="true">
-                  <div class="ecg-paper__meta">
-                    <span>ECG paper</span>
-                    <span class="ecg-paper__status">Reference</span>
+              <div class="ecg-widget" aria-label="ECG parameter sandbox">
+                <div class="ecg-widget__header">
+                  <div>
+                    <h4>Try the ECG parameters</h4>
+                    <p>Adjust rate, output, and sensitivity to see how the waveform reacts.</p>
+                    <span class="ecg-widget__note">Intrinsic HR: 40 bpm</span>
                   </div>
-                  <canvas id="ecgPaper" class="ecg-paper__canvas" role="img" aria-label="ECG graph paper preview"></canvas>
+                  <div class="ecg-widget__scenarios" role="group" aria-label="Scenario">
+                    <button type="button" class="ecg-scenario is-active" data-scenario="nsr">NSR</button>
+                    <button type="button" class="ecg-scenario" data-scenario="third">3rd deg AV</button>
+                    <button type="button" class="ecg-scenario" data-scenario="mobitz">2nd deg AV Mobitz II</button>
+                    <button type="button" class="ecg-scenario" data-scenario="slow">Slow conduction</button>
+                  </div>
                 </div>
-                <div class="ecg-widget__controls">
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Rate</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Rate">
-                      <button type="button" class="ecg-step" data-target="rate" data-step="-1" aria-label="Decrease rate">−</button>
-                      <span class="ecg-value" data-value="rate">80 bpm</span>
-                      <button type="button" class="ecg-step" data-target="rate" data-step="1" aria-label="Increase rate">+</button>
+                <div class="ecg-widget__body">
+                  <div class="ecg-paper" aria-hidden="true">
+                    <div class="ecg-paper__meta">
+                      <span>ECG paper</span>
+                      <span class="ecg-paper__status">Reference</span>
+                    </div>
+                    <canvas id="ecgPaper" class="ecg-paper__canvas" role="img" aria-label="ECG graph paper preview"></canvas>
+                  </div>
+                  <div class="ecg-widget__controls">
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Rate</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Rate">
+                        <button type="button" class="ecg-step" data-target="rate" data-step="-1" aria-label="Decrease rate">−</button>
+                        <span class="ecg-value" data-value="rate">80 bpm</span>
+                        <button type="button" class="ecg-step" data-target="rate" data-step="1" aria-label="Increase rate">+</button>
+                      </div>
+                    </div>
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Output</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Output">
+                        <button type="button" class="ecg-step" data-target="output" data-step="-1" aria-label="Decrease output">−</button>
+                        <span class="ecg-value" data-value="output">6 mA</span>
+                        <button type="button" class="ecg-step" data-target="output" data-step="1" aria-label="Increase output">+</button>
+                      </div>
+                    </div>
+                    <div class="ecg-control">
+                      <span class="ecg-control__label">Sensitivity</span>
+                      <div class="ecg-control__buttons" role="group" aria-label="Sensitivity">
+                        <button type="button" class="ecg-step" data-target="sense" data-step="-1" aria-label="Decrease sensitivity">−</button>
+                        <span class="ecg-value" data-value="sense">5 mV</span>
+                        <button type="button" class="ecg-step" data-target="sense" data-step="1" aria-label="Increase sensitivity">+</button>
+                      </div>
                     </div>
                   </div>
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Output</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Output">
-                      <button type="button" class="ecg-step" data-target="output" data-step="-1" aria-label="Decrease output">−</button>
-                      <span class="ecg-value" data-value="output">6 mA</span>
-                      <button type="button" class="ecg-step" data-target="output" data-step="1" aria-label="Increase output">+</button>
+                  <div class="ecg-monitor" aria-hidden="true">
+                    <div class="ecg-monitor__meta">
+                      <span>ECG software rendering</span>
+                      <span class="ecg-monitor__status">Live</span>
                     </div>
+                    <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                   </div>
-                  <div class="ecg-control">
-                    <span class="ecg-control__label">Sensitivity</span>
-                    <div class="ecg-control__buttons" role="group" aria-label="Sensitivity">
-                      <button type="button" class="ecg-step" data-target="sense" data-step="-1" aria-label="Decrease sensitivity">−</button>
-                      <span class="ecg-value" data-value="sense">5 mV</span>
-                      <button type="button" class="ecg-step" data-target="sense" data-step="1" aria-label="Increase sensitivity">+</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="ecg-monitor" aria-hidden="true">
-                  <div class="ecg-monitor__meta">
-                    <span>ECG software rendering</span>
-                    <span class="ecg-monitor__status">Live</span>
-                  </div>
-                  <canvas id="ecgMonitor" class="ecg-monitor__canvas" role="img" aria-label="Interactive ECG rendering"></canvas>
                 </div>
               </div>
             </div>

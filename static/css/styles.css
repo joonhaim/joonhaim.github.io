@@ -371,6 +371,18 @@ body {
   gap: var(--space-sm);
   max-width: 780px;
 }
+.overview-section .section-heading {
+  max-width: none;
+}
+.overview-section .overview-intro {
+  display: grid;
+  gap: var(--space-md);
+  align-items: start;
+}
+.overview-section .overview-copy {
+  display: grid;
+  gap: var(--space-sm);
+}
 .overview-section .overview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -385,6 +397,11 @@ body {
 .overview-section .overview-cards {
   display: grid;
   gap: var(--space-md);
+}
+@media (min-width: 900px) {
+  .overview-section .overview-intro {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
 }
 .system-components {
   display: grid;

@@ -394,7 +394,8 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .edupace-casing-carousel .photo-toggle__image {
-  min-height: 320px;
+  height: 320px;
+  width: 100%;
   object-fit: cover;
 }
 

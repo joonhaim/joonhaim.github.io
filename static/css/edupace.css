@@ -53,16 +53,24 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .timeline-step {
-  gap: var(--space-xl);
+  gap: var(--space-md);
 }
 
 .timeline-step__content {
-  gap: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.timeline-step__content + .timeline-step__content {
+  margin-top: var(--space-lg);
 }
 
 .edupace-body .feature-list {
-  margin: 0.35rem 0 0.75rem;
+  margin: 0.2rem 0 0.75rem;
   padding-left: 0;
+}
+
+.edupace-body p + .feature-list {
+  margin-top: 0.15rem;
 }
 
 .edupace-body .feature-list li {

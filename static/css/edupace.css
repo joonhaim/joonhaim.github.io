@@ -285,12 +285,19 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .ecg-control__buttons {
-  gap: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .ecg-step {
   width: 28px;
   height: 28px;
+}
+
+.ecg-value {
+  min-width: 4.5rem;
+  text-align: center;
 }
 
 /* --- Bézier ECG widget --- */

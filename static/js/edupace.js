@@ -61,7 +61,12 @@ const initSectionObserver = () => {
   requestUpdate();
 
   tocLinks.forEach((link) => {
-    link.addEventListener("click", () => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = sectionMap.get(link);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
       setActive(link.dataset.section);
     });
   });
@@ -556,6 +561,7 @@ const initPhotoToggles = () => {
     const image = toggle.querySelector("img");
     const caption = toggle.querySelector(".photo-toggle__caption");
     const buttons = Array.from(toggle.querySelectorAll("[data-photo-src]"));
+    const navButtons = Array.from(toggle.querySelectorAll("[data-photo-nav]"));
     if (!image || !caption || buttons.length === 0) {
       return;
     }
@@ -612,6 +618,16 @@ const initPhotoToggles = () => {
       button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
       button.addEventListener("click", () => {
         applyButtonState(index);
+        startTimer();
+      });
+    });
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = button.dataset.photoNav;
+        const delta = direction === "prev" ? -1 : 1;
+        const nextIndex = (activeIndex + delta + buttons.length) % buttons.length;
+        applyButtonState(nextIndex);
         startTimer();
       });
     });

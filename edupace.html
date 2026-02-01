@@ -240,7 +240,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </div>
           <div class="timeline-step__content timeline-step__content--stacked">
             <div>
-              <h4>EduPace App</h4>
+              <h4 id="timeline-edupace-app">EduPace App</h4>
               <p>
                 The simulator was built as a responsive web app, packaged into an Electron desktop
                 application, and distributed through GitHub releases for offline lab setups.
@@ -273,6 +273,10 @@ EduPace is a simulator combining hardware and software designed to train nurses 
                 >
                   Training tab
                 </button>
+              </div>
+              <div class="photo-toggle__nav" role="group" aria-label="Training app navigation">
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="prev" aria-label="Previous screenshot">←</button>
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="next" aria-label="Next screenshot">→</button>
               </div>
             </figure>
           </div>
@@ -320,7 +324,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
           </div>
         </article>
 
-        <article class="timeline-step" id="timeline-casing-design">
+        <article class="timeline-step timeline-step--casing" id="timeline-casing-design">
           <div class="timeline-step__header">
             <span class="timeline-step__tag">Casing design</span>
             <h3>Enclosure CAD &amp; control integration</h3>
@@ -361,7 +365,7 @@ EduPace is a simulator combining hardware and software designed to train nurses 
             </p>
           </div>
           <div class="timeline-step__content timeline-step__content--split">
-            <figure class="photo-card">
+            <figure class="photo-card photo-card--compact">
               <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
               <figcaption>Live training session validating the final form factor.</figcaption>
             </figure>

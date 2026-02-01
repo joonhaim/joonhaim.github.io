@@ -372,9 +372,42 @@
             </p>
           </div>
           <div class="timeline-step__content timeline-step__content--split">
-            <figure class="photo-card">
-              <img src="static/images/edupace/edupace_internals.png" alt="EduPace internal electronics and wiring">
-              <figcaption>Arduino-powered electronics and custom wiring harnesses.</figcaption>
+            <figure class="photo-card edupace-casing-carousel" data-photo-toggle>
+              <img class="photo-toggle__image" src="static/images/edupace/assembly.png" alt="Casing assembly diagram for the EduPace enclosure">
+              <figcaption class="photo-toggle__caption">Casing assembly layout for the EduPace enclosure.</figcaption>
+              <div class="photo-toggle" role="group" aria-label="Casing design visuals">
+                <button
+                  class="photo-toggle__button is-active"
+                  type="button"
+                  data-photo-src="static/images/edupace/device_diagram.png"
+                  data-photo-alt="Casing assembly diagram for the EduPace enclosure"
+                  data-photo-caption="Casing assembly layout for the EduPace enclosure."
+                >
+                  Casing assembly
+                </button>
+                <button
+                  class="photo-toggle__button"
+                  type="button"
+                  data-photo-src="static/images/edupace/edupace_internals.png"
+                  data-photo-alt="EduPace internal electronics and wiring"
+                  data-photo-caption="Arduino-powered electronics and custom wiring harnesses."
+                >
+                  Electronics
+                </button>
+                <button
+                  class="photo-toggle__button"
+                  type="button"
+                  data-photo-src="static/images/edupace/edupace_closeup.png"
+                  data-photo-alt="EduPace device closeup showing physical controls"
+                  data-photo-caption="Custom knobs were designed to match the reference device and 3D printed for the final build."
+                >
+                  Custom knobs
+                </button>
+              </div>
+              <div class="photo-toggle__nav" role="group" aria-label="Casing design navigation">
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="prev" aria-label="Previous casing visual">←</button>
+                <button class="photo-toggle__nav-button" type="button" data-photo-nav="next" aria-label="Next casing visual">→</button>
+              </div>
             </figure>
             <div>
               <ul class="feature-list">
@@ -383,10 +416,6 @@
                 <li>Mounting rails keep the screen, LEDs, and wiring secured in the enclosure.</li>
                 <li>Iterative prints validated ergonomics before final assembly.</li>
               </ul>
-              <figure class="photo-card">
-                <div class="photo-card__placeholder">Custom knob CAD render (placeholder)</div>
-                <figcaption>Placeholder for the custom-made knob CAD visuals.</figcaption>
-              </figure>
             </div>
           </div>
         </article>
@@ -403,12 +432,12 @@
           </div>
           <div class="timeline-step__content timeline-step__content--split">
             <figure class="photo-card photo-card--final">
-              <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
-              <figcaption>Live training session validating the final form factor.</figcaption>
+              <img src="static/images/edupace/edupace_package.jpg" alt="EduPace final package with device and accessories">
+              <figcaption>Final EduPace package prepared for training delivery.</figcaption>
             </figure>
             <figure class="photo-card photo-card--final">
-              <img src="static/images/edupace/edupace_trial2.jpg" alt="Facilitator guiding EduPace pacing practice">
-              <figcaption>Hands-on pacing workflow with the full EduPace console.</figcaption>
+              <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
+              <figcaption>Live training session validating the final form factor.</figcaption>
             </figure>
           </div>
         </article>

@@ -382,6 +382,15 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   border-radius: 12px;
   border: 1px solid var(--color-border, #e5e7eb);
   background: #fff;
-  overflow: visible;
+  overflow: hidden;
   line-height: 1.5;
+  font-size: clamp(0.7rem, 2.4vw, 1rem);
+}
+
+.bezier-equation .katex-display{
+  margin: 0;
+}
+
+.bezier-equation .katex{
+  max-width: 100%;
 }

@@ -319,19 +319,20 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 }
 
 .edupace-app-features {
-  margin: var(--space-md) 0;
+  margin: var(--space-md) 0 0;
 }
 
-.edupace-architecture-card {
-  border-color: #cbd5f5;
-  background: #f8fafc;
+.edupace-app-carousel {
+  padding: var(--space-md);
 }
 
-@media (min-width: 960px) {
-  .timeline-step__content--app {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    align-items: start;
-  }
+.edupace-app-carousel .photo-toggle__image {
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.edupace-app-carousel .photo-toggle__nav {
+  bottom: var(--space-md);
 }
 
 @media (min-width: 900px) {

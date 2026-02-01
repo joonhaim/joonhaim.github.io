@@ -651,6 +651,24 @@ body {
   gap: 0.5rem;
   position: relative;
 }
+.photo-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.photo-card__header .eyebrow {
+  margin: 0;
+}
+.photo-card__header h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #111;
+}
+.photo-card__header p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+}
 .photo-card img {
   width: 100%;
   height: auto;

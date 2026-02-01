@@ -401,3 +401,49 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 .bezier-equation .katex{
   max-width: 100%;
 }
+
+@media (max-width: 720px) {
+  .edupace-hero {
+    gap: var(--space-md);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .timeline-step {
+    padding-left: var(--space-sm);
+  }
+
+  .timeline-step::before {
+    left: -6px;
+  }
+
+  .timeline-step__content--split,
+  .timeline-step--final .timeline-step__content--split {
+    grid-template-columns: 1fr;
+  }
+
+  .ecg-widget__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ecg-monitor__canvas {
+    height: 180px;
+  }
+
+  .ecg-paper__canvas {
+    height: 180px;
+  }
+
+  .bezier-widget__canvas {
+    height: 220px;
+  }
+}

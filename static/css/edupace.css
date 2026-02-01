@@ -36,6 +36,51 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   scroll-margin-top: 120px;
 }
 
+.edupace-section {
+  margin-bottom: calc(var(--space-xl) + var(--space-lg));
+}
+
+.overview-section .overview-intro {
+  gap: var(--space-lg);
+}
+
+.overview-section .overview-cards {
+  gap: var(--space-lg);
+}
+
+.edupace-timeline {
+  gap: var(--space-xl);
+}
+
+.timeline-step {
+  gap: var(--space-lg);
+}
+
+.timeline-step__content {
+  gap: var(--space-lg);
+}
+
+.edupace-body .feature-list {
+  margin: 0.35rem 0 0.75rem;
+  padding-left: 0;
+}
+
+.edupace-body .feature-list li {
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  line-height: 1.45;
+  color: var(--edupace-text);
+}
+
+.edupace-body .feature-list li::before {
+  color: var(--edupace-accent);
+  font-size: 0.95rem;
+}
+
+.edupace-body .feature-list li:last-child {
+  margin-bottom: 0;
+}
+
 .edupace-toc {
   display: none;
 }

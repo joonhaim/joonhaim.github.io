@@ -314,6 +314,34 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   gap: var(--space-lg);
 }
 
+.timeline-step__content--app {
+  gap: var(--space-lg);
+}
+
+.edupace-app-features {
+  margin: var(--space-md) 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.edupace-app-carousel {
+  padding: var(--space-md);
+}
+
+.edupace-app-carousel .photo-toggle__image {
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.edupace-app-carousel .photo-toggle__nav {
+  bottom: var(--space-md);
+}
+
+@media (min-width: 900px) {
+  .edupace-app-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 900px) {
   .system-block--split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);

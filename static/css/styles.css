@@ -1617,6 +1617,10 @@ body {
     width: min(180px, 80%);
   }
 
+  .promo-right {
+    display: none;
+  }
+
   .promo-highlights {
     gap: 0.5rem;
   }

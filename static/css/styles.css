@@ -340,7 +340,7 @@ body {
 }
 .edupace-gallery__item img {
   width: 100%;
-  height: auto;
+  height: 180px;
   object-fit: contain;
   background: #f6f6f6;
   display: block;
@@ -354,17 +354,17 @@ body {
   grid-column: span 2;
 }
 .edupace-gallery__item--wide img {
-  height: auto;
+  height: 220px;
 }
 .edupace-section {
   margin-bottom: calc(var(--space-xl) + var(--space-sm));
 }
 @media (min-width: 900px) {
   .edupace-gallery__item img {
-    height: auto;
+    height: 200px;
   }
   .edupace-gallery__item--wide img {
-    height: auto;
+    height: 240px;
   }
 }
 .section-heading {

@@ -1609,6 +1609,14 @@ body {
     gap: var(--space-sm);
   }
 
+  .promo-banner {
+    justify-items: stretch;
+  }
+
+  .promo-left {
+    width: 100%;
+  }
+
   .promo-kicker {
     max-width: none;
   }

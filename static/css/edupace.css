@@ -590,12 +590,45 @@ body.edupace-toc-auto .edupace-toc.is-visible {
     align-items: flex-start;
   }
 
+  .ecg-widget {
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+  }
+
+  .ecg-widget__scenarios {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ecg-scenario {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+  }
+
+  .ecg-widget__body {
+    gap: var(--space-sm);
+  }
+
+  .ecg-paper,
+  .ecg-monitor {
+    padding: 0.5rem;
+    border-radius: 14px;
+  }
+
+  .ecg-paper__meta,
+  .ecg-monitor__meta {
+    font-size: 0.6rem;
+  }
+
   .ecg-monitor__canvas {
-    height: 180px;
+    height: 160px;
   }
 
   .ecg-paper__canvas {
-    height: 180px;
+    height: 160px;
   }
 
   .bezier-widget__canvas {

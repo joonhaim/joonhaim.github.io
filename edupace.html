@@ -334,7 +334,7 @@
           </div>
         </article>
 
-        <article class="timeline-step" id="timeline-edupace-device">
+        <article class="timeline-step timeline-step--device" id="timeline-edupace-device">
           <div class="timeline-step__header">
             <span class="timeline-step__tag">Hardware</span>
             <h3>EduPace Device</h3>
@@ -342,9 +342,18 @@
               The EduPace device is a handheld training controller built around the Arduino GIGA R1 and its display shield. A touchscreen interface and three incremental rotary encoders let users adjust rate, output, and sensitivity in a way that mirrors the Medtronic 53401 interaction style, while improving clarity with visual dials.
             </p>
           </div>
-          <div class="timeline-step__content timeline-step__content--split">
-            <div>
-              <ul class="feature-list">
+          <div class="timeline-step__content timeline-step__content--split device-overview">
+            <div class="device-details">
+              <div>
+                <h4>Hardware highlights</h4>
+                <p>Designed for one-handed training workflows with clear feedback for pacing decisions.</p>
+              </div>
+              <div class="device-specs" aria-label="Device specs">
+                <span class="device-spec">800×480 touch display</span>
+                <span class="device-spec">Arduino GIGA R1 core</span>
+                <span class="device-spec">USB-C live sync</span>
+              </div>
+              <ul class="feature-list device-feature-list">
                 <li>Touchscreen UI (LVGL): 800×480 display with clear labels, units, and live device state feedback.</li>
                 <li>Tactile rotary controls: click-by-click encoders adjust RATE, OUTPUT, and SENSE in a Medtronic 53401 style workflow.</li>
                 <li>Power and lock behaviour: on and off plus lock and unlock to prevent accidental parameter changes during training.</li>
@@ -352,7 +361,7 @@
                 <li>USB-C serial link: plug-and-play connection to the desktop app for real-time synchronisation.</li>
               </ul>
             </div>
-            <figure class="photo-card photo-card--compact">
+            <figure class="photo-card photo-card--compact photo-card--device">
               <img src="static/images/edupace/hardware.jpg" alt="EduPace hardware device controller">
               <figcaption>Arduino Giga with Display Shield and Rotary Encoders.</figcaption>
             </figure>

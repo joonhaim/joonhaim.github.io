@@ -581,6 +581,7 @@ const initPhotoToggles = () => {
       const nextSrc = button.dataset.photoSrc;
       const nextAlt = button.dataset.photoAlt;
       const nextCaption = button.dataset.photoCaption;
+      const nextFit = button.dataset.photoFit;
 
       if (nextSrc) {
         image.src = nextSrc;
@@ -591,6 +592,7 @@ const initPhotoToggles = () => {
       if (nextCaption) {
         caption.textContent = nextCaption;
       }
+      image.classList.toggle("photo-toggle__image--contain", nextFit === "contain");
       image.classList.remove("is-sliding");
       void image.offsetWidth;
       image.classList.add("is-sliding");

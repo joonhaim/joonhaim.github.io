@@ -399,6 +399,12 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   object-fit: cover;
 }
 
+.photo-toggle__image--contain {
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: var(--space-lg);
+}
+
 .edupace-casing-carousel .photo-toggle__nav {
   bottom: var(--space-md);
 }

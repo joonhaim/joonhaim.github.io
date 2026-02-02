@@ -532,6 +532,8 @@ body.edupace-toc-auto .edupace-toc.is-visible {
   color: rgba(17, 24, 39, 0.65);
   background: #fff;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .bezier-widget__canvasWrap{
@@ -639,5 +641,16 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 
   .bezier-widget__canvas {
     height: 220px;
+  }
+
+  .bezier-chips {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bezier-chip {
+    flex: 0 0 auto;
   }
 }

@@ -340,7 +340,7 @@ body {
 }
 .edupace-gallery__item img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: contain;
   background: #f6f6f6;
   display: block;
@@ -354,17 +354,17 @@ body {
   grid-column: span 2;
 }
 .edupace-gallery__item--wide img {
-  height: 260px;
+  height: 220px;
 }
 .edupace-section {
   margin-bottom: calc(var(--space-xl) + var(--space-sm));
 }
 @media (min-width: 900px) {
   .edupace-gallery__item img {
-    height: 220px;
+    height: 200px;
   }
   .edupace-gallery__item--wide img {
-    height: 300px;
+    height: 240px;
   }
 }
 .section-heading {
@@ -495,7 +495,8 @@ body {
   padding: var(--space-md);
 }
 .photo-card--final img {
-  max-height: 460px;
+  width: 100%;
+  height: clamp(240px, 35vw, 360px);
   object-fit: cover;
 }
 .ecg-widget {

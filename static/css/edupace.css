@@ -429,7 +429,7 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 
 .edupace-app-features {
   margin: var(--space-md) 0 0;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .edupace-app-carousel {
@@ -462,6 +462,12 @@ body.edupace-toc-auto .edupace-toc.is-visible {
 @media (min-width: 900px) {
   .edupace-app-features {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 700px) {
+  .edupace-app-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

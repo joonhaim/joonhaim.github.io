@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/static/css/shared/site.css">
+  <script src="/static/js/shared/site.js" defer></script>
+  <script src="/static/js/shared/includes.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div id="site-header"></div>
+    <main class="content">
+      <section id="contact">
+        <h1>Contact</h1>
+        <p class="contact-intro">I am always open to new opportunities, feel free to contact me.</p>
+
+        <div class="contact-links">
+          <a href="mailto:a.j.im@umail.leidenuniv.nl">Email</a>
+          <a href="https://github.com/joonhaim" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/aj-im/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+
+        <form class="contact-form" action="https://formsubmit.co/a.j.im@umail.leidenuniv.nl" method="POST">
+          <input type="hidden" name="_subject" value="New contact form submission">
+          <label class="full-width">Name
+            <input type="text" name="name" required>
+          </label>
+          <label class="full-width">Email
+            <input type="email" name="email" required>
+          </label>
+          <label class="full-width">Message
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+    <div id="site-footer"></div>
+  </div>
+</body>
+</html>

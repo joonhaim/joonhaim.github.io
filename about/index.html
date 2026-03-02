@@ -11,56 +11,30 @@
   <link rel="icon" href="/favicon.ico">
 
   <!-- global assets already in the site -->
-  <link rel='stylesheet' href='static/css/styles.css'>
-  <link rel='stylesheet' href='static/css/profile.css'>
-  <script src='static/js/script.js' defer></script>
-  <script src='static/js/includes.js' defer></script>
+  <link rel='stylesheet' href='/static/css/shared/site.css'>
+  <link rel='stylesheet' href='/static/css/pages/profile.css'>
+  <script src='/static/js/shared/site.js' defer></script>
+  <script src='/static/js/shared/includes.js' defer></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'></script>
-  <script src='static/js/generateCV.js' defer></script>
+  <script src='/static/js/pages/generateCV.js' defer></script>
 
   <!-- page‑specific tweaks -->
 </head>
 
 <body>
   <div class='container'>
-    <div id='site-header'>
-      <header class="site-header">
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
-          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
-        </div>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <!-- Projects dropdown -->
-            <li class="has-dropdown">
-              <a href="projects.html">Projects<span class="arrow">▾</span></a>
-              <ul class="dropdown-menu">
-                <li><a href="edupace.html">EduPace <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="ch_hospital.html">Swiss Hospital Insights <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="irl.html">Reinforcement Learning</a></li>
-                <li><a href="nc_food.html">Neural Networks</a></li>
-                <li><a href="projects.html">All Projects →</a></li>
-              </ul>
-            </li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </header>
-    </div>
+    <div id="site-header"></div>
 
     <main class='content'>
 
       <div class='cv-download-wrap'>
         <button id="download-page-pdf" class="cv-download-btn">Download page as PDF</button>
-        <a class="cv-download-btn" href="static/pdf/cv/CV_Adrien_Im.pdf" download>Download CV</a>
+        <a class="cv-download-btn" href="/static/pdf/cv/CV_Adrien_Im.pdf" download>Download CV</a>
       </div>
 
       <!-- Hero -->
       <section class='profile-header'>
-        <img src='static/images/profile/profile.jpg' alt='Photo of Adrien Joon‑Ha Im' class='profile-pic' loading='lazy'>
+        <img src='/static/images/profile/profile.jpg' alt='Photo of Adrien Joon‑Ha Im' class='profile-pic' loading='lazy'>
         <div class='profile-summary'>
           <h1>Adrien Joon‑Ha Im</h1>
           <p>BSc Data Science &amp; Artificial Intelligence — <strong>Leiden University</strong><br>Minor Biomedical Engineering — <strong>TU Delft</strong></p>
@@ -210,29 +184,25 @@
         <ul class='timeline'>
           <li>
             <div class='title'>Deutsch Online Training — B2</div>
-            <div class='meta'>Jul 2025 – Sep 2025 · <a href="static/pdf/certificates/deutsch_B2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
+            <div class='meta'>Jul 2025 – Sep 2025 · <a href="/static/pdf/certificates/deutsch_B2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
           </li>
              <li>
             <div class='title'>Deutsch Online Training — B1</div>
-            <div class='meta'>Sep 2024 – Dec 2024 · <a href="static/pdf/certificates/deutsch_B1_certificate.pdf" target="_blank">Confirmation of participation</a></div>
+            <div class='meta'>Sep 2024 – Dec 2024 · <a href="/static/pdf/certificates/deutsch_B1_certificate.pdf" target="_blank">Confirmation of participation</a></div>
           </li>
             <li>
             <div class='title'>Deutsch Online Training — A2</div>
-            <div class='meta'>Jul 2024 – Oct 2024 · <a href="static/pdf/certificates/deutsch_A2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
+            <div class='meta'>Jul 2024 – Oct 2024 · <a href="/static/pdf/certificates/deutsch_A2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
           </li>
             <li>
             <div class='title'>Goethe-Institut Seoul — A1.1</div>
-            <div class='meta'>06 Mar 2023 – 26 Apr 2023 · 69 h in-person · <a href="static/pdf/certificates/deutsch_A1_confirmation.pdf" target="_blank">Confirmation of participation</a></div>
+            <div class='meta'>06 Mar 2023 – 26 Apr 2023 · 69 h in-person · <a href="/static/pdf/certificates/deutsch_A1_confirmation.pdf" target="_blank">Confirmation of participation</a></div>
           </li>
         </ul>
       </section>
 
     </main>
-    <div id='site-footer'>
-      <footer class="site-footer">
-        <p>&copy; 2025 Adrien Joon‑Ha Im</p>
-      </footer>
-    </div>
+    <div id="site-footer"></div>
   </div>
 </body>
 </html>

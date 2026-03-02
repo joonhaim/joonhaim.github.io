@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
   <meta
     name="description"
     content="Entdecken Sie mit dem CH-IQI Prozedur-Explorer die Behandlungsvolumen Schweizer Spitäler. Durchstöbern Sie 150+ Eingriffe, vergleichen Sie Spitäler und Kantone und sehen Sie Kennzahlen pro Kopf."
@@ -16,7 +17,7 @@
     content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
   >
   <meta property="og:url" content="https://joonhaim.github.io/projects/swiss-hospital-insights/de/">
-  <meta property="og:image" content="/static/images/ch-iqi/preview_ch_iqi.png">
+  <meta property="og:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
   <meta name="author" content="Adrien Joon-Ha Im">
   <meta property="article:author" content="Adrien Joon-Ha Im">
   <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD">
@@ -27,30 +28,30 @@
     name="twitter:description"
     content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
   >
-  <meta name="twitter:image" content="/static/images/ch-iqi/preview_ch_iqi.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" href="/favicon.ico">
+  <meta name="twitter:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="/static/css/pages/ch_hospital.css">
+  <link rel="stylesheet" href="static/css/pages/ch_hospital.css">
 </head>
 <body>
   <div class="header-left">
-    <a href="/" class="back-arrow" aria-label="Zur Startseite">
+    <a href="./" class="back-arrow" aria-label="Zur Startseite">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 6L9 12l6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
     <div class="language-switcher">
       <span class="lang-btn active">DE</span>
-      <a href="/projects/swiss-hospital-insights/fr/" class="lang-btn">FR</a>
-      <a href="/projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
-      <a href="/projects/swiss-hospital-insights/" class="lang-btn">EN</a>
+      <a href="projects/swiss-hospital-insights/fr/" class="lang-btn">FR</a>
+      <a href="projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
+      <a href="projects/swiss-hospital-insights/" class="lang-btn">EN</a>
     </div>
   </div>
-  <a href="/" class="swiss-cross" aria-label="Zur Startseite"></a>
+  <a href="./" class="swiss-cross" aria-label="Zur Startseite"></a>
 
   <section class="hero">
     <div class="hero-inner">
@@ -61,7 +62,7 @@
       </p>
       <div class="hero-links fade-element">
         <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
-        <span>Methodik: <a href="/projects/swiss-hospital-insights/methodology/">Übersicht (Englisch)</a></span>
+        <span>Methodik: <a href="projects/swiss-hospital-insights/methodology/">Übersicht (Englisch)</a></span>
       </div>
     </div>
   </section>
@@ -191,11 +192,11 @@
 
   <footer class="site-footer" role="contentinfo">
     <p>
-      &copy; 2025 Adrien Joon‑Ha Im · <a href="/">Startseite</a>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="./">Startseite</a>
     </p>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="/static/js/pages/ch_hospital.js"></script>
+  <script src="static/js/pages/ch_hospital.js"></script>
 </body>
 </html>

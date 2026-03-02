@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
   <title>EduPace</title>
   <meta name="description" content="EduPace is a hands-on temporary external pacemaker training simulator that combines a physical device with a real-time ECG application for clinical pacing practice.">
   <meta name="robots" content="index, follow">
@@ -19,23 +20,23 @@
   <meta name="twitter:description" content="EduPace is a hands-on temporary external pacemaker training simulator that combines a physical device with a real-time ECG application for clinical pacing practice.">
   <meta name="twitter:image" content="https://joonhaim.github.io/static/images/edupace/edupace_laptop.png">
   <meta name="twitter:url" content="https://joonhaim.github.io/projects/edupace/">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/static/css/shared/site.css">
-  <link rel="stylesheet" href="/static/css/pages/edupace.css">
-  <script src="/static/js/shared/site.js" defer></script>
-  <script src="/static/js/pages/edupace.js" type="module"></script>
-  <script src="/static/js/shared/includes.js" defer></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="static/css/shared/site.css">
+  <link rel="stylesheet" href="static/css/pages/edupace.css">
+  <script src="static/js/shared/site.js" defer></script>
+  <script src="static/js/pages/edupace.js" type="module"></script>
+  <script src="static/js/shared/includes.js" defer></script>
     <!-- KaTeX (equation rendering) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
 <!-- Bézier ECG widget -->
-<script src="/static/js/modules/bezier-widget.js" type="module"></script>
+<script src="static/js/modules/bezier-widget.js" type="module"></script>
 
 </head>
 <body>
@@ -48,26 +49,26 @@
           <div class="edupace-hero__content">
             <p class="eyebrow">TU Delft Minor Biomedical Engineering · 2025</p>
             <h1 class="edupace-title">
-              <img src="/static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
+              <img src="static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
             </h1>
             <p class="lead">
             EduPace is a hands-on training simulator that enables medical staff to safely practice single-chamber temporary external ventricular pacing. The system combines a physical device with a computer application with a real time ECG simulation.
             Users can adjust pacing, sensing, and output parameters on the device while immediately observing the ECG response.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="/static/pdf/edupace/edupace_report.pdf">View project report (PDF)</a>
+              <a class="button primary" href="static/pdf/edupace/edupace_report.pdf">View project report (PDF)</a>
               <a class="button secondary" href="https://github.com/joonhaim/edupace" target="_blank" rel="noopener">Explore repository</a>
             </div>
           </div>
           <div class="edupace-hero__visual">
             <figure class="hero-image">
-              <img src="/static/images/edupace/edupace_laptop.png" alt="EduPace pacemaker training device">
+              <img src="static/images/edupace/edupace_laptop.png" alt="EduPace pacemaker training device">
             </figure>
             <div class="hero-partners">
               <strong>Collaborating institutions</strong>
               <div class="logo-row">
-                <img src="/static/images/logos/TUD.png" alt="TU Delft logo">
-                <img src="/static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
+                <img src="static/images/logos/TUD.png" alt="TU Delft logo">
+                <img src="static/images/edupace/rdgg_html-logo.png" alt="Reinier de Graaf Hospital logo">
               </div>
             </div>
           </div>
@@ -183,7 +184,7 @@
     Bézier–Bernstein model, then rendered in JavaScript to drive the real-time simulator display.
   </p>
 </div>
-                <img src="/static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
+                <img src="static/images/edupace/ecg_traces.png" alt="ECG traces for EduPace pathologies and pacing responses">
                 <figcaption>
   Reference morphologies used in the pacing engine.
   <ul class="feature-list">
@@ -304,13 +305,13 @@
               </div>
             </div>
             <figure class="photo-card edupace-app-carousel" data-photo-toggle>
-              <img class="photo-toggle__image" src="/static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
+              <img class="photo-toggle__image" src="static/images/edupace/edupace_dashboard.png" alt="EduPace app dashboard showing pacing scenarios">
               <figcaption class="photo-toggle__caption">Dashboard view from the Electron-packaged training app.</figcaption>
               <div class="photo-toggle" role="group" aria-label="Training app screenshots">
                 <button
                   class="photo-toggle__button is-active"
                   type="button"
-                  data-photo-src="/static/images/edupace/edupace_dashboard.png"
+                  data-photo-src="static/images/edupace/edupace_dashboard.png"
                   data-photo-alt="EduPace app dashboard showing pacing scenarios"
                   data-photo-caption="Dashboard view from the Electron-packaged training app."
                 >
@@ -319,7 +320,7 @@
                 <button
                   class="photo-toggle__button"
                   type="button"
-                  data-photo-src="/static/images/edupace/training_tab.png"
+                  data-photo-src="static/images/edupace/training_tab.png"
                   data-photo-alt="EduPace training tab showing ECG playback and guided steps"
                   data-photo-caption="Training tab view with ECG playback and guided steps."
                 >
@@ -362,13 +363,13 @@
               </ul>
             </div>
             <figure class="photo-card photo-card--compact photo-card--device">
-              <img src="/static/images/edupace/hardware.jpg" alt="EduPace hardware device controller">
+              <img src="static/images/edupace/hardware.jpg" alt="EduPace hardware device controller">
               <figcaption>Arduino Giga with Display Shield and Rotary Encoders.</figcaption>
             </figure>
           </div>
           <div class="timeline-step__content">
             <figure class="photo-card photo-card--wide">
-              <img src="/static/images/edupace/system_overview.png" alt="EduPace system overview showing device, application, and pacing workflow">
+              <img src="static/images/edupace/system_overview.png" alt="EduPace system overview showing device, application, and pacing workflow">
               <figcaption>System overview of the EduPace device and EduPace app.</figcaption>
             </figure>
           </div>
@@ -379,15 +380,15 @@
             </div>
             <div class="edupace-gallery__grid">
               <figure class="edupace-gallery__item">
-                <img src="/static/images/edupace/EduPace_Graphics/1.png" alt="EduPace device splash screen UI">
+                <img src="static/images/edupace/EduPace_Graphics/1.png" alt="EduPace device splash screen UI">
                 <figcaption>Splash screen on device startup.</figcaption>
               </figure>
               <figure class="edupace-gallery__item">
-                <img src="/static/images/edupace/EduPace_Graphics/2.png" alt="EduPace device powered off screen">
+                <img src="static/images/edupace/EduPace_Graphics/2.png" alt="EduPace device powered off screen">
                 <figcaption>Powered off state to mirror the reference workflow.</figcaption>
               </figure>
               <figure class="edupace-gallery__item">
-                <img src="/static/images/edupace/EduPace_Graphics/4.png" alt="EduPace device powered on with pace LED active">
+                <img src="static/images/edupace/EduPace_Graphics/4.png" alt="EduPace device powered on with pace LED active">
                 <figcaption>Powered on with pacing indicator active.</figcaption>
               </figure>
             </div>
@@ -405,13 +406,13 @@ Design decisions were validated through iterative prints and hands-on testing pr
           </div>
           <div class="timeline-step__content timeline-step__content--split">
             <figure class="photo-card edupace-casing-carousel" data-photo-toggle>
-              <img class="photo-toggle__image" src="/static/images/edupace/assembly.png" alt="Casing assembly diagram for the EduPace enclosure">
+              <img class="photo-toggle__image" src="static/images/edupace/assembly.png" alt="Casing assembly diagram for the EduPace enclosure">
               <figcaption class="photo-toggle__caption">Casing assembly layout for the EduPace enclosure.</figcaption>
               <div class="photo-toggle" role="group" aria-label="Casing design visuals">
                 <button
                   class="photo-toggle__button is-active"
                   type="button"
-                  data-photo-src="/static/images/edupace/assembly.png"
+                  data-photo-src="static/images/edupace/assembly.png"
                   data-photo-alt="Casing assembly diagram for the EduPace enclosure"
                   data-photo-caption="Casing assembly layout for the EduPace enclosure."
                 >
@@ -420,7 +421,7 @@ Design decisions were validated through iterative prints and hands-on testing pr
                 <button
                   class="photo-toggle__button"
                   type="button"
-                  data-photo-src="/static/images/edupace/edupace_internals.png"
+                  data-photo-src="static/images/edupace/edupace_internals.png"
                   data-photo-alt="EduPace internal electronics and wiring"
                   data-photo-caption="Electronics, knobs and custom wiring were secured to the casing."
                 >
@@ -429,7 +430,7 @@ Design decisions were validated through iterative prints and hands-on testing pr
                 <button
                   class="photo-toggle__button"
                   type="button"
-                  data-photo-src="/static/images/edupace/edupace_closeup.png"
+                  data-photo-src="static/images/edupace/edupace_closeup.png"
                   data-photo-alt="EduPace device closeup showing physical controls"
                   data-photo-caption="Custom knobs were designed to match the reference device and 3D printed for the final build."
                 >
@@ -465,11 +466,11 @@ Design decisions were validated through iterative prints and hands-on testing pr
           </div>
           <div class="timeline-step__content timeline-step__content--split">
             <figure class="photo-card photo-card--final">
-              <img src="/static/images/edupace/edupace_package.jpg" alt="EduPace final package with device and accessories">
+              <img src="static/images/edupace/edupace_package.jpg" alt="EduPace final package with device and accessories">
               <figcaption>Final EduPace package prepared for training delivery.</figcaption>
             </figure>
             <figure class="photo-card photo-card--final">
-              <img src="/static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
+              <img src="static/images/edupace/edupace_trial3.jpeg" alt="EduPace device being used in a training session">
               <figcaption>Live training session validating the final form factor.</figcaption>
             </figure>
           </div>

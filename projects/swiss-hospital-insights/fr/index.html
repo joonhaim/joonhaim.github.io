@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
   <meta
     name="description"
     content="Explorez les volumes d'interventions hospitalières suisses avec l'explorateur CH-IQI. Parcourez plus de 150 procédures, comparez hôpitaux et cantons, et consultez des indicateurs par habitant."
@@ -16,7 +17,7 @@
     content="Ce projet personnel transforme la base d'indicateurs 2023 de l'Office fédéral de la santé publique en un tableau de bord accessible pour explorer les volumes d'interventions hospitalières à travers la Suisse. Les utilisateurs peuvent parcourir plus de 150 procédures, comparer les hôpitaux et les cantons, et consulter les taux par habitant ainsi que les parts de volume pour comprendre la répartition des soins dans le pays. Construit avec des données JSON légères et un rendu côté client pour la rapidité, il encourage une utilisation transparente et responsable des données de santé publiques."
   >
   <meta property="og:url" content="https://joonhaim.github.io/projects/swiss-hospital-insights/fr/">
-  <meta property="og:image" content="/static/images/ch-iqi/preview_ch_iqi.png">
+  <meta property="og:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
   <meta name="author" content="Adrien Joon-Ha Im">
   <meta property="article:author" content="Adrien Joon-Ha Im">
   <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD">
@@ -27,30 +28,30 @@
     name="twitter:description"
     content="Ce projet personnel transforme la base d'indicateurs 2023 de l'Office fédéral de la santé publique en un tableau de bord accessible pour explorer les volumes d'interventions hospitalières à travers la Suisse. Les utilisateurs peuvent parcourir plus de 150 procédures, comparer les hôpitaux et les cantons, et consulter les taux par habitant ainsi que les parts de volume pour comprendre la répartition des soins dans le pays. Construit avec des données JSON légères et un rendu côté client pour la rapidité, il encourage une utilisation transparente et responsable des données de santé publiques."
   >
-  <meta name="twitter:image" content="/static/images/ch-iqi/preview_ch_iqi.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" href="/favicon.ico">
+  <meta name="twitter:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="/static/css/pages/ch_hospital.css">
+  <link rel="stylesheet" href="static/css/pages/ch_hospital.css">
 </head>
 <body>
   <div class="header-left">
-    <a href="/" class="back-arrow" aria-label="Retour à l'accueil">
+    <a href="./" class="back-arrow" aria-label="Retour à l'accueil">
       <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 6L9 12l6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
     <div class="language-switcher">
-      <a href="/projects/swiss-hospital-insights/de/" class="lang-btn">DE</a>
+      <a href="projects/swiss-hospital-insights/de/" class="lang-btn">DE</a>
       <span class="lang-btn active">FR</span>
-      <a href="/projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
-      <a href="/projects/swiss-hospital-insights/" class="lang-btn">EN</a>
+      <a href="projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
+      <a href="projects/swiss-hospital-insights/" class="lang-btn">EN</a>
     </div>
   </div>
-  <a href="/" class="swiss-cross" aria-label="Retour à l'accueil"></a>
+  <a href="./" class="swiss-cross" aria-label="Retour à l'accueil"></a>
 
   <section class="hero">
     <div class="hero-inner">
@@ -61,7 +62,7 @@
       </p>
       <div class="hero-links fade-element">
         <span>Source : <a href="https://www.bag.admin.ch/fr/indicateurs-de-qualite-des-hopitaux-suisses-de-soins-aigus" target="_blank" rel="noopener">OFSP CH-IQI</a></span>
-        <span>Méthodologie : <a href="/projects/swiss-hospital-insights/methodology/">aperçu (en anglais)</a></span>
+        <span>Méthodologie : <a href="projects/swiss-hospital-insights/methodology/">aperçu (en anglais)</a></span>
       </div>
     </div>
   </section>
@@ -191,11 +192,11 @@
 
   <footer class="site-footer" role="contentinfo">
     <p>
-      &copy; 2025 Adrien Joon‑Ha Im · <a href="/">Accueil</a>
+      &copy; 2025 Adrien Joon‑Ha Im · <a href="./">Accueil</a>
     </p>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="/static/js/pages/ch_hospital.js"></script>
+  <script src="static/js/pages/ch_hospital.js"></script>
 </body>
 </html>

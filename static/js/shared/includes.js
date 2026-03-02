@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const normalisePath = (pathname) => {
+    if (!pathname || pathname === '/') {
+      return '/';
+    }
+
+    let next = pathname.replace(/\/index\.html$/, '/');
+    if (!next.endsWith('/')) {
+      next = `${next}/`;
+    }
+
+    return next.replace(/\/{2,}/g, '/');
+  };
+
   const load = (sel, url) => {
     const container = document.querySelector(sel);
     if (!container) return Promise.resolve(null);
@@ -19,14 +32,22 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // inject header & footer when needed
-  const headerLoaded = load('#site-header', 'partials/header.html');
-  load('#site-footer', 'partials/footer.html');
+  const headerLoaded = load('#site-header', '/static/includes/header.html');
+  load('#site-footer', '/static/includes/footer.html');
 
   // once header is in place, highlight active link and enable mobile nav
   headerLoaded.then(() => {
-    const path = location.pathname.split('/').pop() || 'index.html';
+    const currentPath = normalisePath(location.pathname);
     document.querySelectorAll('.main-nav a').forEach(a => {
-      if (a.getAttribute('href') === path) a.classList.add('active');
+      const href = a.getAttribute('href');
+      if (!href) return;
+
+      const linkPath = normalisePath(new URL(href, location.origin).pathname);
+      const isActive = linkPath === '/'
+        ? currentPath === '/'
+        : currentPath === linkPath || currentPath.startsWith(linkPath);
+
+      a.classList.toggle('active', isActive);
     });
 
     const navToggle = document.getElementById('nav-toggle');

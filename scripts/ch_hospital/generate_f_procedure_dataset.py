@@ -27,7 +27,7 @@ EXCLUDED_INSTITUTIONS = {
     "Ospedali per cure generali, cure di base (livello 3)",
 }
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SOURCE = REPO_ROOT / "static" / "data" / "qip23_tabdaten.csv"
 DEFAULT_TARGET = REPO_ROOT / "static" / "data" / "qip23_f_procedures.json"
 

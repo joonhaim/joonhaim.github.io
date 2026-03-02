@@ -1,8 +1,8 @@
-import { stitchBeats } from "./edupace/ecgStitcher.js";
-import { thirdDegHeartBlock } from "./edupace/ecgThirdDegree.js";
-import { mobitzTypeII } from "./edupace/ecgMobitz2.js";
-import { slowConduction } from "./edupace/ecgSlowConduction.js";
-import { knobPresets } from "./edupace/knobPresets.js";
+import { stitchBeats } from "../edupace/ecgStitcher.js";
+import { thirdDegHeartBlock } from "../edupace/ecgThirdDegree.js";
+import { mobitzTypeII } from "../edupace/ecgMobitz2.js";
+import { slowConduction } from "../edupace/ecgSlowConduction.js";
+import { knobPresets } from "../edupace/knobPresets.js";
 
 const initSectionObserver = () => {
   const tocLinks = Array.from(document.querySelectorAll(".edupace-toc__link"));

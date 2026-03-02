@@ -9,39 +9,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="static/css/styles.css">
-  <script src="static/js/script.js" defer></script>
-  <script src="static/js/includes.js" defer></script>
+  <link rel="stylesheet" href="/static/css/shared/site.css">
+  <script src="/static/js/shared/site.js" defer></script>
+  <script src="/static/js/shared/includes.js" defer></script>
 </head>
 <body>
   <div class="container">
-    <div id="site-header">
-      <header class="site-header">
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
-          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
-        </div>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <!-- Projects dropdown -->
-            <li class="has-dropdown">
-              <a href="projects.html">Projects<span class="arrow">▾</span></a>
-              <ul class="dropdown-menu">
-                <li><a href="edupace.html">EduPace <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="ch_hospital.html">Swiss Hospital Insights <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="irl.html">Reinforcement Learning</a></li>
-                <li><a href="nc_food.html">Neural Networks</a></li>
-                <li><a href="projects.html">All Projects →</a></li>
-              </ul>
-            </li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </header>
-    </div>
+    <div id="site-header"></div>
 
     <main class="content">
       <!-- Intro + single GitHub link -->
@@ -83,7 +57,7 @@
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A1A_REPORT.pdf#navpanes=0" title="Assignment 1A Report" loading="lazy"></iframe>
+            <iframe src="/static/pdf/irl/IRL_A1A_REPORT.pdf#navpanes=0" title="Assignment 1A Report" loading="lazy"></iframe>
           </div>
         </div>
       </section>
@@ -98,7 +72,7 @@
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A1B_REPORT.pdf#navpanes=0" title="Assignment 1B Report" loading="lazy"></iframe>
+            <iframe src="/static/pdf/irl/IRL_A1B_REPORT.pdf#navpanes=0" title="Assignment 1B Report" loading="lazy"></iframe>
           </div>
         </div>
       </section>
@@ -113,7 +87,7 @@
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A2_REPORT.pdf#navpanes=0" title="Assignment 2 Report" loading="lazy"></iframe>
+            <iframe src="/static/pdf/irl/IRL_A2_REPORT.pdf#navpanes=0" title="Assignment 2 Report" loading="lazy"></iframe>
           </div>
         </div>
       </section>
@@ -128,18 +102,14 @@
         </div>
         <div class="assignment-pdf">
           <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A3_REPORT.pdf#navpanes=0" title="Assignment 3 Report" loading="lazy"></iframe>
+            <iframe src="/static/pdf/irl/IRL_A3_REPORT.pdf#navpanes=0" title="Assignment 3 Report" loading="lazy"></iframe>
           </div>
         </div>
       </section>
 
     </main>
 
-    <div id="site-footer">
-      <footer class="site-footer">
-        <p>&copy; 2025 Adrien Joon‑Ha Im</p>
-      </footer>
-    </div>
+    <div id="site-footer"></div>
   </div>
 </body>
 </html>

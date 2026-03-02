@@ -1420,7 +1420,7 @@ function buildHospitalDataset(entries, coordinatesMap) {
   return { byProcedure, byHospital, meta, types };
 }
 
-const POPULATION_DATASET_URL = 'static/data/je-e-01.02.03.csv';
+const POPULATION_DATASET_URL = '/static/data/je-e-01.02.03.csv';
 
 const POPULATION_NAME_TO_CODE = new Map([
   ['Switzerland', 'CH'],
@@ -1565,13 +1565,13 @@ function applyPopulationDataset(populationMap) {
 function loadHospitalDataset() {
   if (!hospitalDatasetCache.promise) {
     hospitalDatasetCache.promise = Promise.all([
-      fetch('static/data/hospital_coordinates.json').then(response => {
+      fetch('/static/data/hospital_coordinates.json').then(response => {
         if (!response.ok) {
           throw new Error(`Failed to load coordinate dataset (${response.status})`);
         }
         return response.json();
       }),
-      fetch('static/data/qip23_f_procedures.json').then(response => {
+      fetch('/static/data/qip23_f_procedures.json').then(response => {
         if (!response.ok) {
           throw new Error(`Failed to load dataset (${response.status})`);
         }
@@ -2538,7 +2538,7 @@ if (finderRoot) {
 
   function loadProcedureTranslationDataset() {
     if (!procedureTranslationCache.promise) {
-      procedureTranslationCache.promise = fetch('static/data/f_code_description_translated.csv')
+      procedureTranslationCache.promise = fetch('/static/data/f_code_description_translated.csv')
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Failed to load procedure descriptions (${response.status})`);
@@ -2640,7 +2640,7 @@ if (finderRoot) {
   };
 
   const ALL_CANTONS_OPTION = 'ALL';
-  const cantonIconPath = (code) => `static/images/cantons/${code.toLowerCase()}.svg`;
+  const cantonIconPath = (code) => `/static/images/cantons/${code.toLowerCase()}.svg`;
 
   const cantonNames = getObjectTranslation('messages.cantonNames');
 

@@ -10,39 +10,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="static/css/styles.css">
-  <script src="static/js/script.js" defer></script>
-  <script src="static/js/includes.js" defer></script>
+  <link rel="stylesheet" href="/static/css/shared/site.css">
+  <script src="/static/js/shared/site.js" defer></script>
+  <script src="/static/js/shared/includes.js" defer></script>
 </head>
 <body>
   <div class="container">
-    <div id="site-header">
-      <header class="site-header">
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/aj-im/" target="_blank">LinkedIn</a>
-          <a href="https://github.com/joonhaim" target="_blank">GitHub</a>
-        </div>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <!-- Projects dropdown -->
-            <li class="has-dropdown">
-              <a href="projects.html">Projects<span class="arrow">▾</span></a>
-              <ul class="dropdown-menu">
-                <li><a href="edupace.html">EduPace <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="ch_hospital.html">Swiss Hospital Insights <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="irl.html">Reinforcement Learning</a></li>
-                <li><a href="nc_food.html">Neural Networks</a></li>
-                <li><a href="projects.html">All Projects →</a></li>
-              </ul>
-            </li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </header>
-    </div>
+    <div id="site-header"></div>
     <main class="content">
 
       <!-- Intro -->
@@ -62,7 +36,7 @@
           I’m a French-Korean student pursuing a BSc in Data Science & AI at Leiden University, with a minor in Biomedical Engineering at TU Delft. My academic interests focus on the applications of AI in healthcare, especially in minimally invasive and robotic surgery. Outside of my academic work, I have many different interests such as exploring cultures, learning foreign languages, and understanding geopolitics. I am currently learning German, and hope to achieve B2 level by the end of this year.
         </p>
         <div class="cta-buttons">
-          <a href="about.html" class="cta-link">View About →</a>
+          <a href="/about/" class="cta-link">View About →</a>
           <a href="https://www.linkedin.com/in/aj-im/" target="_blank" class="cta-link">LinkedIn →</a>
         </div>
       </section>
@@ -74,7 +48,7 @@
       <p class="promo-status">Featured Project</p>
 
       <h2 id="edupace-heading" class="promo-title">
-        <img src="static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
+        <img src="/static/images/edupace/edupace_logo_right_transparent.png" alt="EduPace">
         <span class="sr-only">EduPace Pacemaker Simulator</span>
       </h2>
       <p class="promo-kicker">
@@ -103,7 +77,7 @@
       </ul>
 
       <div class="promo-meta">
-        <a class="btn btn-primary btn-compact" href="edupace.html">View Project</a>
+        <a class="btn btn-primary btn-compact" href="/projects/edupace/">View Project</a>
         <div class="promo-nav" aria-label="Featured projects navigation">
           <button class="featured-control" type="button" data-direction="prev" aria-label="Previous featured project">‹</button>
           <button class="featured-control" type="button" data-direction="next" aria-label="Next featured project">›</button>
@@ -113,7 +87,7 @@
 
     <div class="promo-right" aria-hidden="true">
       <div class="promo-media">
-        <img class="promo-fig promo-fig--photo" src="static/images/edupace/edupace_device_transparent.png" alt="">
+        <img class="promo-fig promo-fig--photo" src="/static/images/edupace/edupace_device_transparent.png" alt="">
       </div>
     </div>
     </article>
@@ -157,7 +131,7 @@
       </ul>
 
       <div class="promo-meta">
-        <a class="btn btn-primary btn-compact" href="ch_hospital.html">View Dashboard</a>
+        <a class="btn btn-primary btn-compact" href="/projects/swiss-hospital-insights/">View Dashboard</a>
         <div class="promo-nav" aria-label="Featured projects navigation">
           <button class="featured-control" type="button" data-direction="prev" aria-label="Previous featured project">‹</button>
           <button class="featured-control" type="button" data-direction="next" aria-label="Next featured project">›</button>
@@ -208,7 +182,7 @@
           <!-- Introduction to Reinforcement Learning -->
           <article class="project">
             <img
-              src="static/images/logos/irl.png"
+              src="/static/images/logos/irl.png"
               alt="Introduction to Reinforcement Learning logo"
               class="project-logo"
               loading="lazy"
@@ -218,14 +192,14 @@
               <p>
                 Introduction to Reinforcement Learning (4032IRLRN) course assignments covering bandit methods, dynamic programming, and model-free vs. model-based algorithms.
               </p>
-              <a href="irl.html">View Project →</a>
+              <a href="/projects/reinforcement-learning/">View Project →</a>
             </div>
           </article>
 
           <!-- EduPace -->
           <article class="project">
             <img
-              src="static/images/edupace/edupace.png"
+              src="/static/images/edupace/edupace.png"
               alt="EduPace logo"
               class="project-logo"
               loading="lazy"
@@ -237,14 +211,14 @@
                 tactile control unit to train pacemaker configuration, pacing,
                 and sensing workflows.
               </p>
-              <a href="edupace.html">View Project →</a>
+              <a href="/projects/edupace/">View Project →</a>
             </div>
           </article>
 
           <!-- Cognition & Computation -->
           <article class="project">
             <img
-              src="static/images/logos/cognition.png"
+              src="/static/images/logos/cognition.png"
               alt="Cognition & Computation logo"
               class="project-logo"
               loading="lazy"
@@ -256,14 +230,14 @@
                 science, including memory models, language segmentation,
                 decision-making simulations, and connectionist networks.
               </p>
-              <a href="cognition.html">View Project →</a>
+              <a href="/projects/cognition/">View Project →</a>
             </div>
           </article>
 
           <!-- Swiss Hospital Insights (CH-IQI) -->
           <article class="project">
             <img
-              src="static/images/logos/roestigraben.png"
+              src="/static/images/logos/roestigraben.png"
               alt="Beyond the Röstigraben logo"
               class="project-logo"
               loading="lazy"
@@ -275,20 +249,16 @@
                 Public Health to search procedures, compare hospitals, and review
                 canton-level case volumes.
               </p>
-              <a href="ch_hospital.html">View Dashboard →</a>
+              <a href="/projects/swiss-hospital-insights/">View Dashboard →</a>
             </div>
           </article>
         </div>
-        <a href="projects.html" class="cta-link">See all projects →</a>
+        <a href="/projects/" class="cta-link">See all projects →</a>
         <p><br>You can find all the details of my projects with code on my GitHub Profile:</p>
         <a href="https://github.com/joonhaim" class="cta-link" target="_blank">GitHub Profile →</a>
       </section>
     </main>
-    <div id="site-footer">
-      <footer class="site-footer">
-        <p>&copy; 2025 Adrien Joon‑Ha Im</p>
-      </footer>
-    </div>
+    <div id="site-footer"></div>
   </div>
 </body>
 </html>

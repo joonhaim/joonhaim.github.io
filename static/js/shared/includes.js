@@ -3,38 +3,84 @@ document.addEventListener('DOMContentLoaded', () => {
   const siteBasePath = siteBaseUrl.pathname.endsWith('/')
     ? siteBaseUrl.pathname
     : `${siteBaseUrl.pathname}/`;
-  const includeFallbacks = {
-    '#site-header': `
-      <header class="site-header">
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/aj-im/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/joonhaim" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </div>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776; Menu</button>
+
+  const fallbackModel = {
+    socialLinks: [
+      { href: 'https://www.linkedin.com/in/aj-im/', label: 'LinkedIn' },
+      { href: 'https://github.com/joonhaim', label: 'GitHub' }
+    ],
+    menu: [
+      { href: './', label: 'Home' },
+      { href: 'about/', label: 'About' },
+      {
+        href: 'projects/',
+        label: 'Projects',
+        children: [
+          { href: 'projects/edupace/', label: 'EduPace' },
+          { href: 'projects/swiss-hospital-insights/', label: 'Swiss Hospital Insights' },
+          { href: 'projects/reinforcement-learning/', label: 'Reinforcement Learning' },
+          { href: 'projects/neural-networks/', label: 'Neural Networks' },
+          { href: 'projects/', label: 'All Projects →' }
+        ]
+      },
+      { href: 'contact/', label: 'Contact' }
+    ],
+    footerText: '© 2025 Adrien Joon-Ha Im'
+  };
+
+  const escapeHtml = (value) => String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
+  const renderFallbackHeader = () => {
+    const socialMarkup = fallbackModel.socialLinks
+      .map(({ href, label }) => (
+        `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
+      ))
+      .join('');
+
+    const navMarkup = fallbackModel.menu
+      .map((item) => {
+        if (!item.children?.length) {
+          return `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a></li>`;
+        }
+
+        const childrenMarkup = item.children
+          .map(({ href, label }) => `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`)
+          .join('');
+
+        return `
+          <li class="has-dropdown">
+            <a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}<span class="arrow">▾</span></a>
+            <ul class="dropdown-menu">${childrenMarkup}</ul>
+          </li>
+        `;
+      })
+      .join('');
+
+    return `
+      <header class="site-header fallback-shell" data-fallback="true">
+        <div class="social-links">${socialMarkup}</div>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
         <nav class="main-nav">
-          <ul>
-            <li><a href="./">Home</a></li>
-            <li><a href="about/">About</a></li>
-            <li class="has-dropdown">
-              <a href="projects/">Projects<span class="arrow">&#9662;</span></a>
-              <ul class="dropdown-menu">
-                <li><a href="projects/edupace/">EduPace <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="projects/swiss-hospital-insights/">Swiss Hospital Insights <span class="flagship-star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false"><path d="M12 3.4l2.6 5.4 6 0.9-4.3 4.1 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.4 9.7l6-0.9z" fill="currentColor" /></svg></span></a></li>
-                <li><a href="projects/reinforcement-learning/">Reinforcement Learning</a></li>
-                <li><a href="projects/neural-networks/">Neural Networks</a></li>
-                <li><a href="projects/">All Projects&nbsp;&rarr;</a></li>
-              </ul>
-            </li>
-            <li><a href="contact/">Contact</a></li>
-          </ul>
+          <ul>${navMarkup}</ul>
         </nav>
       </header>
-    `,
-    '#site-footer': `
-      <footer class="site-footer">
-        <p>&copy; 2025 Adrien Joon-Ha Im</p>
-      </footer>
-    `
+    `;
+  };
+
+  const renderFallbackFooter = () => `
+    <footer class="site-footer fallback-shell" data-fallback="true">
+      <p>${escapeHtml(fallbackModel.footerText)}</p>
+    </footer>
+  `;
+
+  const minimalFallbacks = {
+    '#site-header': renderFallbackHeader,
+    '#site-footer': renderFallbackFooter
   };
 
   const normalisePath = (pathname) => {
@@ -76,19 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error(`Error loading ${url}:`, err);
-        const fallback = includeFallbacks[sel];
-        if (fallback) {
-          container.innerHTML = fallback;
+        const renderFallback = minimalFallbacks[sel];
+        if (renderFallback) {
+          container.innerHTML = renderFallback();
+        } else {
+          container.textContent = 'Unable to load shared include.';
         }
         return container;
       });
   };
 
-  // inject header & footer when needed
   const headerLoaded = load('#site-header', new URL('static/includes/header.html', siteBaseUrl).href);
   load('#site-footer', new URL('static/includes/footer.html', siteBaseUrl).href);
 
-  // once header is in place, highlight active link and enable mobile nav
   headerLoaded.then(() => {
     const currentPath = toSitePath(window.location.href);
     document.querySelectorAll('.main-nav a').forEach(a => {

@@ -18,12 +18,14 @@ test.describe('site smoke tests', () => {
   });
 
   test('contact page should expose key contact channels', async ({ page }) => {
-    await page.goto('/contact/');
-    await expect(page.getByRole('heading', { name: 'Contact' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Email' })).toHaveAttribute('href', /mailto:/);
-    await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', /github\.com/);
-    await expect(page.getByRole('button', { name: 'Send Message' })).toBeVisible();
-  });
+  await page.goto('/contact/');
+  const contact = page.locator('#contact');
+
+  await expect(contact.getByRole('heading', { name: 'Contact' })).toBeVisible();
+  await expect(contact.getByRole('link', { name: 'Email' })).toHaveAttribute('href', /mailto:/);
+  await expect(contact.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', /github\.com/);
+  await expect(contact.getByRole('button', { name: 'Send Message' })).toBeVisible();
+});
 
   test('primary home navigation links should not 404', async ({ page }) => {
     await page.goto('/');

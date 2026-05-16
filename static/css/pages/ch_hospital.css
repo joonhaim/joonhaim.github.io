@@ -353,7 +353,7 @@ body {
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .methodology-card h2 {
@@ -374,19 +374,23 @@ body {
 }
 
 .readme-toc {
-  border-left: 4px solid var(--border-soft);
-  padding: 1rem 1.5rem;
-  background: var(--surface-muted);
-  border-radius: 0.75rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  padding: 1.1rem 1.35rem;
+  background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.95) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
 }
 
 .readme-toc h3 {
   margin-top: 0;
   margin-bottom: 0.75rem;
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-subtle);
+  font-size: 0.95rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  color: var(--brand-navy);
 }
 
 .readme-toc ol {
@@ -508,7 +512,7 @@ body {
 .methodology-card h3 {
   margin-top: 1.75rem;
   margin-bottom: 0.6rem;
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   letter-spacing: 0.005em;
   text-transform: none;
 }
@@ -519,9 +523,9 @@ body {
 
 .methodology-card p,
 .methodology-card li {
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.65;
-  color: var(--text-muted);
+  color: var(--brand-navy);
 }
 
 .methodology-card ul,
@@ -609,12 +613,12 @@ body {
   }
 
   .methodology-card h3 {
-    font-size: 1rem;
+    font-size: 1.08rem;
   }
 
   .methodology-card p,
   .methodology-card li {
-    font-size: 0.92rem;
+    font-size: 0.96rem;
   }
 
   .methodology-readme {

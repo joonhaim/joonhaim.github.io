@@ -1,146 +1,250 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>Cognition &amp; Computation</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="static/css/shared/site.css">
-  <script src="static/js/shared/site.js" defer></script>
-  <script src="static/js/shared/includes.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div id="site-header"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Cognition &amp; Computation</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
 
-    <main class="content">
-      <!-- Intro + single GitHub link -->
-      <section class="project-intro">
-        <h1>Cognition &amp; Computation</h1>
-        <p>
-          This page is a collection of all four assignments completed for the Cognition and Computation course
-          at Leiden University (<a href="https://studiegids.universiteitleiden.nl/en/courses/123396/cognition-and-computation" target="_blank" rel="noopener">4032COGCO</a>). The course explores key concepts in cognitive science through computational modeling.
-          This course was taught by Dr. Steven Miletić and Dr. ir. Roy de Kleijn (Leiden University, 2024–2025).
-          You can find the more detailed implementations of these small projects by visiting the link below.
-        </p>
-        <p class="repo-link">
-          <a href="https://github.com/joonhaim/cognition-and-computation"
-             target="_blank" rel="noopener">
-            View full project on GitHub →
-          </a>
-        </p>
-      </section>
+      <main class="content">
+        <!-- Intro + single GitHub link -->
+        <section class="project-intro">
+          <h1>Cognition &amp; Computation</h1>
+          <p>
+            This page is a collection of all four assignments completed for the
+            Cognition and Computation course at Leiden University (<a
+              href="https://studiegids.universiteitleiden.nl/en/courses/123396/cognition-and-computation"
+              target="_blank"
+              rel="noopener"
+              >4032COGCO</a
+            >). The course explores key concepts in cognitive science through
+            computational modeling. This course was taught by Dr. Steven Miletić
+            and Dr. ir. Roy de Kleijn (Leiden University, 2024–2025). You can
+            find the more detailed implementations of these small projects by
+            visiting the link below.
+          </p>
+          <p class="repo-link">
+            <a
+              href="https://github.com/joonhaim/cognition-and-computation"
+              target="_blank"
+              rel="noopener"
+            >
+              View full project on GitHub →
+            </a>
+          </p>
+        </section>
 
-      <!-- Table of Contents -->
-      <section id="toc">
-        <h2>Table of Contents</h2>
-        <ol>
-          <li><a href="#assignment1">Assignment 1: Memory Models (Group)</a></li>
-          <li><a href="#assignment2">Assignment 2: Language Segmentation (Group)</a></li>
-          <li><a href="#assignment3">Assignment 3: Decision Making &amp; DDM (Group)</a></li>
-          <li><a href="#assignment4">Assignment 4: Connectionism (Individual)</a></li>
-        </ol>
-      </section>
+        <!-- Table of Contents -->
+        <section id="toc">
+          <h2>Table of Contents</h2>
+          <ol>
+            <li>
+              <a href="#assignment1">Assignment 1: Memory Models (Group)</a>
+            </li>
+            <li>
+              <a href="#assignment2"
+                >Assignment 2: Language Segmentation (Group)</a
+              >
+            </li>
+            <li>
+              <a href="#assignment3"
+                >Assignment 3: Decision Making &amp; DDM (Group)</a
+              >
+            </li>
+            <li>
+              <a href="#assignment4"
+                >Assignment 4: Connectionism (Individual)</a
+              >
+            </li>
+          </ol>
+        </section>
 
-            <!-- Assignment 1 -->
-      <section id="assignment1" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 1: Memory Models (Group)</h2>
-          <p class="subtitle"><strong>Modeling recognition memory with DPSD and UVSD</strong></p>
-          <p>In this group project, we examined the mechanics of recognition memory by implementing
-          and comparing two classic signal-detection models. First, we built a random-guessing baseline to
-          establish chance performance. Then we implemented the Unequal Variance Signal Detection (UVSD) model, where
-          "old" and "new" items are drawn from Gaussians with different variances. We also implemented the
-          Dual-Process Signal Detection (DPSD) model, where recollection which is a high threshold, all-or-none process
-          is used alongside a continuous familiarity signal. By generating Receiver-Operating Characteristic (ROC) curves
-          for each of the models, we could see how UVSD's curve differs from DPSD's more symmetric shape. Our results
-          that both models outperform random guessing by a large margin.</p>
-          <p class="grade"><strong>Grade:</strong> 9.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe
-              src="static/pdf/cognition/CC-A1-report.pdf#navpanes=0"
-              title="Assignment 1 Report"
-              loading="lazy">
-            </iframe>
+        <!-- Assignment 1 -->
+        <section id="assignment1" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 1: Memory Models (Group)</h2>
+            <p class="subtitle">
+              <strong>Modeling recognition memory with DPSD and UVSD</strong>
+            </p>
+            <p>
+              In this group project, we examined the mechanics of recognition
+              memory by implementing and comparing two classic signal-detection
+              models. First, we built a random-guessing baseline to establish
+              chance performance. Then we implemented the Unequal Variance
+              Signal Detection (UVSD) model, where "old" and "new" items are
+              drawn from Gaussians with different variances. We also implemented
+              the Dual-Process Signal Detection (DPSD) model, where recollection
+              which is a high threshold, all-or-none process is used alongside a
+              continuous familiarity signal. By generating Receiver-Operating
+              Characteristic (ROC) curves for each of the models, we could see
+              how UVSD's curve differs from DPSD's more symmetric shape. Our
+              results that both models outperform random guessing by a large
+              margin.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 9.0 / 10.0</p>
           </div>
-        </div>
-      </section>
-
-      <!-- Assignment 2 -->
-      <section id="assignment2" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 2: Language Segmentation (Group)</h2>
-          <p class="subtitle"><strong>Statistical Word Segmentation via Transitional Probabilities</strong></p>
-          <p>This project tackled the problem of how infants segment continuous speech into discrete words.
-            Using an artificial “syllable stream,” we first plotted syllable frequencies and then computed bigram
-            transitional probabilities. A clear bimodal distribution emerged within word transitions near
-            1.0 and boundary transitions near 0.0 allowing us to set a threshold (≈ 0.4) for segmentation.
-            Our Python implementation identified six unique words (e.g., lukibora, daropife) and
-            successfully segmented the first 30 items in the corpus. Finally, we reflected on differences between
-            this purely statistical approach and infant learners, who also exploit prosody, semantics, and adaptive
-            thresholding. This assignment highlighted the power and limitations of simple distributional cues in
-            language acquisition.</p>
-          <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe
-              src="static/pdf/cognition/CC-A2-report.pdf#navpanes=0"
-              title="Assignment 2 Report"
-              loading="lazy">
-            </iframe>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/cognition/CC-A1-report.pdf#navpanes=0"
+                title="Assignment 1 Report"
+                loading="lazy"
+              >
+              </iframe>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Assignment 3 -->
-      <section id="assignment3" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 3: Decision Making &amp; DDM (Group)</h2>
-          <p class="subtitle"><strong>Simulating Evidence Accumulation with the Drift‑Diffusion Model</strong></p>
-          <p>In this assignment, we explored decision-making by moving from basic random walks to the full Drift Diffusion Model (DDM). We began with a zero-drift random walk using Gaussian noise and binary thresholds, which produced right-skewed distributions of decision times. Introducing a drift rate (v), which simulates bias or evidence strength, led to faster and more accurate decisions—just as theory predicts. We then systematically varied the drift rate (from v = 1 to v = 2) and the decision threshold (from a = 1 to a = 1.5). Higher drift rates resulted in quicker, more accurate decisions, while larger thresholds made decisions slower but more cautious. The resulting histograms closely mirrored human reaction time data from speed–accuracy trade-off tasks. This assignment deepened our understanding of sequential sampling models and gave us hands-on experience with stochastic simulation and parameter tuning.</p>
-          <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe
-              src="static/pdf/cognition/CC-A3-report.pdf#navpanes=0"
-              title="Assignment 3 Report"
-              loading="lazy">
-            </iframe>
+        <!-- Assignment 2 -->
+        <section id="assignment2" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 2: Language Segmentation (Group)</h2>
+            <p class="subtitle">
+              <strong
+                >Statistical Word Segmentation via Transitional
+                Probabilities</strong
+              >
+            </p>
+            <p>
+              This project tackled the problem of how infants segment continuous
+              speech into discrete words. Using an artificial “syllable stream,”
+              we first plotted syllable frequencies and then computed bigram
+              transitional probabilities. A clear bimodal distribution emerged
+              within word transitions near 1.0 and boundary transitions near 0.0
+              allowing us to set a threshold (≈ 0.4) for segmentation. Our
+              Python implementation identified six unique words (e.g., lukibora,
+              daropife) and successfully segmented the first 30 items in the
+              corpus. Finally, we reflected on differences between this purely
+              statistical approach and infant learners, who also exploit
+              prosody, semantics, and adaptive thresholding. This assignment
+              highlighted the power and limitations of simple distributional
+              cues in language acquisition.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
           </div>
-        </div>
-      </section>
-
-      <!-- Assignment 4 -->
-      <section id="assignment4" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 4: Connectionism (Individual)</h2>
-          <p class="subtitle"><strong>Implementing McClelland’s Interactive Activation & Competition (IAC) Model</strong></p>
-          <p>In this assignment, I implemented McClelland’s classic 1981 Interactive Activation and Competition (IAC) model. Using the provided CSV matrix, I built excitatory and inhibitory connection matrices and set key parameters like resting activation, decay rate, and activation limits according to the original paper. I then programmed the model’s core update mechanism, which combines decay, net input, and input effects to update node activations over time. By probing specific nodes, such as the "Jets" gang, the individual "George," and the traits "20s" and "JH", the network was able to retrieve relevant attributes and identify individuals with shared characteristics. When comparing my results to McClelland’s original outputs, the activation patterns closely matched, with only minor differences due to time steps and clipping methods. This assignment gave me a deeper understanding of how simple network dynamics can model associative memory in a powerful and interpretable way.</p>
-          <p class="grade"><strong>Grade:</strong> 8.0/10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe
-              src="static/pdf/cognition/CC-A4-report.pdf#navpanes=0"
-              title="Assignment 4 Report"
-              loading="lazy">
-            </iframe>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/cognition/CC-A2-report.pdf#navpanes=0"
+                title="Assignment 2 Report"
+                loading="lazy"
+              >
+              </iframe>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-    </main>
+        <!-- Assignment 3 -->
+        <section id="assignment3" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 3: Decision Making &amp; DDM (Group)</h2>
+            <p class="subtitle">
+              <strong
+                >Simulating Evidence Accumulation with the Drift‑Diffusion
+                Model</strong
+              >
+            </p>
+            <p>
+              In this assignment, we explored decision-making by moving from
+              basic random walks to the full Drift Diffusion Model (DDM). We
+              began with a zero-drift random walk using Gaussian noise and
+              binary thresholds, which produced right-skewed distributions of
+              decision times. Introducing a drift rate (v), which simulates bias
+              or evidence strength, led to faster and more accurate
+              decisions—just as theory predicts. We then systematically varied
+              the drift rate (from v = 1 to v = 2) and the decision threshold
+              (from a = 1 to a = 1.5). Higher drift rates resulted in quicker,
+              more accurate decisions, while larger thresholds made decisions
+              slower but more cautious. The resulting histograms closely
+              mirrored human reaction time data from speed–accuracy trade-off
+              tasks. This assignment deepened our understanding of sequential
+              sampling models and gave us hands-on experience with stochastic
+              simulation and parameter tuning.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 10.0 / 10.0</p>
+          </div>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/cognition/CC-A3-report.pdf#navpanes=0"
+                title="Assignment 3 Report"
+                loading="lazy"
+              >
+              </iframe>
+            </div>
+          </div>
+        </section>
 
-    <div id="site-footer"></div>
-  </div>
-</body>
+        <!-- Assignment 4 -->
+        <section id="assignment4" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 4: Connectionism (Individual)</h2>
+            <p class="subtitle">
+              <strong
+                >Implementing McClelland’s Interactive Activation & Competition
+                (IAC) Model</strong
+              >
+            </p>
+            <p>
+              In this assignment, I implemented McClelland’s classic 1981
+              Interactive Activation and Competition (IAC) model. Using the
+              provided CSV matrix, I built excitatory and inhibitory connection
+              matrices and set key parameters like resting activation, decay
+              rate, and activation limits according to the original paper. I
+              then programmed the model’s core update mechanism, which combines
+              decay, net input, and input effects to update node activations
+              over time. By probing specific nodes, such as the "Jets" gang, the
+              individual "George," and the traits "20s" and "JH", the network
+              was able to retrieve relevant attributes and identify individuals
+              with shared characteristics. When comparing my results to
+              McClelland’s original outputs, the activation patterns closely
+              matched, with only minor differences due to time steps and
+              clipping methods. This assignment gave me a deeper understanding
+              of how simple network dynamics can model associative memory in a
+              powerful and interpretable way.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 8.0/10.0</p>
+          </div>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/cognition/CC-A4-report.pdf#navpanes=0"
+                title="Assignment 4 Report"
+                loading="lazy"
+              >
+              </iframe>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

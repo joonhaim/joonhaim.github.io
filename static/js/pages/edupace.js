@@ -11,7 +11,10 @@ const initSectionObserver = () => {
   }
 
   const sectionMap = new Map(
-    tocLinks.map((link) => [link, document.getElementById(link.dataset.section)])
+    tocLinks.map((link) => [
+      link,
+      document.getElementById(link.dataset.section),
+    ]),
   );
 
   const setActive = (activeId) => {
@@ -40,7 +43,8 @@ const initSectionObserver = () => {
     });
 
     const nearBottom =
-      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 2;
     if (nearBottom) {
       activeId = sections[sections.length - 1].id;
     }
@@ -148,7 +152,12 @@ const initEcgWidget = () => {
     sense: widget.querySelector('[data-value="sense"]'),
   };
 
-  if (!paperCanvas || !monitorCanvas || scenarioButtons.length === 0 || stepButtons.length === 0) {
+  if (
+    !paperCanvas ||
+    !monitorCanvas ||
+    scenarioButtons.length === 0 ||
+    stepButtons.length === 0
+  ) {
     return;
   }
 
@@ -295,7 +304,15 @@ const initEcgWidget = () => {
     return lo;
   };
 
-  const drawWaveWindowToSize = (targetCtx, width, height, strip, tLeft, tRight, strokeStyle) => {
+  const drawWaveWindowToSize = (
+    targetCtx,
+    width,
+    height,
+    strip,
+    tLeft,
+    tRight,
+    strokeStyle,
+  ) => {
     const X = (t) => ((t - tLeft) / (tRight - tLeft)) * width;
     const Y = (v) => height - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * height;
 
@@ -326,7 +343,9 @@ const initEcgWidget = () => {
     for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
       const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
       paperCtx.beginPath();
-      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.strokeStyle = isBig
+        ? "rgba(255,0,0,0.65)"
+        : "rgba(255,0,0,0.25)";
       paperCtx.lineWidth = isBig ? 1.2 : 0.8;
       paperCtx.moveTo(X(t), 0);
       paperCtx.lineTo(X(t), height);
@@ -336,7 +355,9 @@ const initEcgWidget = () => {
     for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
       const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
       paperCtx.beginPath();
-      paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.65)" : "rgba(255,0,0,0.25)";
+      paperCtx.strokeStyle = isBig
+        ? "rgba(255,0,0,0.65)"
+        : "rgba(255,0,0,0.25)";
       paperCtx.lineWidth = isBig ? 1.2 : 0.8;
       paperCtx.moveTo(0, Y(v));
       paperCtx.lineTo(width, Y(v));
@@ -355,7 +376,9 @@ const initEcgWidget = () => {
     for (let t = 0; t < VIEW_SEC - 1e-9; t += SMALL_T) {
       const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
       targetCtx.beginPath();
-      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.strokeStyle = isBig
+        ? "rgba(51,255,102,0.25)"
+        : "rgba(51,255,102,0.12)";
       targetCtx.lineWidth = isBig ? 1.1 : 0.8;
       targetCtx.moveTo(X(t), 0);
       targetCtx.lineTo(X(t), height);
@@ -365,7 +388,9 @@ const initEcgWidget = () => {
     for (let v = R_Y_MIN + SMALL_A; v < R_Y_MAX - 1e-9; v += SMALL_A) {
       const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
       targetCtx.beginPath();
-      targetCtx.strokeStyle = isBig ? "rgba(51,255,102,0.25)" : "rgba(51,255,102,0.12)";
+      targetCtx.strokeStyle = isBig
+        ? "rgba(51,255,102,0.25)"
+        : "rgba(51,255,102,0.12)";
       targetCtx.lineWidth = isBig ? 1.1 : 0.8;
       targetCtx.moveTo(0, Y(v));
       targetCtx.lineTo(width, Y(v));
@@ -381,7 +406,15 @@ const initEcgWidget = () => {
     }
 
     drawPaperGrid(width, height);
-    drawWaveWindowToSize(paperCtx, width, height, stripLive, 0, VIEW_SEC, "#111827");
+    drawWaveWindowToSize(
+      paperCtx,
+      width,
+      height,
+      stripLive,
+      0,
+      VIEW_SEC,
+      "#111827",
+    );
   };
 
   const rebuildMonitorBuffer = () => {
@@ -392,7 +425,15 @@ const initEcgWidget = () => {
     }
 
     drawMonitorGrid(monitorBufferCtx, width, height);
-    drawWaveWindowToSize(monitorBufferCtx, width, height, stripLive, 0, VIEW_SEC, "#33ff66");
+    drawWaveWindowToSize(
+      monitorBufferCtx,
+      width,
+      height,
+      stripLive,
+      0,
+      VIEW_SEC,
+      "#33ff66",
+    );
 
     drawMonitorGrid(monitorScreenCtx, width, height);
   };
@@ -417,7 +458,7 @@ const initEcgWidget = () => {
       x0,
       0,
       x1 - x0,
-      height
+      height,
     );
   };
 
@@ -426,7 +467,11 @@ const initEcgWidget = () => {
     prevSweepX = 0;
     lastTs = null;
     if (monitorCanvas.clientWidth && monitorCanvas.clientHeight) {
-      drawMonitorGrid(monitorScreenCtx, monitorCanvas.clientWidth, monitorCanvas.clientHeight);
+      drawMonitorGrid(
+        monitorScreenCtx,
+        monitorCanvas.clientWidth,
+        monitorCanvas.clientHeight,
+      );
     }
   };
 
@@ -503,7 +548,7 @@ const initEcgWidget = () => {
     const currentIndex = findClosestIndex(values, current);
     const nextIndex = Math.min(
       values.length - 1,
-      Math.max(0, currentIndex + direction)
+      Math.max(0, currentIndex + direction),
     );
     return values[nextIndex];
   };
@@ -514,7 +559,9 @@ const initEcgWidget = () => {
       return;
     }
     state.scenario = scenario;
-    scenarioButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    scenarioButtons.forEach((item) =>
+      item.classList.toggle("is-active", item === button),
+    );
     buildWaveform();
     updateLabels();
   };
@@ -566,7 +613,9 @@ const initPhotoToggles = () => {
       return;
     }
 
-    let activeIndex = buttons.findIndex((button) => button.classList.contains("is-active"));
+    let activeIndex = buttons.findIndex((button) =>
+      button.classList.contains("is-active"),
+    );
     if (activeIndex < 0) {
       activeIndex = 0;
     }
@@ -615,7 +664,10 @@ const initPhotoToggles = () => {
     };
 
     buttons.forEach((button, index) => {
-      button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
+      button.setAttribute(
+        "aria-pressed",
+        button.classList.contains("is-active") ? "true" : "false",
+      );
       button.addEventListener("click", () => {
         applyButtonState(index);
         startTimer();
@@ -626,7 +678,8 @@ const initPhotoToggles = () => {
       button.addEventListener("click", () => {
         const direction = button.dataset.photoNav;
         const delta = direction === "prev" ? -1 : 1;
-        const nextIndex = (activeIndex + delta + buttons.length) % buttons.length;
+        const nextIndex =
+          (activeIndex + delta + buttons.length) % buttons.length;
         applyButtonState(nextIndex);
         startTimer();
       });

@@ -1,16 +1,48 @@
 import { getECGWave } from "./ecgMorphology.js";
 
 // helpers
-function arrayMax(arr) { let m = -Infinity; for (let i=0;i<arr.length;i++) if (arr[i]>m) m=arr[i]; return m; }
-function arrayMin(arr) { let m =  Infinity; for (let i=0;i<arr.length;i++) if (arr[i]<m) m=arr[i]; return m; }
-function maxAbs(arr)   { let m = 0; for (let i=0;i<arr.length;i++) { const a=Math.abs(arr[i]); if (a>m) m=a; } return m; }
-function firstIndexAbsGE(arr, thr) { for (let i=0;i<arr.length;i++) if (Math.abs(arr[i]) >= thr) return i; return -1; }
-function scaleInPlace(arr, s) { for (let i=0;i<arr.length;i++) arr[i] *= s; }
-function shiftInPlace(arr, dx){ for (let i=0;i<arr.length;i++) arr[i] += dx; }
-function concat(a,b){ const out=new Array(a.length+b.length); for(let i=0;i<a.length;i++) out[i]=a[i]; for(let j=0;j<b.length;j++) out[a.length+j]=b[j]; return out; }
-function lowerBound(arr, val){
-  let lo=0, hi=arr.length;
-  while(lo<hi){ const mid=(lo+hi)>>1; if(arr[mid]<val) lo=mid+1; else hi=mid; }
+function arrayMax(arr) {
+  let m = -Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] > m) m = arr[i];
+  return m;
+}
+function arrayMin(arr) {
+  let m = Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] < m) m = arr[i];
+  return m;
+}
+function maxAbs(arr) {
+  let m = 0;
+  for (let i = 0; i < arr.length; i++) {
+    const a = Math.abs(arr[i]);
+    if (a > m) m = a;
+  }
+  return m;
+}
+function firstIndexAbsGE(arr, thr) {
+  for (let i = 0; i < arr.length; i++) if (Math.abs(arr[i]) >= thr) return i;
+  return -1;
+}
+function scaleInPlace(arr, s) {
+  for (let i = 0; i < arr.length; i++) arr[i] *= s;
+}
+function shiftInPlace(arr, dx) {
+  for (let i = 0; i < arr.length; i++) arr[i] += dx;
+}
+function concat(a, b) {
+  const out = new Array(a.length + b.length);
+  for (let i = 0; i < a.length; i++) out[i] = a[i];
+  for (let j = 0; j < b.length; j++) out[a.length + j] = b[j];
+  return out;
+}
+function lowerBound(arr, val) {
+  let lo = 0,
+    hi = arr.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (arr[mid] < val) lo = mid + 1;
+    else hi = mid;
+  }
   return lo;
 }
 
@@ -29,7 +61,7 @@ export function thirdDegHeartBlock(cfg) {
 
   // --- SAFETY for rate<=0 (Pacemaker OFF) ---
   const pacingEnabled = Number.isFinite(rate) && rate > 0;
-  const max_time_since_sensed = pacingEnabled ? (60 / rate) : Infinity;
+  const max_time_since_sensed = pacingEnabled ? 60 / rate : Infinity;
   const asyncMode = pacingEnabled ? !!asynchronous : false;
 
   // Python: capture_threshold = 1.5 + 0.4*rand - 0.2  (=> 1.3..1.7)
@@ -55,7 +87,9 @@ export function thirdDegHeartBlock(cfg) {
     // faithful: min(paced_x)+ALIGN after shifting
     paceEvents.push(arrayMin(paced_x) + ALIGN);
   };
-  const recordSense = (t) => { if (Number.isFinite(t)) senseEvents.push(t); };
+  const recordSense = (t) => {
+    if (Number.isFinite(t)) senseEvents.push(t);
+  };
 
   // offsets
   let offset_P = 0;
@@ -63,7 +97,9 @@ export function thirdDegHeartBlock(cfg) {
   let offset_async_capture = 0;
 
   function storeWave(idx, xArr, yArr) {
-    const maxX = arrayMax(xArr), minX = arrayMin(xArr), maxY = arrayMax(yArr);
+    const maxX = arrayMax(xArr),
+      minX = arrayMin(xArr),
+      maxY = arrayMax(yArr);
     storage[idx] = { x: xArr, y: yArr, maxX, minX, maxY };
     maxVals[idx] = { idx, maxX };
   }
@@ -76,20 +112,26 @@ export function thirdDegHeartBlock(cfg) {
     // Calculate traces
     let { x: Px0, y: Py0 } = getECGWave("3rd degree heart block P wave");
     let { x: Rx0, y: Ry0 } = getECGWave("3rd degree heart block R wave");
-    let { x: paced_x0, y: paced_y0 } = getECGWave("3rd degree heart block ventricular pacing");
+    let { x: paced_x0, y: paced_y0 } = getECGWave(
+      "3rd degree heart block ventricular pacing",
+    );
 
-    let Px = Px0.slice(), Py = Py0.slice();
-    let Rx = Rx0.slice(), Ry = Ry0.slice();
-    let paced_x = paced_x0.slice(), paced_y = paced_y0.slice();
+    let Px = Px0.slice(),
+      Py = Py0.slice();
+    let Rx = Rx0.slice(),
+      Ry = Ry0.slice();
+    let paced_x = paced_x0.slice(),
+      paced_y = paced_y0.slice();
 
     // Scaling factors (EXACT from your posted Python)
-    const scaling_factor_x_R = 0.16 / 3.05;   // comment says 0.28s, but code is 0.16/3.05
+    const scaling_factor_x_R = 0.16 / 3.05; // comment says 0.28s, but code is 0.16/3.05
     const scaling_factor_x_P = 0.06 / 0.9;
     const scaling_factor_x_paced = 0.4 / 3.872;
 
     const scaling_factor_y_P = 0.1477 + 0.06 * Math.random() - 0.03;
     const scaling_factor_y_paced =
-      (1 + (Math.random() * 0.6 - 0.3)) / (arrayMax(paced_y) - arrayMin(paced_y));
+      (1 + (Math.random() * 0.6 - 0.3)) /
+      (arrayMax(paced_y) - arrayMin(paced_y));
     const scaling_factor_y_R =
       (1 + (Math.random() * 0.6 - 0.3)) / (arrayMax(Ry) - arrayMin(Ry));
 
@@ -225,7 +267,8 @@ export function thirdDegHeartBlock(cfg) {
         if (time_since_sensed > max_time_since_sensed) {
           if (pacingEnabled && output >= capture_threshold) {
             let offset_paced;
-            if (prevVentricularType() === "Normal") offset_paced = max_time_since_sensed + time_prev_sensed - ALIGN;
+            if (prevVentricularType() === "Normal")
+              offset_paced = max_time_since_sensed + time_prev_sensed - ALIGN;
             else offset_paced = offset_R - RR_interval + max_time_since_sensed;
 
             shiftInPlace(paced_x, offset_paced);
@@ -263,7 +306,8 @@ export function thirdDegHeartBlock(cfg) {
         if (time_since_sensed > max_time_since_sensed) {
           if (pacingEnabled && output >= capture_threshold) {
             let offset_paced;
-            if (prevVentricularType() === "Normal") offset_paced = max_time_since_sensed + time_prev_sensed - ALIGN;
+            if (prevVentricularType() === "Normal")
+              offset_paced = max_time_since_sensed + time_prev_sensed - ALIGN;
             else offset_paced = offset_R - RR_interval + max_time_since_sensed;
 
             shiftInPlace(paced_x, offset_paced);

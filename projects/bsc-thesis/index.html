@@ -1,60 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>SurgiToolVision | BSc Thesis</title>
-  <meta name="description" content="BSc thesis page for SurgiToolVision, an active vision system for surgical instrument and state recognition.">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="static/css/shared/site.css">
-  <script src="static/js/shared/site.js" defer></script>
-  <script src="static/js/shared/includes.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div id="site-header"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>SurgiToolVision | BSc Thesis</title>
+    <meta
+      name="description"
+      content="BSc thesis page for SurgiToolVision, an active vision system for surgical instrument and state recognition."
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
 
-    <main class="content">
-      <section class="project-intro">
-        <h1>BSc Thesis: SurgiToolVision</h1>
-        <p>
-          <strong>SurgiToolVision</strong> focuses on designing and evaluating a computer vision system that can automatically
-          recognize surgical instruments and their state. The core system uses YOLO-based object detection models to identify
-          handheld tools such as scalpels, clamps, shears, and needle holders from images or live camera feeds.
-        </p>
-        <p>
-          Beyond tool detection, the project includes state analysis for hinged instruments (for example, open vs. closed clamp
-          or needle holder) and integrates the full machine learning pipeline: dataset preparation, model training, evaluation,
-          and a user interface for image and live-camera inference.
-        </p>
-      </section>
+      <main class="content">
+        <section class="project-intro">
+          <h1>BSc Thesis: SurgiToolVision</h1>
+          <p>
+            <strong>SurgiToolVision</strong> focuses on designing and evaluating
+            a computer vision system that can automatically recognize surgical
+            instruments and their state. The core system uses YOLO-based object
+            detection models to identify handheld tools such as scalpels,
+            clamps, shears, and needle holders from images or live camera feeds.
+          </p>
+          <p>
+            Beyond tool detection, the project includes state analysis for
+            hinged instruments (for example, open vs. closed clamp or needle
+            holder) and integrates the full machine learning pipeline: dataset
+            preparation, model training, evaluation, and a user interface for
+            image and live-camera inference.
+          </p>
+        </section>
 
-      <section>
-        <h2>Research Focus</h2>
-        <p>
-          A key contribution is an <strong>active vision</strong> approach for surgical tool recognition. Instead of relying only on a
-          single static image, the system can leverage multiple viewpoints or request additional views when confidence is low.
-          This helps in challenging situations such as partial occlusion or ambiguous tool appearances from specific angles.
-        </p>
-      </section>
+        <section>
+          <h2>Research Focus</h2>
+          <p>
+            A key contribution is an <strong>active vision</strong> approach for
+            surgical tool recognition. Instead of relying only on a single
+            static image, the system can leverage multiple viewpoints or request
+            additional views when confidence is low. This helps in challenging
+            situations such as partial occlusion or ambiguous tool appearances
+            from specific angles.
+          </p>
+        </section>
 
-      <section>
-        <h2>Evaluation Goals</h2>
-        <p>
-          Through experiments across models, viewpoints, and system configurations, SurgiToolVision evaluates how multi-view
-          information and instrument-state recognition improve reliability. The long-term motivation is to support future
-          operating room technologies, including surgical workflow analysis, robotic assistance, and automated instrument
-          tracking.
-        </p>
-      </section>
-    </main>
+        <section>
+          <h2>Evaluation Goals</h2>
+          <p>
+            Through experiments across models, viewpoints, and system
+            configurations, SurgiToolVision evaluates how multi-view information
+            and instrument-state recognition improve reliability. The long-term
+            motivation is to support future operating room technologies,
+            including surgical workflow analysis, robotic assistance, and
+            automated instrument tracking.
+          </p>
+        </section>
+      </main>
 
-    <div id="site-footer"></div>
-  </div>
-</body>
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

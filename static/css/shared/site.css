@@ -11,8 +11,7 @@
   --color-text: #222;
   --color-border: #e0e0e0;
   --line-height: 1.6;
-    --color-accent: #DA291C; /* Swiss red (matches CH-IQI page) */
-
+  --color-accent: #da291c; /* Swiss red (matches CH-IQI page) */
 }
 
 /* 1. RESET & BASE */
@@ -28,8 +27,14 @@ html {
 }
 body {
   min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont,
-    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
   color: var(--color-text);
   background: var(--color-bg);
   line-height: var(--line-height);
@@ -112,7 +117,6 @@ body {
   display: none;
 }
 
-
 /* 3d. Dropdown extended */
 .main-nav ul li {
   position: relative;
@@ -127,7 +131,7 @@ body {
   padding: 0.5rem 0;
   margin: 0;
   border: 1px solid var(--color-border);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   min-width: 240px;
   z-index: 10;
 }
@@ -262,7 +266,9 @@ body {
   font-weight: 600;
   text-decoration: none;
   border: 1px solid transparent;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .button.primary {
   background: #111;
@@ -288,17 +294,17 @@ body {
 }
 .hero-image img {
   width: 100%;
-  aspect-ratio: 16 / 9;         /* forces consistent hero framing */
+  aspect-ratio: 16 / 9; /* forces consistent hero framing */
   height: auto;
-  object-fit: cover;            /* no letterboxing */
+  object-fit: cover; /* no letterboxing */
   border-radius: 22px;
   border: 1px solid var(--color-border);
   background: #fff;
   display: block;
-  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
 }
 .hero-image figcaption {
- font-size: 0.9rem;
+  font-size: 0.9rem;
   color: #555;
   padding: 0 0.2rem;
 }
@@ -892,18 +898,19 @@ body {
 /* call‑to‑action links reused outside .project */
 .cta-link,
 .project a,
-.project-card a {                 /* keeps the existing .project style */
-  display:inline-block;
-  margin-top:0.5rem;
-  font-weight:500;
-  text-decoration:none;
-  color:#000;
-  border-bottom:1px solid transparent;
+.project-card a {
+  /* keeps the existing .project style */
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: #000;
+  border-bottom: 1px solid transparent;
 }
 .cta-link:hover,
 .project a:hover,
 .project-card a:hover {
-  border-color:#000;
+  border-color: #000;
 }
 
 /* group of call-to-action buttons */
@@ -918,7 +925,6 @@ body {
 #about {
   margin-bottom: var(--space-md);
 }
-
 
 /* 5. CONTACT FORM */
 .contact-form {
@@ -999,7 +1005,7 @@ body {
   margin: var(--space-xl) 0;
   width: 100%;
   max-width: 700px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   border-radius: 1rem;
   overflow: hidden;
 }
@@ -1018,7 +1024,9 @@ body {
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid currentColor;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 .repo-link a:hover {
   color: #0070f3;
@@ -1046,14 +1054,14 @@ body {
 
 /* HAI report: expand PDF and reduce spacing */
 #report .pdf-container {
-  margin: var(--space-sm) auto;  /* auto left/right centers block elements */
-  max-width: 900px;              /* narrower width */
+  margin: var(--space-sm) auto; /* auto left/right centers block elements */
+  max-width: 900px; /* narrower width */
 }
 
 #report .pdf-container iframe {
-  display: block;   /* makes centering cleaner */
-  width: 100%;      /* fill container */
-  height: 900px;    /* taller PDF frame */
+  display: block; /* makes centering cleaner */
+  width: 100%; /* fill container */
+  height: 900px; /* taller PDF frame */
   border: none;
 }
 
@@ -1100,7 +1108,9 @@ body {
   border: 1px solid var(--color-border);
   border-radius: 4px;
   background: #fff;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 @media (hover: hover) {
@@ -1119,7 +1129,7 @@ body {
   object-fit: contain;
   border-radius: 0;
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .project-details {
@@ -1174,20 +1184,20 @@ body {
 .lang-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;                  /* wider gaps between pills */
-  margin-top: var(--space-sm);/* a little breathing room above */
+  gap: 1rem; /* wider gaps between pills */
+  margin-top: var(--space-sm); /* a little breathing room above */
 }
 .lang-badges li {
   background: #f5f5f5;
   border-radius: 9999px;
-  padding: 0.5rem 1.2rem;     /* extra vertical & horizontal padding */
-  font-size: 1rem;            /* bump up base font size */
-  line-height: 1.4;           /* loosen line height */
+  padding: 0.5rem 1.2rem; /* extra vertical & horizontal padding */
+  font-size: 1rem; /* bump up base font size */
+  line-height: 1.4; /* loosen line height */
   display: flex;
   align-items: center;
 }
 .lang-badges small {
-  font-size: 0.85rem;         /* slightly larger secondary text */
+  font-size: 0.85rem; /* slightly larger secondary text */
   margin-left: 0.6rem;
   color: #666;
 }
@@ -1214,7 +1224,7 @@ body {
   border-radius: 4px;
   padding: var(--space-md);
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,843 +1,1166 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>ECG Paper + Monitor Write-Sweep (NSR + 3rd-degree AV block)</title>
-  <style>
-    :root{
-      --bg:#0b0b0b; --panel:#141414; --text:#eaeaea; --muted:#a7a7a7; --border:#2a2a2a;
-      --btn:#1e1e1e; --btnHover:#2a2a2a; --accent:#33ff66;
-    }
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-    .wrap{max-width:1400px;margin:0 auto;padding:16px;display:grid;gap:12px;}
-    .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;}
-    .row{display:flex;flex-wrap:wrap;gap:12px;align-items:end;}
-    .field{display:grid;gap:6px;min-width:140px;}
-    .field.wide{min-width:220px;}
-    label{font-size:12px;color:var(--muted);}
-    input,select{
-      background:#0f0f0f;color:var(--text);border:1px solid var(--border);
-      border-radius:8px;padding:8px 10px;font-size:14px;outline:none;
-    }
-    input:focus,select:focus{border-color:#3a3a3a;}
-    input[type="range"]{padding:0;height:32px;}
-    .btn{
-      background:var(--btn);color:var(--text);border:1px solid var(--border);
-      border-radius:8px;padding:9px 12px;font-size:14px;cursor:pointer;user-select:none;
-    }
-    .btn:hover{background:var(--btnHover);}
-    .btn.primary{border-color:#2f2f2f;}
-    .btn.pill{border-radius:999px;padding:8px 12px;}
-    .btnGroup{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .hint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35;}
-    .canvasWrap{overflow:auto;border-radius:10px;border:1px solid var(--border);background:#070707;padding:8px;}
-    .canvasTitle{font-size:12px;color:var(--muted);margin:6px 0 8px;}
-    canvas{display:block;}
-    #ecgPaper{background:#ffffff;border-radius:8px;}
-    #ecgMonitor{background:#000000;border-radius:8px;border:1px solid #1f1f1f;}
-    .status{font-size:12px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:8px;}
-    .pill{padding:4px 8px;border-radius:999px;border:1px solid var(--border);background:#0f0f0f;}
-    .divider{height:1px;background:var(--border);margin:10px 0;}
-    .subpanel{
-      border:1px solid var(--border);
-      border-radius:10px;
-      padding:10px;
-      background:#111;
-    }
-    .subhead{
-      font-size:12px;
-      color:var(--muted);
-      margin:0 0 8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-    .valueTag{
-      font-variant-numeric:tabular-nums;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:#0f0f0f;
-      color:var(--text);
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .rangeRow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .rangeRow .field{min-width:200px;}
-    .miniBtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="panel">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>ECG Paper + Monitor Write-Sweep (NSR + 3rd-degree AV block)</title>
+    <style>
+      :root {
+        --bg: #0b0b0b;
+        --panel: #141414;
+        --text: #eaeaea;
+        --muted: #a7a7a7;
+        --border: #2a2a2a;
+        --btn: #1e1e1e;
+        --btnHover: #2a2a2a;
+        --accent: #33ff66;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+      }
+      .wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: end;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+        min-width: 140px;
+      }
+      .field.wide {
+        min-width: 220px;
+      }
+      label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      input,
+      select {
+        background: #0f0f0f;
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 14px;
+        outline: none;
+      }
+      input:focus,
+      select:focus {
+        border-color: #3a3a3a;
+      }
+      input[type="range"] {
+        padding: 0;
+        height: 32px;
+      }
+      .btn {
+        background: var(--btn);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .btn:hover {
+        background: var(--btnHover);
+      }
+      .btn.primary {
+        border-color: #2f2f2f;
+      }
+      .btn.pill {
+        border-radius: 999px;
+        padding: 8px 12px;
+      }
+      .btnGroup {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+        line-height: 1.35;
+      }
+      .canvasWrap {
+        overflow: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #070707;
+        padding: 8px;
+      }
+      .canvasTitle {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 6px 0 8px;
+      }
+      canvas {
+        display: block;
+      }
+      #ecgPaper {
+        background: #ffffff;
+        border-radius: 8px;
+      }
+      #ecgMonitor {
+        background: #000000;
+        border-radius: 8px;
+        border: 1px solid #1f1f1f;
+      }
+      .status {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .pill {
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #0f0f0f;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 10px 0;
+      }
+      .subpanel {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+        background: #111;
+      }
+      .subhead {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .valueTag {
+        font-variant-numeric: tabular-nums;
+        padding: 3px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #0f0f0f;
+        color: var(--text);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .rangeRow {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .rangeRow .field {
+        min-width: 200px;
+      }
+      .miniBtns {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="panel">
+        <!-- Scenario + Intrinsic HR (separate from pacer params) -->
+        <div class="subpanel">
+          <div class="subhead">
+            <span>Patient</span>
+            <span class="valueTag" id="tagScenario">Scenario: —</span>
+          </div>
 
-      <!-- Scenario + Intrinsic HR (separate from pacer params) -->
-      <div class="subpanel">
-        <div class="subhead">
-          <span>Patient</span>
-          <span class="valueTag" id="tagScenario">Scenario: —</span>
+          <div class="row">
+            <div class="field wide">
+              <label for="scenario">Scenario</label>
+              <select id="scenario">
+                <option value="NSR" selected>NSR</option>
+                <option value="3rdDegHB">3rd-degree AV block</option>
+                <option value="Mobitz2">Mobitz II</option>
+                <option value="SlowConduction">Slow conduction</option>
+              </select>
+            </div>
+
+            <div class="field wide">
+              <label for="hrRange">Intrinsic HR (bpm)</label>
+              <input
+                id="hrRange"
+                type="range"
+                min="20"
+                max="220"
+                step="1"
+                value="90"
+              />
+            </div>
+
+            <div class="field" style="min-width: 120px">
+              <label for="hr">Value</label>
+              <input
+                id="hr"
+                type="number"
+                value="90"
+                min="20"
+                max="220"
+                step="1"
+              />
+            </div>
+
+            <div class="miniBtns">
+              <button class="btn pill" data-hr="-10">-10</button>
+              <button class="btn pill" data-hr="-1">-1</button>
+              <button class="btn pill" data-hr="+1">+1</button>
+              <button class="btn pill" data-hr="+10">+10</button>
+            </div>
+          </div>
         </div>
 
-        <div class="row">
-          <div class="field wide">
-            <label for="scenario">Scenario</label>
-            <select id="scenario">
-              <option value="NSR" selected>NSR</option>
-              <option value="3rdDegHB">3rd-degree AV block</option>
-              <option value="Mobitz2">Mobitz II</option>
-              <option value="SlowConduction">Slow conduction</option>
-            </select>
+        <div class="divider"></div>
+
+        <!-- Pacemaker parameters (the "3 parameters" + async + on/off + play) -->
+        <div class="subpanel">
+          <div class="subhead">
+            <span>Pacemaker</span>
+            <span class="valueTag" id="tagPacer">Pacer: —</span>
           </div>
 
-          <div class="field wide">
-            <label for="hrRange">Intrinsic HR (bpm)</label>
-            <input id="hrRange" type="range" min="20" max="220" step="1" value="90">
+          <div class="row">
+            <div class="field wide">
+              <label for="pacerRateRange">Rate (bpm)</label>
+              <input
+                id="pacerRateRange"
+                type="range"
+                min="0"
+                max="220"
+                step="1"
+                value="70"
+              />
+            </div>
+
+            <div class="field" style="min-width: 120px">
+              <label for="pacerRate">Value</label>
+              <input
+                id="pacerRate"
+                type="number"
+                value="70"
+                min="0"
+                max="220"
+                step="1"
+              />
+            </div>
+
+            <div class="miniBtns">
+              <button class="btn pill" data-rate="-10">-10</button>
+              <button class="btn pill" data-rate="-1">-1</button>
+              <button class="btn pill" data-rate="+1">+1</button>
+              <button class="btn pill" data-rate="+10">+10</button>
+            </div>
           </div>
 
-          <div class="field" style="min-width:120px;">
-            <label for="hr">Value</label>
-            <input id="hr" type="number" value="90" min="20" max="220" step="1">
+          <div class="row" style="margin-top: 8px">
+            <div class="field wide">
+              <label for="outRange">Output (mA)</label>
+              <input
+                id="outRange"
+                type="range"
+                min="0"
+                max="25"
+                step="0.1"
+                value="1.8"
+              />
+            </div>
+
+            <div class="field" style="min-width: 120px">
+              <label for="out">Value</label>
+              <input
+                id="out"
+                type="number"
+                value="1.8"
+                min="0"
+                max="25"
+                step="0.1"
+              />
+            </div>
+
+            <div class="miniBtns">
+              <button class="btn pill" data-out="-1">-1</button>
+              <button class="btn pill" data-out="-0.1">-0.1</button>
+              <button class="btn pill" data-out="+0.1">+0.1</button>
+              <button class="btn pill" data-out="+1">+1</button>
+            </div>
           </div>
 
-          <div class="miniBtns">
-            <button class="btn pill" data-hr="-10">-10</button>
-            <button class="btn pill" data-hr="-1">-1</button>
-            <button class="btn pill" data-hr="+1">+1</button>
-            <button class="btn pill" data-hr="+10">+10</button>
+          <div class="row" style="margin-top: 8px">
+            <div class="field wide">
+              <label for="sensRange">Sensitivity (mV)</label>
+              <input
+                id="sensRange"
+                type="range"
+                min="0"
+                max="20"
+                step="0.1"
+                value="0.5"
+              />
+            </div>
+
+            <div class="field" style="min-width: 120px">
+              <label for="sens">Value</label>
+              <input
+                id="sens"
+                type="number"
+                value="0.5"
+                min="0"
+                max="20"
+                step="0.1"
+              />
+            </div>
+
+            <div class="miniBtns">
+              <button class="btn pill" data-sens="-1">-1</button>
+              <button class="btn pill" data-sens="-0.1">-0.1</button>
+              <button class="btn pill" data-sens="+0.1">+0.1</button>
+              <button class="btn pill" data-sens="+1">+1</button>
+            </div>
           </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div class="field">
+              <label for="async">Asynchronous</label>
+              <select id="async">
+                <option value="false" selected>false</option>
+                <option value="true">true</option>
+              </select>
+            </div>
+
+            <div class="btnGroup">
+              <button
+                id="pacerToggle"
+                class="btn primary"
+                title="When OFF, pacer rate is forced to 0"
+              >
+                Pacemaker: ON
+              </button>
+              <button id="play" class="btn">Monitor sweep (play/pause)</button>
+              <button
+                id="blank"
+                class="btn"
+                title="Clear monitor screen (paper stays)"
+              >
+                Clear monitor
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">
+          Top: ECG paper view (0–6 s) with red grid and blue sensitivity
+          line.<br />
+          Bottom: monitor view (black) uses a sweep to overwrite (no full reset)
+          using the exact same trace.<br />
+          Note: Regularity is fixed to <b>Regular</b> and Seed is removed.
+        </div>
+
+        <div class="status">
+          <span class="pill" id="statusLen">samples: —</span>
+          <span class="pill" id="statusRange">t: —, y: —</span>
+          <span class="pill" id="statusBeat">beats: —</span>
         </div>
       </div>
 
-      <div class="divider"></div>
+      <div class="canvasWrap">
+        <div class="canvasTitle">ECG Paper Strip (static 0–6 s)</div>
+        <canvas id="ecgPaper"></canvas>
 
-      <!-- Pacemaker parameters (the "3 parameters" + async + on/off + play) -->
-      <div class="subpanel">
-        <div class="subhead">
-          <span>Pacemaker</span>
-          <span class="valueTag" id="tagPacer">Pacer: —</span>
+        <div class="canvasTitle" style="margin-top: 14px">
+          ECG Monitor (sweep overwrite of same trace)
         </div>
-
-        <div class="row">
-          <div class="field wide">
-            <label for="pacerRateRange">Rate (bpm)</label>
-            <input id="pacerRateRange" type="range" min="0" max="220" step="1" value="70">
-          </div>
-
-          <div class="field" style="min-width:120px;">
-            <label for="pacerRate">Value</label>
-            <input id="pacerRate" type="number" value="70" min="0" max="220" step="1">
-          </div>
-
-          <div class="miniBtns">
-            <button class="btn pill" data-rate="-10">-10</button>
-            <button class="btn pill" data-rate="-1">-1</button>
-            <button class="btn pill" data-rate="+1">+1</button>
-            <button class="btn pill" data-rate="+10">+10</button>
-          </div>
-        </div>
-
-
-
-        <div class="row" style="margin-top:8px;">
-          <div class="field wide">
-            <label for="outRange">Output (mA)</label>
-            <input id="outRange" type="range" min="0" max="25" step="0.1" value="1.8">
-          </div>
-
-          <div class="field" style="min-width:120px;">
-            <label for="out">Value</label>
-            <input id="out" type="number" value="1.8" min="0" max="25" step="0.1">
-          </div>
-
-          <div class="miniBtns">
-            <button class="btn pill" data-out="-1">-1</button>
-            <button class="btn pill" data-out="-0.1">-0.1</button>
-            <button class="btn pill" data-out="+0.1">+0.1</button>
-            <button class="btn pill" data-out="+1">+1</button>
-          </div>
-        </div>
-
-          <div class="row" style="margin-top:8px;">
-          <div class="field wide">
-            <label for="sensRange">Sensitivity (mV)</label>
-            <input id="sensRange" type="range" min="0" max="20" step="0.1" value="0.5">
-          </div>
-
-          <div class="field" style="min-width:120px;">
-            <label for="sens">Value</label>
-            <input id="sens" type="number" value="0.5" min="0" max="20" step="0.1">
-          </div>
-
-          <div class="miniBtns">
-            <button class="btn pill" data-sens="-1">-1</button>
-            <button class="btn pill" data-sens="-0.1">-0.1</button>
-            <button class="btn pill" data-sens="+0.1">+0.1</button>
-            <button class="btn pill" data-sens="+1">+1</button>
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <div class="field">
-            <label for="async">Asynchronous</label>
-            <select id="async">
-              <option value="false" selected>false</option>
-              <option value="true">true</option>
-            </select>
-          </div>
-
-          <div class="btnGroup">
-            <button id="pacerToggle" class="btn primary" title="When OFF, pacer rate is forced to 0">Pacemaker: ON</button>
-            <button id="play" class="btn">Monitor sweep (play/pause)</button>
-            <button id="blank" class="btn" title="Clear monitor screen (paper stays)">Clear monitor</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="hint">
-        Top: ECG paper view (0–6 s) with red grid and blue sensitivity line.<br/>
-        Bottom: monitor view (black) uses a sweep to overwrite (no full reset) using the exact same trace.<br/>
-        Note: Regularity is fixed to <b>Regular</b> and Seed is removed.
-      </div>
-
-      <div class="status">
-        <span class="pill" id="statusLen">samples: —</span>
-        <span class="pill" id="statusRange">t: —, y: —</span>
-        <span class="pill" id="statusBeat">beats: —</span>
+        <canvas id="ecgMonitor"></canvas>
       </div>
     </div>
 
-    <div class="canvasWrap">
-      <div class="canvasTitle">ECG Paper Strip (static 0–6 s)</div>
-      <canvas id="ecgPaper"></canvas>
+    <script type="module">
+      import { stitchBeats } from "../js/edupace/ecgStitcher.js";
+      import { thirdDegHeartBlock } from "../js/edupace/ecgThirdDegree.js";
+      import { mobitzTypeII } from "../js/edupace/ecgMobitz2.js";
+      import { slowConduction } from "../js/edupace/ecgSlowConduction.js";
 
-      <div class="canvasTitle" style="margin-top:14px;">ECG Monitor (sweep overwrite of same trace)</div>
-      <canvas id="ecgMonitor"></canvas>
-    </div>
-  </div>
+      // -------------------------
+      // Paper constants
+      // -------------------------
+      const SMALL_T = 0.04; // s
+      const BIG_T = 0.2; // s
+      const SMALL_A = 0.1; // mV
+      const BIG_A = 1.0; // mV
 
-  <script type="module">
-    import { stitchBeats } from "../js/edupace/ecgStitcher.js";
-    import { thirdDegHeartBlock } from "../js/edupace/ecgThirdDegree.js";
-    import { mobitzTypeII } from "../js/edupace/ecgMobitz2.js";
-    import { slowConduction } from "../js/edupace/ecgSlowConduction.js";
+      const VIEW_SEC = 6;
 
-    // -------------------------
-    // Paper constants
-    // -------------------------
-    const SMALL_T = 0.04;  // s
-    const BIG_T   = 0.2;   // s
-    const SMALL_A = 0.1;   // mV
-    const BIG_A   = 1.0;   // mV
+      // "Clinical" amplitude window
+      const Y_MIN = -1;
+      const Y_MAX = 1;
 
-    const VIEW_SEC = 6;
+      // Make both ECG windows taller WITHOUT stretching the wave
+      const VERTICAL_SCALE = 1.6;
 
-    // "Clinical" amplitude window
-    const Y_MIN = -1;
-    const Y_MAX =  1;
+      // Render window (expanded so the waveform keeps the same pixel height)
+      const R_Y_MIN = Y_MIN * VERTICAL_SCALE;
+      const R_Y_MAX = Y_MAX * VERTICAL_SCALE;
 
-    // Make both ECG windows taller WITHOUT stretching the wave
-    const VERTICAL_SCALE = 1.6;
+      const PX_PER_SMALL_BOX = 8;
 
-    // Render window (expanded so the waveform keeps the same pixel height)
-    const R_Y_MIN = Y_MIN * VERTICAL_SCALE;
-    const R_Y_MAX = Y_MAX * VERTICAL_SCALE;
+      const MONITOR_W = 1200;
+      const MONITOR_H_FRACTION_OF_PAPER = 1.0;
 
-    const PX_PER_SMALL_BOX = 8;
+      // 1 screen (6s) per 6 real seconds
+      const SWEEP_TIME_SCALE = 1.0;
 
-    const MONITOR_W = 1200;
-    const MONITOR_H_FRACTION_OF_PAPER = 1.0;
+      // Debounce heavy regen on sliders (keeps UI feeling snappy)
+      const REGEN_DEBOUNCE_MS = 60;
 
-    // 1 screen (6s) per 6 real seconds
-    const SWEEP_TIME_SCALE = 1.0;
+      // -------------------------
+      // DOM
+      // -------------------------
+      const paperCanvas = document.getElementById("ecgPaper");
+      const paperCtx = paperCanvas.getContext("2d");
+      const monitorCanvas = document.getElementById("ecgMonitor");
+      const monitorCtx = monitorCanvas.getContext("2d");
 
-    // Debounce heavy regen on sliders (keeps UI feeling snappy)
-    const REGEN_DEBOUNCE_MS = 60;
+      const elScenario = document.getElementById("scenario");
 
-    // -------------------------
-    // DOM
-    // -------------------------
-    const paperCanvas = document.getElementById("ecgPaper");
-    const paperCtx = paperCanvas.getContext("2d");
-    const monitorCanvas = document.getElementById("ecgMonitor");
-    const monitorCtx = monitorCanvas.getContext("2d");
+      // Intrinsic HR (separate)
+      const elHr = document.getElementById("hr");
+      const elHrRange = document.getElementById("hrRange");
 
-    const elScenario = document.getElementById("scenario");
+      // Pacer params (3 + async)
+      const elRate = document.getElementById("pacerRate");
+      const elRateRange = document.getElementById("pacerRateRange");
+      const elSens = document.getElementById("sens");
+      const elSensRange = document.getElementById("sensRange");
+      const elOut = document.getElementById("out");
+      const elOutRange = document.getElementById("outRange");
+      const elAsync = document.getElementById("async");
 
-    // Intrinsic HR (separate)
-    const elHr = document.getElementById("hr");
-    const elHrRange = document.getElementById("hrRange");
+      const btnPacerToggle = document.getElementById("pacerToggle");
+      const btnPlay = document.getElementById("play");
+      const btnBlank = document.getElementById("blank");
 
-    // Pacer params (3 + async)
-    const elRate = document.getElementById("pacerRate");
-    const elRateRange = document.getElementById("pacerRateRange");
-    const elSens = document.getElementById("sens");
-    const elSensRange = document.getElementById("sensRange");
-    const elOut = document.getElementById("out");
-    const elOutRange = document.getElementById("outRange");
-    const elAsync = document.getElementById("async");
+      const tagScenario = document.getElementById("tagScenario");
+      const tagPacer = document.getElementById("tagPacer");
 
-    const btnPacerToggle = document.getElementById("pacerToggle");
-    const btnPlay = document.getElementById("play");
-    const btnBlank = document.getElementById("blank");
+      const statusLen = document.getElementById("statusLen");
+      const statusRange = document.getElementById("statusRange");
+      const statusBeat = document.getElementById("statusBeat");
 
-    const tagScenario = document.getElementById("tagScenario");
-    const tagPacer = document.getElementById("tagPacer");
+      // -------------------------
+      // Pacemaker ON/OFF
+      // -------------------------
+      let pacerOn = true;
+      let lastNonZeroPacerRate = Number(elRate.value) || 70;
 
-    const statusLen = document.getElementById("statusLen");
-    const statusRange = document.getElementById("statusRange");
-    const statusBeat = document.getElementById("statusBeat");
-
-    // -------------------------
-    // Pacemaker ON/OFF
-    // -------------------------
-    let pacerOn = true;
-    let lastNonZeroPacerRate = Number(elRate.value) || 70;
-
-    function getEffectivePacerRate() {
-      return pacerOn ? Number(elRate.value) : 0;
-    }
-
-    function setPacerUi() {
-      if (pacerOn) {
-        const current = Number(elRate.value);
-        const restore = (current > 0) ? current : (lastNonZeroPacerRate > 0 ? lastNonZeroPacerRate : 70);
-        elRate.value = String(restore);
-        elRateRange.value = String(restore);
-
-        btnPacerToggle.textContent = "Pacemaker: ON";
-        btnPacerToggle.style.opacity = "1";
-        elRate.disabled = false;
-        elRateRange.disabled = false;
-      } else {
-        const current = Number(elRate.value);
-        if (current > 0) lastNonZeroPacerRate = current;
-
-        elRate.value = "0";
-        elRateRange.value = "0";
-        btnPacerToggle.textContent = "Pacemaker: OFF";
-        btnPacerToggle.style.opacity = "0.75";
-        elRate.disabled = true;
-        elRateRange.disabled = true;
+      function getEffectivePacerRate() {
+        return pacerOn ? Number(elRate.value) : 0;
       }
-      updateTags();
-    }
 
-    function setPacerState(on) {
-      pacerOn = !!on;
-      setPacerUi();
-      // do NOT reset monitor; just rebuild source strip
-      scheduleRefresh(false);
-    }
+      function setPacerUi() {
+        if (pacerOn) {
+          const current = Number(elRate.value);
+          const restore =
+            current > 0
+              ? current
+              : lastNonZeroPacerRate > 0
+                ? lastNonZeroPacerRate
+                : 70;
+          elRate.value = String(restore);
+          elRateRange.value = String(restore);
 
-    elRate.addEventListener("input", () => {
-      const v = Number(elRate.value);
-      if (v > 0) lastNonZeroPacerRate = v;
-    });
+          btnPacerToggle.textContent = "Pacemaker: ON";
+          btnPacerToggle.style.opacity = "1";
+          elRate.disabled = false;
+          elRateRange.disabled = false;
+        } else {
+          const current = Number(elRate.value);
+          if (current > 0) lastNonZeroPacerRate = current;
 
-    // -------------------------
-    // Canvas sizing
-    // -------------------------
-    function setCanvasSize(canvas, cssW, cssH) {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.style.width = cssW + "px";
-      canvas.style.height = cssH + "px";
-      canvas.width = Math.floor(cssW * dpr);
-      canvas.height = Math.floor(cssH * dpr);
-      const ctx = canvas.getContext("2d");
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      return { w: cssW, h: cssH, dpr };
-    }
+          elRate.value = "0";
+          elRateRange.value = "0";
+          btnPacerToggle.textContent = "Pacemaker: OFF";
+          btnPacerToggle.style.opacity = "0.75";
+          elRate.disabled = true;
+          elRateRange.disabled = true;
+        }
+        updateTags();
+      }
 
-    function paperCssSize() {
-      const widthCss  = (VIEW_SEC / SMALL_T) * PX_PER_SMALL_BOX;
-      const baseHeightCss = ((Y_MAX - Y_MIN) / SMALL_A) * PX_PER_SMALL_BOX;
-      const heightCss = Math.round(baseHeightCss * VERTICAL_SCALE);
-      return { widthCss, heightCss };
-    }
+      function setPacerState(on) {
+        pacerOn = !!on;
+        setPacerUi();
+        // do NOT reset monitor; just rebuild source strip
+        scheduleRefresh(false);
+      }
 
-    function sizePaperCanvas() {
-      const { widthCss, heightCss } = paperCssSize();
-      setCanvasSize(paperCanvas, widthCss, heightCss);
-    }
+      elRate.addEventListener("input", () => {
+        const v = Number(elRate.value);
+        if (v > 0) lastNonZeroPacerRate = v;
+      });
 
-    function sizeMonitorCanvas() {
-      const { heightCss } = paperCssSize();
-      const containerW = Math.min(MONITOR_W, document.querySelector(".canvasWrap").clientWidth - 18);
-      const w = Math.max(600, containerW);
-      const h = Math.round(heightCss * MONITOR_H_FRACTION_OF_PAPER);
-      setCanvasSize(monitorCanvas, w, h);
-    }
+      // -------------------------
+      // Canvas sizing
+      // -------------------------
+      function setCanvasSize(canvas, cssW, cssH) {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = cssW + "px";
+        canvas.style.height = cssH + "px";
+        canvas.width = Math.floor(cssW * dpr);
+        canvas.height = Math.floor(cssH * dpr);
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return { w: cssW, h: cssH, dpr };
+      }
 
-    // -------------------------
-    // Paper drawing
-    // -------------------------
-    function drawPaperGrid(sensitivity) {
-      const w = paperCanvas.clientWidth;
-      const h = paperCanvas.clientHeight;
+      function paperCssSize() {
+        const widthCss = (VIEW_SEC / SMALL_T) * PX_PER_SMALL_BOX;
+        const baseHeightCss = ((Y_MAX - Y_MIN) / SMALL_A) * PX_PER_SMALL_BOX;
+        const heightCss = Math.round(baseHeightCss * VERTICAL_SCALE);
+        return { widthCss, heightCss };
+      }
 
-      paperCtx.clearRect(0, 0, w, h);
-      paperCtx.fillStyle = "#ffffff";
-      paperCtx.fillRect(0, 0, w, h);
+      function sizePaperCanvas() {
+        const { widthCss, heightCss } = paperCssSize();
+        setCanvasSize(paperCanvas, widthCss, heightCss);
+      }
 
-      const X = (t) => (t / VIEW_SEC) * w;
-      const Y = (v) => h - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * h;
+      function sizeMonitorCanvas() {
+        const { heightCss } = paperCssSize();
+        const containerW = Math.min(
+          MONITOR_W,
+          document.querySelector(".canvasWrap").clientWidth - 18,
+        );
+        const w = Math.max(600, containerW);
+        const h = Math.round(heightCss * MONITOR_H_FRACTION_OF_PAPER);
+        setCanvasSize(monitorCanvas, w, h);
+      }
 
-      for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
-        const isBig = Math.abs((t / BIG_T) - Math.round(t / BIG_T)) < 1e-6;
+      // -------------------------
+      // Paper drawing
+      // -------------------------
+      function drawPaperGrid(sensitivity) {
+        const w = paperCanvas.clientWidth;
+        const h = paperCanvas.clientHeight;
+
+        paperCtx.clearRect(0, 0, w, h);
+        paperCtx.fillStyle = "#ffffff";
+        paperCtx.fillRect(0, 0, w, h);
+
+        const X = (t) => (t / VIEW_SEC) * w;
+        const Y = (v) => h - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * h;
+
+        for (let t = 0; t <= VIEW_SEC + 1e-9; t += SMALL_T) {
+          const isBig = Math.abs(t / BIG_T - Math.round(t / BIG_T)) < 1e-6;
+          paperCtx.beginPath();
+          paperCtx.strokeStyle = isBig
+            ? "rgba(255,0,0,0.70)"
+            : "rgba(255,0,0,0.30)";
+          paperCtx.lineWidth = isBig ? 1.5 : 1.0;
+          paperCtx.moveTo(X(t), 0);
+          paperCtx.lineTo(X(t), h);
+          paperCtx.stroke();
+        }
+
+        for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
+          const isBig = Math.abs(v / BIG_A - Math.round(v / BIG_A)) < 1e-6;
+          paperCtx.beginPath();
+          paperCtx.strokeStyle = isBig
+            ? "rgba(255,0,0,0.70)"
+            : "rgba(255,0,0,0.30)";
+          paperCtx.lineWidth = isBig ? 1.5 : 1.0;
+          paperCtx.moveTo(0, Y(v));
+          paperCtx.lineTo(w, Y(v));
+          paperCtx.stroke();
+        }
+
+        // Sensitivity line
         paperCtx.beginPath();
-        paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.70)" : "rgba(255,0,0,0.30)";
-        paperCtx.lineWidth = isBig ? 1.5 : 1.0;
-        paperCtx.moveTo(X(t), 0);
-        paperCtx.lineTo(X(t), h);
+        paperCtx.strokeStyle = "rgba(0,0,255,1)";
+        paperCtx.lineWidth = 1.5;
+        paperCtx.moveTo(0, Y(sensitivity));
+        paperCtx.lineTo(w, Y(sensitivity));
         paperCtx.stroke();
       }
 
-      for (let v = R_Y_MIN; v <= R_Y_MAX + 1e-9; v += SMALL_A) {
-        const isBig = Math.abs((v / BIG_A) - Math.round(v / BIG_A)) < 1e-6;
-        paperCtx.beginPath();
-        paperCtx.strokeStyle = isBig ? "rgba(255,0,0,0.70)" : "rgba(255,0,0,0.30)";
-        paperCtx.lineWidth = isBig ? 1.5 : 1.0;
-        paperCtx.moveTo(0, Y(v));
-        paperCtx.lineTo(w, Y(v));
-        paperCtx.stroke();
+      // -------------------------
+      // Sampling helpers
+      // -------------------------
+      function lowerBound(arr, val) {
+        let lo = 0,
+          hi = arr.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (arr[mid] < val) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
       }
 
-      // Sensitivity line
-      paperCtx.beginPath();
-      paperCtx.strokeStyle = "rgba(0,0,255,1)";
-      paperCtx.lineWidth = 1.5;
-      paperCtx.moveTo(0, Y(sensitivity));
-      paperCtx.lineTo(w, Y(sensitivity));
-      paperCtx.stroke();
-    }
+      function drawWaveWindowToSize(
+        ctx,
+        w,
+        h,
+        strip,
+        tLeft,
+        tRight,
+        strokeStyle,
+        lineWidth,
+      ) {
+        const X = (t) => ((t - tLeft) / (tRight - tLeft)) * w;
+        const Y = (v) => h - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * h;
 
-    // -------------------------
-    // Sampling helpers
-    // -------------------------
-    function lowerBound(arr, val) {
-      let lo = 0, hi = arr.length;
-      while (lo < hi) {
-        const mid = (lo + hi) >> 1;
-        if (arr[mid] < val) lo = mid + 1;
-        else hi = mid;
+        const i0 = lowerBound(strip.x, tLeft);
+        const i1 = lowerBound(strip.x, tRight);
+        if (i1 - i0 < 2) return;
+
+        ctx.beginPath();
+        ctx.strokeStyle = strokeStyle;
+        ctx.lineWidth = lineWidth;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        ctx.moveTo(X(strip.x[i0]), Y(strip.y[i0]));
+        for (let i = i0 + 1; i < i1; i++)
+          ctx.lineTo(X(strip.x[i]), Y(strip.y[i]));
+        ctx.stroke();
       }
-      return lo;
-    }
 
-    function drawWaveWindowToSize(ctx, w, h, strip, tLeft, tRight, strokeStyle, lineWidth) {
-      const X = (t) => ((t - tLeft) / (tRight - tLeft)) * w;
-      const Y = (v) => h - ((v - R_Y_MIN) / (R_Y_MAX - R_Y_MIN)) * h;
+      function drawWaveWindow(
+        ctx,
+        canvas,
+        strip,
+        tLeft,
+        tRight,
+        strokeStyle,
+        lineWidth,
+      ) {
+        drawWaveWindowToSize(
+          ctx,
+          canvas.clientWidth,
+          canvas.clientHeight,
+          strip,
+          tLeft,
+          tRight,
+          strokeStyle,
+          lineWidth,
+        );
+      }
 
-      const i0 = lowerBound(strip.x, tLeft);
-      const i1 = lowerBound(strip.x, tRight);
-      if (i1 - i0 < 2) return;
+      // -------------------------
+      // Scenario routing
+      // (Regularity fixed to "Regular"; Seed removed)
+      // -------------------------
+      function generateStripFromUI(iterations) {
+        const patientHR = Number(elHr.value);
+        const rate = getEffectivePacerRate();
+        const sensitivity = Number(elSens.value);
+        const output = Number(elOut.value);
+        const asynchronous = elAsync.value === "true";
+        const scenario = elScenario.value;
 
-      ctx.beginPath();
-      ctx.strokeStyle = strokeStyle;
-      ctx.lineWidth = lineWidth;
-      ctx.lineJoin = "round";
-      ctx.lineCap = "round";
-
-      ctx.moveTo(X(strip.x[i0]), Y(strip.y[i0]));
-      for (let i = i0 + 1; i < i1; i++) ctx.lineTo(X(strip.x[i]), Y(strip.y[i]));
-      ctx.stroke();
-    }
-
-    function drawWaveWindow(ctx, canvas, strip, tLeft, tRight, strokeStyle, lineWidth) {
-      drawWaveWindowToSize(ctx, canvas.clientWidth, canvas.clientHeight, strip, tLeft, tRight, strokeStyle, lineWidth);
-    }
-
-    // -------------------------
-    // Scenario routing
-    // (Regularity fixed to "Regular"; Seed removed)
-    // -------------------------
-    function generateStripFromUI(iterations) {
-      const patientHR = Number(elHr.value);
-      const rate = getEffectivePacerRate();
-      const sensitivity = Number(elSens.value);
-      const output = Number(elOut.value);
-      const asynchronous = (elAsync.value === "true");
-      const scenario = elScenario.value;
-
-      if (scenario === "NSR") {
-        return stitchBeats({
-          patientHR, sensitivity, rate, output, asynchronous,
-          iterations
-          // regularity fixed; seed removed
+        if (scenario === "NSR") {
+          return stitchBeats({
+            patientHR,
+            sensitivity,
+            rate,
+            output,
+            asynchronous,
+            iterations,
+            // regularity fixed; seed removed
+          });
+        }
+        if (scenario === "Mobitz2") {
+          return mobitzTypeII({
+            patientHR,
+            sensitivity,
+            rate,
+            output,
+            asynchronous,
+            iterations,
+            probConduction: 0.8,
+          });
+        }
+        if (scenario === "SlowConduction") {
+          return slowConduction({
+            patientHR,
+            sensitivity,
+            rate,
+            output,
+            asynchronous,
+            iterations,
+          });
+        }
+        return thirdDegHeartBlock({
+          iterations,
+          sensitivity,
+          output,
+          rate,
+          patientHR,
+          asynchronous,
         });
       }
-      if (scenario === "Mobitz2") {
-        return mobitzTypeII({ patientHR, sensitivity, rate, output, asynchronous, iterations, probConduction: 0.8 });
+
+      // -------------------------
+      // Status + tags
+      // -------------------------
+      function updateStatus(stripObj) {
+        if (!stripObj || !stripObj.x.length) return;
+
+        statusLen.textContent = `samples: ${stripObj.x.length}`;
+
+        const t0 = stripObj.x[0];
+        const t1 = stripObj.x[stripObj.x.length - 1];
+
+        let yMin = Infinity,
+          yMax = -Infinity;
+        for (let i = 0; i < stripObj.y.length; i++) {
+          if (stripObj.y[i] < yMin) yMin = stripObj.y[i];
+          if (stripObj.y[i] > yMax) yMax = stripObj.y[i];
+        }
+        statusRange.textContent = `t: ${t0.toFixed(2)}–${t1.toFixed(2)} s, y: ${yMin.toFixed(2)}–${yMax.toFixed(2)} mV`;
+
+        const beats = Array.isArray(stripObj.beatList) ? stripObj.beatList : [];
+        const paced = beats.filter((b) => b === "Ventricular pacing").length;
+        statusBeat.textContent = `beats: ${beats.length} (paced: ${paced})`;
+
+        updateTags();
       }
-      if (scenario === "SlowConduction") {
-        return slowConduction({ patientHR, sensitivity, rate, output, asynchronous, iterations });
+
+      function updateTags() {
+        const scenLabel =
+          elScenario.options[elScenario.selectedIndex]?.textContent ??
+          elScenario.value;
+        tagScenario.textContent = `Scenario: ${scenLabel} · HR ${Number(elHr.value)} bpm`;
+        tagPacer.textContent = `Pacer ${pacerOn ? "ON" : "OFF"} · Rate ${getEffectivePacerRate()} bpm · Sens ${Number(elSens.value).toFixed(1)} mV · Out ${Number(elOut.value).toFixed(1)} mA · Async ${elAsync.value}`;
       }
-      return thirdDegHeartBlock({ iterations, sensitivity, output, rate, patientHR, asynchronous });
-    }
 
-    // -------------------------
-    // Status + tags
-    // -------------------------
-    function updateStatus(stripObj) {
-      if (!stripObj || !stripObj.x.length) return;
+      // -------------------------
+      // Simulation state
+      // -------------------------
+      let stripPaper = null;
+      let stripLive = null;
 
-      statusLen.textContent = `samples: ${stripObj.x.length}`;
+      // -------------------------
+      // Monitor: source buffer (full trace) + persistent "screen" + sweep overwrite
+      // -------------------------
+      const monitorBuffer = document.createElement("canvas");
+      const monitorBufferCtx = monitorBuffer.getContext("2d");
 
-      const t0 = stripObj.x[0];
-      const t1 = stripObj.x[stripObj.x.length - 1];
+      const monitorScreen = document.createElement("canvas");
+      const monitorScreenCtx = monitorScreen.getContext("2d");
 
-      let yMin = Infinity, yMax = -Infinity;
-      for (let i = 0; i < stripObj.y.length; i++) {
-        if (stripObj.y[i] < yMin) yMin = stripObj.y[i];
-        if (stripObj.y[i] > yMax) yMax = stripObj.y[i];
+      function dpr() {
+        return window.devicePixelRatio || 1;
       }
-      statusRange.textContent =
-        `t: ${t0.toFixed(2)}–${t1.toFixed(2)} s, y: ${yMin.toFixed(2)}–${yMax.toFixed(2)} mV`;
 
-      const beats = Array.isArray(stripObj.beatList) ? stripObj.beatList : [];
-      const paced = beats.filter(b => b === "Ventricular pacing").length;
-      statusBeat.textContent = `beats: ${beats.length} (paced: ${paced})`;
-
-      updateTags();
-    }
-
-    function updateTags() {
-      const scenLabel = elScenario.options[elScenario.selectedIndex]?.textContent ?? elScenario.value;
-      tagScenario.textContent = `Scenario: ${scenLabel} · HR ${Number(elHr.value)} bpm`;
-      tagPacer.textContent = `Pacer ${pacerOn ? "ON" : "OFF"} · Rate ${getEffectivePacerRate()} bpm · Sens ${Number(elSens.value).toFixed(1)} mV · Out ${Number(elOut.value).toFixed(1)} mA · Async ${elAsync.value}`;
-    }
-
-    // -------------------------
-    // Simulation state
-    // -------------------------
-    let stripPaper = null;
-    let stripLive = null;
-
-    // -------------------------
-    // Monitor: source buffer (full trace) + persistent "screen" + sweep overwrite
-    // -------------------------
-    const monitorBuffer = document.createElement("canvas");
-    const monitorBufferCtx = monitorBuffer.getContext("2d");
-
-    const monitorScreen = document.createElement("canvas");
-    const monitorScreenCtx = monitorScreen.getContext("2d");
-
-    function dpr() { return window.devicePixelRatio || 1; }
-
-    function sizeOffscreenToMonitor(canvas) {
-      setCanvasSize(canvas, monitorCanvas.clientWidth, monitorCanvas.clientHeight);
-    }
-
-    function drawMonitorBackgroundTo(ctx, w, h) {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, w, h);
-
-      // midline
-      ctx.globalAlpha = 0.12;
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, h / 2);
-      ctx.lineTo(w, h / 2);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
-
-    function rebuildMonitorBuffer() {
-      const w = monitorCanvas.clientWidth;
-      const h = monitorCanvas.clientHeight;
-      if (!stripLive || !stripLive.x.length) return;
-
-      sizeOffscreenToMonitor(monitorBuffer);
-      drawMonitorBackgroundTo(monitorBufferCtx, w, h);
-
-      // exact same geometry as paper (green on black)
-      drawWaveWindowToSize(monitorBufferCtx, w, h, stripLive, 0, VIEW_SEC, "#33ff66", 2);
-    }
-
-    function initMonitorScreenBlank() {
-      const w = monitorCanvas.clientWidth;
-      const h = monitorCanvas.clientHeight;
-      sizeOffscreenToMonitor(monitorScreen);
-      drawMonitorBackgroundTo(monitorScreenCtx, w, h);
-    }
-
-    function overwriteSliceOnScreen(x0, x1) {
-      const w = monitorCanvas.clientWidth;
-      const h = monitorCanvas.clientHeight;
-      if (x1 <= x0) return;
-
-      const D = dpr();
-      const sx = Math.floor(x0 * D);
-      const sw = Math.ceil((x1 - x0) * D);
-      const sy = 0;
-      const sh = Math.ceil(h * D);
-
-      monitorScreenCtx.drawImage(
-        monitorBuffer,
-        sx, sy, sw, sh,
-        x0, 0, (x1 - x0), h
-      );
-    }
-
-    let playing = true;
-    let sweepX = 0;
-    let prevSweepX = 0;
-    let lastTs = null;
-
-    function resetSweepAndBlankScreen() {
-      sweepX = 0;
-      prevSweepX = 0;
-      lastTs = null;
-      initMonitorScreenBlank();
-    }
-
-    function stepSweep(dtSec) {
-      const w = monitorCanvas.clientWidth;
-      const pxPerSec = (w / VIEW_SEC) * SWEEP_TIME_SCALE;
-
-      prevSweepX = sweepX;
-      sweepX += pxPerSec * dtSec;
-
-      if (sweepX >= w) sweepX = sweepX % w;
-
-      if (sweepX >= prevSweepX) {
-        overwriteSliceOnScreen(prevSweepX, sweepX);
-      } else {
-        overwriteSliceOnScreen(prevSweepX, w);
-        overwriteSliceOnScreen(0, sweepX);
+      function sizeOffscreenToMonitor(canvas) {
+        setCanvasSize(
+          canvas,
+          monitorCanvas.clientWidth,
+          monitorCanvas.clientHeight,
+        );
       }
-    }
 
-    function renderMonitor() {
-      const w = monitorCanvas.clientWidth;
-      const h = monitorCanvas.clientHeight;
+      function drawMonitorBackgroundTo(ctx, w, h) {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, w, h);
 
-      monitorCtx.clearRect(0, 0, w, h);
-      monitorCtx.drawImage(monitorScreen, 0, 0, w, h);
+        // midline
+        ctx.globalAlpha = 0.12;
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, h / 2);
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
 
-      // sweep bar
-      monitorCtx.strokeStyle = "rgba(51,255,102,0.95)";
-      monitorCtx.lineWidth = 2;
-      monitorCtx.beginPath();
-      monitorCtx.moveTo(sweepX, 0);
-      monitorCtx.lineTo(sweepX, h);
-      monitorCtx.stroke();
+      function rebuildMonitorBuffer() {
+        const w = monitorCanvas.clientWidth;
+        const h = monitorCanvas.clientHeight;
+        if (!stripLive || !stripLive.x.length) return;
 
-      // glow
-      monitorCtx.strokeStyle = "rgba(51,255,102,0.18)";
-      monitorCtx.lineWidth = 10;
-      monitorCtx.beginPath();
-      monitorCtx.moveTo(sweepX, 0);
-      monitorCtx.lineTo(sweepX, h);
-      monitorCtx.stroke();
-    }
+        sizeOffscreenToMonitor(monitorBuffer);
+        drawMonitorBackgroundTo(monitorBufferCtx, w, h);
 
-    // -------------------------
-    // Paper render
-    // -------------------------
-    function renderPaper() {
-      if (!stripPaper) return;
-      const sensitivity = Number(elSens.value);
-      drawPaperGrid(sensitivity);
-      drawWaveWindow(paperCtx, paperCanvas, stripPaper, 0, VIEW_SEC, "#000000", 2);
-    }
+        // exact same geometry as paper (green on black)
+        drawWaveWindowToSize(
+          monitorBufferCtx,
+          w,
+          h,
+          stripLive,
+          0,
+          VIEW_SEC,
+          "#33ff66",
+          2,
+        );
+      }
 
-    // -------------------------
-    // Regeneration (no "Generate" button)
-    // -------------------------
-    function refreshStrips(alsoRestartAndBlank = false) {
-      stripLive  = generateStripFromUI(80);
-      stripPaper = stripLive;
+      function initMonitorScreenBlank() {
+        const w = monitorCanvas.clientWidth;
+        const h = monitorCanvas.clientHeight;
+        sizeOffscreenToMonitor(monitorScreen);
+        drawMonitorBackgroundTo(monitorScreenCtx, w, h);
+      }
 
-      updateStatus(stripLive);
-      renderPaper();
-      rebuildMonitorBuffer();
+      function overwriteSliceOnScreen(x0, x1) {
+        const w = monitorCanvas.clientWidth;
+        const h = monitorCanvas.clientHeight;
+        if (x1 <= x0) return;
 
-      if (alsoRestartAndBlank) resetSweepAndBlankScreen();
-      renderMonitor();
-    }
+        const D = dpr();
+        const sx = Math.floor(x0 * D);
+        const sw = Math.ceil((x1 - x0) * D);
+        const sy = 0;
+        const sh = Math.ceil(h * D);
 
-    // Debounced refresh for sliders
-    let regenTimer = null;
-    function scheduleRefresh(alsoRestartAndBlank = false) {
-      if (regenTimer) clearTimeout(regenTimer);
-      regenTimer = setTimeout(() => {
-        regenTimer = null;
-        refreshStrips(alsoRestartAndBlank);
-      }, REGEN_DEBOUNCE_MS);
-    }
+        monitorScreenCtx.drawImage(
+          monitorBuffer,
+          sx,
+          sy,
+          sw,
+          sh,
+          x0,
+          0,
+          x1 - x0,
+          h,
+        );
+      }
 
-    // -------------------------
-    // Animation loop
-    // -------------------------
-    function animate(ts) {
-      if (!playing) return;
+      let playing = true;
+      let sweepX = 0;
+      let prevSweepX = 0;
+      let lastTs = null;
 
-      if (lastTs == null) lastTs = ts;
-      const dt = (ts - lastTs) / 1000;
-      lastTs = ts;
-
-      stepSweep(dt);
-      renderMonitor();
-
-      requestAnimationFrame(animate);
-    }
-
-    // -------------------------
-    // UI syncing helpers
-    // -------------------------
-    function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
-
-    function syncPair(rangeEl, numEl, val) {
-      rangeEl.value = String(val);
-      numEl.value = String(val);
-    }
-
-    function setHR(v, immediate=false) {
-      v = clamp(Math.round(v), Number(elHr.min), Number(elHr.max));
-      syncPair(elHrRange, elHr, v);
-      updateTags();
-      if (immediate) refreshStrips(false);
-      else scheduleRefresh(false);
-    }
-
-    function setRate(v, immediate=false) {
-      v = clamp(Math.round(v), Number(elRate.min), Number(elRate.max));
-      if (!pacerOn) v = 0;
-      syncPair(elRateRange, elRate, v);
-      if (v > 0) lastNonZeroPacerRate = v;
-      updateTags();
-      if (immediate) refreshStrips(false);
-      else scheduleRefresh(false);
-    }
-
-    function setSens(v, immediate=false) {
-      v = clamp(Number(v), Number(elSens.min), Number(elSens.max));
-      v = Math.round(v * 10) / 10;
-      syncPair(elSensRange, elSens, v);
-      updateTags();
-      if (immediate) refreshStrips(false);
-      else scheduleRefresh(false);
-    }
-
-    function setOut(v, immediate=false) {
-      v = clamp(Number(v), Number(elOut.min), Number(elOut.max));
-      v = Math.round(v * 10) / 10;
-      syncPair(elOutRange, elOut, v);
-      updateTags();
-      if (immediate) refreshStrips(false);
-      else scheduleRefresh(false);
-    }
-
-    function bumpFromButton(attr, delta) {
-      if (attr === "hr") setHR(Number(elHr.value) + delta);
-      if (attr === "rate") setRate(Number(elRate.value) + delta);
-      if (attr === "sens") setSens(Number(elSens.value) + delta);
-      if (attr === "out") setOut(Number(elOut.value) + delta);
-    }
-
-    // -------------------------
-    // Event wiring
-    // -------------------------
-    btnPacerToggle.addEventListener("click", () => setPacerState(!pacerOn));
-
-    btnPlay.addEventListener("click", () => {
-      playing = !playing;
-      if (playing) {
+      function resetSweepAndBlankScreen() {
+        sweepX = 0;
+        prevSweepX = 0;
         lastTs = null;
+        initMonitorScreenBlank();
+      }
+
+      function stepSweep(dtSec) {
+        const w = monitorCanvas.clientWidth;
+        const pxPerSec = (w / VIEW_SEC) * SWEEP_TIME_SCALE;
+
+        prevSweepX = sweepX;
+        sweepX += pxPerSec * dtSec;
+
+        if (sweepX >= w) sweepX = sweepX % w;
+
+        if (sweepX >= prevSweepX) {
+          overwriteSliceOnScreen(prevSweepX, sweepX);
+        } else {
+          overwriteSliceOnScreen(prevSweepX, w);
+          overwriteSliceOnScreen(0, sweepX);
+        }
+      }
+
+      function renderMonitor() {
+        const w = monitorCanvas.clientWidth;
+        const h = monitorCanvas.clientHeight;
+
+        monitorCtx.clearRect(0, 0, w, h);
+        monitorCtx.drawImage(monitorScreen, 0, 0, w, h);
+
+        // sweep bar
+        monitorCtx.strokeStyle = "rgba(51,255,102,0.95)";
+        monitorCtx.lineWidth = 2;
+        monitorCtx.beginPath();
+        monitorCtx.moveTo(sweepX, 0);
+        monitorCtx.lineTo(sweepX, h);
+        monitorCtx.stroke();
+
+        // glow
+        monitorCtx.strokeStyle = "rgba(51,255,102,0.18)";
+        monitorCtx.lineWidth = 10;
+        monitorCtx.beginPath();
+        monitorCtx.moveTo(sweepX, 0);
+        monitorCtx.lineTo(sweepX, h);
+        monitorCtx.stroke();
+      }
+
+      // -------------------------
+      // Paper render
+      // -------------------------
+      function renderPaper() {
+        if (!stripPaper) return;
+        const sensitivity = Number(elSens.value);
+        drawPaperGrid(sensitivity);
+        drawWaveWindow(
+          paperCtx,
+          paperCanvas,
+          stripPaper,
+          0,
+          VIEW_SEC,
+          "#000000",
+          2,
+        );
+      }
+
+      // -------------------------
+      // Regeneration (no "Generate" button)
+      // -------------------------
+      function refreshStrips(alsoRestartAndBlank = false) {
+        stripLive = generateStripFromUI(80);
+        stripPaper = stripLive;
+
+        updateStatus(stripLive);
+        renderPaper();
+        rebuildMonitorBuffer();
+
+        if (alsoRestartAndBlank) resetSweepAndBlankScreen();
+        renderMonitor();
+      }
+
+      // Debounced refresh for sliders
+      let regenTimer = null;
+      function scheduleRefresh(alsoRestartAndBlank = false) {
+        if (regenTimer) clearTimeout(regenTimer);
+        regenTimer = setTimeout(() => {
+          regenTimer = null;
+          refreshStrips(alsoRestartAndBlank);
+        }, REGEN_DEBOUNCE_MS);
+      }
+
+      // -------------------------
+      // Animation loop
+      // -------------------------
+      function animate(ts) {
+        if (!playing) return;
+
+        if (lastTs == null) lastTs = ts;
+        const dt = (ts - lastTs) / 1000;
+        lastTs = ts;
+
+        stepSweep(dt);
+        renderMonitor();
+
         requestAnimationFrame(animate);
       }
-    });
 
-    btnBlank.addEventListener("click", () => {
-      resetSweepAndBlankScreen();
-      renderMonitor();
-    });
+      // -------------------------
+      // UI syncing helpers
+      // -------------------------
+      function clamp(n, lo, hi) {
+        return Math.min(hi, Math.max(lo, n));
+      }
 
-    // Scenario + async: apply immediately (feels better than waiting for debounce)
-    elScenario.addEventListener("change", () => { updateTags(); refreshStrips(false); });
-    elAsync.addEventListener("change", () => { updateTags(); refreshStrips(false); });
+      function syncPair(rangeEl, numEl, val) {
+        rangeEl.value = String(val);
+        numEl.value = String(val);
+      }
 
-    // HR pair
-    elHrRange.addEventListener("input", () => setHR(Number(elHrRange.value)));
-    elHr.addEventListener("input", () => setHR(Number(elHr.value)));
-    elHr.addEventListener("change", () => setHR(Number(elHr.value), true));
+      function setHR(v, immediate = false) {
+        v = clamp(Math.round(v), Number(elHr.min), Number(elHr.max));
+        syncPair(elHrRange, elHr, v);
+        updateTags();
+        if (immediate) refreshStrips(false);
+        else scheduleRefresh(false);
+      }
 
-    // Rate pair
-    elRateRange.addEventListener("input", () => setRate(Number(elRateRange.value)));
-    elRate.addEventListener("input", () => setRate(Number(elRate.value)));
-    elRate.addEventListener("change", () => setRate(Number(elRate.value), true));
+      function setRate(v, immediate = false) {
+        v = clamp(Math.round(v), Number(elRate.min), Number(elRate.max));
+        if (!pacerOn) v = 0;
+        syncPair(elRateRange, elRate, v);
+        if (v > 0) lastNonZeroPacerRate = v;
+        updateTags();
+        if (immediate) refreshStrips(false);
+        else scheduleRefresh(false);
+      }
 
-    // Sens pair
-    elSensRange.addEventListener("input", () => setSens(Number(elSensRange.value)));
-    elSens.addEventListener("input", () => setSens(Number(elSens.value)));
-    elSens.addEventListener("change", () => setSens(Number(elSens.value), true));
+      function setSens(v, immediate = false) {
+        v = clamp(Number(v), Number(elSens.min), Number(elSens.max));
+        v = Math.round(v * 10) / 10;
+        syncPair(elSensRange, elSens, v);
+        updateTags();
+        if (immediate) refreshStrips(false);
+        else scheduleRefresh(false);
+      }
 
-    // Out pair
-    elOutRange.addEventListener("input", () => setOut(Number(elOutRange.value)));
-    elOut.addEventListener("input", () => setOut(Number(elOut.value)));
-    elOut.addEventListener("change", () => setOut(Number(elOut.value), true));
+      function setOut(v, immediate = false) {
+        v = clamp(Number(v), Number(elOut.min), Number(elOut.max));
+        v = Math.round(v * 10) / 10;
+        syncPair(elOutRange, elOut, v);
+        updateTags();
+        if (immediate) refreshStrips(false);
+        else scheduleRefresh(false);
+      }
 
-    // +/- buttons
-    document.querySelectorAll("button[data-hr],button[data-rate],button[data-sens],button[data-out]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const hr = btn.getAttribute("data-hr");
-        const rate = btn.getAttribute("data-rate");
-        const sens = btn.getAttribute("data-sens");
-        const out = btn.getAttribute("data-out");
-        if (hr) bumpFromButton("hr", Number(hr));
-        if (rate) bumpFromButton("rate", Number(rate));
-        if (sens) bumpFromButton("sens", Number(sens));
-        if (out) bumpFromButton("out", Number(out));
+      function bumpFromButton(attr, delta) {
+        if (attr === "hr") setHR(Number(elHr.value) + delta);
+        if (attr === "rate") setRate(Number(elRate.value) + delta);
+        if (attr === "sens") setSens(Number(elSens.value) + delta);
+        if (attr === "out") setOut(Number(elOut.value) + delta);
+      }
+
+      // -------------------------
+      // Event wiring
+      // -------------------------
+      btnPacerToggle.addEventListener("click", () => setPacerState(!pacerOn));
+
+      btnPlay.addEventListener("click", () => {
+        playing = !playing;
+        if (playing) {
+          lastTs = null;
+          requestAnimationFrame(animate);
+        }
       });
-    });
 
-    function onResize() {
+      btnBlank.addEventListener("click", () => {
+        resetSweepAndBlankScreen();
+        renderMonitor();
+      });
+
+      // Scenario + async: apply immediately (feels better than waiting for debounce)
+      elScenario.addEventListener("change", () => {
+        updateTags();
+        refreshStrips(false);
+      });
+      elAsync.addEventListener("change", () => {
+        updateTags();
+        refreshStrips(false);
+      });
+
+      // HR pair
+      elHrRange.addEventListener("input", () => setHR(Number(elHrRange.value)));
+      elHr.addEventListener("input", () => setHR(Number(elHr.value)));
+      elHr.addEventListener("change", () => setHR(Number(elHr.value), true));
+
+      // Rate pair
+      elRateRange.addEventListener("input", () =>
+        setRate(Number(elRateRange.value)),
+      );
+      elRate.addEventListener("input", () => setRate(Number(elRate.value)));
+      elRate.addEventListener("change", () =>
+        setRate(Number(elRate.value), true),
+      );
+
+      // Sens pair
+      elSensRange.addEventListener("input", () =>
+        setSens(Number(elSensRange.value)),
+      );
+      elSens.addEventListener("input", () => setSens(Number(elSens.value)));
+      elSens.addEventListener("change", () =>
+        setSens(Number(elSens.value), true),
+      );
+
+      // Out pair
+      elOutRange.addEventListener("input", () =>
+        setOut(Number(elOutRange.value)),
+      );
+      elOut.addEventListener("input", () => setOut(Number(elOut.value)));
+      elOut.addEventListener("change", () => setOut(Number(elOut.value), true));
+
+      // +/- buttons
+      document
+        .querySelectorAll(
+          "button[data-hr],button[data-rate],button[data-sens],button[data-out]",
+        )
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const hr = btn.getAttribute("data-hr");
+            const rate = btn.getAttribute("data-rate");
+            const sens = btn.getAttribute("data-sens");
+            const out = btn.getAttribute("data-out");
+            if (hr) bumpFromButton("hr", Number(hr));
+            if (rate) bumpFromButton("rate", Number(rate));
+            if (sens) bumpFromButton("sens", Number(sens));
+            if (out) bumpFromButton("out", Number(out));
+          });
+        });
+
+      function onResize() {
+        sizePaperCanvas();
+        sizeMonitorCanvas();
+
+        rebuildMonitorBuffer();
+
+        // preserve already-revealed look: blank + reveal up to current sweepX
+        initMonitorScreenBlank();
+        const w = monitorCanvas.clientWidth;
+        sweepX = Math.min(sweepX, w);
+        prevSweepX = 0;
+        overwriteSliceOnScreen(0, sweepX);
+
+        renderPaper();
+        renderMonitor();
+      }
+      window.addEventListener("resize", onResize);
+
+      // -------------------------
+      // Init
+      // -------------------------
       sizePaperCanvas();
       sizeMonitorCanvas();
 
-      rebuildMonitorBuffer();
+      // make sure pairs start synced
+      setHR(Number(elHr.value), true);
+      setSens(Number(elSens.value), true);
+      setOut(Number(elOut.value), true);
+      setRate(Number(elRate.value), true);
 
-      // preserve already-revealed look: blank + reveal up to current sweepX
-      initMonitorScreenBlank();
-      const w = monitorCanvas.clientWidth;
-      sweepX = Math.min(sweepX, w);
-      prevSweepX = 0;
-      overwriteSliceOnScreen(0, sweepX);
+      setPacerUi();
 
-      renderPaper();
-      renderMonitor();
-    }
-    window.addEventListener("resize", onResize);
-
-    // -------------------------
-    // Init
-    // -------------------------
-    sizePaperCanvas();
-    sizeMonitorCanvas();
-
-    // make sure pairs start synced
-    setHR(Number(elHr.value), true);
-    setSens(Number(elSens.value), true);
-    setOut(Number(elOut.value), true);
-    setRate(Number(elRate.value), true);
-
-    setPacerUi();
-
-    // First load: blank screen, then sweep draws in
-    refreshStrips(true);
-    requestAnimationFrame(animate);
-  </script>
-</body>
+      // First load: blank screen, then sweep draws in
+      refreshStrips(true);
+      requestAnimationFrame(animate);
+    </script>
+  </body>
 </html>

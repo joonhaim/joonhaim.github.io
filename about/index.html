@@ -1,209 +1,340 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>About</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>About</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
 
-  <!-- global assets already in the site -->
-  <link rel='stylesheet' href='static/css/shared/site.css'>
-  <link rel='stylesheet' href='static/css/pages/profile.css'>
-  <script src='static/js/shared/site.js' defer></script>
-  <script src='static/js/shared/includes.js' defer></script>
-<!--  <script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'></script>-->
-<!--  <script src='static/js/pages/generateCV.js' defer></script>-->
+    <!-- global assets already in the site -->
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <link rel="stylesheet" href="static/css/pages/profile.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+    <!--  <script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'></script>-->
+    <!--  <script src='static/js/pages/generateCV.js' defer></script>-->
 
-  <!-- page‑specific tweaks -->
-</head>
+    <!-- page‑specific tweaks -->
+  </head>
 
-<body>
-  <div class='container'>
-    <div id="site-header"></div>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
 
-    <main class='content'>
-
-      <div class='cv-download-wrap'>
-<!--        <button id="download-page-pdf" class="cv-download-btn">Download page as PDF</button>-->
-<!--        <a class="cv-download-btn" href="static/pdf/cv/CV_Adrien_Im.pdf" download>Download CV</a>-->
-      </div>
-
-      <!-- Hero -->
-      <section class='profile-header'>
-        <img src='static/images/profile/profile.jpg' alt='Photo of Adrien Joon‑Ha Im' class='profile-pic' loading='lazy'>
-        <div class='profile-summary'>
-          <h1>Adrien Joon‑Ha Im</h1>
-          <p>BSc Data Science &amp; Artificial Intelligence — <strong>Leiden University</strong><br>Minor Biomedical Engineering — <strong>TU Delft</strong></p>
-          <p></p>
-          <p class='contact-line'><strong>Email </strong><a href='mailto:a.j.im@umail.leidenuniv.nl'>a.j.im@umail.leidenuniv.nl</a></p>
+      <main class="content">
+        <div class="cv-download-wrap">
+          <!--        <button id="download-page-pdf" class="cv-download-btn">Download page as PDF</button>-->
+          <!--        <a class="cv-download-btn" href="static/pdf/cv/CV_Adrien_Im.pdf" download>Download CV</a>-->
         </div>
-      </section>
 
+        <!-- Hero -->
+        <section class="profile-header">
+          <img
+            src="static/images/profile/profile.jpg"
+            alt="Photo of Adrien Joon‑Ha Im"
+            class="profile-pic"
+            loading="lazy"
+          />
+          <div class="profile-summary">
+            <h1>Adrien Joon‑Ha Im</h1>
+            <p>
+              BSc Data Science &amp; Artificial Intelligence —
+              <strong>Leiden University</strong><br />Minor Biomedical
+              Engineering — <strong>TU Delft</strong>
+            </p>
+            <p></p>
+            <p class="contact-line">
+              <strong>Email </strong
+              ><a href="mailto:a.j.im@umail.leidenuniv.nl"
+                >a.j.im@umail.leidenuniv.nl</a
+              >
+            </p>
+          </div>
+        </section>
 
-      <!-- Education -->
-      <section id='education' class='cv-section'>
-        <h2>Education</h2>
-        <ul class='timeline'>
-          <li>
-            <div class='title'>TU Delft — Minor in Biomedical Engineering</div>
-            <div class='meta'>Faculty of Mechanical Engineering · 2025 – 2026</div>
-            <p>Relevant Courses: Medical Imaging, Anatomy & Control, Orthopedic Biomaterials, BME Minor Project</p>
-          </li>
-          <li>
-            <div class='title'>Leiden University — BSc Data Science &amp; Artificial Intelligence</div>
-            <div class='meta'>Faculty of Science · 2023 – 2026</div>
-            <p>Relevant Courses: Algorithms and Data Structures, Databases, Software Development, Machine Learning, Neural Computing, Symbolic AI, Automata Theory</p>
-          </li>
-          <li>
-            <div class='title'>EPFL — Cours de Mathématiques Spéciales (CMS)</div>
-            <div class='meta'>Lausanne, Switzerland</div>
-          </li>
-          <li>
-            <div class='title'>Seoul Foreign School — International Baccalaureate Diploma</div>
-            <div class='meta'>Seoul, South Korea</div>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Professional Experience -->
-      <section id='experience' class='cv-section'>
-        <h2>Professional Experience</h2>
-        <ul class='timeline'>
-          <li>
-            <div class='title'>Assistant Sales Manager — MediThinQ</div>
-            <div class='meta'>Seongnam, South Korea · Feb 2022 – Aug 2022</div>
-            <p>• Led sales and marketing for AR medical smart glasses, enhancing surgical ergonomics<br>
-• Prospected and secured international clients, managed orders, and negotiated contracts<br>
-• Resolved customer disputes and developed tailored marketing strategies<br>
-• Oversaw social media presence <br>
-• Organized and participated in international trade shows (MEDICA, Arab Health, IDS Cologne, RSNA, European Colorectal Congress, KIMES, etc.)<br>
-• Contributed to MediThinQ's victory in the Medtronic APAC Innovation Challenge 2022</p>
-          </li>
-          <li>
-            <div class='title'>Sales Representative — MediThinQ</div>
-            <div class='meta'>Seongnam, South Korea · Sep 2020 – Feb 2022</div>
-            <p>• Prospected international clients, handled orders, and supported contract negotiations <br>
-            • Managed customer inquiries and contributed to marketing strategies and social media efforts<br>
-            • Expanded sales into new EMEA markets, including Germany, Saudi Arabia, Turkey, Spain, Finland, Slovenia, etc.</p>
-          </li>
-          <li>
-            <div class='title'>Translator (Contract) — Reduct NV</div>
-            <div class='meta'>Schelle, Belgium · Jul 2020 – Sep 2020</div>
-            <p>• Translated and provided interpretation to support the market expansion of Reduct products into South Korea. <br>
-                • Performed technical translations of instruction manuals and software for 3D gyroscopic pipeline mapping systems</p>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Other Experience & Service -->
-      <section id='other-experience' class='cv-section'>
-        <h2>Other Service</h2>
-        <ul class='timeline'>
-          <li>
-            <div class='title'>Social Service Agent — Seoul Metropolitan Government</div>
-            <div class='meta'>Seoul, South Korea · Aug 2022 – Jun 2023</div>
-            <p>Handled citizen enquiries and administrative workflows for the Han River Project Office during mandatory civil service.</p>
-          </li>
-          <li>
-            <div class='title'>Military Driver — Republic of Korea Army (7th Infantry Division)</div>
-            <div class='meta'>Hwacheon, South Korea · Dec 2020 – Oct 2021</div>
-            <p>Operated heavy vehicles in DMZ terrain and assisted in Korean‑War remains recovery missions.</p>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Activities -->
-      <section id='activities' class='cv-section'>
-        <h2>Activities</h2>
-        <ul class='timeline'>
-          <li>
-            <div class='title'>Board Treasurer — BSC Leiden</div>
-            <div class='meta'>Sep&nbsp;2024&nbsp;–&nbsp;Aug&nbsp;2025</div>
-          </li>
-        </ul>
-      </section>
-
-<!--      &lt;!&ndash; Projects &ndash;&gt;-->
-<!--      <section id='projects' class='cv-section'>-->
-<!--        <h2>Selected Projects</h2>-->
-<!--        <ul class='timeline'>-->
-<!--          <li>-->
-<!--            <div class='title'>EasySave — AI‑Powered Student Financial Planner</div>-->
-<!--            <div class='meta'>Leiden University · 2024</div>-->
-<!--            <p>EasySave is a web-based financial management tool designed to help students track expenses, set savings goals, and optimize their budget using data-driven insights. The platform provides personalized spending recommendations, a daily budget calculator, and AI-powered spending forecasts to help users stay on track financially. Built with Flask, SQLAlchemy (SQLite), and machine learning (ARIMA forecasting), EasySave simplifies financial planning with an intuitive and interactive dashboard.</p>-->
-<!--          </li>-->
-<!--          <li>-->
-<!--            <div class='title'>Beyond the Röstigraben - (In Progress)</div>-->
-<!--            <div class='meta'>Personal Project · 2025</div>-->
-<!--            <p>Data Analysis of Swiss Linguistic Diversity</p>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </section>-->
-
-      <!-- Technical Skills -->
-      <section id='skills' class='cv-section'>
-        <h2>Technical Skills</h2>
-        <ul class='timeline'>
-          <li><div class='title'>Programming Languages</div><p class='dot-sep'><span>Python</span><span>Java</span><span>SQL</span><span>R</span></p></li>
-          <li><div class='title'>Frameworks &amp; Libraries</div><p class='dot-sep'><span>PyTorch</span><span>NumPy</span><span>Scikit‑learn</span><span>Flask</span></p></li>
-          <li><div class='title'>Tools &amp; Platforms</div><p class='dot-sep'><span>Git</span><span>GitHub</span><span>GitLab</span><span>Jira</span><span>SQLite</span><span>Jupyter</span></p></li>
-          <li><div class='title'>Web &amp; Markup</div><p class='dot-sep'><span>HTML</span><span>CSS</span></p></li>
-        </ul>
-      </section>
-
-      <!-- Languages -->
-<section id="languages" class="cv-section">
-  <h2>Languages</h2>
-
-  <!-- small pill‑shaped badges -->
-  <ul class="lang-badges">
-    <li><span>🇬🇧 English</span><small>Native</small></li>
-    <li><span>🇫🇷 French</span><small>Native</small></li>
-    <li><span>🇰🇷 Korean</span><small>Native</small></li>
-    <li><span>🇩🇪 German</span><small>B1</small></li>
-    <li><span>🇨🇳 Chinese</span><small>HSK 4 (A2)</small></li>
-  </ul>
-</section>
-
-      <!-- Certificates -->
-      <section id='certificates' class='cv-section'>
-        <h2>Certificates</h2>
-        <ul class='timeline'>
-          <li><div class='title'>TOEIC Speaking — Score: 200 / 200</div><div class='meta'>ETS · Sept 2020</div></li>
-          <li><div class='title'>HSK Level 4</div><div class='meta'>Hanban Confucius Institute · Jul 2017</div></li>
-        </ul>
-      </section>
-
-      <!-- Courses -->
-      <section id='courses' class='cv-section'>
-        <h2>Goethe-Institut Courses</h2>
-        <ul class='timeline'>
-          <li>
-            <div class='title'>Deutsch Online Training — B2</div>
-            <div class='meta'>Jul 2025 – Sep 2025 · <a href="static/pdf/certificates/deutsch_B2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
-          </li>
-             <li>
-            <div class='title'>Deutsch Online Training — B1</div>
-            <div class='meta'>Sep 2024 – Dec 2024 · <a href="static/pdf/certificates/deutsch_B1_certificate.pdf" target="_blank">Confirmation of participation</a></div>
-          </li>
+        <!-- Education -->
+        <section id="education" class="cv-section">
+          <h2>Education</h2>
+          <ul class="timeline">
             <li>
-            <div class='title'>Deutsch Online Training — A2</div>
-            <div class='meta'>Jul 2024 – Oct 2024 · <a href="static/pdf/certificates/deutsch_A2_certificate.pdf" target="_blank">Confirmation of participation</a></div>
-          </li>
+              <div class="title">
+                TU Delft — Minor in Biomedical Engineering
+              </div>
+              <div class="meta">
+                Faculty of Mechanical Engineering · 2025 – 2026
+              </div>
+              <p>
+                Relevant Courses: Medical Imaging, Anatomy & Control, Orthopedic
+                Biomaterials, BME Minor Project
+              </p>
+            </li>
             <li>
-            <div class='title'>Goethe-Institut Seoul — A1.1</div>
-            <div class='meta'>06 Mar 2023 – 26 Apr 2023 · 69 h in-person · <a href="static/pdf/certificates/deutsch_A1_confirmation.pdf" target="_blank">Confirmation of participation</a></div>
-          </li>
-        </ul>
-      </section>
+              <div class="title">
+                Leiden University — BSc Data Science &amp; Artificial
+                Intelligence
+              </div>
+              <div class="meta">Faculty of Science · 2023 – 2026</div>
+              <p>
+                Relevant Courses: Algorithms and Data Structures, Databases,
+                Software Development, Machine Learning, Neural Computing,
+                Symbolic AI, Automata Theory
+              </p>
+            </li>
+            <li>
+              <div class="title">
+                EPFL — Cours de Mathématiques Spéciales (CMS)
+              </div>
+              <div class="meta">Lausanne, Switzerland</div>
+            </li>
+            <li>
+              <div class="title">
+                Seoul Foreign School — International Baccalaureate Diploma
+              </div>
+              <div class="meta">Seoul, South Korea</div>
+            </li>
+          </ul>
+        </section>
 
-    </main>
-    <div id="site-footer"></div>
-  </div>
-</body>
+        <!-- Professional Experience -->
+        <section id="experience" class="cv-section">
+          <h2>Professional Experience</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">Assistant Sales Manager — MediThinQ</div>
+              <div class="meta">
+                Seongnam, South Korea · Feb 2022 – Aug 2022
+              </div>
+              <p>
+                • Led sales and marketing for AR medical smart glasses,
+                enhancing surgical ergonomics<br />
+                • Prospected and secured international clients, managed orders,
+                and negotiated contracts<br />
+                • Resolved customer disputes and developed tailored marketing
+                strategies<br />
+                • Oversaw social media presence <br />
+                • Organized and participated in international trade shows
+                (MEDICA, Arab Health, IDS Cologne, RSNA, European Colorectal
+                Congress, KIMES, etc.)<br />
+                • Contributed to MediThinQ's victory in the Medtronic APAC
+                Innovation Challenge 2022
+              </p>
+            </li>
+            <li>
+              <div class="title">Sales Representative — MediThinQ</div>
+              <div class="meta">
+                Seongnam, South Korea · Sep 2020 – Feb 2022
+              </div>
+              <p>
+                • Prospected international clients, handled orders, and
+                supported contract negotiations <br />
+                • Managed customer inquiries and contributed to marketing
+                strategies and social media efforts<br />
+                • Expanded sales into new EMEA markets, including Germany, Saudi
+                Arabia, Turkey, Spain, Finland, Slovenia, etc.
+              </p>
+            </li>
+            <li>
+              <div class="title">Translator (Contract) — Reduct NV</div>
+              <div class="meta">Schelle, Belgium · Jul 2020 – Sep 2020</div>
+              <p>
+                • Translated and provided interpretation to support the market
+                expansion of Reduct products into South Korea. <br />
+                • Performed technical translations of instruction manuals and
+                software for 3D gyroscopic pipeline mapping systems
+              </p>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Other Experience & Service -->
+        <section id="other-experience" class="cv-section">
+          <h2>Other Service</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">
+                Social Service Agent — Seoul Metropolitan Government
+              </div>
+              <div class="meta">Seoul, South Korea · Aug 2022 – Jun 2023</div>
+              <p>
+                Handled citizen enquiries and administrative workflows for the
+                Han River Project Office during mandatory civil service.
+              </p>
+            </li>
+            <li>
+              <div class="title">
+                Military Driver — Republic of Korea Army (7th Infantry Division)
+              </div>
+              <div class="meta">
+                Hwacheon, South Korea · Dec 2020 – Oct 2021
+              </div>
+              <p>
+                Operated heavy vehicles in DMZ terrain and assisted in
+                Korean‑War remains recovery missions.
+              </p>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Activities -->
+        <section id="activities" class="cv-section">
+          <h2>Activities</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">Board Treasurer — BSC Leiden</div>
+              <div class="meta">Sep&nbsp;2024&nbsp;–&nbsp;Aug&nbsp;2025</div>
+            </li>
+          </ul>
+        </section>
+
+        <!--      &lt;!&ndash; Projects &ndash;&gt;-->
+        <!--      <section id='projects' class='cv-section'>-->
+        <!--        <h2>Selected Projects</h2>-->
+        <!--        <ul class='timeline'>-->
+        <!--          <li>-->
+        <!--            <div class='title'>EasySave — AI‑Powered Student Financial Planner</div>-->
+        <!--            <div class='meta'>Leiden University · 2024</div>-->
+        <!--            <p>EasySave is a web-based financial management tool designed to help students track expenses, set savings goals, and optimize their budget using data-driven insights. The platform provides personalized spending recommendations, a daily budget calculator, and AI-powered spending forecasts to help users stay on track financially. Built with Flask, SQLAlchemy (SQLite), and machine learning (ARIMA forecasting), EasySave simplifies financial planning with an intuitive and interactive dashboard.</p>-->
+        <!--          </li>-->
+        <!--          <li>-->
+        <!--            <div class='title'>Beyond the Röstigraben - (In Progress)</div>-->
+        <!--            <div class='meta'>Personal Project · 2025</div>-->
+        <!--            <p>Data Analysis of Swiss Linguistic Diversity</p>-->
+        <!--          </li>-->
+        <!--        </ul>-->
+        <!--      </section>-->
+
+        <!-- Technical Skills -->
+        <section id="skills" class="cv-section">
+          <h2>Technical Skills</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">Programming Languages</div>
+              <p class="dot-sep">
+                <span>Python</span><span>Java</span><span>SQL</span
+                ><span>R</span>
+              </p>
+            </li>
+            <li>
+              <div class="title">Frameworks &amp; Libraries</div>
+              <p class="dot-sep">
+                <span>PyTorch</span><span>NumPy</span><span>Scikit‑learn</span
+                ><span>Flask</span>
+              </p>
+            </li>
+            <li>
+              <div class="title">Tools &amp; Platforms</div>
+              <p class="dot-sep">
+                <span>Git</span><span>GitHub</span><span>GitLab</span
+                ><span>Jira</span><span>SQLite</span><span>Jupyter</span>
+              </p>
+            </li>
+            <li>
+              <div class="title">Web &amp; Markup</div>
+              <p class="dot-sep"><span>HTML</span><span>CSS</span></p>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Languages -->
+        <section id="languages" class="cv-section">
+          <h2>Languages</h2>
+
+          <!-- small pill‑shaped badges -->
+          <ul class="lang-badges">
+            <li><span>🇬🇧 English</span><small>Native</small></li>
+            <li><span>🇫🇷 French</span><small>Native</small></li>
+            <li><span>🇰🇷 Korean</span><small>Native</small></li>
+            <li><span>🇩🇪 German</span><small>B1</small></li>
+            <li><span>🇨🇳 Chinese</span><small>HSK 4 (A2)</small></li>
+          </ul>
+        </section>
+
+        <!-- Certificates -->
+        <section id="certificates" class="cv-section">
+          <h2>Certificates</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">TOEIC Speaking — Score: 200 / 200</div>
+              <div class="meta">ETS · Sept 2020</div>
+            </li>
+            <li>
+              <div class="title">HSK Level 4</div>
+              <div class="meta">Hanban Confucius Institute · Jul 2017</div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Courses -->
+        <section id="courses" class="cv-section">
+          <h2>Goethe-Institut Courses</h2>
+          <ul class="timeline">
+            <li>
+              <div class="title">Deutsch Online Training — B2</div>
+              <div class="meta">
+                Jul 2025 – Sep 2025 ·
+                <a
+                  href="static/pdf/certificates/deutsch_B2_certificate.pdf"
+                  target="_blank"
+                  >Confirmation of participation</a
+                >
+              </div>
+            </li>
+            <li>
+              <div class="title">Deutsch Online Training — B1</div>
+              <div class="meta">
+                Sep 2024 – Dec 2024 ·
+                <a
+                  href="static/pdf/certificates/deutsch_B1_certificate.pdf"
+                  target="_blank"
+                  >Confirmation of participation</a
+                >
+              </div>
+            </li>
+            <li>
+              <div class="title">Deutsch Online Training — A2</div>
+              <div class="meta">
+                Jul 2024 – Oct 2024 ·
+                <a
+                  href="static/pdf/certificates/deutsch_A2_certificate.pdf"
+                  target="_blank"
+                  >Confirmation of participation</a
+                >
+              </div>
+            </li>
+            <li>
+              <div class="title">Goethe-Institut Seoul — A1.1</div>
+              <div class="meta">
+                06 Mar 2023 – 26 Apr 2023 · 69 h in-person ·
+                <a
+                  href="static/pdf/certificates/deutsch_A1_confirmation.pdf"
+                  target="_blank"
+                  >Confirmation of participation</a
+                >
+              </div>
+            </li>
+          </ul>
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

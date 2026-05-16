@@ -1,133 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>Projects</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="static/css/shared/site.css">
-  <script src="static/js/shared/site.js" defer></script>
-  <script src="static/js/shared/includes.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <!-- Site Header -->
-    <div id="site-header"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Projects</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Site Header -->
+      <div id="site-header"></div>
 
-    <main class="content">
-      <!-- Academic / School Projects -->
-      <section id="academic-projects">
-        <h1>Academic Projects</h1>
+      <main class="content">
+        <!-- Academic / School Projects -->
+        <section id="academic-projects">
+          <h1>Academic Projects</h1>
 
-        <div class="project-cards">
-          <article class="project-card">
-            <img
-              src="static/images/logos/TUD.png"
-              alt="TU Delft logo"
-              class="project-logo"
-              loading="lazy"
-            >
-            <h3>Biomedical Engineering Project: EduPace</h3>
-            <p>
-              Development of EduPace, a simulator integrating realistic ECGs, arrhythmias, and sensitivity settings for pacemaker configuration training.
-            </p>
-            <a href="projects/edupace/">View Project →</a>
-          </article>
-
-          <article class="project-card">
-            <img
-              src="static/images/logos/UL.png"
-              alt="Leiden University logo"
-              class="project-logo"
-              loading="lazy"
-            >
-            <h3>BSc Thesis: Active Vision for Surgical Tool Recognition</h3>
-            <p>
-              Thesis research on building and evaluating an active vision pipeline to identify surgical tools in challenging, dynamic operating-room footage.
-            </p>
-            <a href="projects/bsc-thesis/">View Project →</a>
-          </article>
-        </div>
-
-
-        <div class="project-grid">
-          <!-- Cognition & Computation -->
-          <article class="project">
-            <div class="project-details">
-              <h3>Cognition &amp; Computation</h3>
+          <div class="project-cards">
+            <article class="project-card">
+              <img
+                src="static/images/logos/TUD.png"
+                alt="TU Delft logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <h3>Biomedical Engineering Project: EduPace</h3>
               <p>
-                Course assignments showcasing computational models in cognitive science: memory simulations, language segmentation, decision-making models, and connectionist networks.
+                Development of EduPace, a simulator integrating realistic ECGs,
+                arrhythmias, and sensitivity settings for pacemaker
+                configuration training.
               </p>
-              <a href="projects/cognition/">View Project →</a>
-            </div>
-          </article>
+              <a href="projects/edupace/">View Project →</a>
+            </article>
 
-          <!-- Neural Computing Project -->
-          <article class="project">
-            <div class="project-details">
-              <h3>Neural Computing Project: Food Classification CNN</h3>
+            <article class="project-card">
+              <img
+                src="static/images/logos/UL.png"
+                alt="Leiden University logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <h3>BSc Thesis: Active Vision for Surgical Tool Recognition</h3>
               <p>
-                End-to-end deep learning pipeline classifying 91 food categories from 67k images with a modernised AlexNet, focal loss, and cosine-annealed AdamW, plus a Gemini-powered food profile generator.
+                Thesis research on building and evaluating an active vision
+                pipeline to identify surgical tools in challenging, dynamic
+                operating-room footage.
               </p>
-              <a href="projects/neural-networks/">View Project →</a>
-            </div>
-          </article>
+              <a href="projects/bsc-thesis/">View Project →</a>
+            </article>
+          </div>
 
-          <!-- Introduction to Reinforcement Learning -->
-          <article class="project">
-            <div class="project-details">
-              <h3>Introduction to Reinforcement Learning</h3>
-              <p>
-                Course assignments covering bandit methods, dynamic programming, and model-free vs. model-based algorithms.
-              </p>
-              <a href="projects/reinforcement-learning/">View Project →</a>
-            </div>
-          </article>
+          <div class="project-grid">
+            <!-- Cognition & Computation -->
+            <article class="project">
+              <div class="project-details">
+                <h3>Cognition &amp; Computation</h3>
+                <p>
+                  Course assignments showcasing computational models in
+                  cognitive science: memory simulations, language segmentation,
+                  decision-making models, and connectionist networks.
+                </p>
+                <a href="projects/cognition/">View Project →</a>
+              </div>
+            </article>
 
-          <!-- Human–Agent Interaction -->
-          <article class="project">
-            <div class="project-details">
-              <h3>Human–Agent Interaction</h3>
-              <p>
-                Dungeons &amp; Dragons–style experiment probing how IVA modality (voice, lip-sync, gesture) impacts player immersion.
-              </p>
-              <a href="projects/hai/">View Project →</a>
-            </div>
-          </article>
-        </div>
-    </section>
+            <!-- Neural Computing Project -->
+            <article class="project">
+              <div class="project-details">
+                <h3>Neural Computing Project: Food Classification CNN</h3>
+                <p>
+                  End-to-end deep learning pipeline classifying 91 food
+                  categories from 67k images with a modernised AlexNet, focal
+                  loss, and cosine-annealed AdamW, plus a Gemini-powered food
+                  profile generator.
+                </p>
+                <a href="projects/neural-networks/">View Project →</a>
+              </div>
+            </article>
 
+            <!-- Introduction to Reinforcement Learning -->
+            <article class="project">
+              <div class="project-details">
+                <h3>Introduction to Reinforcement Learning</h3>
+                <p>
+                  Course assignments covering bandit methods, dynamic
+                  programming, and model-free vs. model-based algorithms.
+                </p>
+                <a href="projects/reinforcement-learning/">View Project →</a>
+              </div>
+            </article>
 
-      <!-- Personal Projects -->
-      <section id="personal-projects">
-        <h1>Personal Projects</h1>
+            <!-- Human–Agent Interaction -->
+            <article class="project">
+              <div class="project-details">
+                <h3>Human–Agent Interaction</h3>
+                <p>
+                  Dungeons &amp; Dragons–style experiment probing how IVA
+                  modality (voice, lip-sync, gesture) impacts player immersion.
+                </p>
+                <a href="projects/hai/">View Project →</a>
+              </div>
+            </article>
+          </div>
+        </section>
 
+        <!-- Personal Projects -->
+        <section id="personal-projects">
+          <h1>Personal Projects</h1>
 
+          <div class="project-grid">
+            <!-- Swiss Hospital Insights (CH-IQI) -->
+            <article class="project">
+              <div class="project-details">
+                <h3>Swiss Hospital Insights (CH-IQI)</h3>
+                <p>
+                  Dashboard comparing annual surgery cases across Switzerland's
+                  university hospitals using data from the Federal office of
+                  Public Health (FOPH).
+                </p>
+                <a href="projects/swiss-hospital-insights/">View Project →</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
 
-        <div class="project-grid">
-
-          <!-- Swiss Hospital Insights (CH-IQI) -->
-          <article class="project">
-            <div class="project-details">
-              <h3>Swiss Hospital Insights (CH-IQI)</h3>
-              <p>
-                  Dashboard comparing annual surgery cases across Switzerland's university hospitals using data from the Federal office of Public Health (FOPH).
-              </p>
-              <a href="projects/swiss-hospital-insights/">View Project →</a>
-            </div>
-          </article>
-
-        </div>
-      </section>
-    </main>
-
-    <!-- Site Footer -->
-    <div id="site-footer"></div>
-  </div>
-</body>
+      <!-- Site Footer -->
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

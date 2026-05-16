@@ -1,15 +1,44 @@
 import { getECGWave } from "./ecgMorphology.js";
 
 // ---------- helpers ----------
-function arrayMax(arr) { let m = -Infinity; for (let i=0;i<arr.length;i++) if (arr[i] > m) m = arr[i]; return m; }
-function arrayMin(arr) { let m =  Infinity; for (let i=0;i<arr.length;i++) if (arr[i] < m) m = arr[i]; return m; }
-function maxAbs(arr)   { let m = 0; for (let i=0;i<arr.length;i++){ const a=Math.abs(arr[i]); if (a>m) m=a; } return m; }
-function firstIndexAbsGE(arr, thr){ for (let i=0;i<arr.length;i++) if (Math.abs(arr[i]) >= thr) return i; return -1; }
-function scaleInPlace(arr, s){ for (let i=0;i<arr.length;i++) arr[i] *= s; }
-function shiftInPlace(arr, dx){ for (let i=0;i<arr.length;i++) arr[i] += dx; }
-function concat(a, b){ const out=new Array(a.length+b.length); for(let i=0;i<a.length;i++) out[i]=a[i]; for(let j=0;j<b.length;j++) out[a.length+j]=b[j]; return out; }
+function arrayMax(arr) {
+  let m = -Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] > m) m = arr[i];
+  return m;
+}
+function arrayMin(arr) {
+  let m = Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] < m) m = arr[i];
+  return m;
+}
+function maxAbs(arr) {
+  let m = 0;
+  for (let i = 0; i < arr.length; i++) {
+    const a = Math.abs(arr[i]);
+    if (a > m) m = a;
+  }
+  return m;
+}
+function firstIndexAbsGE(arr, thr) {
+  for (let i = 0; i < arr.length; i++) if (Math.abs(arr[i]) >= thr) return i;
+  return -1;
+}
+function scaleInPlace(arr, s) {
+  for (let i = 0; i < arr.length; i++) arr[i] *= s;
+}
+function shiftInPlace(arr, dx) {
+  for (let i = 0; i < arr.length; i++) arr[i] += dx;
+}
+function concat(a, b) {
+  const out = new Array(a.length + b.length);
+  for (let i = 0; i < a.length; i++) out[i] = a[i];
+  for (let j = 0; j < b.length; j++) out[a.length + j] = b[j];
+  return out;
+}
 
-function rand(){ return Math.random(); }
+function rand() {
+  return Math.random();
+}
 
 // Python overlap snippet used when inserting regenerated paced beats:
 // if min(x_temp) < max(x): cut previous at first x>=min(x_temp), then concat
@@ -18,7 +47,10 @@ function concatWithOverlapCut(x, y, xTemp, yTemp) {
     const start = arrayMin(xTemp);
     let cutIdx = -1;
     for (let i = 0; i < x.length; i++) {
-      if (x[i] >= start) { cutIdx = i; break; }
+      if (x[i] >= start) {
+        cutIdx = i;
+        break;
+      }
     }
     if (cutIdx !== -1) {
       x = x.slice(0, cutIdx);
@@ -46,7 +78,7 @@ export function slowConduction(cfg) {
 
   // ---- SAFETY for rate<=0 (Pacemaker OFF) ----
   const pacingEnabled = Number.isFinite(rate) && rate > 0;
-  const max_time_since_sensed = pacingEnabled ? (60 / rate) : Infinity;
+  const max_time_since_sensed = pacingEnabled ? 60 / rate : Infinity;
   const asyncMode = pacingEnabled ? !!asynchronous : false;
 
   // Python variables
@@ -73,7 +105,9 @@ export function slowConduction(cfg) {
     // so we treat that as the pacing marker time.
     paceEvents.push(arrayMin(xArr) + SENSE_ALIGNMENT);
   };
-  const recordSense = (t) => { if (Number.isFinite(t)) senseEvents.push(t); };
+  const recordSense = (t) => {
+    if (Number.isFinite(t)) senseEvents.push(t);
+  };
 
   for (let i = 0; i < iterations; i++) {
     // x_temp, y_temp = ecg_func(beat_list[i])
@@ -102,7 +136,8 @@ export function slowConduction(cfg) {
           y_temp = yTemp0.slice();
 
           const scaling_factor_y2 =
-            (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+            (1.0 + (rand() * 0.6 - 0.3)) /
+            (arrayMax(y_temp) - arrayMin(y_temp));
 
           scaleInPlace(x_temp, scaling_factor_x);
           scaleInPlace(y_temp, scaling_factor_y2);
@@ -134,7 +169,8 @@ export function slowConduction(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -186,7 +222,8 @@ export function slowConduction(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -255,13 +292,15 @@ export function slowConduction(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
 
             if (beatList[i - 1] === "Slow conduction") {
-              offset = max_time_since_sensed + time_prev_sensed - SENSE_ALIGNMENT;
+              offset =
+                max_time_since_sensed + time_prev_sensed - SENSE_ALIGNMENT;
             } else {
               offset = offset - gap + max_time_since_sensed;
             }
@@ -314,13 +353,15 @@ export function slowConduction(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
 
             if (beatList[i - 1] === "Slow conduction") {
-              offset = max_time_since_sensed + time_prev_sensed - SENSE_ALIGNMENT;
+              offset =
+                max_time_since_sensed + time_prev_sensed - SENSE_ALIGNMENT;
             } else {
               offset += max_time_since_sensed - gap;
             }

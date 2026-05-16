@@ -1,7 +1,7 @@
 (() => {
   const target = document
     .querySelector('meta[name="redirect-target"]')
-    ?.getAttribute('content');
+    ?.getAttribute("content");
 
   if (!target) {
     return;

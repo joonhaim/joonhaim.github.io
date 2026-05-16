@@ -1,116 +1,248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>Introduction to Reinforcement Learning</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="static/css/shared/site.css">
-  <script src="static/js/shared/site.js" defer></script>
-  <script src="static/js/shared/includes.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div id="site-header"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Introduction to Reinforcement Learning</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
 
-    <main class="content">
-      <!-- Intro + single GitHub link -->
-      <section class="project-intro">
-        <h1>Introduction to Reinforcement Learning</h1>
-        <p>Welcome to the repository for the <em>Introduction to Reinforcement Learning</em> course at Leiden University (<a href="https://studiegids.universiteitleiden.nl/en/courses/123328/introduction-to-reinforcement-learning" target="_blank" rel="noopener">4032IRLRN</a>). This repository contains all assignment reports, each exploring a different aspect of reinforcement learning: from bandit problems and dynamic programming to model-free and model-based learning. To see the full code for each report, you may refer to the GitHub repository by clicking the link below.</p>
-        <p class="repo-link">
-          <a href="https://github.com/joonhaim/intro-to-reinforcement-learning" target="_blank" rel="noopener">
-            View full project on GitHub →
-          </a>
-        </p>
-      </section>
-      <section>
-        <h2>Authors</h2>
-        <ul>
-          <li>Adrien Joon-Ha Im</li>
-          <li>Bence Válint</li>
-        </ul>
-      </section>
+      <main class="content">
+        <!-- Intro + single GitHub link -->
+        <section class="project-intro">
+          <h1>Introduction to Reinforcement Learning</h1>
+          <p>
+            Welcome to the repository for the
+            <em>Introduction to Reinforcement Learning</em> course at Leiden
+            University (<a
+              href="https://studiegids.universiteitleiden.nl/en/courses/123328/introduction-to-reinforcement-learning"
+              target="_blank"
+              rel="noopener"
+              >4032IRLRN</a
+            >). This repository contains all assignment reports, each exploring
+            a different aspect of reinforcement learning: from bandit problems
+            and dynamic programming to model-free and model-based learning. To
+            see the full code for each report, you may refer to the GitHub
+            repository by clicking the link below.
+          </p>
+          <p class="repo-link">
+            <a
+              href="https://github.com/joonhaim/intro-to-reinforcement-learning"
+              target="_blank"
+              rel="noopener"
+            >
+              View full project on GitHub →
+            </a>
+          </p>
+        </section>
+        <section>
+          <h2>Authors</h2>
+          <ul>
+            <li>Adrien Joon-Ha Im</li>
+            <li>Bence Válint</li>
+          </ul>
+        </section>
 
-      <!-- Table of Contents -->
-      <section id="toc">
-        <h2>Table of Contents</h2>
-        <ol>
-          <li><a href="#assignment1a">Assignment 1A – Exploration Strategies in Bandits</a></li>
-          <li><a href="#assignment1b">Assignment 1B – Dynamic Programming</a></li>
-          <li><a href="#assignment2">Assignment 2 – Model-Free Reinforcement Learning</a></li>
-          <li><a href="#assignment3">Assignment 3 – Model-Based Reinforcement Learning</a></li>
-        </ol>
-      </section>
+        <!-- Table of Contents -->
+        <section id="toc">
+          <h2>Table of Contents</h2>
+          <ol>
+            <li>
+              <a href="#assignment1a"
+                >Assignment 1A – Exploration Strategies in Bandits</a
+              >
+            </li>
+            <li>
+              <a href="#assignment1b">Assignment 1B – Dynamic Programming</a>
+            </li>
+            <li>
+              <a href="#assignment2"
+                >Assignment 2 – Model-Free Reinforcement Learning</a
+              >
+            </li>
+            <li>
+              <a href="#assignment3"
+                >Assignment 3 – Model-Based Reinforcement Learning</a
+              >
+            </li>
+          </ol>
+        </section>
 
-            <!-- Assignment 1A -->
-      <section id="assignment1a" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 1A – Exploration Strategies in Bandits</h2>
-          <p class="subtitle"><strong>Comparative Analysis of Exploration Techniques in Multi-Armed Bandits</strong></p>
-          <p>In this assignment, we explored the fundamental challenge of the exploration-exploitation trade-off in reinforcement learning through multi-armed bandit problems. We implemented and evaluated three key strategies: ε-Greedy, Optimistic Initialization, and Upper Confidence Bound (UCB). Each method was tested across various parameter settings to assess how effective they each are in maximizing cumulative rewards. Our experiments showed that while ε-Greedy is a simple and effective baseline, both Optimistic Initialization and UCB proved to show superior performance as they both converged faster and yielded higher long-term returns. Furthermore, we highlighted the importance of parameter tuning in optimizing learning efficiency. </p>
-          <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A1A_REPORT.pdf#navpanes=0" title="Assignment 1A Report" loading="lazy"></iframe>
+        <!-- Assignment 1A -->
+        <section id="assignment1a" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 1A – Exploration Strategies in Bandits</h2>
+            <p class="subtitle">
+              <strong
+                >Comparative Analysis of Exploration Techniques in Multi-Armed
+                Bandits</strong
+              >
+            </p>
+            <p>
+              In this assignment, we explored the fundamental challenge of the
+              exploration-exploitation trade-off in reinforcement learning
+              through multi-armed bandit problems. We implemented and evaluated
+              three key strategies: ε-Greedy, Optimistic Initialization, and
+              Upper Confidence Bound (UCB). Each method was tested across
+              various parameter settings to assess how effective they each are
+              in maximizing cumulative rewards. Our experiments showed that
+              while ε-Greedy is a simple and effective baseline, both Optimistic
+              Initialization and UCB proved to show superior performance as they
+              both converged faster and yielded higher long-term returns.
+              Furthermore, we highlighted the importance of parameter tuning in
+              optimizing learning efficiency.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
           </div>
-        </div>
-      </section>
-
-      <!-- Assignment 1B -->
-      <section id="assignment1b" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 1B – Dynamic Programming</h2>
-          <p class="subtitle"><strong>Solving Markov Decision Processes with Policy and Value Iteration</strong></p>
-          <p>This assignment focused on solving Markov Decision Processes (MDP) using Dynamic Programming (DP) in the Windy Gridworld environment. We applied and compared two basic DP algorithms: Policy Iteration and Value Iteration. Both methods used knowledge of the full environment in order to derive optimal policies through evaluation and improvement of value functions. Our results showed the strength of DP in small, deterministic environments, and also showed the importance of the discount factor in defining the behavior of the agent. While DP guarantees convergence, we also discussed the limitation of its scalability and limitations of its applications in solving real life problems.  </p>
-          <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A1B_REPORT.pdf#navpanes=0" title="Assignment 1B Report" loading="lazy"></iframe>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/irl/IRL_A1A_REPORT.pdf#navpanes=0"
+                title="Assignment 1A Report"
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Assignment 2 -->
-      <section id="assignment2" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 2 – Model-Free Reinforcement Learning</h2>
-          <p class="subtitle"><strong>Comparative Study of Model-Free Algorithms in Grid-Based RL</strong></p>
-          <p>In this assignment, we implemented and compared four basic model-free reinforcement learning algorithms: Q-Learning, SARSA, Expected SARSA, and n-step SARSA. Each of these algorithms were studied in a stochastic grid environment called the ShortCut Environment. Our results showed that there are key differences between on-policy and off-policy methods. Q-Learning consistently found the most risky but optimal trajectories, while SARSA and Expected SARSA prioritized safer paths. n-step SARSA provided a flexible middle ground, with its performance depending heavily on the chosen step size. This assignment deepened our understanding trade-offs in exploration, and robustness in dynamic environments. </p>
-          <p class="grade"><strong>Grade:</strong> 8.9 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A2_REPORT.pdf#navpanes=0" title="Assignment 2 Report" loading="lazy"></iframe>
+        <!-- Assignment 1B -->
+        <section id="assignment1b" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 1B – Dynamic Programming</h2>
+            <p class="subtitle">
+              <strong
+                >Solving Markov Decision Processes with Policy and Value
+                Iteration</strong
+              >
+            </p>
+            <p>
+              This assignment focused on solving Markov Decision Processes (MDP)
+              using Dynamic Programming (DP) in the Windy Gridworld environment.
+              We applied and compared two basic DP algorithms: Policy Iteration
+              and Value Iteration. Both methods used knowledge of the full
+              environment in order to derive optimal policies through evaluation
+              and improvement of value functions. Our results showed the
+              strength of DP in small, deterministic environments, and also
+              showed the importance of the discount factor in defining the
+              behavior of the agent. While DP guarantees convergence, we also
+              discussed the limitation of its scalability and limitations of its
+              applications in solving real life problems.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
           </div>
-        </div>
-      </section>
-
-      <!-- Assignment 3 -->
-      <section id="assignment3" class="assignment-layout">
-        <div class="assignment-text">
-          <h2>Assignment 3 – Model-Based Reinforcement Learning</h2>
-          <p class="subtitle"><strong>Planning with Dyna and Prioritized Sweeping in Stochastic Gridworlds</strong></p>
-          <p>In this final assignment, we investigated two model-based reinforcement learning algorithms: Dyna and Prioritized Sweeping (PS). Both these agents use a simulated experience to improve learning efficiency, updating Q-values based on an internal model of state transition and rewards. We compared both algorithms under varying levels of stochasticity and budgets, and included Q-learning as a baseline for model-free reference. Our results showed that both Dyna and PS outperformed Q-learning in learning speed, especially in deterministic settings. PS showed faster initial learning due to its prioritized value propagation, and Dyna eventually reached higher episode returns. The assignment helped us understand the trade-off between efficiency and computational cost, as well as the limitations of model-based planning under uncertainty.</p>
-          <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
-        </div>
-        <div class="assignment-pdf">
-          <div class="pdf-container">
-            <iframe src="static/pdf/irl/IRL_A3_REPORT.pdf#navpanes=0" title="Assignment 3 Report" loading="lazy"></iframe>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/irl/IRL_A1B_REPORT.pdf#navpanes=0"
+                title="Assignment 1B Report"
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-    </main>
+        <!-- Assignment 2 -->
+        <section id="assignment2" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 2 – Model-Free Reinforcement Learning</h2>
+            <p class="subtitle">
+              <strong
+                >Comparative Study of Model-Free Algorithms in Grid-Based
+                RL</strong
+              >
+            </p>
+            <p>
+              In this assignment, we implemented and compared four basic
+              model-free reinforcement learning algorithms: Q-Learning, SARSA,
+              Expected SARSA, and n-step SARSA. Each of these algorithms were
+              studied in a stochastic grid environment called the ShortCut
+              Environment. Our results showed that there are key differences
+              between on-policy and off-policy methods. Q-Learning consistently
+              found the most risky but optimal trajectories, while SARSA and
+              Expected SARSA prioritized safer paths. n-step SARSA provided a
+              flexible middle ground, with its performance depending heavily on
+              the chosen step size. This assignment deepened our understanding
+              trade-offs in exploration, and robustness in dynamic environments.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 8.9 / 10.0</p>
+          </div>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/irl/IRL_A2_REPORT.pdf#navpanes=0"
+                title="Assignment 2 Report"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </section>
 
-    <div id="site-footer"></div>
-  </div>
-</body>
+        <!-- Assignment 3 -->
+        <section id="assignment3" class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Assignment 3 – Model-Based Reinforcement Learning</h2>
+            <p class="subtitle">
+              <strong
+                >Planning with Dyna and Prioritized Sweeping in Stochastic
+                Gridworlds</strong
+              >
+            </p>
+            <p>
+              In this final assignment, we investigated two model-based
+              reinforcement learning algorithms: Dyna and Prioritized Sweeping
+              (PS). Both these agents use a simulated experience to improve
+              learning efficiency, updating Q-values based on an internal model
+              of state transition and rewards. We compared both algorithms under
+              varying levels of stochasticity and budgets, and included
+              Q-learning as a baseline for model-free reference. Our results
+              showed that both Dyna and PS outperformed Q-learning in learning
+              speed, especially in deterministic settings. PS showed faster
+              initial learning due to its prioritized value propagation, and
+              Dyna eventually reached higher episode returns. The assignment
+              helped us understand the trade-off between efficiency and
+              computational cost, as well as the limitations of model-based
+              planning under uncertainty.
+            </p>
+            <p class="grade"><strong>Grade:</strong> 8.0 / 10.0</p>
+          </div>
+          <div class="assignment-pdf">
+            <div class="pdf-container">
+              <iframe
+                src="static/pdf/irl/IRL_A3_REPORT.pdf#navpanes=0"
+                title="Assignment 3 Report"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

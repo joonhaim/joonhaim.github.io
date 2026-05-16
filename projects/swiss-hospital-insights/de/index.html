@@ -1,202 +1,363 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <meta
-    name="description"
-    content="Entdecken Sie mit dem CH-IQI Prozedur-Explorer die Behandlungsvolumen Schweizer Spitäler. Durchstöbern Sie 150+ Eingriffe, vergleichen Sie Spitäler und Kantone und sehen Sie Kennzahlen pro Kopf."
-  >
-  <title>Spitaleingriffe in der Schweiz</title>
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="de_CH">
-  <meta property="og:title" content="Schweizer Spitalübersicht (CH-IQI)">
-  <meta
-    property="og:description"
-    content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
-  >
-  <meta property="og:url" content="https://joonhaim.github.io/projects/swiss-hospital-insights/de/">
-  <meta property="og:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
-  <meta name="author" content="Adrien Joon-Ha Im">
-  <meta property="article:author" content="Adrien Joon-Ha Im">
-  <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD">
-  <meta property="article:published_time" content="2025-11-07">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Schweizer Spitalübersicht (CH-IQI)">
-  <meta
-    name="twitter:description"
-    content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
-  >
-  <meta name="twitter:image" content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="static/css/pages/ch_hospital.css">
-</head>
-<body>
-  <div class="header-left">
-    <a href="./" class="back-arrow" aria-label="Zur Startseite">
-      <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 6L9 12l6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <div class="language-switcher">
-      <span class="lang-btn active">DE</span>
-      <a href="projects/swiss-hospital-insights/fr/" class="lang-btn">FR</a>
-      <a href="projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
-      <a href="projects/swiss-hospital-insights/" class="lang-btn">EN</a>
-    </div>
-  </div>
-  <a href="./" class="swiss-cross" aria-label="Zur Startseite"></a>
-
-  <section class="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
-      <h1 class="fade-element">Spitaleingriffe in der Schweiz</h1>
-      <p class="tagline fade-element">
-        Wie häufig werden bestimmte Eingriffe in Schweizer Spitälern durchgeführt? Mit diesem Dashboard können Sie die offiziellen CH-IQI-Daten 2023 des Bundesamts für Gesundheit (BAG) erkunden, Eingriffe suchen, Spitäler vergleichen und kantonale Details einsehen.
-      </p>
-      <div class="hero-links fade-element">
-        <span>Quelle: <a href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler" target="_blank" rel="noopener">BAG CH-IQI</a></span>
-        <span>Methodik: <a href="projects/swiss-hospital-insights/methodology/">Übersicht (Englisch)</a></span>
-      </div>
-    </div>
-  </section>
-
-  <section id="procedure-finder" class="procedure-finder fade-element page-shell finder-awaiting-selection">
-    <div class="finder-procedure-selector surface-card catalog-collapsed">
-      <div class="finder-selector-header">
-        <div class="finder-selector-copy">
-          <span class="finder-selector-step">Schritt 1</span>
-          <h3 class="finder-selector-title">Behandlung auswählen</h3>
-          <p class="finder-selector-subtitle">
-            Nutzen Sie einen Schnellzugriff unten oder durchsuchen Sie den vollständigen Katalog mit über 150 Behandlungen, um die Daten zu erkunden.
-          </p>
-        </div>
-        <div class="finder-procedure-search">
-          <label class="finder-label" for="finder-procedure-search">Behandlung suchen</label>
-          <div class="finder-search-field">
-            <svg class="finder-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" />
-              <path d="M12.5 12.5l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-            </svg>
-            <input id="finder-procedure-search" type="search" placeholder="Nach Name oder Code suchen" />
-          </div>
-        </div>
-        <div class="finder-quick-picks" id="finder-quick-picks">
-          <p class="finder-quick-title" id="finder-quick-title"></p>
-          <div class="finder-quick-list" id="finder-quick-list" role="group"></div>
-          <p class="finder-quick-description" id="finder-quick-description"></p>
-        </div>
-        <button
-          class="finder-catalog-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="finder-catalog-panels"
-          data-label-collapsed="Gesamten Katalog anzeigen"
-          data-label-expanded="Gesamten Katalog ausblenden"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <meta
+      name="description"
+      content="Entdecken Sie mit dem CH-IQI Prozedur-Explorer die Behandlungsvolumen Schweizer Spitäler. Durchstöbern Sie 150+ Eingriffe, vergleichen Sie Spitäler und Kantone und sehen Sie Kennzahlen pro Kopf."
+    />
+    <title>Spitaleingriffe in der Schweiz</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_CH" />
+    <meta property="og:title" content="Schweizer Spitalübersicht (CH-IQI)" />
+    <meta
+      property="og:description"
+      content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
+    />
+    <meta
+      property="og:url"
+      content="https://joonhaim.github.io/projects/swiss-hospital-insights/de/"
+    />
+    <meta
+      property="og:image"
+      content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png"
+    />
+    <meta name="author" content="Adrien Joon-Ha Im" />
+    <meta property="article:author" content="Adrien Joon-Ha Im" />
+    <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD" />
+    <meta property="article:published_time" content="2025-11-07" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Schweizer Spitalübersicht (CH-IQI)" />
+    <meta
+      name="twitter:description"
+      content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
+    />
+    <meta
+      name="twitter:image"
+      content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="static/css/pages/ch_hospital.css" />
+  </head>
+  <body>
+    <div class="header-left">
+      <a href="./" class="back-arrow" aria-label="Zur Startseite">
+        <svg
+          viewBox="0 0 24 24"
+          class="arrow-icon"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <span class="finder-catalog-toggle-label">Gesamten Katalog anzeigen</span>
-          <svg class="finder-catalog-toggle-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-            <path d="M5.5 7.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-      <div class="finder-catalog-panels" id="finder-catalog-panels">
-        <div class="finder-category-panel" aria-labelledby="finder-category-label">
-          <p id="finder-category-label" class="finder-panel-title">Fachgebiete</p>
-          <div class="finder-category-tabs finder-chips" id="finder-category-tabs"></div>
-        </div>
-        <div class="finder-procedure-panel" aria-labelledby="finder-procedure-label">
-          <p id="finder-procedure-label" class="finder-panel-title">Behandlungen</p>
-          <div class="finder-procedure-list" id="finder-procedure-list" role="listbox"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="finder-results-divider" data-finder-results-anchor>
-      <span class="finder-results-label">Ergebnisse</span>
-    </div>
-
-    <div class="finder-kpis" id="finder-kpis"></div>
-
-    <div class="finder-main">
-      <div class="finder-list-card surface-card">
-        <div class="finder-list-header">
-          <div class="finder-list-heading">
-            <p id="finder-list-context" class="finder-list-context">Fälle nach Spital (2023)</p>
-            <h3 id="finder-list-title">Behandlung wählen</h3>
-          </div>
-        </div>
-        <div id="finder-list" class="finder-list"></div>
-        <div class="finder-list-footer">
-          <div id="finder-list-meta" class="finder-list-meta"></div>
-        </div>
-      </div>
-      <div class="finder-map-column">
-        <div class="finder-toolbar surface-card" role="group" aria-label="Spitalfilter">
-          <div class="finder-toolbar-control finder-control finder-control--search">
-            <label for="finder-search">Spital suchen</label>
-            <input id="finder-search" type="search" placeholder="Tippen, um Spitäler zu filtern" />
-          </div>
-          <div class="finder-toolbar-control finder-control finder-control--type">
-            <span class="finder-toolbar-label finder-label">Nach Spitaltyp filtern</span>
-            <div class="finder-type-toggle" id="finder-type-toggle"></div>
-          </div>
-          <div class="finder-toolbar-control finder-control finder-control--canton">
-            <label for="finder-canton">Nach Kanton filtern</label>
-            <select id="finder-canton"></select>
-          </div>
-        </div>
-        <div class="finder-map-card surface-card" id="finder-map"></div>
+          <path
+            d="M15 6L9 12l6 6"
+            fill="none"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+      <div class="language-switcher">
+        <span class="lang-btn active">DE</span>
+        <a href="projects/swiss-hospital-insights/fr/" class="lang-btn">FR</a>
+        <a href="projects/swiss-hospital-insights/it/" class="lang-btn">IT</a>
+        <a href="projects/swiss-hospital-insights/" class="lang-btn">EN</a>
       </div>
     </div>
+    <a href="./" class="swiss-cross" aria-label="Zur Startseite"></a>
 
-    <div class="finder-bottom">
-      <div class="finder-canton-card surface-card finder-canton-card--with-comparison">
-        <div class="finder-canton-card__layout">
-          <div class="finder-canton-card__primary">
-            <div class="finder-canton-header">
-              <div class="finder-canton-heading">
-                <h3>Mein Kanton</h3>
-                <p id="finder-canton-summary" class="finder-canton-summary"></p>
-              </div>
-              <div id="finder-canton-flag" class="finder-canton-flag" hidden aria-hidden="true">
-                <img src="" alt="" loading="lazy" />
-              </div>
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
+        <h1 class="fade-element">Spitaleingriffe in der Schweiz</h1>
+        <p class="tagline fade-element">
+          Wie häufig werden bestimmte Eingriffe in Schweizer Spitälern
+          durchgeführt? Mit diesem Dashboard können Sie die offiziellen
+          CH-IQI-Daten 2023 des Bundesamts für Gesundheit (BAG) erkunden,
+          Eingriffe suchen, Spitäler vergleichen und kantonale Details einsehen.
+        </p>
+        <div class="hero-links fade-element">
+          <span
+            >Quelle:
+            <a
+              href="https://www.bag.admin.ch/de/qualitaetsindikatoren-der-schweizer-akutspitaeler"
+              target="_blank"
+              rel="noopener"
+              >BAG CH-IQI</a
+            ></span
+          >
+          <span
+            >Methodik:
+            <a href="projects/swiss-hospital-insights/methodology/"
+              >Übersicht (Englisch)</a
+            ></span
+          >
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="procedure-finder"
+      class="procedure-finder fade-element page-shell finder-awaiting-selection"
+    >
+      <div class="finder-procedure-selector surface-card catalog-collapsed">
+        <div class="finder-selector-header">
+          <div class="finder-selector-copy">
+            <span class="finder-selector-step">Schritt 1</span>
+            <h3 class="finder-selector-title">Behandlung auswählen</h3>
+            <p class="finder-selector-subtitle">
+              Nutzen Sie einen Schnellzugriff unten oder durchsuchen Sie den
+              vollständigen Katalog mit über 150 Behandlungen, um die Daten zu
+              erkunden.
+            </p>
+          </div>
+          <div class="finder-procedure-search">
+            <label class="finder-label" for="finder-procedure-search"
+              >Behandlung suchen</label
+            >
+            <div class="finder-search-field">
+              <svg
+                class="finder-search-icon"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle
+                  cx="8.5"
+                  cy="8.5"
+                  r="5.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                />
+                <path
+                  d="M12.5 12.5l4 4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <input
+                id="finder-procedure-search"
+                type="search"
+                placeholder="Nach Name oder Code suchen"
+              />
             </div>
-            <div id="finder-canton-list" class="finder-canton-list"></div>
           </div>
-          <div class="finder-canton-card__comparison finder-comparison-card" id="finder-canton-comparison-card">
-            <p id="finder-canton-comparison-caption" class="finder-comparison-caption"></p>
+          <div class="finder-quick-picks" id="finder-quick-picks">
+            <p class="finder-quick-title" id="finder-quick-title"></p>
             <div
-              id="finder-canton-comparison-chart"
-              class="finder-comparison-chart"
+              class="finder-quick-list"
+              id="finder-quick-list"
+              role="group"
+            ></div>
+            <p
+              class="finder-quick-description"
+              id="finder-quick-description"
+            ></p>
+          </div>
+          <button
+            class="finder-catalog-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="finder-catalog-panels"
+            data-label-collapsed="Gesamten Katalog anzeigen"
+            data-label-expanded="Gesamten Katalog ausblenden"
+          >
+            <span class="finder-catalog-toggle-label"
+              >Gesamten Katalog anzeigen</span
+            >
+            <svg
+              class="finder-catalog-toggle-icon"
+              viewBox="0 0 20 20"
               aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5.5 7.5l4.5 4.5 4.5-4.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="finder-catalog-panels" id="finder-catalog-panels">
+          <div
+            class="finder-category-panel"
+            aria-labelledby="finder-category-label"
+          >
+            <p id="finder-category-label" class="finder-panel-title">
+              Fachgebiete
+            </p>
+            <div
+              class="finder-category-tabs finder-chips"
+              id="finder-category-tabs"
+            ></div>
+          </div>
+          <div
+            class="finder-procedure-panel"
+            aria-labelledby="finder-procedure-label"
+          >
+            <p id="finder-procedure-label" class="finder-panel-title">
+              Behandlungen
+            </p>
+            <div
+              class="finder-procedure-list"
+              id="finder-procedure-list"
+              role="listbox"
             ></div>
           </div>
         </div>
       </div>
-      <div class="finder-note-card surface-card">
-        <h3>So lesen Sie die Zahlen</h3>
-        <p>
-          Eine hohe Fallzahl pro Spital weist in der Regel darauf hin, dass das Behandlungsteam mit der betreffenden Erkrankung viel Erfahrung besitzt. Die Resultate werden jedoch ebenso vom Fallmix, vom Zustand der einzelnen Patientinnen und Patienten sowie von den verfügbaren Ressourcen geprägt. Bitte nutzen Sie diese Zahlen daher lediglich als Orientierungshilfe; sie ersetzen keine ärztliche Beratung.
-        </p>
+
+      <div class="finder-results-divider" data-finder-results-anchor>
+        <span class="finder-results-label">Ergebnisse</span>
       </div>
-    </div>
-  </section>
 
-  <footer class="site-footer" role="contentinfo">
-    <p>
-      &copy; 2025 Adrien Joon‑Ha Im · <a href="./">Startseite</a>
-    </p>
-  </footer>
+      <div class="finder-kpis" id="finder-kpis"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="static/js/pages/ch_hospital.js"></script>
-</body>
+      <div class="finder-main">
+        <div class="finder-list-card surface-card">
+          <div class="finder-list-header">
+            <div class="finder-list-heading">
+              <p id="finder-list-context" class="finder-list-context">
+                Fälle nach Spital (2023)
+              </p>
+              <h3 id="finder-list-title">Behandlung wählen</h3>
+            </div>
+          </div>
+          <div id="finder-list" class="finder-list"></div>
+          <div class="finder-list-footer">
+            <div id="finder-list-meta" class="finder-list-meta"></div>
+          </div>
+        </div>
+        <div class="finder-map-column">
+          <div
+            class="finder-toolbar surface-card"
+            role="group"
+            aria-label="Spitalfilter"
+          >
+            <div
+              class="finder-toolbar-control finder-control finder-control--search"
+            >
+              <label for="finder-search">Spital suchen</label>
+              <input
+                id="finder-search"
+                type="search"
+                placeholder="Tippen, um Spitäler zu filtern"
+              />
+            </div>
+            <div
+              class="finder-toolbar-control finder-control finder-control--type"
+            >
+              <span class="finder-toolbar-label finder-label"
+                >Nach Spitaltyp filtern</span
+              >
+              <div class="finder-type-toggle" id="finder-type-toggle"></div>
+            </div>
+            <div
+              class="finder-toolbar-control finder-control finder-control--canton"
+            >
+              <label for="finder-canton">Nach Kanton filtern</label>
+              <select id="finder-canton"></select>
+            </div>
+          </div>
+          <div class="finder-map-card surface-card" id="finder-map"></div>
+        </div>
+      </div>
+
+      <div class="finder-bottom">
+        <div
+          class="finder-canton-card surface-card finder-canton-card--with-comparison"
+        >
+          <div class="finder-canton-card__layout">
+            <div class="finder-canton-card__primary">
+              <div class="finder-canton-header">
+                <div class="finder-canton-heading">
+                  <h3>Mein Kanton</h3>
+                  <p
+                    id="finder-canton-summary"
+                    class="finder-canton-summary"
+                  ></p>
+                </div>
+                <div
+                  id="finder-canton-flag"
+                  class="finder-canton-flag"
+                  hidden
+                  aria-hidden="true"
+                >
+                  <img
+                    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+              <div id="finder-canton-list" class="finder-canton-list"></div>
+            </div>
+            <div
+              class="finder-canton-card__comparison finder-comparison-card"
+              id="finder-canton-comparison-card"
+            >
+              <p
+                id="finder-canton-comparison-caption"
+                class="finder-comparison-caption"
+              ></p>
+              <div
+                id="finder-canton-comparison-chart"
+                class="finder-comparison-chart"
+                aria-hidden="true"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="finder-note-card surface-card">
+          <h3>So lesen Sie die Zahlen</h3>
+          <p>
+            Eine hohe Fallzahl pro Spital weist in der Regel darauf hin, dass
+            das Behandlungsteam mit der betreffenden Erkrankung viel Erfahrung
+            besitzt. Die Resultate werden jedoch ebenso vom Fallmix, vom Zustand
+            der einzelnen Patientinnen und Patienten sowie von den verfügbaren
+            Ressourcen geprägt. Bitte nutzen Sie diese Zahlen daher lediglich
+            als Orientierungshilfe; sie ersetzen keine ärztliche Beratung.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer" role="contentinfo">
+      <p>&copy; 2025 Adrien Joon‑Ha Im · <a href="./">Startseite</a></p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="static/js/pages/ch_hospital.js"></script>
+  </body>
 </html>

@@ -1,133 +1,165 @@
 <!-- index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<script>(function(){var base="/";var marker="/joonhaim.github.io/";var idx=location.pathname.indexOf(marker);if(idx!==-1){var rootPath=location.pathname.slice(0,idx+marker.length);base=location.protocol==="file:"?"file://"+rootPath:location.origin+rootPath;}document.write('<base href="'+base.replace(/"/g,'&quot;')+'">');})();</script>
-  <title>Adrien Joon-Ha Im</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="static/css/shared/site.css">
-  <script src="static/js/shared/site.js" defer></script>
-  <script src="static/js/shared/includes.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <div id="site-header"></div>
-    <main class="content">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Adrien Joon-Ha Im</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
+      <main class="content">
+        <!-- Intro -->
+        <section class="intro">
+          <h1>Welcome!</h1>
+          <p>
+            I am Adrien Joon-Ha Im, a Data Science &amp; AI student at Leiden
+            University.
+            <br />This site features a selection of my academic and personal
+            projects.
+          </p>
+        </section>
 
-      <!-- Intro -->
-      <section class="intro">
-        <h1>Welcome!</h1>
-        <p>
-          I am Adrien Joon-Ha Im, a Data Science &amp; AI student at Leiden University.
-          <br>This site features a selection of my academic and personal projects.
-        </p>
-      </section>
-
-
-      <!-- About -->
-      <section id="about">
-        <h2>About Me</h2>
-        <p>
-          I’m a French-Korean student pursuing a BSc in Data Science & AI at Leiden University, with a minor in Biomedical Engineering at TU Delft. My academic interests focus on the applications of AI in healthcare, especially in minimally invasive and robotic surgery. Outside of my academic work, I have many different interests such as exploring cultures, learning foreign languages, and understanding geopolitics. I am currently learning German, and hope to achieve B2 level by the end of this year.
-        </p>
-        <div class="cta-buttons">
-          <a href="about/" class="cta-link">View About →</a>
-          <a href="https://www.linkedin.com/in/aj-im/" target="_blank" class="cta-link">LinkedIn →</a>
-        </div>
-      </section>
-      <!-- Projects -->
-      <section id="projects">
-        <h2>Featured Projects</h2>
-
-        <div class="project-grid">
-
-          <!-- EduPace -->
-          <article class="project">
-            <img
-              src="static/images/edupace/edupace.png"
-              alt="EduPace logo"
-              class="project-logo"
-              loading="lazy"
+        <!-- About -->
+        <section id="about">
+          <h2>About Me</h2>
+          <p>
+            I’m a French-Korean student pursuing a BSc in Data Science & AI at
+            Leiden University, with a minor in Biomedical Engineering at TU
+            Delft. My academic interests focus on the applications of AI in
+            healthcare, especially in minimally invasive and robotic surgery.
+            Outside of my academic work, I have many different interests such as
+            exploring cultures, learning foreign languages, and understanding
+            geopolitics. I am currently learning German, and hope to achieve B2
+            level by the end of this year.
+          </p>
+          <div class="cta-buttons">
+            <a href="about/" class="cta-link">View About →</a>
+            <a
+              href="https://www.linkedin.com/in/aj-im/"
+              target="_blank"
+              class="cta-link"
+              >LinkedIn →</a
             >
-            <div class="project-details">
-              <h3>EduPace: Pacemaker Simulator</h3>
-              <p>
-                Educational simulator that combines a web ECG platform with a
-                tactile control unit to train pacemaker configuration, pacing,
-                and sensing workflows.
-              </p>
-              <a href="projects/edupace/">View Project →</a>
-            </div>
-          </article>
+          </div>
+        </section>
+        <!-- Projects -->
+        <section id="projects">
+          <h2>Featured Projects</h2>
 
-          <!-- Swiss Hospital Insights (CH-IQI) -->
-          <article class="project">
-            <img
-              src="static/images/logos/roestigraben.png"
-              alt="Beyond the Röstigraben logo"
-              class="project-logo"
-              loading="lazy"
-            >
-            <div class="project-details">
-              <h3>Swiss Hospital Insights (CH-IQI)</h3>
-              <p>
-                Explore official 2023 CH-IQI data from the Swiss Federal Office of
-                Public Health to search procedures, compare hospitals, and review
-                canton-level case volumes.
-              </p>
-              <a href="projects/swiss-hospital-insights/">View Dashboard →</a>
-            </div>
-          </article>
+          <div class="project-grid">
+            <!-- EduPace -->
+            <article class="project">
+              <img
+                src="static/images/edupace/edupace.png"
+                alt="EduPace logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <div class="project-details">
+                <h3>EduPace: Pacemaker Simulator</h3>
+                <p>
+                  Educational simulator that combines a web ECG platform with a
+                  tactile control unit to train pacemaker configuration, pacing,
+                  and sensing workflows.
+                </p>
+                <a href="projects/edupace/">View Project →</a>
+              </div>
+            </article>
 
-          <!-- Introduction to Reinforcement Learning -->
-          <article class="project">
-            <img
-              src="static/images/logos/irl.png"
-              alt="Introduction to Reinforcement Learning logo"
-              class="project-logo"
-              loading="lazy"
-            >
-            <div class="project-details">
-              <h3>Reinforcement Learning</h3>
-              <p>
-                Introduction to Reinforcement Learning (4032IRLRN) course assignments covering bandit methods, dynamic programming, and model-free vs. model-based algorithms.
-              </p>
-              <a href="projects/reinforcement-learning/">View Project →</a>
-            </div>
-          </article>
+            <!-- Swiss Hospital Insights (CH-IQI) -->
+            <article class="project">
+              <img
+                src="static/images/logos/roestigraben.png"
+                alt="Beyond the Röstigraben logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <div class="project-details">
+                <h3>Swiss Hospital Insights (CH-IQI)</h3>
+                <p>
+                  Explore official 2023 CH-IQI data from the Swiss Federal
+                  Office of Public Health to search procedures, compare
+                  hospitals, and review canton-level case volumes.
+                </p>
+                <a href="projects/swiss-hospital-insights/">View Dashboard →</a>
+              </div>
+            </article>
 
-          <!-- Cognition & Computation -->
-          <article class="project">
-            <img
-              src="static/images/logos/cognition.png"
-              alt="Cognition & Computation logo"
-              class="project-logo"
-              loading="lazy"
-            >
-            <div class="project-details">
-              <h3>Cognition &amp; Computation</h3>
-              <p>
-                Course assignments showcasing computational models in cognitive
-                science, including memory models, language segmentation,
-                decision-making simulations, and connectionist networks.
-              </p>
-              <a href="projects/cognition/">View Project →</a>
-            </div>
-          </article>
+            <!-- Introduction to Reinforcement Learning -->
+            <article class="project">
+              <img
+                src="static/images/logos/irl.png"
+                alt="Introduction to Reinforcement Learning logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <div class="project-details">
+                <h3>Reinforcement Learning</h3>
+                <p>
+                  Introduction to Reinforcement Learning (4032IRLRN) course
+                  assignments covering bandit methods, dynamic programming, and
+                  model-free vs. model-based algorithms.
+                </p>
+                <a href="projects/reinforcement-learning/">View Project →</a>
+              </div>
+            </article>
 
-        </div>
-        <a href="projects/" class="cta-link">See all projects →</a>
-        <p><br>You can find all the details of my projects with code on my GitHub Profile:</p>
-        <a href="https://github.com/joonhaim" class="cta-link" target="_blank">GitHub Profile →</a>
-      </section>
-    </main>
-    <div id="site-footer"></div>
-  </div>
-</body>
+            <!-- Cognition & Computation -->
+            <article class="project">
+              <img
+                src="static/images/logos/cognition.png"
+                alt="Cognition & Computation logo"
+                class="project-logo"
+                loading="lazy"
+              />
+              <div class="project-details">
+                <h3>Cognition &amp; Computation</h3>
+                <p>
+                  Course assignments showcasing computational models in
+                  cognitive science, including memory models, language
+                  segmentation, decision-making simulations, and connectionist
+                  networks.
+                </p>
+                <a href="projects/cognition/">View Project →</a>
+              </div>
+            </article>
+          </div>
+          <a href="projects/" class="cta-link">See all projects →</a>
+          <p>
+            <br />You can find all the details of my projects with code on my
+            GitHub Profile:
+          </p>
+          <a href="https://github.com/joonhaim" class="cta-link" target="_blank"
+            >GitHub Profile →</a
+          >
+        </section>
+      </main>
+      <div id="site-footer"></div>
+    </div>
+  </body>
 </html>

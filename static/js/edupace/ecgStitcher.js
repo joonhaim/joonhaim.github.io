@@ -71,7 +71,7 @@ export function stitchBeats(cfg) {
   // - maxTimeSinceSensed = +Infinity
   // - asynchronous mode effectively irrelevant
   const pacingEnabled = Number.isFinite(rate) && rate > 0;
-  const maxTimeSinceSensed = pacingEnabled ? (60 / rate) : Infinity;
+  const maxTimeSinceSensed = pacingEnabled ? 60 / rate : Infinity;
   const asyncMode = pacingEnabled ? !!asynchronous : false;
 
   // Python constants
@@ -157,7 +157,8 @@ export function stitchBeats(cfg) {
             yTemp = yTemp0.slice();
 
             scalingFactorY =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(yTemp) - arrayMin(yTemp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(yTemp) - arrayMin(yTemp));
 
             scaleInPlace(xTemp, scalingFactorX);
             scaleInPlace(yTemp, scalingFactorY);
@@ -203,7 +204,8 @@ export function stitchBeats(cfg) {
             yTemp = yTemp0.slice();
 
             scalingFactorY =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(yTemp) - arrayMin(yTemp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(yTemp) - arrayMin(yTemp));
 
             scaleInPlace(xTemp, scalingFactorX);
             scaleInPlace(yTemp, scalingFactorY);
@@ -266,7 +268,8 @@ export function stitchBeats(cfg) {
             yTemp = yTemp0.slice();
 
             scalingFactorY =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(yTemp) - arrayMin(yTemp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(yTemp) - arrayMin(yTemp));
 
             scaleInPlace(xTemp, scalingFactorX);
             scaleInPlace(yTemp, scalingFactorY);
@@ -318,7 +321,8 @@ export function stitchBeats(cfg) {
             yTemp = yTemp0.slice();
 
             scalingFactorY =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(yTemp) - arrayMin(yTemp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(yTemp) - arrayMin(yTemp));
 
             scaleInPlace(xTemp, scalingFactorX);
             scaleInPlace(yTemp, scalingFactorY);

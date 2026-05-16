@@ -1,13 +1,40 @@
 import { getECGWave } from "./ecgMorphology.js";
 
 // ---------- helpers ----------
-function arrayMax(arr) { let m = -Infinity; for (let i=0;i<arr.length;i++) if (arr[i]>m) m=arr[i]; return m; }
-function arrayMin(arr) { let m =  Infinity; for (let i=0;i<arr.length;i++) if (arr[i]<m) m=arr[i]; return m; }
-function maxAbs(arr)   { let m = 0; for (let i=0;i<arr.length;i++){ const a=Math.abs(arr[i]); if (a>m) m=a; } return m; }
-function firstIndexAbsGE(arr, thr){ for (let i=0;i<arr.length;i++) if (Math.abs(arr[i]) >= thr) return i; return -1; }
-function scaleInPlace(arr, s){ for (let i=0;i<arr.length;i++) arr[i] *= s; }
-function shiftInPlace(arr, dx){ for (let i=0;i<arr.length;i++) arr[i] += dx; }
-function concat(a,b){ const out=new Array(a.length+b.length); for(let i=0;i<a.length;i++) out[i]=a[i]; for(let j=0;j<b.length;j++) out[a.length+j]=b[j]; return out; }
+function arrayMax(arr) {
+  let m = -Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] > m) m = arr[i];
+  return m;
+}
+function arrayMin(arr) {
+  let m = Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] < m) m = arr[i];
+  return m;
+}
+function maxAbs(arr) {
+  let m = 0;
+  for (let i = 0; i < arr.length; i++) {
+    const a = Math.abs(arr[i]);
+    if (a > m) m = a;
+  }
+  return m;
+}
+function firstIndexAbsGE(arr, thr) {
+  for (let i = 0; i < arr.length; i++) if (Math.abs(arr[i]) >= thr) return i;
+  return -1;
+}
+function scaleInPlace(arr, s) {
+  for (let i = 0; i < arr.length; i++) arr[i] *= s;
+}
+function shiftInPlace(arr, dx) {
+  for (let i = 0; i < arr.length; i++) arr[i] += dx;
+}
+function concat(a, b) {
+  const out = new Array(a.length + b.length);
+  for (let i = 0; i < a.length; i++) out[i] = a[i];
+  for (let j = 0; j < b.length; j++) out[a.length + j] = b[j];
+  return out;
+}
 
 // Python overlap snippet used in a few branches:
 // if min(x_temp) < max(x): cut previous at first x>=min(x_temp), then concat
@@ -16,7 +43,10 @@ function concatWithOverlapCut(x, y, xTemp, yTemp) {
     const start = arrayMin(xTemp);
     let cutIdx = -1;
     for (let i = 0; i < x.length; i++) {
-      if (x[i] >= start) { cutIdx = i; break; }
+      if (x[i] >= start) {
+        cutIdx = i;
+        break;
+      }
     }
     if (cutIdx !== -1) {
       x = x.slice(0, cutIdx);
@@ -26,7 +56,9 @@ function concatWithOverlapCut(x, y, xTemp, yTemp) {
   return { x: concat(x, xTemp), y: concat(y, yTemp) };
 }
 
-function rand() { return Math.random(); } // np.random.random()
+function rand() {
+  return Math.random();
+} // np.random.random()
 
 // ---------- Mobitz Type II ----------
 export function mobitzTypeII(cfg) {
@@ -42,7 +74,7 @@ export function mobitzTypeII(cfg) {
 
   // ---- SAFETY for rate<=0 (Pacemaker OFF) ----
   const pacingEnabled = Number.isFinite(rate) && rate > 0;
-  const max_time_since_sensed = pacingEnabled ? (60 / rate) : Infinity;
+  const max_time_since_sensed = pacingEnabled ? 60 / rate : Infinity;
   const asyncMode = pacingEnabled ? !!asynchronous : false;
 
   let offset = 0;
@@ -72,7 +104,9 @@ export function mobitzTypeII(cfg) {
     // Python treats "sensed" time for pacing as min(x_temp)+pacemaker_spike
     paceEvents.push(arrayMin(xArr) + pacemaker_spike);
   };
-  const recordSense = (t) => { if (Number.isFinite(t)) senseEvents.push(t); };
+  const recordSense = (t) => {
+    if (Number.isFinite(t)) senseEvents.push(t);
+  };
 
   for (let i = 0; i < iterations; i++) {
     // x_temp, y_temp = ecg_func(beat_list[i])
@@ -95,7 +129,7 @@ export function mobitzTypeII(cfg) {
     // const R_wave_pos = scaling_factor_x * 6.36909; // computed in Python but unused
 
     const pickNextBeat = () =>
-      (rand_num > probConduction) ? "Mobitz type II - no conduction" : "Normal";
+      rand_num > probConduction ? "Mobitz type II - no conduction" : "Normal";
 
     if (i === 0) {
       // Apply scaling factors for the first beat
@@ -116,7 +150,8 @@ export function mobitzTypeII(cfg) {
           y_temp = yTemp0.slice();
 
           const scaling_factor_y2 =
-            (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+            (1.0 + (rand() * 0.6 - 0.3)) /
+            (arrayMax(y_temp) - arrayMin(y_temp));
 
           scaleInPlace(x_temp, scaling_factor_x);
           scaleInPlace(y_temp, scaling_factor_y2);
@@ -146,7 +181,8 @@ export function mobitzTypeII(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -194,7 +230,8 @@ export function mobitzTypeII(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -239,7 +276,8 @@ export function mobitzTypeII(cfg) {
         if (output >= capture_threshold) {
           // NOTE: Python does this *again* (double scale + add offset again). We mirror it exactly.
           const scaling_factor_y2 =
-            (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+            (1.0 + (rand() * 0.6 - 0.3)) /
+            (arrayMax(y_temp) - arrayMin(y_temp));
 
           scaleInPlace(x_temp, scaling_factor_x);
           scaleInPlace(y_temp, scaling_factor_y2);
@@ -271,7 +309,8 @@ export function mobitzTypeII(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -280,7 +319,8 @@ export function mobitzTypeII(cfg) {
               beatList[i - 1] === "Normal" ||
               beatList[i - 1] === "Mobitz type II - no conduction"
             ) {
-              offset = max_time_since_sensed + time_prev_sensed - pacemaker_spike;
+              offset =
+                max_time_since_sensed + time_prev_sensed - pacemaker_spike;
             } else {
               offset = offset - gap + max_time_since_sensed;
             }
@@ -328,7 +368,8 @@ export function mobitzTypeII(cfg) {
             y_temp = yTemp0.slice();
 
             const scaling_factor_y2 =
-              (1.0 + (rand() * 0.6 - 0.3)) / (arrayMax(y_temp) - arrayMin(y_temp));
+              (1.0 + (rand() * 0.6 - 0.3)) /
+              (arrayMax(y_temp) - arrayMin(y_temp));
 
             scaleInPlace(x_temp, scaling_factor_x);
             scaleInPlace(y_temp, scaling_factor_y2);
@@ -337,7 +378,8 @@ export function mobitzTypeII(cfg) {
               beatList[i - 1] === "Normal" ||
               beatList[i - 1] === "Mobitz type II - no conduction"
             ) {
-              offset = max_time_since_sensed + time_prev_sensed - pacemaker_spike;
+              offset =
+                max_time_since_sensed + time_prev_sensed - pacemaker_spike;
             } else {
               offset = offset + max_time_since_sensed - gap;
             }

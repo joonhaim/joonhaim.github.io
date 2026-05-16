@@ -36,6 +36,13 @@ Then open: `http://127.0.0.1:8000`
 - `static/` – shared assets (CSS, JS, images)
 - `scripts/` – utility scripts
 
+## Git Hooks
+
+This repo uses a `pre-commit` hook that runs `npm run lint`.
+
+- Run `npm install` once to automatically configure Git to use repo hooks via `.githooks/`.
+- You can also configure it manually with `git config core.hooksPath .githooks`.
+
 ## Deployment
 
 This site is deployed with GitHub Pages.

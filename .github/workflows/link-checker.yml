@@ -1,0 +1,21 @@
+name: Link Checker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Link check HTML and Markdown files
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress './**/*.html' './**/*.md'
+          fail: true

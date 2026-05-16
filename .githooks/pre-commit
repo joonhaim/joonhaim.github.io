@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 set -eu
 
+echo "Running Prettier..."
+npm run format
+
+echo "Re-staging formatted files..."
+git diff --name-only -z --diff-filter=ACMR | xargs -0 git add
+
+echo "Running lint..."
 npm run lint

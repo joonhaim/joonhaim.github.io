@@ -31,6 +31,7 @@
     <link rel="manifest" href="site.webmanifest" />
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="static/css/shared/site.css" />
+    <link rel="stylesheet" href="static/css/pages/bsc-thesis.css" />
     <script src="static/js/shared/site.js" defer></script>
     <script src="static/js/shared/includes.js" defer></script>
   </head>
@@ -38,83 +39,130 @@
     <div class="container">
       <div id="site-header"></div>
 
-      <main class="content">
-        <section class="project-intro">
-          <h1>Active Vision System for Surgical Instrument Recognition</h1>
-
-          <p>
-            For my Bachelor Thesis in Data Science &amp; AI at Leiden
-            University, I designed and evaluated an active vision system for
-            recognizing handheld surgical instruments and their hinge state. The
-            project focused on a controlled medical computer vision setting
-            where the system had to identify both the instrument category and,
-            for hinged tools, whether the instrument was open or closed.
-          </p>
-
-          <p>
-            The system was evaluated on five categories of general surgical
-            instruments: clamps, needle holders, scalpels, shears, and tweezers.
-            I created a dedicated image dataset of
-            <strong>2,520 images</strong>, collected under controlled variations
-            in viewpoint, background, lighting, and hinge state. The dataset
-            included top-down, oblique, and close-up views, as well as different
-            surgical-style backgrounds such as a stainless steel tray and
-            colored drapes.
-          </p>
-
-          <p>
-            The recognition pipeline combined a YOLO-based object detector with
-            a separate hinge-state classifier. The detector first localized and
-            classified the instrument. If the detected instrument belonged to a
-            hinged category, the detected region was cropped and passed to a
-            binary classifier that predicted whether the instrument was open or
-            closed.
-          </p>
-
-          <p>
-            A key part of the project was the evaluation of active multi-view
-            acquisition. Instead of always using all available viewpoints, the
-            system could request an additional view only when the current
-            prediction was uncertain. This made it possible to study the
-            trade-off between recognition accuracy and the number of views
-            required.
-          </p>
-
-          <p>
-            The best vision-only models achieved strong performance in the
-            controlled setting, with the best detector reaching
-            <strong>98.2% mAP@50:95</strong> and the best hinge-state classifier
-            reaching <strong>98.1% accuracy</strong>. The experiments showed
-            that viewpoint mattered differently depending on the task: close-up
-            views were most useful for identifying the instrument category,
-            while top-down views were more effective for recognizing hinge
-            state. I also compared the trained vision-only pipeline with several
-            zero-shot vision-language models, which performed substantially
-            worse, especially on the hinge-state classification task.
-          </p>
-
-          <p>
-            This project gave me practical experience with end-to-end computer
-            vision system design, including dataset collection, annotation,
-            model training, evaluation, active perception, and failure-case
-            analysis in a medical AI context.
-          </p>
+      <main class="content bsc-thesis-page">
+        <section class="bsc-hero">
+          <div>
+            <p class="eyebrow">Leiden University · BSc Data Science &amp; AI</p>
+            <h1>Active Vision System for Surgical Instrument Recognition</h1>
+            <p class="lead">
+              This thesis explores how an active multi-view computer vision
+              pipeline can improve surgical instrument recognition and
+              hinge-state estimation while minimizing unnecessary camera views.
+            </p>
+            <div class="bsc-actions">
+              <a class="bsc-button primary" href="static/pdf/hai/HAI_report.pdf"
+                >Read full thesis report</a
+              >
+              <a class="bsc-button secondary" href="#results"
+                >Jump to key results</a
+              >
+            </div>
+          </div>
+          <figure class="hero-card">
+            <img
+              src="static/images/bsc-thesis/unified_pipeline.drawio.png"
+              alt="Unified thesis pipeline diagram"
+            />
+            <figcaption>
+              Unified recognition pipeline: detector, crop extraction, and
+              hinge-state classification.
+            </figcaption>
+          </figure>
         </section>
 
-        <section>
-          <h2>Technologies Used</h2>
-          <p>
-            Python, PyTorch, Ultralytics YOLO, EfficientNet, ResNet, Label
-            Studio, Grad-CAM, LaTeX
-          </p>
+        <section class="kpi-grid" id="results">
+          <article class="kpi">
+            <strong>2,520</strong><span>Annotated dataset images</span>
+          </article>
+          <article class="kpi">
+            <strong>5</strong><span>Instrument categories</span>
+          </article>
+          <article class="kpi">
+            <strong>98.2%</strong><span>Best detector mAP@50:95</span>
+          </article>
+          <article class="kpi">
+            <strong>98.1%</strong><span>Best hinge-state accuracy</span>
+          </article>
         </section>
 
-        <section>
-          <h2>Topics</h2>
-          <p>
-            Computer Vision, Medical AI, Surgical Instrument Recognition, Active
-            Vision, Multi-View Perception, Vision-Language Models
-          </p>
+        <section class="section-card split-grid">
+          <div>
+            <h2>Project overview</h2>
+            <p>
+              The thesis was developed around a controlled medical CV setup with
+              five general-surgery categories: clamps, needle holders, scalpels,
+              shears, and tweezers. Each sample varied by viewpoint, background
+              style, lighting, and hinge state.
+            </p>
+            <p>
+              Instead of always requiring all available viewpoints, the system
+              can request extra views only when confidence is low. This supports
+              a practical trade-off between recognition accuracy and capture
+              cost.
+            </p>
+          </div>
+          <div>
+            <h2>Method in brief</h2>
+            <p>
+              A YOLO detector localizes and classifies instruments. For hinged
+              categories, the detected crop is forwarded to a dedicated binary
+              classifier predicting open vs. closed state.
+            </p>
+            <p>
+              Additional analysis compared this vision-only pipeline with
+              zero-shot vision-language baselines, which performed notably worse
+              in this domain.
+            </p>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <h2>Visual highlights</h2>
+          <div class="image-grid">
+            <figure>
+              <img
+                src="static/images/bsc-thesis/dataset_annotation.png"
+                alt="Dataset annotation example"
+              />
+              <figcaption>
+                Annotation workflow used to prepare robust detection data.
+              </figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/mult_image_crop.jpg"
+                alt="Multi-view image crop examples"
+              />
+              <figcaption>
+                Multi-view crops capture top-down, oblique, and close-up cues.
+              </figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/detect_test_confusion_matrices.png"
+                alt="Test confusion matrices"
+              />
+              <figcaption>
+                Confusion-matrix diagnostics for detector class behavior.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <h2>Technologies and topics</h2>
+          <ul class="tag-list">
+            <li>Python</li>
+            <li>PyTorch</li>
+            <li>Ultralytics YOLO</li>
+            <li>EfficientNet</li>
+            <li>ResNet</li>
+            <li>Label Studio</li>
+            <li>Grad-CAM</li>
+            <li>Medical AI</li>
+            <li>Active Vision</li>
+            <li>Multi-View Perception</li>
+          </ul>
         </section>
       </main>
 

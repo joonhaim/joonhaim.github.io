@@ -18,10 +18,12 @@
         document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
       })();
     </script>
-    <title>SurgiToolVision | BSc Thesis</title>
+    <title>
+      Active Vision for Surgical Instrument Recognition | BSc Thesis
+    </title>
     <meta
       name="description"
-      content="BSc thesis page for SurgiToolVision, an active vision system for surgical instrument and state recognition."
+      content="BSc thesis project on an active multi-view computer vision system for surgical instrument category recognition and hinge-state classification."
     />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -38,44 +40,80 @@
 
       <main class="content">
         <section class="project-intro">
-          <h1>BSc Thesis: SurgiToolVision</h1>
+          <h1>Active Vision System for Surgical Instrument Recognition</h1>
+
           <p>
-            <strong>SurgiToolVision</strong> focuses on designing and evaluating
-            a computer vision system that can automatically recognize surgical
-            instruments and their state. The core system uses YOLO-based object
-            detection models to identify handheld tools such as scalpels,
-            clamps, shears, and needle holders from images or live camera feeds.
+            For my Bachelor Thesis in Data Science &amp; AI at Leiden
+            University, I designed and evaluated an active vision system for
+            recognizing handheld surgical instruments and their hinge state. The
+            project focused on a controlled medical computer vision setting
+            where the system had to identify both the instrument category and,
+            for hinged tools, whether the instrument was open or closed.
           </p>
+
           <p>
-            Beyond tool detection, the project includes state analysis for
-            hinged instruments (for example, open vs. closed clamp or needle
-            holder) and integrates the full machine learning pipeline: dataset
-            preparation, model training, evaluation, and a user interface for
-            image and live-camera inference.
+            The system was evaluated on five categories of general surgical
+            instruments: clamps, needle holders, scalpels, shears, and tweezers.
+            I created a dedicated image dataset of
+            <strong>2,520 images</strong>, collected under controlled variations
+            in viewpoint, background, lighting, and hinge state. The dataset
+            included top-down, oblique, and close-up views, as well as different
+            surgical-style backgrounds such as a stainless steel tray and
+            colored drapes.
+          </p>
+
+          <p>
+            The recognition pipeline combined a YOLO-based object detector with
+            a separate hinge-state classifier. The detector first localized and
+            classified the instrument. If the detected instrument belonged to a
+            hinged category, the detected region was cropped and passed to a
+            binary classifier that predicted whether the instrument was open or
+            closed.
+          </p>
+
+          <p>
+            A key part of the project was the evaluation of active multi-view
+            acquisition. Instead of always using all available viewpoints, the
+            system could request an additional view only when the current
+            prediction was uncertain. This made it possible to study the
+            trade-off between recognition accuracy and the number of views
+            required.
+          </p>
+
+          <p>
+            The best vision-only models achieved strong performance in the
+            controlled setting, with the best detector reaching
+            <strong>98.2% mAP@50:95</strong> and the best hinge-state classifier
+            reaching <strong>98.1% accuracy</strong>. The experiments showed
+            that viewpoint mattered differently depending on the task: close-up
+            views were most useful for identifying the instrument category,
+            while top-down views were more effective for recognizing hinge
+            state. I also compared the trained vision-only pipeline with several
+            zero-shot vision-language models, which performed substantially
+            worse, especially on the hinge-state classification task.
+          </p>
+
+          <p>
+            This project gave me practical experience with end-to-end computer
+            vision system design, including dataset collection, annotation,
+            model training, evaluation, active perception, and failure-case
+            analysis in a medical AI context.
           </p>
         </section>
 
         <section>
-          <h2>Research Focus</h2>
+          <h2>Technologies Used</h2>
           <p>
-            A key contribution is an <strong>active vision</strong> approach for
-            surgical tool recognition. Instead of relying only on a single
-            static image, the system can leverage multiple viewpoints or request
-            additional views when confidence is low. This helps in challenging
-            situations such as partial occlusion or ambiguous tool appearances
-            from specific angles.
+            Python, PyTorch, Ultralytics YOLO, EfficientNet, ResNet, Label
+            Studio, Grad-CAM, LaTeX
           </p>
         </section>
 
         <section>
-          <h2>Evaluation Goals</h2>
+          <h2>Topics</h2>
           <p>
-            Through experiments across models, viewpoints, and system
-            configurations, SurgiToolVision evaluates how multi-view information
-            and instrument-state recognition improve reliability. The long-term
-            motivation is to support future operating room technologies,
-            including surgical workflow analysis, robotic assistance, and
-            automated instrument tracking.
+            Computer Vision, Medical AI, Surgical Instrument Recognition, Active
+            Vision, Multi-View Perception, Vision-Language Models
           </p>
         </section>
       </main>

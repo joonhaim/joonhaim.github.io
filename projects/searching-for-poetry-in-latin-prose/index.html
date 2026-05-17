@@ -28,15 +28,56 @@
     <script src="static/js/shared/site.js" defer></script>
     <script src="static/js/shared/includes.js" defer></script>
     <style>
+      .poetry-shell {
+        margin: var(--space-xl) 0;
+        padding: 0 0 var(--space-lg);
+        border-bottom: 1px solid var(--color-border);
+      }
+      .poetry-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: clamp(1rem, 2.5vw, 2.5rem);
+      }
+      .poetry-copy,
+      .poetry-media {
+        min-height: 80vh;
+      }
+      .poetry-copy {
+        max-width: 680px;
+      }
+      .poetry-copy h1 {
+        margin-bottom: 0.5rem;
+      }
       .poetry-snapshot {
         display: flex;
         flex-wrap: wrap;
         gap: 0.45rem;
         margin: 0.85rem 0 1.2rem;
       }
-      .poetry-media-grid {
+      .poetry-media {
+        position: sticky;
+        top: 88px;
+        align-self: start;
         display: grid;
-        gap: 1rem;
+        gap: 0.9rem;
+      }
+      .poetry-media .stacked-card {
+        padding: 1rem;
+      }
+      .poetry-media .photo-card__placeholder {
+        min-height: 170px;
+      }
+      @media (max-width: 980px) {
+        .poetry-grid {
+          grid-template-columns: 1fr;
+        }
+        .poetry-copy,
+        .poetry-media {
+          min-height: auto;
+        }
+        .poetry-media {
+          position: static;
+        }
       }
     </style>
   </head>
@@ -45,132 +86,58 @@
       <div id="site-header"></div>
 
       <main class="content">
-        <section class="project-intro">
-          <h1>Searching for Poetry in Latin Prose</h1>
-          <p>
-            A digital humanities web application for detecting possible hidden
-            poetry quotations in classical Latin prose.
-          </p>
-          <div class="poetry-snapshot">
-            <span class="tag">Digital Humanities</span>
-            <span class="tag">Applied Machine Learning</span>
-            <span class="tag">Leiden University</span>
-          </div>
-        </section>
-
-        <section class="assignment-layout">
-          <div class="assignment-text">
-            <h2>Project Overview</h2>
-            <p>
-              Roman prose authors often quoted or paraphrased poetry throughout
-              their works. Writers such as Cicero, Seneca, Suetonius, Varro,
-              and Ammianus Marcellinus referred to Greek and Roman poets ranging
-              from Homer and Euripides to Ennius, Plautus, Vergil, and
-              Sophocles. However, these references were not always explicitly
-              attributed. For ancient audiences, the source may have been
-              obvious, but for modern readers many of these quotations are now
-              hidden in plain sight.
-            </p>
-            <p>
-              The main clue is metrical form. Latin poetry follows strict
-              patterns based on syllable length, but identifying these patterns
-              inside continuous prose is difficult and time-consuming. This
-              project aimed to support Latinists by automatically scanning prose
-              texts for fragments that may correspond to known poetic meters.
-            </p>
-            <p>
-              As part of a software engineering project at Leiden University, we
-              developed a tool that processes Latin prose and returns potential
-              poetry candidates for expert review. The pipeline ingests raw
-              prose text, cleans and normalizes it, splits it into words,
-              syllabifies the text, generates possible poetry candidates, and
-              feeds them into an LSTM-based scansion model. The resulting
-              syllable labels are then compared against known metrical patterns
-              with fault tolerance, allowing the system to return candidates
-              together with their predicted meter and confidence information.
-            </p>
-            <p>
-              The project evolved from a Python-based MVP into a web application
-              with an Angular frontend and Flask backend. Users can paste Latin
-              prose into a text field, run the analysis, inspect detected
-              candidates in the frontend, view confidence and distance scores,
-              apply filters, and export the results for later research. The tool
-              is designed as a research aid rather than a replacement for expert
-              judgement: it helps surface promising fragments, while
-              interpretation remains with the Latinist.
-            </p>
-
-            <h3>Key Features</h3>
-            <ul>
-              <li>Cleans and normalizes raw Latin prose text.</li>
-              <li>
-                Splits prose into words and syllables for metrical analysis.
-              </li>
-              <li>
-                Generates candidate fragments based on possible poetic meter
-                lengths.
-              </li>
-              <li>
-                Applies an LSTM-based scansion model to predict syllable
-                quantities.
-              </li>
-              <li>
-                Matches predicted scansions against known Latin meters with
-                fault tolerance.
-              </li>
-              <li>
-                Displays candidate text, predicted meter, distance score,
-                confidence, and syllable-level information.
-              </li>
-              <li>
-                Provides filtering, sorting, and export options for research
-                workflows.
-              </li>
-            </ul>
-
-            <p>
-              <strong>Tech stack:</strong> Python, PyTorch, Flask, Angular,
-              Angular Material, TypeScript, GitHub Actions, Ansible
-            </p>
-            <p>
-              <strong>Project type:</strong> Group software engineering project
-              / digital humanities / applied machine learning
-            </p>
-          </div>
-          <div class="assignment-pdf poetry-media-grid">
-            <div class="stacked-card">
-              <span class="tag">Placeholder 1</span>
-              <h3>General Web App View</h3>
-              <div class="photo-card__placeholder edupace-gallery__placeholder">
-                Main web application screenshot
+        <section class="poetry-shell">
+          <div class="poetry-grid">
+            <article class="poetry-copy">
+              <h1>Searching for Poetry in Latin Prose</h1>
+              <p>
+                A digital humanities web application for detecting possible hidden
+                poetry quotations in classical Latin prose.
+              </p>
+              <div class="poetry-snapshot">
+                <span class="tag">Digital Humanities</span>
+                <span class="tag">Applied Machine Learning</span>
+                <span class="tag">Leiden University</span>
               </div>
-              <p>
-                Reserve this slot for a polished hero screenshot of the overall
-                web app interface.
-              </p>
-            </div>
 
-            <div class="stacked-card">
-              <span class="tag">Placeholder 2</span>
-              <h3>Generated Candidates View</h3>
-              <div class="photo-card__placeholder">
-                Candidates list and meter predictions screenshot
+              <h2>Project Overview</h2>
+              <p>Roman prose authors often quoted or paraphrased poetry throughout their works. Writers such as Cicero, Seneca, Suetonius, Varro, and Ammianus Marcellinus referred to Greek and Roman poets ranging from Homer and Euripides to Ennius, Plautus, Vergil, and Sophocles. However, these references were not always explicitly attributed. For ancient audiences, the source may have been obvious, but for modern readers many of these quotations are now hidden in plain sight.</p>
+              <p>The main clue is metrical form. Latin poetry follows strict patterns based on syllable length, but identifying these patterns inside continuous prose is difficult and time-consuming. This project aimed to support Latinists by automatically scanning prose texts for fragments that may correspond to known poetic meters.</p>
+              <p>As part of a software engineering project at Leiden University, we developed a tool that processes Latin prose and returns potential poetry candidates for expert review. The pipeline ingests raw prose text, cleans and normalizes it, splits it into words, syllabifies the text, generates possible poetry candidates, and feeds them into an LSTM-based scansion model. The resulting syllable labels are then compared against known metrical patterns with fault tolerance, allowing the system to return candidates together with their predicted meter and confidence information.</p>
+              <p>The project evolved from a Python-based MVP into a web application with an Angular frontend and Flask backend. Users can paste Latin prose into a text field, run the analysis, inspect detected candidates in the frontend, view confidence and distance scores, apply filters, and export the results for later research. The tool is designed as a research aid rather than a replacement for expert judgement: it helps surface promising fragments, while interpretation remains with the Latinist.</p>
+
+              <h3>Key Features</h3>
+              <ul>
+                <li>Cleans and normalizes raw Latin prose text.</li>
+                <li>Splits prose into words and syllables for metrical analysis.</li>
+                <li>Generates candidate fragments based on possible poetic meter lengths.</li>
+                <li>Applies an LSTM-based scansion model to predict syllable quantities.</li>
+                <li>Matches predicted scansions against known Latin meters with fault tolerance.</li>
+                <li>Displays candidate text, predicted meter, distance score, confidence, and syllable-level information.</li>
+                <li>Provides filtering, sorting, and export options for research workflows.</li>
+              </ul>
+
+              <p><strong>Tech stack:</strong> Python, PyTorch, Flask, Angular, Angular Material, TypeScript, GitHub Actions, Ansible</p>
+              <p><strong>Project type:</strong> Group software engineering project / digital humanities / applied machine learning</p>
+            </article>
+
+            <aside class="poetry-media" aria-label="Project media placeholders">
+              <div class="stacked-card">
+                <span class="tag">Placeholder 1</span>
+                <h3>General Web App View</h3>
+                <div class="photo-card__placeholder">Main web application screenshot</div>
               </div>
-              <p>
-                Reserve this slot for the output table showing candidate
-                fragments, predicted meters, scores, and confidence.
-              </p>
-            </div>
-
-            <div class="stacked-card">
-              <span class="tag">Placeholder 3</span>
-              <h3>PDF Report Preview</h3>
-              <div class="photo-card__placeholder">Project report PDF preview</div>
-              <p>
-                Reserve this slot for a report preview or embedded PDF summary
-                image.
-              </p>
-            </div>
+              <div class="stacked-card">
+                <span class="tag">Placeholder 2</span>
+                <h3>Generated Candidates View</h3>
+                <div class="photo-card__placeholder">Candidates list and meter predictions screenshot</div>
+              </div>
+              <div class="stacked-card">
+                <span class="tag">Placeholder 3</span>
+                <h3>PDF Report Preview</h3>
+                <div class="photo-card__placeholder">Project report PDF preview</div>
+              </div>
+            </aside>
           </div>
         </section>
       </main>

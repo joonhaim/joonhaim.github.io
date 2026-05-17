@@ -27,6 +27,18 @@
     <link rel="stylesheet" href="static/css/shared/site.css" />
     <script src="static/js/shared/site.js" defer></script>
     <script src="static/js/shared/includes.js" defer></script>
+    <style>
+      .poetry-snapshot {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin: 0.85rem 0 1.2rem;
+      }
+      .poetry-media-grid {
+        display: grid;
+        gap: 1rem;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -39,6 +51,11 @@
             A digital humanities web application for detecting possible hidden
             poetry quotations in classical Latin prose.
           </p>
+          <div class="poetry-snapshot">
+            <span class="tag">Digital Humanities</span>
+            <span class="tag">Applied Machine Learning</span>
+            <span class="tag">Leiden University</span>
+          </div>
         </section>
 
         <section class="assignment-layout">
@@ -120,27 +137,38 @@
               / digital humanities / applied machine learning
             </p>
           </div>
-          <div class="assignment-pdf">
+          <div class="assignment-pdf poetry-media-grid">
             <div class="stacked-card">
-              <span class="tag">Future Media</span>
-              <h3>Screenshot Placeholder</h3>
+              <span class="tag">Placeholder 1</span>
+              <h3>General Web App View</h3>
               <div class="photo-card__placeholder edupace-gallery__placeholder">
-                Application UI screenshot coming soon
+                Main web application screenshot
               </div>
               <p>
-                Placeholder for the main interface view showing candidate
-                quotations and metrical predictions.
+                Reserve this slot for a polished hero screenshot of the overall
+                web app interface.
               </p>
             </div>
-            <div class="stacked-card" style="margin-top: 1rem">
-              <span class="tag">Future Media</span>
-              <h3>Pipeline Diagram Placeholder</h3>
+
+            <div class="stacked-card">
+              <span class="tag">Placeholder 2</span>
+              <h3>Generated Candidates View</h3>
               <div class="photo-card__placeholder">
-                Processing pipeline diagram coming soon
+                Candidates list and meter predictions screenshot
               </div>
               <p>
-                Placeholder for data flow from prose ingestion to scansion,
-                meter matching, and export.
+                Reserve this slot for the output table showing candidate
+                fragments, predicted meters, scores, and confidence.
+              </p>
+            </div>
+
+            <div class="stacked-card">
+              <span class="tag">Placeholder 3</span>
+              <h3>PDF Report Preview</h3>
+              <div class="photo-card__placeholder">Project report PDF preview</div>
+              <p>
+                Reserve this slot for a report preview or embedded PDF summary
+                image.
               </p>
             </div>
           </div>

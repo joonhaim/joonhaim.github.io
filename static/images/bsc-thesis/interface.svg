@@ -1,0 +1,12 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 700'>
+  <rect width='1200' height='700' fill='#eef2ff'/>
+  <rect x='120' y='100' width='960' height='500' rx='28' fill='#ffffff' stroke='#cbd5e1' stroke-width='4'/>
+  <rect x='170' y='160' width='600' height='360' rx='16' fill='#e2e8f0'/>
+  <rect x='810' y='160' width='220' height='100' rx='14' fill='#d1fae5'/>
+  <rect x='810' y='280' width='220' height='100' rx='14' fill='#bfdbfe'/>
+  <rect x='810' y='400' width='220' height='100' rx='14' fill='#fecaca'/>
+  <text x='850' y='220' font-size='24' font-family='Arial' fill='#0f172a'>Scalpel 0.96</text>
+  <text x='850' y='340' font-size='24' font-family='Arial' fill='#0f172a'>Clamp 0.91</text>
+  <text x='850' y='460' font-size='24' font-family='Arial' fill='#0f172a'>State: Open</text>
+  <text x='600' y='70' text-anchor='middle' font-size='40' font-family='Arial' fill='#0f172a'>Inference Interface Mockup</text>
+</svg>

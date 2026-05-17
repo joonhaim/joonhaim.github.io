@@ -1,0 +1,14 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 700'>
+  <rect width='1200' height='700' fill='#f8fafc'/>
+  <text x='600' y='80' text-anchor='middle' font-size='40' font-family='Arial' fill='#0f172a'>Active Multi-view Recognition</text>
+  <g font-family='Arial' font-size='22' fill='#0f172a'>
+    <rect x='120' y='160' width='280' height='200' rx='18' fill='#e2e8f0'/>
+    <rect x='460' y='160' width='280' height='200' rx='18' fill='#dbeafe'/>
+    <rect x='800' y='160' width='280' height='200' rx='18' fill='#e0e7ff'/>
+    <text x='190' y='270'>Viewpoint A</text><text x='530' y='270'>Viewpoint B</text><text x='870' y='270'>Viewpoint C</text>
+    <circle cx='600' cy='500' r='120' fill='#ccfbf1'/><text x='535' y='510'>Fused</text><text x='520' y='540'>Prediction</text>
+  </g>
+  <g stroke='#334155' stroke-width='5' fill='none'>
+    <path d='M260 360 L520 430'/><path d='M600 360 L600 380'/><path d='M940 360 L680 430'/>
+  </g>
+</svg>

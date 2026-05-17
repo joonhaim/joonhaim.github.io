@@ -29,6 +29,7 @@
     <link rel="manifest" href="site.webmanifest" />
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="static/css/shared/site.css" />
+    <link rel="stylesheet" href="static/css/pages/bsc-thesis.css" />
     <script src="static/js/shared/site.js" defer></script>
     <script src="static/js/shared/includes.js" defer></script>
   </head>
@@ -37,7 +38,7 @@
       <div id="site-header"></div>
 
       <main class="content">
-        <section class="project-intro">
+        <section class="project-intro thesis-hero">
           <h1>BSc Thesis: SurgiToolVision</h1>
           <p>
             <strong>SurgiToolVision</strong> focuses on designing and evaluating
@@ -55,6 +56,80 @@
           </p>
         </section>
 
+        <section>
+          <h2>System Highlights</h2>
+          <div class="thesis-grid">
+            <article class="metric-card">
+              <h3>Detection Backbone</h3>
+              <p>
+                YOLO-based detector for real-time surgical instrument
+                localization and classification.
+              </p>
+            </article>
+            <article class="metric-card">
+              <h3>State Recognition</h3>
+              <p>
+                Dedicated logic for detecting open/closed states of hinged
+                instruments (e.g., clamps).
+              </p>
+            </article>
+            <article class="metric-card">
+              <h3>Active Vision</h3>
+              <p>
+                Adaptive multi-view strategy that requests additional angles
+                when confidence is low.
+              </p>
+            </article>
+            <article class="metric-card">
+              <h3>Clinical Motivation</h3>
+              <p>
+                Designed to support future surgical workflow analysis and
+                assistive OR technologies.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <h2>Project Visuals</h2>
+          <div class="figure-gallery">
+            <figure class="figure-card">
+              <img
+                src="static/images/bsc-thesis/pipeline.svg"
+                alt="Diagram of dataset, training, inference, and evaluation stages in SurgiToolVision"
+                loading="lazy"
+              />
+              <figcaption>
+                <strong>Figure 1.</strong> End-to-end workflow from dataset
+                preparation to model evaluation in the SurgiToolVision pipeline.
+              </figcaption>
+            </figure>
+            <figure class="figure-card">
+              <img
+                src="static/images/bsc-thesis/multiview.svg"
+                alt="Multi-view active vision concept showing multiple camera angles feeding one fused prediction"
+                loading="lazy"
+              />
+              <figcaption>
+                <strong>Figure 2.</strong> Active vision concept: combining
+                multiple viewpoints improves robustness under occlusions and
+                ambiguous angles.
+              </figcaption>
+            </figure>
+            <figure class="figure-card">
+              <img
+                src="static/images/bsc-thesis/interface.svg"
+                alt="Mockup of an inference interface with detected instruments and confidence scores"
+                loading="lazy"
+              />
+              <figcaption>
+                <strong>Figure 3.</strong> Interface mockup for
+                image/live-camera inference with confidence scores and
+                instrument-state output.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
         <section>
           <h2>Research Focus</h2>
           <p>

@@ -1,0 +1,56 @@
+.thesis-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #0ea5e9 100%);
+  color: #f8fafc;
+  padding: 2.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.24);
+}
+
+.thesis-hero p {
+  color: #e2e8f0;
+}
+
+.thesis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metric-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+.metric-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.figure-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.figure-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+.figure-card img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+}
+
+.figure-card figcaption {
+  padding: 0.8rem 1rem 1rem;
+  font-size: 0.95rem;
+  color: #334155;
+}

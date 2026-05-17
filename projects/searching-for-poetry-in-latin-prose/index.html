@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Searching for Poetry in Latin Prose</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
+
+      <main class="content">
+        <section class="project-intro">
+          <h1>Searching for Poetry in Latin Prose</h1>
+          <p>
+            A digital humanities web application for detecting possible hidden
+            poetry quotations in classical Latin prose.
+          </p>
+        </section>
+
+        <section class="assignment-layout">
+          <div class="assignment-text">
+            <h2>Project Overview</h2>
+            <p>
+              Roman prose authors often quoted or paraphrased poetry throughout
+              their works. Writers such as Cicero, Seneca, Suetonius, Varro,
+              and Ammianus Marcellinus referred to Greek and Roman poets ranging
+              from Homer and Euripides to Ennius, Plautus, Vergil, and
+              Sophocles. However, these references were not always explicitly
+              attributed. For ancient audiences, the source may have been
+              obvious, but for modern readers many of these quotations are now
+              hidden in plain sight.
+            </p>
+            <p>
+              The main clue is metrical form. Latin poetry follows strict
+              patterns based on syllable length, but identifying these patterns
+              inside continuous prose is difficult and time-consuming. This
+              project aimed to support Latinists by automatically scanning prose
+              texts for fragments that may correspond to known poetic meters.
+            </p>
+            <p>
+              As part of a software engineering project at Leiden University, we
+              developed a tool that processes Latin prose and returns potential
+              poetry candidates for expert review. The pipeline ingests raw
+              prose text, cleans and normalizes it, splits it into words,
+              syllabifies the text, generates possible poetry candidates, and
+              feeds them into an LSTM-based scansion model. The resulting
+              syllable labels are then compared against known metrical patterns
+              with fault tolerance, allowing the system to return candidates
+              together with their predicted meter and confidence information.
+            </p>
+            <p>
+              The project evolved from a Python-based MVP into a web application
+              with an Angular frontend and Flask backend. Users can paste Latin
+              prose into a text field, run the analysis, inspect detected
+              candidates in the frontend, view confidence and distance scores,
+              apply filters, and export the results for later research. The tool
+              is designed as a research aid rather than a replacement for expert
+              judgement: it helps surface promising fragments, while
+              interpretation remains with the Latinist.
+            </p>
+
+            <h3>Key Features</h3>
+            <ul>
+              <li>Cleans and normalizes raw Latin prose text.</li>
+              <li>
+                Splits prose into words and syllables for metrical analysis.
+              </li>
+              <li>
+                Generates candidate fragments based on possible poetic meter
+                lengths.
+              </li>
+              <li>
+                Applies an LSTM-based scansion model to predict syllable
+                quantities.
+              </li>
+              <li>
+                Matches predicted scansions against known Latin meters with
+                fault tolerance.
+              </li>
+              <li>
+                Displays candidate text, predicted meter, distance score,
+                confidence, and syllable-level information.
+              </li>
+              <li>
+                Provides filtering, sorting, and export options for research
+                workflows.
+              </li>
+            </ul>
+
+            <p>
+              <strong>Tech stack:</strong> Python, PyTorch, Flask, Angular,
+              Angular Material, TypeScript, GitHub Actions, Ansible
+            </p>
+            <p>
+              <strong>Project type:</strong> Group software engineering project
+              / digital humanities / applied machine learning
+            </p>
+          </div>
+          <div class="assignment-pdf">
+            <div class="stacked-card">
+              <span class="tag">Future Media</span>
+              <h3>Screenshot Placeholder</h3>
+              <div class="photo-card__placeholder edupace-gallery__placeholder">
+                Application UI screenshot coming soon
+              </div>
+              <p>
+                Placeholder for the main interface view showing candidate
+                quotations and metrical predictions.
+              </p>
+            </div>
+            <div class="stacked-card" style="margin-top: 1rem">
+              <span class="tag">Future Media</span>
+              <h3>Pipeline Diagram Placeholder</h3>
+              <div class="photo-card__placeholder">
+                Processing pipeline diagram coming soon
+              </div>
+              <p>
+                Placeholder for data flow from prose ingestion to scansion,
+                meter matching, and export.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="site-footer"></div>
+    </div>
+  </body>
+</html>

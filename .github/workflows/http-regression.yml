@@ -1,0 +1,77 @@
+name: Production HTTP checks
+
+on:
+  workflow_run:
+    workflows: ["pages-build-deployment", "Deploy static content to Pages"]
+    types: [completed]
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: HTTP and DOM smoke checks
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run HTTP and DOM checks
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base_url="https://joonhaim.github.io"
+          logs_dir="http-check-logs"
+          mkdir -p "$logs_dir"
+
+          check_endpoint() {
+            local path="$1"
+            local expected_status="$2"
+            local marker="$3"
+            local slug
+            slug=$(echo "$path" | tr '/:' '_' | sed 's/^_//')
+            local body_file="$logs_dir/${slug}.body.html"
+            local headers_file="$logs_dir/${slug}.headers.txt"
+
+            echo "--- Checking ${base_url}${path}" | tee -a "$logs_dir/summary.log"
+
+            local code
+            code=$(curl -sS -L \
+              -o "$body_file" \
+              -D "$headers_file" \
+              -w '%{http_code}' \
+              "${base_url}${path}")
+
+            echo "HTTP status: $code" | tee -a "$logs_dir/summary.log"
+            if [[ "$code" != "$expected_status" ]]; then
+              echo "Expected HTTP $expected_status but got $code for ${base_url}${path}" | tee -a "$logs_dir/summary.log"
+              return 1
+            fi
+
+            if ! grep -Fq "$marker" "$body_file"; then
+              echo "Missing expected marker '$marker' in ${base_url}${path}" | tee -a "$logs_dir/summary.log"
+              return 1
+            fi
+
+            echo "OK: marker found: $marker" | tee -a "$logs_dir/summary.log"
+          }
+
+          # Public pages (status + critical DOM markers)
+          check_endpoint "/" "200" "<h1>Welcome!</h1>"
+          check_endpoint "/contact/" "200" "<h1>Contact</h1>"
+          check_endpoint "/projects/neural-networks/" "200" "Neural Computing Project: Food Classification CNN"
+
+          # Shared include fragments must stay reachable
+          check_endpoint "/static/includes/header.html" "200" "<header class=\"site-header\">"
+          check_endpoint "/static/includes/footer.html" "200" "<footer class=\"site-footer\">"
+
+      - name: Upload HTTP check logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-http-check-logs
+          path: http-check-logs/
+          retention-days: 30

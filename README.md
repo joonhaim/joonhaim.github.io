@@ -28,6 +28,8 @@ npm run dev
 
 Then open: `http://127.0.0.1:8000`
 
+Local preview (`npm run dev`) and Playwright tests (`npm test`) both use the same server stack: `python3 scripts/dev_server.py`.
+
 ## Project Structure
 
 - `index.html` – homepage
@@ -38,8 +40,10 @@ Then open: `http://127.0.0.1:8000`
 
 ## Git Hooks
 
-This repo uses a `pre-commit` hook that runs `npm run lint`.
+This repo uses a custom `pre-commit` hook for staged-file checks.
 
+- On each commit, only **staged files** are formatted with Prettier and checked with file-scoped linters.
+- Full-repo checks (including `prettier --check` for non-staged files) run in CI.
 - Run `npm install` once to automatically configure Git to use repo hooks via `.githooks/`.
 - You can also configure it manually with `git config core.hooksPath .githooks`.
 

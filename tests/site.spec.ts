@@ -115,14 +115,21 @@ test.describe("site smoke tests", () => {
 
   test("representative nested project routes should load", async ({ page }) => {
     for (const route of nestedProjectRoutes) {
-      const response = await page.goto(route, { waitUntil: "domcontentloaded" });
+      const response = await page.goto(route, {
+        waitUntil: "domcontentloaded",
+      });
       expect(response, `${route} should return a response`).not.toBeNull();
-      expect(response?.status(), `${route} should be reachable`).toBeLessThan(400);
+      expect(response?.status(), `${route} should be reachable`).toBeLessThan(
+        400,
+      );
       await expect(page).toHaveURL(new RegExp(`${route}$`));
     }
   });
 
-  test("internal links on key pages should not be broken", async ({ page, request }) => {
+  test("internal links on key pages should not be broken", async ({
+    page,
+    request,
+  }) => {
     const visited = new Set<string>();
 
     for (const route of brokenLinkScanPages) {
@@ -149,9 +156,10 @@ test.describe("site smoke tests", () => {
         visited.add(normalized);
 
         const response = await request.get(normalized);
-        expect(response.status(), `${normalized} should be reachable`).toBeLessThan(
-          400,
-        );
+        expect(
+          response.status(),
+          `${normalized} should be reachable`,
+        ).toBeLessThan(400);
       }
     }
   });

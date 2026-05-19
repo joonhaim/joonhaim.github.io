@@ -57,9 +57,7 @@ test.describe("site smoke tests", () => {
     await expect(header.locator("[data-fallback='true']")).toHaveCount(0);
     await expect(footer.locator("[data-fallback='true']")).toHaveCount(0);
     await expect(header.getByRole("link", { name: "Projects" })).toBeVisible();
-    await expect(
-      footer.getByRole("link", { name: "LinkedIn" }),
-    ).toHaveAttribute("href", /linkedin\.com/i);
+    await expect(footer).toContainText(/Adrien\s+Joon[-‑ ]?Ha\s+Im/i);
   });
 
   test("contact page should expose key contact channels", async ({ page }) => {

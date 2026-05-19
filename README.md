@@ -28,6 +28,8 @@ npm run dev
 
 Then open: `http://127.0.0.1:8000`
 
+Local preview (`npm run dev`) and Playwright tests (`npm test`) both use the same server stack: `python3 scripts/dev_server.py`.
+
 ## Project Structure
 
 - `index.html` – homepage

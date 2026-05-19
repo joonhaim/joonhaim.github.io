@@ -43,6 +43,32 @@ test.describe("site smoke tests", () => {
     ).toBeVisible();
   });
 
+  test("extensionless routes should resolve to folder index pages", async ({
+    page,
+  }) => {
+    const response = await page.goto("/about", {
+      waitUntil: "domcontentloaded",
+    });
+
+    expect(response).not.toBeNull();
+    expect(response?.status()).toBe(200);
+    await expect(page).toHaveURL(/\/about\/?$/);
+    await expect(
+      page.getByRole("heading", { name: "Adrien Joon‑Ha Im" }),
+    ).toBeVisible();
+  });
+
+  test("missing routes should return custom 404 page", async ({ page }) => {
+    const response = await page.goto("/this-route-does-not-exist", {
+      waitUntil: "domcontentloaded",
+    });
+
+    expect(response).not.toBeNull();
+    expect(response?.status()).toBe(404);
+    await expect(page).toHaveTitle(/404\s*[–-]\s*Page Not Found/);
+    await expect(page.getByRole("heading", { name: "404" })).toBeVisible();
+  });
+
   test("primary home navigation links should not 404", async ({ page }) => {
     await page.goto("/");
     const urls = await page.locator("main a[href]").evaluateAll((anchors) => {

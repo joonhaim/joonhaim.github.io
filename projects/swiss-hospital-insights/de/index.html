@@ -7,10 +7,13 @@
       name="description"
       content="Entdecken Sie mit dem CH-IQI Prozedur-Explorer die Behandlungsvolumen Schweizer Spitäler. Durchstöbern Sie 150+ Eingriffe, vergleichen Sie Spitäler und Kantone und sehen Sie Kennzahlen pro Kopf."
     />
-    <title>Spitaleingriffe in der Schweiz</title>
+    <title>Qualitätsindikatoren der Schweizer Spitäler</title>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="de_CH" />
-    <meta property="og:title" content="Schweizer Spitalübersicht (CH-IQI)" />
+    <meta
+      property="og:title"
+      content="Qualitätsindikatoren der Schweizer Spitäler"
+    />
     <meta
       property="og:description"
       content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
@@ -28,7 +31,10 @@
     <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD" />
     <meta property="article:published_time" content="2025-11-07" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Schweizer Spitalübersicht (CH-IQI)" />
+    <meta
+      name="twitter:title"
+      content="Qualitätsindikatoren der Schweizer Spitäler"
+    />
     <meta
       name="twitter:description"
       content="Dieses persönliche Projekt macht die Indikatorendatenbank 2023 des Bundesamts für Gesundheit zugänglich, um Behandlungsvolumen in der ganzen Schweiz zu erkunden. Nutzerinnen und Nutzer können über 150 Eingriffe durchsuchen, Spitäler und Kantone vergleichen sowie Pro-Kopf-Raten und Volumenanteile sehen, um die Verteilung der Versorgung im Land nachzuvollziehen. Dank leichtgewichtiger JSON-Daten und clientseitigem Rendering lädt es schnell und fördert einen transparenten, verantwortungsvollen Umgang mit Gesundheitsdaten."
@@ -91,13 +97,16 @@
 
     <section class="hero">
       <div class="hero-inner">
-        <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
-        <h1 class="fade-element">Spitaleingriffe in der Schweiz</h1>
+        <p class="hero-eyebrow fade-element">CH-IQI Dashboard</p>
+        <h1 class="fade-element">
+          Qualitätsindikatoren der Schweizer Spitäler
+        </h1>
         <p class="tagline fade-element">
-          Wie häufig werden bestimmte Eingriffe in Schweizer Spitälern
-          durchgeführt? Mit diesem Dashboard können Sie die offiziellen
-          CH-IQI-Daten 2023 des Bundesamts für Gesundheit (BAG) erkunden,
-          Eingriffe suchen, Spitäler vergleichen und kantonale Details einsehen.
+          Entdecken Sie offizielle CH-IQI-Daten des Bundesamts für Gesundheit
+          (BAG).
+          <br /><br />
+          Vergleichen Sie Fallzahlen, Mortalität und Qualitätsindikatoren von
+          Schweizer Akutspitälern nach Spital und Kanton.
         </p>
         <div class="hero-links fade-element">
           <span
@@ -120,6 +129,15 @@
       id="procedure-finder"
       class="procedure-finder fade-element page-shell finder-awaiting-selection"
     >
+      <div class="quality-intro procedure-intro surface-card">
+        <p class="quality-eyebrow">CH-IQI FALLZAHLEN</p>
+        <h2>Spital-Fallzahlen erkunden</h2>
+        <p>
+          Vergleichen Sie, wie häufig ausgewählte Verfahren in Schweizer
+          Spitälern durchgeführt wurden, basierend auf dem offiziellen
+          CH-IQI-Datensatz 2023.
+        </p>
+      </div>
       <div class="finder-procedure-selector surface-card catalog-collapsed">
         <div class="finder-selector-header">
           <div class="finder-selector-copy">
@@ -355,6 +373,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/quality-indicators.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

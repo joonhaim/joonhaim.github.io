@@ -18,7 +18,10 @@ const staticAssets = [
 const swissHospitalAssets = [
   "/projects/swiss-hospital-insights/assets/css/app.css",
   "/projects/swiss-hospital-insights/assets/js/app.js",
+  "/projects/swiss-hospital-insights/assets/js/quality-indicators.js",
   "/projects/swiss-hospital-insights/assets/data/qip23_f_procedures.json",
+  "/projects/swiss-hospital-insights/assets/data/qip24_mortality_indicators.json",
+  "/projects/swiss-hospital-insights/assets/data/qip24_mortality_indicators_with_en.csv",
   "/projects/swiss-hospital-insights/assets/data/hospital_coordinates.json",
   "/projects/swiss-hospital-insights/assets/images/cantons/ch.svg",
 ];

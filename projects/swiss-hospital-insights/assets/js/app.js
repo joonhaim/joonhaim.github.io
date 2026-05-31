@@ -2,6 +2,82 @@ const dashboardScriptUrl = document.currentScript?.src || window.location.href;
 const dashboardAssetsUrl = new URL("../", dashboardScriptUrl);
 const resolveAssetUrl = (path) => new URL(path, dashboardAssetsUrl).href;
 
+const PAGE_SCROLL_DURATION = 1100;
+let pageScrollAnimation = null;
+let previousInlineScrollBehavior = null;
+
+function smoothScrollPageTo(top, { duration = PAGE_SCROLL_DURATION } = {}) {
+  const maxTop = Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight,
+  );
+  const targetTop = Math.min(Math.max(0, top), maxTop);
+  const startTop = window.scrollY;
+  const reducedMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (pageScrollAnimation) {
+    cancelAnimationFrame(pageScrollAnimation);
+    pageScrollAnimation = null;
+  }
+  if (previousInlineScrollBehavior !== null) {
+    document.documentElement.style.scrollBehavior =
+      previousInlineScrollBehavior;
+    previousInlineScrollBehavior = null;
+  }
+  if (reducedMotion || Math.abs(targetTop - startTop) < 1) {
+    const inlineScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, targetTop);
+    document.documentElement.style.scrollBehavior = inlineScrollBehavior;
+    return;
+  }
+
+  previousInlineScrollBehavior = document.documentElement.style.scrollBehavior;
+  document.documentElement.style.scrollBehavior = "auto";
+  let startTime = null;
+  const finish = () => {
+    document.documentElement.style.scrollBehavior =
+      previousInlineScrollBehavior ?? "";
+    previousInlineScrollBehavior = null;
+    pageScrollAnimation = null;
+  };
+  const step = (timestamp) => {
+    startTime ??= timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const eased =
+      progress < 0.5
+        ? 4 * progress ** 3
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    window.scrollTo(0, startTop + (targetTop - startTop) * eased);
+    if (progress < 1) {
+      pageScrollAnimation = requestAnimationFrame(step);
+    } else {
+      finish();
+    }
+  };
+  pageScrollAnimation = requestAnimationFrame(step);
+}
+
+function scrollPageToElement(element, { offset = 24 } = {}) {
+  if (!element) return;
+
+  const header = document.querySelector(".header-left");
+  if (header) {
+    const headerOffset = header.getBoundingClientRect().bottom + 16;
+    if (!Number.isNaN(headerOffset)) offset = Math.max(offset, headerOffset);
+  }
+
+  const top = element.getBoundingClientRect().top + window.scrollY - offset;
+  smoothScrollPageTo(top);
+}
+
+window.swissHospitalInsights = {
+  ...(window.swissHospitalInsights || {}),
+  scrollPageToElement,
+};
+
 const languageSwitcher = document.querySelector(".language-switcher");
 if (languageSwitcher) {
   const languageButtons = Array.from(
@@ -117,7 +193,10 @@ if (scrollHideElements.length) {
 }
 
 const normalizeString = (value) =>
-  (value || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  String(value ?? "")
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase();
 
 const normalizeAlphanumeric = (value) =>
   normalizeString(value).replace(/[^a-z0-9]/g, "");
@@ -130,29 +209,31 @@ const decodeHtml = (html) => {
   return textarea.value;
 };
 const escapeAttribute = (value) =>
-  (value ?? "")
+  String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 const escapeHtml = (value) =>
-  (value ?? "")
+  String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
-const fadeObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    }
+const fadeElements = document.querySelectorAll(".fade-element");
+if (typeof window.IntersectionObserver === "function") {
+  const fadeObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
   });
-});
-
-document
-  .querySelectorAll(".fade-element")
-  .forEach((el) => fadeObserver.observe(el));
+  fadeElements.forEach((element) => fadeObserver.observe(element));
+} else {
+  fadeElements.forEach((element) => element.classList.add("visible"));
+}
 
 const procedureSelector = document.querySelector(".finder-procedure-selector");
 const catalogToggle = document.querySelector(".finder-catalog-toggle");
@@ -1437,11 +1518,13 @@ function inferHospitalMeta(
   const type = override?.type ?? "kanton";
   const canton = override?.canton ?? coordinateEntry?.canton ?? "??";
   const fallback = cantonCentroids[canton];
+  const lat = coordinateEntry?.lat == null ? null : Number(coordinateEntry.lat);
+  const lon = coordinateEntry?.lon == null ? null : Number(coordinateEntry.lon);
   return {
     type,
     canton,
-    lat: coordinateEntry?.lat ?? fallback?.lat ?? null,
-    lon: coordinateEntry?.lon ?? fallback?.lon ?? null,
+    lat: Number.isFinite(lat) ? lat : (fallback?.lat ?? null),
+    lon: Number.isFinite(lon) ? lon : (fallback?.lon ?? null),
   };
 }
 
@@ -1682,16 +1765,25 @@ function applyPopulationDataset(populationMap) {
 
 function loadHospitalDataset() {
   if (!hospitalDatasetCache.promise) {
-    hospitalDatasetCache.promise = Promise.all([
-      fetch(resolveAssetUrl("data/hospital_coordinates.json")).then(
-        (response) => {
+    const loadOptionalDataset = (url, parseResponse, label, fallback) =>
+      fetch(url)
+        .then((response) => {
           if (!response.ok) {
-            throw new Error(
-              `Failed to load coordinate dataset (${response.status})`,
-            );
+            throw new Error(`${label} request failed (${response.status})`);
           }
-          return response.json();
-        },
+          return parseResponse(response);
+        })
+        .catch((error) => {
+          console.warn(`Unable to load optional ${label}`, error);
+          return fallback;
+        });
+
+    hospitalDatasetCache.promise = Promise.all([
+      loadOptionalDataset(
+        resolveAssetUrl("data/hospital_coordinates.json"),
+        (response) => response.json(),
+        "coordinate dataset",
+        {},
       ),
       fetch(resolveAssetUrl("data/qip23_f_procedures.json")).then(
         (response) => {
@@ -1701,17 +1793,19 @@ function loadHospitalDataset() {
           return response.json();
         },
       ),
-      fetch(POPULATION_DATASET_URL).then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Failed to load population dataset (${response.status})`,
-          );
-        }
-        return response.text();
-      }),
+      loadOptionalDataset(
+        POPULATION_DATASET_URL,
+        (response) => response.text(),
+        "population dataset",
+        "",
+      ),
     ])
       .then(([coordinateData, dataset, populationCsv]) => {
-        const coordinateMap = new Map(Object.entries(coordinateData || {}));
+        const coordinateMap = new Map(
+          coordinateData && typeof coordinateData === "object"
+            ? Object.entries(coordinateData)
+            : [],
+        );
         hospitalDatasetCache.coordinates = coordinateMap;
         const populationData = parsePopulationDataset(populationCsv);
         applyPopulationDataset(populationData);
@@ -2671,15 +2765,6 @@ if (finderRoot) {
     return localeName || defaultName || code;
   };
 
-  const getLetterCategoryName = (letter) => {
-    if (!letter) {
-      return "";
-    }
-    const key = `messages.letterCategories.${letter}`;
-    const label = translate(key);
-    return typeof label === "string" && label !== key ? label : "";
-  };
-
   const getObjectTranslation = (path) => {
     const base = resolvePath(defaultTranslations, path) ?? {};
     const value = resolvePath(localeTranslations, path);
@@ -2687,6 +2772,21 @@ if (finderRoot) {
       return { ...base, ...value };
     }
     return { ...base };
+  };
+
+  const procedureLetterCategories = getObjectTranslation(
+    "messages.letterCategories",
+  );
+  window.swissHospitalInsights = {
+    ...(window.swissHospitalInsights || {}),
+    procedureLetterCategories,
+  };
+
+  const getLetterCategoryName = (letter) => {
+    if (!letter) {
+      return "";
+    }
+    return procedureLetterCategories[letter] || "";
   };
 
   const FALLBACK_PROCEDURE_SCHEMA = [
@@ -2727,6 +2827,9 @@ if (finderRoot) {
   };
 
   function parseProcedureTranslationCsv(text) {
+    if (typeof text !== "string" || !text.trim()) {
+      return [];
+    }
     const lines = text.split(/\r?\n/);
     lines.shift();
     return lines
@@ -3095,11 +3198,20 @@ if (finderRoot) {
       };
 
       const buildExternalLink = (url, label) => {
-        if (!url) {
+        if (typeof url !== "string") {
           return "";
         }
         const trimmed = url.trim();
         if (!trimmed) {
+          return "";
+        }
+        let parsedUrl;
+        try {
+          parsedUrl = new URL(trimmed);
+        } catch {
+          return "";
+        }
+        if (!["http:", "https:"].includes(parsedUrl.protocol)) {
           return "";
         }
         const safeUrl = escapeAttribute(trimmed);
@@ -3775,19 +3887,7 @@ if (finderRoot) {
           return;
         }
 
-        let offset = 24;
-        const header = document.querySelector(".header-left");
-        if (header) {
-          const rect = header.getBoundingClientRect();
-          const headerOffset = rect.bottom + 16;
-          if (!Number.isNaN(headerOffset)) {
-            offset = Math.max(offset, headerOffset);
-          }
-        }
-
-        const top =
-          anchor.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        scrollPageToElement(anchor);
       });
     }
 
@@ -3796,9 +3896,9 @@ if (finderRoot) {
         return "";
       }
       return `
-        <span class="finder-canton-dropdown__label">${option.label}</span>
+        <span class="finder-canton-dropdown__label">${escapeHtml(option.label)}</span>
         <span class="finder-canton-dropdown__icon" aria-hidden="true">
-          <img src="${option.icon}" alt="" loading="lazy" />
+          <img src="${escapeAttribute(option.icon)}" alt="" loading="lazy" />
         </span>
       `;
     }
@@ -4075,7 +4175,21 @@ if (finderRoot) {
       });
     }
 
-    if (!finderProcedureSearch || !finderCategoryTabs || !finderProcedureList) {
+    const requiredFinderElements = [
+      finderProcedureSearch,
+      finderCategoryTabs,
+      finderProcedureList,
+      finderTypeToggle,
+      finderSearch,
+      finderCanton,
+      finderKpis,
+      finderList,
+      finderListTitle,
+      finderListMeta,
+      finderCantonSummary,
+      finderCantonList,
+    ];
+    if (requiredFinderElements.some((element) => !element)) {
       console.warn("Procedure finder UI is missing required elements.");
       return;
     }
@@ -4087,68 +4201,88 @@ if (finderRoot) {
       container: null,
       messageEl: null,
       legendEls: { university: null, kanton: null, private: null },
+      failed: false,
     };
 
     function ensureMapStructure() {
-      if (!finderMap) {
+      if (!finderMap || mapState.failed) {
         return false;
       }
       if (typeof window.L === "undefined") {
         return false;
       }
-      if (!mapState.ready) {
-        finderMap.innerHTML = `
-          <div class="finder-map-view" role="img"></div>
-          <p class="finder-map-message finder-empty" hidden></p>
-          <div class="finder-map-legend">
-            <span data-type="university"><i style="background:${typeColors.university}"></i><span class="legend-label"></span></span>
-            <span data-type="kanton"><i style="background:${typeColors.kanton}"></i><span class="legend-label"></span></span>
-            <span data-type="private"><i style="background:${typeColors.private}"></i><span class="legend-label"></span></span>
-          </div>
-        `;
-        mapState.container = finderMap.querySelector(".finder-map-view");
-        mapState.messageEl = finderMap.querySelector(".finder-map-message");
-        mapState.legendEls = {
-          university: finderMap.querySelector(
-            '[data-type="university"] .legend-label',
-          ),
-          kanton: finderMap.querySelector('[data-type="kanton"] .legend-label'),
-          private: finderMap.querySelector(
-            '[data-type="private"] .legend-label',
-          ),
-        };
+      try {
+        if (!mapState.ready) {
+          finderMap.innerHTML = `
+            <div class="finder-map-view" role="img"></div>
+            <p class="finder-map-message finder-empty" hidden></p>
+            <div class="finder-map-legend">
+              <span data-type="university"><i style="background:${typeColors.university}"></i><span class="legend-label"></span></span>
+              <span data-type="kanton"><i style="background:${typeColors.kanton}"></i><span class="legend-label"></span></span>
+              <span data-type="private"><i style="background:${typeColors.private}"></i><span class="legend-label"></span></span>
+            </div>
+          `;
+          mapState.container = finderMap.querySelector(".finder-map-view");
+          mapState.messageEl = finderMap.querySelector(".finder-map-message");
+          mapState.legendEls = {
+            university: finderMap.querySelector(
+              '[data-type="university"] .legend-label',
+            ),
+            kanton: finderMap.querySelector(
+              '[data-type="kanton"] .legend-label',
+            ),
+            private: finderMap.querySelector(
+              '[data-type="private"] .legend-label',
+            ),
+          };
 
-        mapState.map = L.map(mapState.container, {
-          zoomSnap: 0.5,
-          scrollWheelZoom: false,
-          attributionControl: true,
-        });
+          mapState.map = L.map(mapState.container, {
+            zoomSnap: 0.5,
+            scrollWheelZoom: false,
+            attributionControl: true,
+          });
 
-        L.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-          {
-            maxZoom: 19,
-            subdomains: "abcd",
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attribution">CARTO</a>',
-          },
-        ).addTo(mapState.map);
+          L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            {
+              maxZoom: 19,
+              subdomains: "abcd",
+              attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attribution">CARTO</a>',
+            },
+          ).addTo(mapState.map);
 
-        if (mapState.map.attributionControl?.setPrefix) {
-          mapState.map.attributionControl.setPrefix("");
+          if (mapState.map.attributionControl?.setPrefix) {
+            mapState.map.attributionControl.setPrefix("");
+          }
+
+          mapState.markersLayer = L.layerGroup().addTo(mapState.map);
+          mapState.ready = true;
+          requestAnimationFrame(() => mapState.map.invalidateSize());
         }
 
-        mapState.markersLayer = L.layerGroup().addTo(mapState.map);
-        mapState.ready = true;
-        requestAnimationFrame(() => mapState.map.invalidateSize());
+        mapState.container.setAttribute("aria-label", msg("mapAriaLabel"));
+        mapState.legendEls.university.textContent = typeLegend.university;
+        mapState.legendEls.kanton.textContent = typeLegend.kanton;
+        mapState.legendEls.private.textContent = typeLegend.private;
+        mapState.messageEl.hidden = true;
+        return true;
+      } catch (error) {
+        console.warn("Unable to initialize interactive map", error);
+        try {
+          mapState.map?.remove?.();
+        } catch {
+          // Ignore cleanup failures after an optional map dependency breaks.
+        }
+        mapState.failed = true;
+        mapState.ready = false;
+        mapState.map = null;
+        mapState.markersLayer = null;
+        mapState.container = null;
+        mapState.messageEl = null;
+        finderMap.innerHTML = "";
+        return false;
       }
-      mapState.container.setAttribute("aria-label", msg("mapAriaLabel"));
-      mapState.legendEls.university.textContent = typeLegend.university;
-      mapState.legendEls.kanton.textContent = typeLegend.kanton;
-      mapState.legendEls.private.textContent = typeLegend.private;
-      mapState.messageEl.hidden = true;
-
-      return true;
     }
 
     function displayMapMessage(message, className = "finder-empty") {
@@ -4156,7 +4290,7 @@ if (finderRoot) {
         return;
       }
       if (!ensureMapStructure()) {
-        finderMap.innerHTML = `<p class="${className}">${message}</p>`;
+        finderMap.innerHTML = `<p class="${escapeAttribute(className)}">${escapeHtml(message)}</p>`;
         return;
       }
       mapState.markersLayer?.clearLayers();
@@ -4270,8 +4404,8 @@ if (finderRoot) {
           return `
           <button type="button" class="finder-chip finder-category-btn${
             isActive ? " active" : ""
-          }${dimmed ? " dimmed" : ""}" data-category="${category.id}">
-            ${category.label}
+          }${dimmed ? " dimmed" : ""}" data-category="${escapeAttribute(category.id)}">
+            ${escapeHtml(category.label)}
           </button>
         `;
         })
@@ -4337,7 +4471,7 @@ if (finderRoot) {
             finderProcedureList;
           if (target) {
             requestAnimationFrame(() => {
-              target.scrollIntoView({ behavior: "smooth", block: "start" });
+              scrollPageToElement(target);
             });
           }
         }
@@ -4348,7 +4482,7 @@ if (finderRoot) {
         .map((group) => {
           const showHeading = isSearching || groupsToRender.length > 1;
           const heading = showHeading
-            ? `<p class="finder-procedure-group-title">${group.label}</p>`
+            ? `<p class="finder-procedure-group-title">${escapeHtml(group.label)}</p>`
             : "";
           const options = group.procedures
             .map((proc) => {
@@ -4358,9 +4492,9 @@ if (finderRoot) {
               return `
               <button type="button" class="finder-procedure-option${
                 isActive ? " active" : ""
-              }" data-code="${proc.code}" data-category="${group.id}">
-                <span class="finder-procedure-name">${proc.name}</span>
-                <span class="finder-procedure-code">${proc.code}</span>
+              }" data-code="${escapeAttribute(proc.code)}" data-category="${escapeAttribute(group.id)}">
+                <span class="finder-procedure-name">${escapeHtml(proc.name)}</span>
+                <span class="finder-procedure-code">${escapeHtml(proc.code)}</span>
               </button>
             `;
             })
@@ -4415,7 +4549,7 @@ if (finderRoot) {
           finderProcedureList;
         if (target) {
           requestAnimationFrame(() => {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            scrollPageToElement(target);
           });
         }
       }
@@ -4434,8 +4568,8 @@ if (finderRoot) {
           const active = state.typeFilter[type] !== false;
           const label = typeLabels[type] || type;
           return `
-          <button class="finder-type-btn${active ? " active" : ""}" data-type="${type}">
-            ${label}
+          <button class="finder-type-btn${active ? " active" : ""}" data-type="${escapeAttribute(type)}">
+            ${escapeHtml(label)}
           </button>
         `;
         })
@@ -5001,9 +5135,9 @@ if (finderRoot) {
             <span class="finder-rank">${startIndex + idx + 1}</span>
             <div class="finder-hospital">
               <div class="finder-hospital-header">
-                <strong class="finder-hospital-name">${h.hospital}</strong>
-                <span class="finder-badge finder-hospital-type ${badgeClass}">${badgeLabel}</span>
-                <span class="finder-badge finder-badge--canton finder-hospital-canton">${h.canton}</span>
+                <strong class="finder-hospital-name">${escapeHtml(h.hospital)}</strong>
+                <span class="finder-badge finder-hospital-type ${badgeClass}">${escapeHtml(badgeLabel)}</span>
+                <span class="finder-badge finder-badge--canton finder-hospital-canton">${escapeHtml(h.canton)}</span>
               </div>
               <div class="finder-progress" aria-hidden="true">
                 <div class="finder-progress-bar" style="width: ${width}%;"></div>
@@ -5053,7 +5187,7 @@ if (finderRoot) {
       }
 
       const hospitalsWithCoords = agg.hospitals.filter(
-        (h) => h.lat != null && h.lon != null,
+        (h) => Number.isFinite(h.lat) && Number.isFinite(h.lon),
       );
       if (!hospitalsWithCoords.length) {
         mapState.markersLayer.clearLayers();
@@ -5123,10 +5257,12 @@ if (finderRoot) {
           className: `finder-map-marker finder-map-marker--${h.type}`,
         });
         marker.bindTooltip(
-          msg("mapTooltip", {
-            hospital: h.hospital,
-            cases: h.cases.toLocaleString(),
-          }),
+          escapeHtml(
+            msg("mapTooltip", {
+              hospital: h.hospital,
+              cases: h.cases.toLocaleString(),
+            }),
+          ),
           {
             direction: "top",
             offset: [0, -8],
@@ -5234,9 +5370,9 @@ if (finderRoot) {
           const badgeLabel = typeBadges[h.type] ?? h.type;
           return `
           <div class="finder-canton-row">
-            <span class="finder-canton-hospital">${h.hospital}</span>
-            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${badgeLabel}</span></span>
-            <span class="finder-canton-cases">${msg("cantonRowCases", { cases: h.cases.toLocaleString() })}</span>
+            <span class="finder-canton-hospital">${escapeHtml(h.hospital)}</span>
+            <span class="finder-canton-type"><span class="finder-badge ${badgeClass}">${escapeHtml(badgeLabel)}</span></span>
+            <span class="finder-canton-cases">${escapeHtml(msg("cantonRowCases", { cases: h.cases.toLocaleString() }))}</span>
           </div>
         `;
         })
@@ -5566,7 +5702,8 @@ if (finderRoot) {
 
     finderCanton.innerHTML = cantonOptions
       .map(
-        (option) => `<option value="${option.value}">${option.label}</option>`,
+        (option) =>
+          `<option value="${escapeAttribute(option.value)}">${escapeHtml(option.label)}</option>`,
       )
       .join("");
     finderCanton.value = state.selectedCanton;

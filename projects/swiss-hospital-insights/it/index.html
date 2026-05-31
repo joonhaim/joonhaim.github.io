@@ -7,12 +7,12 @@
       name="description"
       content="Esplora i volumi delle procedure ospedaliere svizzere con l'esploratore CH-IQI. Sfoglia oltre 150 trattamenti, confronta ospedali e cantoni e visualizza indicatori pro capite."
     />
-    <title>Interventi ospedalieri in Svizzera</title>
+    <title>Indicatori di qualità degli ospedali svizzeri</title>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_CH" />
     <meta
       property="og:title"
-      content="Panoramica degli ospedali svizzeri (CH-IQI)"
+      content="Indicatori di qualità degli ospedali svizzeri"
     />
     <meta
       property="og:description"
@@ -33,7 +33,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Panoramica degli ospedali svizzeri (CH-IQI)"
+      content="Indicatori di qualità degli ospedali svizzeri"
     />
     <meta
       name="twitter:description"
@@ -101,14 +101,16 @@
 
     <section class="hero">
       <div class="hero-inner">
-        <p class="hero-eyebrow fade-element">Dashboard CH-IQI 2023</p>
-        <h1 class="fade-element">Interventi ospedalieri in Svizzera</h1>
+        <p class="hero-eyebrow fade-element">CH-IQI Dashboard</p>
+        <h1 class="fade-element">
+          Indicatori di qualità degli ospedali svizzeri
+        </h1>
         <p class="tagline fade-element">
-          Con quale frequenza vengono eseguiti determinati interventi negli
-          ospedali svizzeri? Con questa dashboard puoi esplorare i dati
-          ufficiali CH-IQI 2023 dell’Ufficio federale della sanità pubblica
-          (UFSP), cercare procedure, confrontare gli ospedali e visualizzare i
-          dettagli per cantone.
+          Esplora i dati ufficiali CH-IQI dell’Ufficio federale della sanità
+          pubblica (UFSP).
+          <br /><br />
+          Confronta il numero di casi, la mortalità e gli indicatori di qualità
+          degli ospedali svizzeri per cure acute, per ospedale e per cantone.
         </p>
         <div class="hero-links fade-element">
           <span
@@ -132,6 +134,14 @@
       id="procedure-finder"
       class="procedure-finder fade-element page-shell finder-awaiting-selection"
     >
+      <div class="quality-intro procedure-intro surface-card">
+        <p class="quality-eyebrow">VOLUMI DELLE PROCEDURE CH-IQI</p>
+        <h2>Esplora i volumi delle procedure ospedaliere</h2>
+        <p>
+          Confronta la frequenza con cui le procedure sono state eseguite negli
+          ospedali svizzeri utilizzando il dataset ufficiale CH-IQI 2023.
+        </p>
+      </div>
       <div class="finder-procedure-selector surface-card catalog-collapsed">
         <div class="finder-selector-header">
           <div class="finder-selector-copy">
@@ -367,6 +377,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/quality-indicators.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

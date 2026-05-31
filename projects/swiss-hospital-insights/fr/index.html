@@ -7,12 +7,12 @@
       name="description"
       content="Explorez les volumes d'interventions hospitalières suisses avec l'explorateur CH-IQI. Parcourez plus de 150 procédures, comparez hôpitaux et cantons, et consultez des indicateurs par habitant."
     />
-    <title>Interventions hospitalières en Suisse</title>
+    <title>Indicateurs de qualité des hôpitaux suisses</title>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_CH" />
     <meta
       property="og:title"
-      content="Vue d’ensemble des hôpitaux suisses (CH-IQI)"
+      content="Indicateurs de qualité des hôpitaux suisses"
     />
     <meta
       property="og:description"
@@ -33,7 +33,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Vue d’ensemble des hôpitaux suisses (CH-IQI)"
+      content="Indicateurs de qualité des hôpitaux suisses"
     />
     <meta
       name="twitter:description"
@@ -97,14 +97,16 @@
 
     <section class="hero">
       <div class="hero-inner">
-        <p class="hero-eyebrow fade-element">Tableau de bord CH-IQI 2023</p>
-        <h1 class="fade-element">Interventions hospitalières en Suisse</h1>
+        <p class="hero-eyebrow fade-element">CH-IQI Dashboard</p>
+        <h1 class="fade-element">
+          Indicateurs de qualité des hôpitaux suisses
+        </h1>
         <p class="tagline fade-element">
-          À quelle fréquence une opération est-elle pratiquée dans les hôpitaux
-          suisses ? Avec ce tableau de bord, explorez les données officielles
-          CH-IQI 2023 de l’Office fédéral de la santé publique (OFSP),
-          recherchez des traitements, comparez les établissements et consultez
-          les détails par canton.
+          Explorez les données officielles CH-IQI de l’Office fédéral de la
+          santé publique (OFSP).
+          <br /><br />
+          Comparez le nombre de cas, la mortalité et les indicateurs de qualité
+          des hôpitaux suisses de soins aigus, par hôpital et par canton.
         </p>
         <div class="hero-links fade-element">
           <span
@@ -128,6 +130,14 @@
       id="procedure-finder"
       class="procedure-finder fade-element page-shell finder-awaiting-selection"
     >
+      <div class="quality-intro procedure-intro surface-card">
+        <p class="quality-eyebrow">VOLUMES DE PROCÉDURES CH-IQI</p>
+        <h2>Explorer les volumes de procédures hospitalières</h2>
+        <p>
+          Comparez la fréquence à laquelle les procédures ont été réalisées dans
+          les hôpitaux suisses à partir du jeu de données officiel CH-IQI 2023.
+        </p>
+      </div>
       <div class="finder-procedure-selector surface-card catalog-collapsed">
         <div class="finder-selector-header">
           <div class="finder-selector-copy">
@@ -363,6 +373,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/quality-indicators.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

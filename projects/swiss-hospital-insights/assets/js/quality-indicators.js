@@ -31,6 +31,7 @@
       filter: "Search hospital",
       filterPlaceholder: "Type to filter hospitals",
       select: "Select an indicator to compare hospitals.",
+      noIndicators: "No indicators match your search.",
       noRows: "No hospitals match your search.",
       hospitals: "hospitals",
       warning:
@@ -60,6 +61,7 @@
       filter: "Spital suchen",
       filterPlaceholder: "Spitäler filtern",
       select: "Wählen Sie einen Indikator, um Spitäler zu vergleichen.",
+      noIndicators: "Keine Indikatoren entsprechen Ihrer Suche.",
       noRows: "Keine Spitäler entsprechen Ihrer Suche.",
       hospitals: "Spitäler",
       warning:
@@ -88,6 +90,7 @@
       filter: "Rechercher un hôpital",
       filterPlaceholder: "Filtrer les hôpitaux",
       select: "Sélectionnez un indicateur pour comparer les hôpitaux.",
+      noIndicators: "Aucun indicateur ne correspond à votre recherche.",
       noRows: "Aucun hôpital ne correspond à votre recherche.",
       hospitals: "hôpitaux",
       warning:
@@ -116,6 +119,7 @@
       filter: "Cerca ospedale",
       filterPlaceholder: "Filtra gli ospedali",
       select: "Seleziona un indicatore per confrontare gli ospedali.",
+      noIndicators: "Nessun indicatore corrisponde alla ricerca.",
       noRows: "Nessun ospedale corrisponde alla ricerca.",
       hospitals: "ospedali",
       warning:
@@ -277,7 +281,7 @@
           (item) =>
             `<button type="button" class="quality-indicator ${selectedCode === item.code ? "active" : ""}" data-code="${esc(item.code)}"><strong>${esc(item.code)}</strong><span>${esc(item.label)}</span></button>`,
         )
-        .join("") || `<p class="quality-status">${copy.noRows}</p>`;
+        .join("") || `<p class="quality-status">${copy.noIndicators}</p>`;
   }
   const scrollTo = (element) => {
     if (!element) return;
@@ -405,6 +409,6 @@
     })
     .catch((error) => {
       console.error(error);
-      list.innerHTML = `<p class="quality-status">${copy.noRows}</p>`;
+      list.innerHTML = `<p class="quality-status">${copy.noIndicators}</p>`;
     });
 })();

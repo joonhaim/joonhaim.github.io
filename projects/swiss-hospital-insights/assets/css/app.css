@@ -295,6 +295,7 @@ body {
 
 .hero .tagline {
   width: 100%;
+  max-width: 48rem;
   margin: 0;
   font-size: 1rem;
   line-height: 1.6;
@@ -3882,5 +3883,222 @@ body {
 
   .procedure-buttons {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Top-level explorer mode switch and mortality indicator explorer */
+.explorer-mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 2rem auto 1.25rem;
+}
+.explorer-mode-btn {
+  border: 1px solid rgba(21, 54, 80, 0.2);
+  border-radius: 999px;
+  background: #fff;
+  color: #32566f;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.72rem 1.15rem;
+  transition: 0.2s ease;
+}
+.explorer-mode-btn span {
+  margin-left: 0.35rem;
+  color: inherit;
+  font-size: 0.72rem;
+  opacity: 0.72;
+}
+.explorer-mode-btn:hover,
+.explorer-mode-btn.active {
+  background: #153650;
+  border-color: #153650;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.quality-finder {
+  padding-bottom: 4rem;
+}
+.quality-intro,
+.quality-selector,
+.quality-results {
+  padding: 1.45rem;
+  margin-bottom: 1rem;
+}
+.quality-intro h2,
+.quality-selector h3 {
+  margin: 0.2rem 0 0.45rem;
+  color: #153650;
+}
+.quality-intro p,
+.quality-selector p {
+  max-width: 860px;
+  margin: 0.2rem 0;
+  color: #5b7283;
+  line-height: 1.6;
+}
+.quality-eyebrow {
+  color: #b52432 !important;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.quality-selector-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.quality-legend {
+  flex: 0 0 auto;
+  margin: 0.2rem 0;
+  font-size: 0.84rem;
+  text-align: right;
+}
+.quality-search,
+.quality-results-header label {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  color: #456275;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.quality-search input,
+.quality-results-header input {
+  border: 1px solid #d4dee4;
+  border-radius: 8px;
+  font: inherit;
+  padding: 0.75rem 0.85rem;
+}
+.quality-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+.quality-catalogue {
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  max-height: 320px;
+  overflow: auto;
+  padding: 0.2rem;
+}
+.quality-indicator {
+  display: grid;
+  gap: 0.18rem;
+  border: 1px solid #dce5e9;
+  border-radius: 8px;
+  background: #fff;
+  color: #426074;
+  cursor: pointer;
+  padding: 0.7rem;
+  text-align: left;
+}
+.quality-indicator strong {
+  color: #153650;
+  font-size: 0.78rem;
+}
+.quality-indicator span {
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.quality-indicator:hover,
+.quality-indicator.active {
+  border-color: #b52432;
+  background: #fff8f8;
+}
+.quality-warning {
+  border-left: 4px solid #b52432;
+  background: #fff7f6;
+  color: #6b3a3f;
+  margin: 0 0 1rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.quality-results-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+.quality-results-header h3 {
+  color: #153650;
+  margin: 0.2rem 0;
+}
+.quality-results-header label {
+  margin: 0;
+  min-width: 240px;
+}
+.quality-results-list {
+  display: grid;
+  gap: 0.45rem;
+}
+.quality-row {
+  display: grid;
+  align-items: center;
+  gap: 0.75rem;
+  grid-template-columns: minmax(240px, 1fr) repeat(4, minmax(82px, 0.16fr));
+  border-top: 1px solid #e5ecef;
+  padding: 0.78rem 0.1rem;
+}
+.quality-hospital h4 {
+  color: #153650;
+  font-size: 0.92rem;
+  margin: 0;
+}
+.quality-hospital p {
+  color: #6b7e89;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  margin: 0.25rem 0 0;
+}
+.quality-metric {
+  display: grid;
+  gap: 0.15rem;
+  text-align: right;
+}
+.quality-metric small {
+  color: #6b7e89;
+  font-size: 0.69rem;
+}
+.quality-metric strong {
+  color: #153650;
+  font-size: 0.92rem;
+}
+.quality-smr strong {
+  color: #b52432;
+}
+.quality-status {
+  color: #6b7e89;
+  padding: 1rem;
+}
+@media (max-width: 768px) {
+  .quality-selector-header,
+  .quality-results-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .quality-legend {
+    text-align: left;
+  }
+  .quality-results-header label {
+    min-width: 0;
+  }
+  .quality-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .quality-hospital {
+    grid-column: 1/-1;
+  }
+  .quality-metric {
+    text-align: left;
   }
 }

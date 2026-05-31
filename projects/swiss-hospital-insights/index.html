@@ -7,7 +7,7 @@
       name="description"
       content="Explore Swiss hospital procedure volumes with the CH-IQI Procedure Explorer. Browse 150+ treatments, compare hospitals and cantons, and see per-capita rates from the 2023 FOPH indicators."
     />
-    <meta property="og:title" content="Swiss Hospital Insights (CH-IQI)" />
+    <meta property="og:title" content="Swiss Hospital Quality Indicators" />
     <meta
       property="og:description"
       content="This personal project turns the Federal Office of Public Health's 2023 indicator database into an accessible dashboard for exploring hospital procedure volumes across Switzerland. Users can browse over 150 procedures, compare hospitals and cantons, and view per-capita rates and volume shares to see how healthcare is distributed in the country. Built with lightweight JSON data and client-side rendering for speed, it encourages transparent and responsible use of public health data."
@@ -26,7 +26,7 @@
     <meta name="date" content="2025-11-07" scheme="YYYY-MM-DD" />
     <meta property="article:published_time" content="2025-11-07" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Swiss Hospital Insights (CH-IQI)" />
+    <meta name="twitter:title" content="Swiss Hospital Quality Indicators" />
     <meta
       name="twitter:description"
       content="This personal project turns the Federal Office of Public Health's 2023 indicator database into an accessible dashboard for exploring hospital procedure volumes across Switzerland. Users can browse over 150 procedures, compare hospitals and cantons, and view per-capita rates and volume shares to see how healthcare is distributed in the country. Built with lightweight JSON data and client-side rendering for speed, it encourages transparent and responsible use of public health data."
@@ -35,7 +35,7 @@
       name="twitter:image"
       content="https://joonhaim.github.io/projects/swiss-hospital-insights/assets/images/ch-iqi/preview_ch_iqi.png"
     />
-    <title>Hospital Procedures in Switzerland</title>
+    <title>Swiss Hospital Quality Indicators</title>
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -90,13 +90,14 @@
 
     <section class="hero">
       <div class="hero-inner">
-        <p class="hero-eyebrow fade-element">CH-IQI 2023 Dashboard</p>
-        <h1 class="fade-element">Hospital Procedures in Switzerland</h1>
+        <p class="hero-eyebrow fade-element">CH-IQI Dashboard</p>
+        <h1 class="fade-element">Swiss Hospital Quality Indicators</h1>
         <p class="tagline fade-element">
-          How many times is a procedure performed in each Swiss hospital?
-          <br />This dashboard lets you explore official 2023 CH-IQI data from
-          the Federal Office of Public Health (FOPH).<br />
-          Search procedures, compare hospitals, and see details by canton.
+          Explore official CH-IQI data from the Federal Office of Public Health
+          (FOPH).
+          <br /><br />
+          Compare case volumes, mortality outcomes, and quality indicators
+          across Swiss acute care hospitals by hospital and canton.
         </p>
         <div class="hero-links fade-element">
           <span
@@ -117,6 +118,14 @@
       id="procedure-finder"
       class="procedure-finder fade-element page-shell finder-awaiting-selection"
     >
+      <div class="quality-intro procedure-intro surface-card">
+        <p class="quality-eyebrow">CH-IQI PROCEDURE VOLUMES</p>
+        <h2>Explore hospital procedure volumes</h2>
+        <p>
+          Compare how frequently procedures were performed across Swiss
+          hospitals using the official 2023 CH-IQI dataset.
+        </p>
+      </div>
       <div class="finder-procedure-selector surface-card catalog-collapsed">
         <div class="finder-selector-header">
           <div class="finder-selector-copy">
@@ -351,6 +360,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/quality-indicators.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

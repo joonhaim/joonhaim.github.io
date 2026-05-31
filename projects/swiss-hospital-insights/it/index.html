@@ -3,21 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      (function () {
-        var base = "/";
-        var marker = "/joonhaim.github.io/";
-        var idx = location.pathname.indexOf(marker);
-        if (idx !== -1) {
-          var rootPath = location.pathname.slice(0, idx + marker.length);
-          base =
-            location.protocol === "file:"
-              ? "file://" + rootPath
-              : location.origin + rootPath;
-        }
-        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
-      })();
-    </script>
     <meta
       name="description"
       content="Esplora i volumi delle procedure ospedaliere svizzere con l'esploratore CH-IQI. Sfoglia oltre 150 trattamenti, confronta ospedali e cantoni e visualizza indicatori pro capite."
@@ -39,7 +24,7 @@
     />
     <meta
       property="og:image"
-      content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png"
+      content="https://joonhaim.github.io/projects/swiss-hospital-insights/assets/images/ch-iqi/preview_ch_iqi.png"
     />
     <meta name="author" content="Adrien Joon-Ha Im" />
     <meta property="article:author" content="Adrien Joon-Ha Im" />
@@ -56,22 +41,36 @@
     />
     <meta
       name="twitter:image"
-      content="https://joonhaim.github.io/static/images/ch-iqi/preview_ch_iqi.png"
+      content="https://joonhaim.github.io/projects/swiss-hospital-insights/assets/images/ch-iqi/preview_ch_iqi.png"
     />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-    <link rel="manifest" href="site.webmanifest" />
-    <link rel="icon" href="favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+    <link rel="icon" href="../assets/favicons/favicon.ico" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="static/css/pages/ch_hospital.css" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
   </head>
   <body>
     <div class="header-left">
-      <a href="./" class="back-arrow" aria-label="Torna alla homepage">
+      <a href="../../../" class="back-arrow" aria-label="Torna alla homepage">
         <svg
           viewBox="0 0 24 24"
           class="arrow-icon"
@@ -88,13 +87,17 @@
         </svg>
       </a>
       <div class="language-switcher">
-        <a href="projects/swiss-hospital-insights/de/" class="lang-btn">DE</a>
-        <a href="projects/swiss-hospital-insights/fr/" class="lang-btn">FR</a>
+        <a href="../de/" class="lang-btn">DE</a>
+        <a href="../fr/" class="lang-btn">FR</a>
         <span class="lang-btn active">IT</span>
-        <a href="projects/swiss-hospital-insights/" class="lang-btn">EN</a>
+        <a href="../" class="lang-btn">EN</a>
       </div>
     </div>
-    <a href="./" class="swiss-cross" aria-label="Torna alla homepage"></a>
+    <a
+      href="../../../"
+      class="swiss-cross"
+      aria-label="Torna alla homepage"
+    ></a>
 
     <section class="hero">
       <div class="hero-inner">
@@ -119,9 +122,7 @@
           >
           <span
             >Metodologia:
-            <a href="projects/swiss-hospital-insights/methodology/"
-              >panoramica (in inglese)</a
-            ></span
+            <a href="../methodology/">panoramica (in inglese)</a></span
           >
         </div>
       </div>
@@ -361,11 +362,11 @@
     </section>
 
     <footer class="site-footer" role="contentinfo">
-      <p>&copy; 2025 Adrien Joon‑Ha Im · <a href="./">Home</a></p>
+      <p>&copy; 2025 Adrien Joon‑Ha Im · <a href="../../../">Home</a></p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="static/js/pages/ch_hospital.js"></script>
+    <script src="../assets/js/app.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       defer

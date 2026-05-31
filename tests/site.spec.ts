@@ -15,6 +15,14 @@ const staticAssets = [
   "/static/js/shared/includes.js",
 ];
 
+const swissHospitalAssets = [
+  "/projects/swiss-hospital-insights/assets/css/app.css",
+  "/projects/swiss-hospital-insights/assets/js/app.js",
+  "/projects/swiss-hospital-insights/assets/data/qip23_f_procedures.json",
+  "/projects/swiss-hospital-insights/assets/data/hospital_coordinates.json",
+  "/projects/swiss-hospital-insights/assets/images/cantons/ch.svg",
+];
+
 const brokenLinkScanPages = [
   "/",
   "/projects/",
@@ -108,6 +116,15 @@ test.describe("site smoke tests", () => {
 
   test("key static assets should return HTTP 200", async ({ request }) => {
     for (const assetPath of staticAssets) {
+      const response = await request.get(assetPath);
+      expect(response.status(), `${assetPath} should be served`).toBe(200);
+    }
+  });
+
+  test("Swiss Hospital Insights assets should be served from its exportable project directory", async ({
+    request,
+  }) => {
+    for (const assetPath of swissHospitalAssets) {
       const response = await request.get(assetPath);
       expect(response.status(), `${assetPath} should be served`).toBe(200);
     }

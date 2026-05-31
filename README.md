@@ -34,7 +34,7 @@ Local preview (`npm run dev`) and Playwright tests (`npm test`) both use the sam
 
 - `index.html` – homepage
 - `about/` – about page
-- `projects/` – project pages
+- `projects/` – project pages; `projects/swiss-hospital-insights/` is a self-contained, exportable dashboard
 - `static/` – shared assets (CSS, JS, images)
 - `scripts/` – utility scripts
 

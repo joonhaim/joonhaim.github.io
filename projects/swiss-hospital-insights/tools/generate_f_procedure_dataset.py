@@ -27,9 +27,9 @@ EXCLUDED_INSTITUTIONS = {
     "Ospedali per cure generali, cure di base (livello 3)",
 }
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SOURCE = REPO_ROOT / "static" / "data" / "qip23_tabdaten.csv"
-DEFAULT_TARGET = REPO_ROOT / "static" / "data" / "qip23_f_procedures.json"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SOURCE = PROJECT_ROOT / "assets" / "data" / "qip23_tabdaten.csv"
+DEFAULT_TARGET = PROJECT_ROOT / "assets" / "data" / "qip23_f_procedures.json"
 
 
 def parse_args() -> argparse.Namespace:
@@ -134,7 +134,7 @@ def write_output(rows: Iterable[dict], destination: Path, indent: int | None, so
     destination.parent.mkdir(parents=True, exist_ok=True)
     rows_list = list(rows)
     try:
-        source_rel = source.resolve().relative_to(REPO_ROOT)
+        source_rel = source.resolve().relative_to(PROJECT_ROOT)
     except ValueError:
         source_rel = source
     payload = {

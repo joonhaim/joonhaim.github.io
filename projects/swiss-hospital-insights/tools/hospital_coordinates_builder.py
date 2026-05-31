@@ -6,7 +6,7 @@ from pathlib import Path
 
 from hospital_coordinates_manual import UPDATED_COORDS
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 EXCLUDED_INSTITUTIONS = {
     "CH",
@@ -70,7 +70,7 @@ def parse_overrides(path: Path) -> dict:
 
 def load_institutions(csv_path: Path) -> list:
     institutions = OrderedDict()
-    overrides = parse_overrides(REPO_ROOT / "static" / "js" / "pages" / "ch_hospital.js")
+    overrides = parse_overrides(PROJECT_ROOT / "assets" / "js" / "app.js")
     with csv_path.open(encoding="utf-8-sig") as handle:
         reader = csv.reader(handle, delimiter=';')
         next(reader, None)
@@ -92,7 +92,7 @@ def load_institutions(csv_path: Path) -> list:
 
 
 def build_coordinate_map() -> OrderedDict:
-    institutions = load_institutions(REPO_ROOT / "static" / "data" / "qip23_tabdaten.csv")
+    institutions = load_institutions(PROJECT_ROOT / "assets" / "data" / "qip23_tabdaten.csv")
     coordinates = OrderedDict()
     missing = []
     for name, canton in institutions:
@@ -106,7 +106,7 @@ def build_coordinate_map() -> OrderedDict:
     return coordinates
 
 
-def export(path: Path = REPO_ROOT / "static" / "data" / "hospital_coordinates.json") -> None:
+def export(path: Path = PROJECT_ROOT / "assets" / "data" / "hospital_coordinates.json") -> None:
     data = build_coordinate_map()
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:

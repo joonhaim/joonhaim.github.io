@@ -3,21 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      (function () {
-        var base = "/";
-        var marker = "/joonhaim.github.io/";
-        var idx = location.pathname.indexOf(marker);
-        if (idx !== -1) {
-          var rootPath = location.pathname.slice(0, idx + marker.length);
-          base =
-            location.protocol === "file:"
-              ? "file://" + rootPath
-              : location.origin + rootPath;
-        }
-        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
-      })();
-    </script>
     <meta
       name="description"
       content="Methodology and data notes for the Swiss Hospital Interventions (CH-IQI) dashboard: sources, preprocessing, calculations, visualization choices, limitations, and update policy."
@@ -58,17 +43,31 @@
       name="twitter:image"
       content="https://joonhaim.github.io/android-chrome-512x512.png"
     />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-    <link rel="manifest" href="site.webmanifest" />
-    <link rel="icon" href="favicon.ico" />
-    <link rel="stylesheet" href="static/css/pages/ch_hospital.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+    <link rel="icon" href="../assets/favicons/favicon.ico" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
   </head>
   <body>
     <div class="header-left">
       <a
-        href="projects/swiss-hospital-insights/"
+        href="../"
         class="back-arrow"
         aria-label="Back to the CH-IQI dashboard"
       >
@@ -100,7 +99,7 @@
         <span class="lang-btn active" aria-current="page">EN</span>
       </div>
     </div>
-    <a href="./" class="swiss-cross" aria-label="Back to the homepage"></a>
+    <a href="../" class="swiss-cross" aria-label="Back to the homepage"></a>
 
     <section class="hero hero--methodology">
       <div class="hero-inner">
@@ -120,36 +119,22 @@
           <h3>Table of Contents</h3>
           <ol>
             <li>
-              <a href="projects/swiss-hospital-insights/methodology/#purpose"
-                >Purpose</a
-              >
+              <a href="#purpose">Purpose</a>
             </li>
             <li>
-              <a href="projects/swiss-hospital-insights/methodology/#sources"
-                >Sources</a
-              >
+              <a href="#sources">Sources</a>
             </li>
             <li>
-              <a href="projects/swiss-hospital-insights/methodology/#database"
-                >Database</a
-              >
+              <a href="#database">Database</a>
             </li>
             <li>
-              <a
-                href="projects/swiss-hospital-insights/methodology/#data-preparation"
-                >Data Preparation</a
-              >
+              <a href="#data-preparation">Data Preparation</a>
             </li>
             <li>
-              <a href="projects/swiss-hospital-insights/methodology/#indicators"
-                >Indicators and Calculations</a
-              >
+              <a href="#indicators">Indicators and Calculations</a>
             </li>
             <li>
-              <a
-                href="projects/swiss-hospital-insights/methodology/#limitations"
-                >Limitations</a
-              >
+              <a href="#limitations">Limitations</a>
             </li>
           </ol>
         </nav>
@@ -267,14 +252,16 @@
             therefore had to manually categorize what language each description
             was in. To make the raw CSV easier to consume in the browser, I used
             a small Python helper script,
-            scripts/ch_hospital/generate_f_procedure_dataset.py, that trims the
-            dataset down to just the F-coded interventions. It removes aggregate
-            rows like national or cantonal totals, keeps only the key numeric
-            columns (hospital ID, procedure code, year, and case count), sorts
-            the records for reproducibility, and exports the result as
-            static/data/qip23_f_procedures.json. This produces a lightweight,
-            dataset usable by a browser that still contains all the essential
-            information for visualization and comparison.
+            projects/swiss-hospital-insights/tools/generate_f_procedure_dataset.py,
+            that trims the dataset down to just the F-coded interventions. It
+            removes aggregate rows like national or cantonal totals, keeps only
+            the key numeric columns (hospital ID, procedure code, year, and case
+            count), sorts the records for reproducibility, and exports the
+            result as
+            projects/swiss-hospital-insights/assets/data/qip23_f_procedures.json.
+            This produces a lightweight, dataset usable by a browser that still
+            contains all the essential information for visualization and
+            comparison.
           </p>
 
           <h4>4.2 Front-end loading and caching</h4>
@@ -351,7 +338,9 @@
     </main>
 
     <footer class="site-footer" role="contentinfo">
-      <p>&copy; 2025 Adrien Joon-Ha Im · <a href="contact/">Contact</a></p>
+      <p>
+        &copy; 2025 Adrien Joon-Ha Im · <a href="../../../contact/">Contact</a>
+      </p>
     </footer>
 
     <script>

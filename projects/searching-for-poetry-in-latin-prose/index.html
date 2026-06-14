@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      (function () {
+        var base = "/";
+        var marker = "/joonhaim.github.io/";
+        var idx = location.pathname.indexOf(marker);
+        if (idx !== -1) {
+          var rootPath = location.pathname.slice(0, idx + marker.length);
+          base =
+            location.protocol === "file:"
+              ? "file://" + rootPath
+              : location.origin + rootPath;
+        }
+        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+      })();
+    </script>
+    <title>Searching for Poetry in Latin Prose</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="static/css/shared/site.css" />
+    <link rel="stylesheet" href="static/css/pages/latin.css" />
+    <script src="static/js/shared/site.js" defer></script>
+    <script src="static/js/shared/includes.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="site-header"></div>
+
+      <main class="content latin-project">
+        <section class="latin-hero" aria-labelledby="project-title">
+          <p class="latin-eyebrow">Digital humanities · Software engineering</p>
+          <h1 id="project-title">Searching for Poetry in Latin Prose</h1>
+          <p class="latin-intro">
+            A research tool developed for the Leiden University Centre for the
+            Arts in Society (LUCAS) to help uncover possible hidden poetry
+            fragments in classical Latin prose.
+          </p>
+
+          <dl class="latin-facts" aria-label="Project summary">
+            <div>
+              <dt>Purpose</dt>
+              <dd>Detect poetic fragments hidden in Latin prose</dd>
+            </div>
+            <div>
+              <dt>Analysis engine</dt>
+              <dd>LSTM-based AI model</dd>
+            </div>
+            <div>
+              <dt>Supported meters</dt>
+              <dd>Hexameter, pentameter, iambic, trochaic, and more</dd>
+            </div>
+          </dl>
+        </section>
+
+        <figure class="latin-showcase">
+          <div class="latin-window-bar" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <img
+            src="static/images/latin/latin_screenshot.png"
+            alt="Searching for Poetry in Latin Prose tool showing a prose input, meter filters, and detected poetry candidates with scansion results"
+          />
+          <figcaption>
+            The analysis workspace combines text submission, candidate review,
+            metrical scansion, filtering, and export in one interface.
+          </figcaption>
+        </figure>
+
+        <section class="latin-story" aria-label="Project details">
+          <article>
+            <p class="latin-section-label">Hidden poetry detection</p>
+            <h2>Finding poetic rhythm inside continuous prose</h2>
+            <p>
+              Classical prose may contain embedded or unattributed quotations
+              from poetry. Finding them manually requires researchers to inspect
+              large amounts of text syllable by syllable. This tool scans Latin
+              prose automatically and extracts fragments that resemble poetic
+              meter, directing attention to the most promising candidates.
+            </p>
+            <p>
+              Users can paste prose directly or upload a text file, making the
+              application suitable for both quick experiments and longer textual
+              datasets. Detected candidates can then be reviewed, filtered, and
+              exported for further academic analysis.
+            </p>
+          </article>
+
+          <article>
+            <p class="latin-section-label">Scansion engine</p>
+            <h2>Transforming text into metrical patterns</h2>
+            <p>
+              At the centre of the system is an LSTM neural network that assigns
+              scansion labels to Latin text fragments. It predicts whether
+              syllables are long, short, or an elision, transforming prose into
+              a sequence that can be compared with known poetic patterns.
+            </p>
+            <p>
+              Each candidate is presented with its predicted meter, metrical
+              distance, confidence information, and syllable-level markings.
+              Long syllables, short syllables, elisions, and uncertain areas are
+              highlighted directly in the text so Latinists can inspect why a
+              passage was selected rather than treating the model as a black
+              box.
+            </p>
+          </article>
+        </section>
+
+        <section class="latin-features" aria-labelledby="features-title">
+          <div class="latin-section-heading">
+            <p class="latin-section-label">Capabilities</p>
+            <h2 id="features-title">Key features</h2>
+          </div>
+          <div class="latin-feature-grid">
+            <article>
+              <span class="latin-feature-number">01</span>
+              <h3>LSTM-powered scansion</h3>
+              <p>
+                Predict long, short, and uncertain syllable patterns in Latin
+                text fragments.
+              </p>
+            </article>
+            <article>
+              <span class="latin-feature-number">02</span>
+              <h3>Hidden poetry detection</h3>
+              <p>
+                Extract prose fragments that may match classical poetic rhythm.
+              </p>
+            </article>
+            <article>
+              <span class="latin-feature-number">03</span>
+              <h3>Multiple meter support</h3>
+              <p>
+                Search for hexameter, pentameter, hendecasyllable, iambic, and
+                trochaic forms.
+              </p>
+            </article>
+            <article>
+              <span class="latin-feature-number">04</span>
+              <h3>Interactive filters</h3>
+              <p>
+                Refine candidates by meter, confidence, syllables, elisions,
+                metrical distance, and more.
+              </p>
+            </article>
+            <article>
+              <span class="latin-feature-number">05</span>
+              <h3>Visual result analysis</h3>
+              <p>
+                Inspect scansion markings and confidence information directly in
+                each candidate fragment.
+              </p>
+            </article>
+            <article>
+              <span class="latin-feature-number">06</span>
+              <h3>Research-ready workflow</h3>
+              <p>
+                Paste text or upload a file, analyse candidates, and export the
+                findings for later review.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="latin-meters" aria-labelledby="meters-title">
+          <div class="latin-section-heading">
+            <p class="latin-section-label">Meter support</p>
+            <h2 id="meters-title">Nine metrical forms in one search</h2>
+          </div>
+          <p class="latin-section-intro">
+            The tool can detect hexameter, pentameter, hendecasyllable, and a
+            range of iambic and trochaic forms. Its modular structure allows
+            more meters to be added in the future.
+          </p>
+          <div class="latin-meter-catalog">
+            <article>
+              <p class="latin-meter-family">Core forms</p>
+              <ul>
+                <li>Hexameter</li>
+                <li>Pentameter</li>
+                <li>Hendecasyllable</li>
+              </ul>
+            </article>
+            <article>
+              <p class="latin-meter-family">Iambic</p>
+              <ul>
+                <li>Trimeter</li>
+                <li>Senarius</li>
+                <li>Septenarius</li>
+                <li>Octonarius</li>
+              </ul>
+            </article>
+            <article>
+              <p class="latin-meter-family">Trochaic</p>
+              <ul>
+                <li>Septenarius</li>
+                <li>Octonarius</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="latin-filters" aria-labelledby="filters-title">
+          <div class="latin-filter-copy">
+            <p class="latin-section-label">Candidate filtering</p>
+            <h2 id="filters-title">
+              Move from broad detection to focused review
+            </h2>
+            <p>
+              A detailed filtering system helps researchers reduce noise and
+              test different interpretations of the results. Criteria can be
+              combined to isolate stronger candidates or investigate specific
+              metrical characteristics.
+            </p>
+          </div>
+          <div class="latin-filter-groups">
+            <article>
+              <h3>Pattern and structure filters</h3>
+              <ul>
+                <li>Meter type and maximum metrical distance</li>
+                <li>Minimum and maximum syllable count</li>
+                <li>Short and long syllable counts</li>
+                <li>Number of feet and half-meter options</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Candidate quality filters</h3>
+              <ul>
+                <li>Minimum and maximum confidence</li>
+                <li>Minimum and maximum elisions</li>
+                <li>Repeated vowel-type limits</li>
+                <li>Monosyllabic ending filter</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="latin-technology" aria-labelledby="technology-title">
+          <p class="latin-section-label">Technology</p>
+          <h2 id="technology-title">
+            An analysis pipeline made accessible on the web
+          </h2>
+          <p class="latin-technology-copy">
+            The final product connects an Angular frontend to a Flask backend
+            and PyTorch model, turning a computational scansion pipeline into a
+            research interface for Latinists without programming experience.
+          </p>
+          <p>
+            <strong>PyTorch</strong> · <strong>Angular</strong> ·
+            <strong>TypeScript</strong> · <strong>Flask</strong> ·
+            <strong>Python</strong> · <strong>GitHub Projects</strong> ·
+            <strong>Scrum</strong>
+          </p>
+          <p class="latin-contribution">
+            Personal contribution: my work focused on the Angular application
+            structure, analysis page, filtering and export controls, and overall
+            frontend management.
+          </p>
+        </section>
+      </main>
+
+      <div id="site-footer"></div>
+    </div>
+  </body>
+</html>

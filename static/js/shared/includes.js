@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       { href: "contact/", label: "Contact" },
     ],
-    footerText: "© 2025 Adrien Joon-Ha Im",
+    footerText: "© 2026 Adrien Joon-Ha Im",
   };
 
   const escapeHtml = (value) =>
@@ -74,11 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `
       <header class="site-header fallback-shell" data-fallback="true">
-        <div class="social-links">${socialMarkup}</div>
-        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
-        <nav class="main-nav">
-          <ul>${navMarkup}</ul>
-        </nav>
+        <a class="site-mark" href="./" aria-label="Adrien Im, home">
+          <span class="site-mark__name">Adrien Im</span>
+          <span class="site-mark__role">Data Science / Biomedical AI</span>
+        </a>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+        <div class="site-header__nav">
+          <nav class="main-nav" aria-label="Primary navigation">
+            <ul>${navMarkup}</ul>
+          </nav>
+          <div class="social-links">${socialMarkup}</div>
+        </div>
       </header>
     `;
   };
@@ -86,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const renderFallbackFooter = () => `
     <footer class="site-footer fallback-shell" data-fallback="true">
       <p>${escapeHtml(fallbackModel.footerText)}</p>
+      <p>Leiden / Bern</p>
     </footer>
   `;
 

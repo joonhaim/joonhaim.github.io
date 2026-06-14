@@ -678,3 +678,83 @@ body.edupace-toc-auto .edupace-toc.is-visible {
     flex: 0 0 auto;
   }
 }
+
+/* Swiss editorial alignment */
+.edupace-section {
+  margin-bottom: var(--space-lg);
+}
+
+.edupace-hero {
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.edupace-hero__content h1 {
+  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  line-height: 0.9;
+}
+
+.edupace-title img {
+  max-width: 270px;
+  filter: grayscale(1) contrast(1.08);
+}
+
+.hero-image img,
+.timeline-step--device .device-overview,
+.timeline-step--casing .timeline-step__content--split,
+.edupace-toc__inner,
+.ecg-widget,
+.bezier-widget,
+.ecg-monitor,
+.ecg-paper {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.edupace-toc__inner {
+  border-color: var(--color-text);
+}
+
+.device-spec,
+.timeline-step__tag,
+.tag,
+.bezier-chip,
+.ecg-widget__note,
+.ecg-scenario {
+  border-radius: 0;
+}
+
+.timeline-step {
+  border-left: 1px solid var(--color-text);
+}
+
+.timeline-step::before {
+  width: 10px;
+  height: 10px;
+  left: -5px;
+  background: var(--color-accent);
+  border-radius: 0;
+  box-shadow: 0 0 0 3px var(--color-bg);
+}
+
+.overview-card,
+.team-card,
+.stacked-card,
+.photo-card,
+.system-block {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+}
+
+@media (min-width: 1100px) and (max-width: 1499px) {
+  .edupace-toc {
+    display: none;
+  }
+}
+
+@media (min-width: 1500px) {
+  .edupace-toc {
+    display: block;
+    right: max(1rem, calc((100vw - 1180px) / 2 - 225px));
+  }
+}

@@ -10,3 +10,24 @@
   font-size: 1.2rem;
   margin-bottom: var(--space-md);
 }
+
+.error-container {
+  min-height: 58vh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding: var(--space-lg) 0;
+  text-align: left;
+}
+
+.error-container h1 {
+  margin-bottom: var(--space-md);
+  color: var(--color-accent);
+  font-size: clamp(7rem, 25vw, 18rem);
+  line-height: 0.7;
+}
+
+.error-container p {
+  color: var(--color-muted);
+  font-size: 1.1rem;
+}

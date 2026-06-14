@@ -45,11 +45,15 @@ test.describe("site smoke tests", () => {
     });
   }
 
-  test("home page should render welcome heading and projects section", async ({
+  test("home page should render hero heading and projects section", async ({
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Welcome!" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Biomedical Engineering · AI · Data Science",
+      }),
+    ).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "Featured Projects" }),
     ).toBeVisible();
@@ -102,7 +106,7 @@ test.describe("site smoke tests", () => {
     expect(response?.status()).toBe(200);
     await expect(page).toHaveURL(/\/about\/?$/);
     await expect(
-      page.getByRole("heading", { name: "Adrien Joon‑Ha Im" }),
+      page.getByRole("heading", { name: "Adrien Joon-Ha Im" }),
     ).toBeVisible();
   });
 

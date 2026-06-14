@@ -51,7 +51,7 @@ test.describe("site smoke tests", () => {
     await page.goto("/");
     await expect(
       page.getByRole("heading", {
-        name: "Biomedical Engineering AI · Data Science",
+        name: "Biomedical Engineering · AI · Data Science",
       }),
     ).toBeVisible();
     await expect(

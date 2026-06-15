@@ -18,8 +18,9 @@
   aspect-ratio: 1;
   margin: 0;
   overflow: hidden;
-  background: #deddd8;
+  background: #d8e0e2;
   border: 1px solid var(--color-border-strong);
+  box-shadow: 7px 7px 0 color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 
 .profile-pic {
@@ -27,11 +28,11 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center;
+  object-position: center 38%;
   border-radius: 0;
-  filter: grayscale(1) contrast(1.05);
+  filter: saturate(0.82) contrast(1.02);
   box-shadow: none;
-  transform: translateY(5%) scale(1.5);
+  transform: scale(1.08);
 }
 
 .profile-summary {

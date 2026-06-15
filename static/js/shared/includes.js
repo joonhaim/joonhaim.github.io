@@ -22,10 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
             label: "Swiss Hospital Insights",
           },
           {
-            href: "projects/reinforcement-learning/",
-            label: "Reinforcement Learning",
+            href: "projects/searching-for-poetry-in-latin-prose/",
+            label: "Searching for Poetry in Latin Prose",
           },
-          { href: "projects/neural-networks/", label: "Neural Networks" },
+          {
+            href: "projects/bsc-thesis/",
+            label: "Active Vision for Surgical Tool Recognition",
+          },
           { href: "projects/", label: "All Projects →" },
         ],
       },
@@ -186,6 +189,14 @@ document.addEventListener("DOMContentLoaded", () => {
         mainNav.classList.toggle("open");
         const expanded = mainNav.classList.contains("open");
         navToggle.setAttribute("aria-expanded", expanded);
+        navToggle.textContent = expanded ? "Close" : "Menu";
+      });
+
+      mainNav.addEventListener("click", (event) => {
+        if (window.innerWidth > 900 || !event.target.closest("a")) return;
+        mainNav.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.textContent = "Menu";
       });
     }
   });

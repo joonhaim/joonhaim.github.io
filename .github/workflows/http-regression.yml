@@ -60,7 +60,7 @@ jobs:
           }
 
           # Public pages (status + critical DOM markers)
-          check_endpoint "/" "200" "<h1>Welcome!</h1>"
+          check_endpoint "/" "200" "<span>Biomedical Engineering ·</span>"
           check_endpoint "/contact/" "200" "<h1>Contact</h1>"
           check_endpoint "/projects/neural-networks/" "200" "Neural Computing Project: Food Classification CNN"
 

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <base id="page-base" href="/" />
     <script>
       (function () {
         var base = "/";
@@ -15,13 +16,15 @@
               ? "file://" + rootPath
               : location.origin + rootPath;
         }
-        document.write('<base href="' + base.replace(/"/g, "&quot;") + '">');
+        document.getElementById("page-base").setAttribute("href", base);
       })();
     </script>
-    <title>SurgiToolVision | BSc Thesis</title>
+    <title>
+      Active Vision for Surgical Instrument Recognition | BSc Thesis
+    </title>
     <meta
       name="description"
-      content="BSc thesis page for SurgiToolVision, an active vision system for surgical instrument and state recognition."
+      content="BSc thesis on active multi-view recognition of surgical instruments and hinge states."
     />
     <link
       rel="apple-touch-icon"
@@ -51,46 +54,433 @@
       <div id="site-header"></div>
 
       <main class="content">
-        <section class="project-intro">
-          <h1>BSc Thesis: SurgiToolVision</h1>
+        <section class="bsc-hero">
+          <div class="bsc-hero__copy">
+            <p class="page-kicker">Bachelor Thesis / Leiden University</p>
+            <h1>Active Vision for Surgical Instrument Recognition</h1>
+            <p class="bsc-lead">
+              I developed a computer vision system that recognizes surgical
+              instruments and determines whether hinged tools are open or
+              closed. By actively selecting the most informative camera views,
+              the system improved recognition performance while reducing the
+              number of images required.
+            </p>
+            <div class="hero-actions bsc-actions">
+              <a
+                class="button primary bsc-download"
+                href="static/pdf/bsc-thesis/Adrien_Im_Bachelor_Thesis.pdf"
+                download
+              >
+                <span>Download thesis</span>
+                <span aria-hidden="true">PDF</span>
+              </a>
+              <a
+                class="button secondary"
+                href="https://huggingface.co/datasets/joonhaim/surgical-tool-recognition-full-multiview"
+              >
+                Open dataset
+              </a>
+            </div>
+          </div>
+
+          <div class="bsc-hero__media">
+            <figure class="bsc-hero-image bsc-hero-video">
+              <video
+                src="static/images/bsc-thesis/thesis_demo.mp4"
+                poster="static/images/bsc-thesis/pipeline.png"
+                autoplay
+                muted
+                loop
+                playsinline
+              ></video>
+              <figcaption>
+                Demo of the active multi-view recognition workflow.
+              </figcaption>
+            </figure>
+            <div class="bsc-affiliation" aria-label="Thesis affiliation">
+              <img
+                src="static/images/logos/UL.png"
+                alt="Leiden University logo"
+              />
+              <span>Leiden University · BSc Data Science &amp; AI</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="bsc-section bsc-context">
+          <p class="page-kicker">About this project</p>
           <p>
-            <strong>SurgiToolVision</strong> focuses on designing and evaluating
-            a computer vision system that can automatically recognize surgical
-            instruments and their state. The core system uses YOLO-based object
-            detection models to identify handheld tools such as scalpels,
-            clamps, shears, and needle holders from images or live camera feeds.
-          </p>
-          <p>
-            Beyond tool detection, the project includes state analysis for
-            hinged instruments (for example, open vs. closed clamp or needle
-            holder) and integrates the full machine learning pipeline: dataset
-            preparation, model training, evaluation, and a user interface for
-            image and live-camera inference.
+            This was my BSc capstone at Leiden University's Institute of
+            Advanced Computer Science, supervised by Dr. Daan Pelt and Dr.
+            Jiayang Shi. The starting point was a simple observation: most
+            surgical computer vision research focuses on minimally invasive
+            surgery, where cameras are fixed and scenes are controlled. Open
+            surgery is messier, and reliable tool recognition there remains
+            unsolved.
           </p>
         </section>
 
-        <section>
-          <h2>Research Focus</h2>
-          <p>
-            A key contribution is an <strong>active vision</strong> approach for
-            surgical tool recognition. Instead of relying only on a single
-            static image, the system can leverage multiple viewpoints or request
-            additional views when confidence is low. This helps in challenging
-            situations such as partial occlusion or ambiguous tool appearances
-            from specific angles.
+        <section class="bsc-section">
+          <h2>What I Built</h2>
+          <div class="bsc-feature-grid">
+            <article class="bsc-feature">
+              <span class="bsc-feature__number">01</span>
+              <h3>A custom dataset of 2,520 images</h3>
+              <p>
+                Five instrument categories across three viewpoints, four
+                backgrounds, and two hinge states, all captured under controlled
+                variation and published openly on Hugging Face.
+              </p>
+            </article>
+            <article class="bsc-feature">
+              <span class="bsc-feature__number">02</span>
+              <h3>A two-stage recognition pipeline</h3>
+              <p>
+                A YOLO-based object detector identifies and localizes the
+                instrument with 98.2% mAP. For hinged tools, an EfficientNet-B0
+                classifier predicts open vs. closed with 98.1% accuracy on
+                cropped images.
+              </p>
+            </article>
+            <article class="bsc-feature">
+              <span class="bsc-feature__number">03</span>
+              <h3>An active view acquisition strategy</h3>
+              <p>
+                Instead of always using all three camera angles, the system
+                starts with a single top-down view and only requests additional
+                viewpoints when its prediction confidence is insufficient,
+                saving acquisition effort while maintaining accuracy.
+              </p>
+            </article>
+            <article class="bsc-feature">
+              <span class="bsc-feature__number">04</span>
+              <h3>A comparative VLM evaluation</h3>
+              <p>
+                Six zero-shot vision-language models, including Gemma, Qwen3-VL,
+                and Ministral variants, were benchmarked on the same recognition
+                tasks to test whether general-purpose AI could substitute for a
+                trained specialist model.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="bsc-section">
+          <h2>The Key Finding</h2>
+          <div class="bsc-finding">
+            <div class="bsc-finding__intro">
+              <p>
+                The most important finding was that different tasks benefit from
+                different viewpoints.
+              </p>
+            </div>
+            <article>
+              <h3>Category recognition</h3>
+              <p>
+                Works best from a close-up view. Distinguishing a needle holder
+                from a clamp depends on fine local detail: jaw pattern, tip
+                shape, and surface texture.
+              </p>
+            </article>
+            <article>
+              <h3>Hinge-state classification</h3>
+              <p>
+                Works best from a top-down view. Determining open vs. closed
+                depends on global geometry: the angle between the two branches,
+                not fine surface detail.
+              </p>
+            </article>
+          </div>
+          <p class="bsc-wide-note">
+            This means viewpoint selection cannot be task-agnostic: the best
+            angle for identifying a tool is not necessarily the best angle for
+            reading its state. It motivates a multi-view system and explains why
+            an adaptive one can outperform simply fusing all views every time.
           </p>
         </section>
 
-        <section>
-          <h2>Evaluation Goals</h2>
-          <p>
-            Through experiments across models, viewpoints, and system
-            configurations, SurgiToolVision evaluates how multi-view information
-            and instrument-state recognition improve reliability. The long-term
-            motivation is to support future operating room technologies,
-            including surgical workflow analysis, robotic assistance, and
-            automated instrument tracking.
+        <section class="bsc-section bsc-dataset">
+          <div class="bsc-section-heading">
+            <h2>Dataset Samples</h2>
+            <p>
+              The dataset varies instrument type, viewpoint, background, and
+              hinge state. These examples show the controlled visual variation
+              used for training and evaluation.
+            </p>
+          </div>
+          <div class="bsc-image-band">
+            <figure>
+              <img
+                src="static/images/bsc-thesis/NH_TOP_TR_OP_014.jpg"
+                alt="Needle holder photographed from a top-down transparent-background view"
+              />
+              <figcaption>Needle holder · top-down · open</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/SH_OBL_WH_OP_021.jpg"
+                alt="Surgical shears photographed from an oblique white-background view"
+              />
+              <figcaption>Shears · oblique · open</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/SC_CLO_TR_NA_018.jpg"
+                alt="Scalpel photographed from a close-up transparent-background view"
+              />
+              <figcaption>Scalpel · close-up</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/TW_TOP_GR_NA_033.jpg"
+                alt="Tweezers photographed from a top-down gray-background view"
+              />
+              <figcaption>Tweezers · top-down</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/CM_CLO_BL_CL_001.jpg"
+                alt="Clamp photographed from a close-up blue-background view in closed state"
+              />
+              <figcaption>Clamp · close-up · closed</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/NH_OBL_BL_CL_009.jpg"
+                alt="Needle holder photographed from an oblique blue-background view in closed state"
+              />
+              <figcaption>Needle holder · oblique · closed</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="bsc-section bsc-experiments">
+          <div class="bsc-section-heading">
+            <h2>Four Experiments</h2>
+            <p>
+              The project was evaluated through four experiments, moving from
+              basic recognition to active multi-view decision making.
+            </p>
+          </div>
+          <div class="bsc-experiment-grid">
+            <article class="bsc-experiment">
+              <span class="bsc-feature__number">01</span>
+              <h3>Can the system identify the instrument?</h3>
+              <p>
+                I first trained YOLO-based object detectors to recognize five
+                surgical instrument categories: clamps, needle holders,
+                scalpels, shears, and tweezers. The best detector reached 98.2%
+                mAP@50:95, showing that trained vision-only models can recognize
+                the instruments reliably in the controlled dataset.
+              </p>
+              <dl>
+                <div>
+                  <dt>Key result</dt>
+                  <dd>98.2% mAP@50:95</dd>
+                </div>
+                <div>
+                  <dt>Main takeaway</dt>
+                  <dd>
+                    Close-up views were most useful because they reveal fine
+                    details such as jaw shape, tip geometry, and surface
+                    texture.
+                  </dd>
+                </div>
+              </dl>
+            </article>
+            <article class="bsc-experiment">
+              <span class="bsc-feature__number">02</span>
+              <h3>Can it tell whether a hinged tool is open or closed?</h3>
+              <p>
+                For hinged instruments, I trained separate classifiers to
+                predict whether the tool was open or closed. EfficientNet-B0
+                performed best, reaching 98.1% accuracy on cropped instrument
+                images.
+              </p>
+              <dl>
+                <div>
+                  <dt>Key result</dt>
+                  <dd>98.1% accuracy</dd>
+                </div>
+                <div>
+                  <dt>Main takeaway</dt>
+                  <dd>
+                    Hinge-state recognition worked best from top-down views,
+                    where the global geometry and opening angle are easiest to
+                    see.
+                  </dd>
+                </div>
+              </dl>
+            </article>
+            <article class="bsc-experiment">
+              <span class="bsc-feature__number">03</span>
+              <h3>Should the system always use every camera view?</h3>
+              <p>
+                I then evaluated an active multi-view pipeline. The system
+                starts from a top-down image and only requests another view when
+                its confidence is too low, avoiding full three-view acquisition
+                by default.
+              </p>
+              <dl>
+                <div>
+                  <dt>Key result</dt>
+                  <dd>Highest accuracy using 2.5 views on average</dd>
+                </div>
+                <div>
+                  <dt>Main takeaway</dt>
+                  <dd>
+                    Active view acquisition sometimes improved over the initial
+                    single-view result while using fewer views than full
+                    three-view acquisition.
+                  </dd>
+                </div>
+              </dl>
+            </article>
+            <article class="bsc-experiment">
+              <span class="bsc-feature__number">04</span>
+              <h3>
+                Can general-purpose VLMs replace trained specialist models?
+              </h3>
+              <p>
+                Finally, I compared the trained vision-only pipeline with
+                zero-shot vision-language models such as Qwen3-VL, Gemma, and
+                Ministral. The best VLM reached 72.2% category accuracy and
+                62.4% hinge-state accuracy, but was much slower than the trained
+                pipeline.
+              </p>
+              <dl>
+                <div>
+                  <dt>Key result</dt>
+                  <dd>72.2% category accuracy; 62.4% hinge-state accuracy</dd>
+                </div>
+                <div>
+                  <dt>Main takeaway</dt>
+                  <dd>
+                    VLMs were useful as a comparison baseline, but trained
+                    task-specific models remained better for fine-grained
+                    surgical instrument recognition.
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+        </section>
+
+        <section class="bsc-section bsc-active-diagram">
+          <div>
+            <h2>Active View Acquisition</h2>
+            <p>
+              Confidence-driven acquisition avoids using every camera angle by
+              default. The system asks for another view only when the current
+              prediction is not confident enough.
+            </p>
+          </div>
+          <figure class="bsc-panel-image">
+            <img
+              src="static/images/bsc-thesis/active-view-diagram.png"
+              alt="Active view acquisition strategy diagram"
+            />
+          </figure>
+        </section>
+
+        <section class="bsc-section bsc-split">
+          <div>
+            <h2>Active Vision Results</h2>
+            <p>
+              The active system outperformed both single-view inference and full
+              three-view fusion while using fewer acquisitions than the latter.
+            </p>
+          </div>
+          <div class="bsc-table-wrap">
+            <table class="bsc-results-table">
+              <thead>
+                <tr>
+                  <th scope="col">Setting</th>
+                  <th scope="col">Single view</th>
+                  <th scope="col">All 3 views</th>
+                  <th scope="col">Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">End-to-end accuracy</th>
+                  <td>55.0%</td>
+                  <td>70.0%</td>
+                  <td>73.3%</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mean views used</th>
+                  <td>1.0</td>
+                  <td>3.0</td>
+                  <td>2.5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="bsc-section bsc-gallery">
+          <h2>Grad-CAM Analysis</h2>
+          <p class="bsc-section-intro">
+            These Grad-CAM heatmaps inspect the EfficientNet-B0 hinge-state
+            classifier. Warmer regions mark the image areas that contributed
+            most to an open or closed prediction. The strongest activations
+            often appear around the hinge, handles, and branch angle, which
+            matches the geometric nature of the task.
           </p>
+          <div class="bsc-gallery-grid">
+            <figure>
+              <img
+                src="static/images/bsc-thesis/CM_TOP_WH_OP_013__crop__cam-pred__pred-open.jpg"
+                alt="Clamp crop predicted as open"
+              />
+              <figcaption>Open prediction</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/NH_CLO_WH_CL_018__crop__cam-pred__pred-closed.jpg"
+                alt="Needle holder crop predicted as closed"
+              />
+              <figcaption>Closed prediction</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/CM_CLO_TR_CL_003__crop__cam-pred__pred-closed.jpg"
+                alt="Clamp close-up crop predicted as closed"
+              />
+              <figcaption>Close-up view</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="static/images/bsc-thesis/NH_OBL_GR_CL_018__crop__cam-pred__pred-closed.jpg"
+                alt="Needle holder oblique crop predicted as closed"
+              />
+              <figcaption>Oblique view</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="bsc-section bsc-final-cta">
+          <div>
+            <p class="page-kicker">Open materials</p>
+            <h2>Explore the full work.</h2>
+          </div>
+          <div class="hero-actions">
+            <a
+              class="button primary bsc-download"
+              href="static/pdf/bsc-thesis/Adrien_Im_Bachelor_Thesis.pdf"
+              download
+            >
+              <span>Download thesis</span>
+              <span aria-hidden="true">PDF</span>
+            </a>
+            <a
+              class="button secondary"
+              href="https://huggingface.co/datasets/joonhaim/surgical-tool-recognition-full-multiview"
+            >
+              View dataset
+            </a>
+          </div>
         </section>
       </main>
 

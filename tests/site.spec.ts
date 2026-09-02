@@ -59,6 +59,19 @@ test.describe("site smoke tests", () => {
     ).toBeVisible();
   });
 
+  test("EduPace project links to the hosted simulator", async ({ page }) => {
+    await page.goto("/projects/edupace/");
+
+    const launchLink = page.getByRole("link", { name: "Launch Simulator" });
+    await expect(launchLink).toBeVisible();
+    await expect(launchLink).toHaveAttribute(
+      "href",
+      "https://joonhaim.github.io/edupace/",
+    );
+    await expect(launchLink).toHaveAttribute("target", "_blank");
+    await expect(launchLink).toHaveAttribute("rel", "noopener");
+  });
+
   test("shared includes should load full site header/footer (not fallback shells)", async ({
     page,
   }) => {
